@@ -216,3 +216,18 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# MIMIC semantic-signals local data and outputs
+data/
+outputs/
+mimiciii/
+mimiciv/
+mimic-iv-note/
+mimic-iv-ed/
+mimic-iv-ecg/
+mimic-iv-echo/
+mimic-cxr/
+*.csv
+*.csv.gz
+*.parquet
