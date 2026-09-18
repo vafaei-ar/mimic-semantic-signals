@@ -94,3 +94,31 @@ That archive is intended to contain aggregate reconnaissance outputs only.
 We will inspect the reconnaissance results and select the strongest one or two scientific questions. Only then will we define semantic constructs, run a small Jev/LLM comparator pilot, and plan human validation.
 
 **Current stage: reconnaissance only. No model has been selected and no study hypothesis is locked.**
+
+
+## Second-pass reconnaissance
+
+After `recon_v1`, run:
+
+```bash
+git pull
+
+python run_reconnaissance_v2.py \
+  --root ~/datasets/MIMIC/physionet.org/files \
+  --output outputs/recon_v2
+```
+
+Send back:
+
+```text
+outputs/recon_v2/mimic_feasibility_results_v2.zip
+```
+
+The second pass answers two specific questions:
+
+1. Are **actual narrative clinician notes** (physician, nursing, respiratory, general, consult) present often enough before deterioration, independent of radiology coverage?
+2. Are the preliminary vasopressor/intubation event definitions clinically defensible, or did broad text matching pull in inappropriate `D_ITEMS` labels?
+
+## MIMIC + external model APIs
+
+Do not send raw MIMIC text to Jev or any other external API unless the service configuration has been verified to satisfy the current PhysioNet requirements for credentialed data, including zero data retention, no training use, and no human review where required. Until that is established, semantic-model experiments in this repository should remain local.
