@@ -1,0 +1,11 @@
+root: ~/datasets/MIMIC/physionet.org/files
+output: outputs/recon_v1
+
+modules:
+  mimiciii: mimiciii
+  mimiciv: mimiciv
+  mimic_iv_note: mimic-iv-note
+  mimic_iv_ed: mimic-iv-ed
+  mimic_iv_ecg: mimic-iv-ecg
+  mimic_iv_echo: mimic-iv-echo
+  mimic_cxr: mimic-cxr
