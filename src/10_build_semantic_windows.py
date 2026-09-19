@@ -86,7 +86,8 @@ def main() -> None:
 
         records.append(
             {
-                "case_id": f"syn_{int(r.hadm_id)}_{i:06d}",\n                "synthetic_only": True,
+                "case_id": f"syn_{int(r.hadm_id)}_{i:06d}",
+                "synthetic_only": True,
                 "state": {
                     "note_category": str(r.category),
                     "hours_before_event": round(float(r.hours_before_event), 3),
