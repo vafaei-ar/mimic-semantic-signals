@@ -231,13 +231,13 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
         if event_type == "intubation":
             dbsource = "metavision"
 
-        admit = start0 + pd.Timedelta(days=i * 2)
-        icu_in = admit + pd.Timedelta(hours=float(rng.integers(1, 5)))
+        admit = start0 + _days(i * 2)
+        icu_in = admit + _hours(float(rng.integers(1, 5)))
         discordant = bool(event_type != "none" and rng.random() < 0.35)
 
         event_time = None
         if event_type != "none":
-            event_time = icu_in + pd.Timedelta(hours=float(rng.integers(36, 73)))
+            event_time = icu_in + _hours(float(rng.integers(36, 73)))
             if event_type == "death":
                 discharge = event_time
             else:
@@ -245,7 +245,7 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
                     hours=float(rng.integers(12, 31))
                 )
         else:
-            discharge = icu_in + pd.Timedelta(hours=float(rng.integers(60, 97)))
+            discharge = icu_in + _hours(float(rng.integers(60, 97)))
 
         death_time = event_time if event_type == "death" else None
 
@@ -267,7 +267,7 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
                 "RELIGION": "UNOBTAINABLE",
                 "MARITAL_STATUS": "SINGLE",
                 "ETHNICITY": "SYNTHETIC",
-                "EDREGTIME": _fmt(admit - pd.Timedelta(hours=2)),
+                "EDREGTIME": _fmt(admit - _hours(2)),
                 "EDOUTTIME": _fmt(admit),
                 "DIAGNOSIS": "SYNTHETIC CRITICAL ILLNESS",
                 "HOSPITAL_EXPIRE_FLAG": int(event_type == "death"),
@@ -321,7 +321,7 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
                         "ICUSTAY_ID": icustay_id,
                         "ITEMID": itemid,
                         "CHARTTIME": _fmt(t),
-                        "STORETIME": _fmt(t + pd.Timedelta(minutes=5)),
+                        "STORETIME": _fmt(t + _minutes(5)),
                         "CGID": 70000 + (i % 50),
                         "VALUE": str(value),
                         "VALUENUM": value,
@@ -333,7 +333,7 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
                     }
                 )
                 row["CHARTEVENTS.csv.gz"] += 1
-            t += pd.Timedelta(hours=2)
+            t += _hours(2)
 
         t = icu_in
         while t <= series_end:
@@ -367,9 +367,9 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
                     }
                 )
                 row["LABEVENTS.csv.gz"] += 1
-            t += pd.Timedelta(hours=12)
+            t += _hours(12)
 
-        t = icu_in + pd.Timedelta(hours=3)
+        t = icu_in + _hours(3)
         note_index = 0
         while t < series_end:
             hours_before = (
@@ -411,7 +411,7 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
                     "HADM_ID": hadm_id,
                     "CHARTDATE": pd.Timestamp(t).strftime("%Y-%m-%d"),
                     "CHARTTIME": _fmt(t),
-                    "STORETIME": _fmt(t + pd.Timedelta(minutes=20)),
+                    "STORETIME": _fmt(t + _minutes(20)),
                     "CATEGORY": category,
                     "DESCRIPTION": "Synthetic bedside note",
                     "CGID": 70000 + (i % 50),
@@ -435,7 +435,7 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
                         "HADM_ID": hadm_id,
                         "CHARTDATE": pd.Timestamp(t).strftime("%Y-%m-%d"),
                         "CHARTTIME": _fmt(t),
-                        "STORETIME": _fmt(t + pd.Timedelta(minutes=30)),
+                        "STORETIME": _fmt(t + _minutes(30)),
                         "CATEGORY": "Physician",
                         "DESCRIPTION": "Synthetic progress note",
                         "CGID": 71000 + (i % 20),
@@ -464,7 +464,7 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
             )
 
             note_index += 1
-            t += pd.Timedelta(hours=6)
+            t += _hours(6)
 
         if event_type == "vasopressor" and event_time is not None:
             itemid, _, table = PRESSORS[dbsource]
@@ -476,14 +476,14 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
                         "HADM_ID": hadm_id,
                         "ICUSTAY_ID": icustay_id,
                         "STARTTIME": _fmt(event_time),
-                        "ENDTIME": _fmt(event_time + pd.Timedelta(hours=6)),
+                        "ENDTIME": _fmt(event_time + _hours(6)),
                         "ITEMID": itemid,
                         "AMOUNT": 6.0,
                         "AMOUNTUOM": "mg",
                         "RATE": 0.1,
                         "RATEUOM": "mcg/kg/min",
                         "STORETIME": _fmt(
-                            event_time + pd.Timedelta(minutes=2)
+                            event_time + _minutes(2)
                         ),
                         "CGID": 72000,
                         "ORDERID": 800000 + i,
@@ -521,7 +521,7 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
                         "RATE": 0.1,
                         "RATEUOM": "mcg/kg/min",
                         "STORETIME": _fmt(
-                            event_time + pd.Timedelta(minutes=2)
+                            event_time + _minutes(2)
                         ),
                         "CGID": 72000,
                         "ORDERID": 800000 + i,
@@ -547,7 +547,7 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
                     "ICUSTAY_ID": icustay_id,
                     "STARTTIME": _fmt(event_time),
                     "ENDTIME": _fmt(
-                        event_time + pd.Timedelta(minutes=20)
+                        event_time + _minutes(20)
                     ),
                     "ITEMID": INTUBATION_ITEM[0],
                     "VALUE": 1.0,
@@ -555,7 +555,7 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
                     "LOCATION": "",
                     "LOCATIONCATEGORY": "",
                     "STORETIME": _fmt(
-                        event_time + pd.Timedelta(minutes=3)
+                        event_time + _minutes(3)
                     ),
                     "CGID": 72001,
                     "ORDERID": 900000 + i,
