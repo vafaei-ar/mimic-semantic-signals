@@ -41,10 +41,13 @@ def to_jev_questions(case: dict) -> dict:
             raise ValueError(
                 f"Current synthetic runner supports noul only; got {qtype!r}."
             )
-        questions[q["name"]] = {
+        item = {
             "type": "noul",
             "instructions": q["question"],
         }
+        if isinstance(q.get("criteria"), dict):
+            item["criteria"] = q["criteria"]
+        questions[q["name"]] = item
     return questions
 
 
