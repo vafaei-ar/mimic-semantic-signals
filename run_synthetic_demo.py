@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -28,6 +29,36 @@ def main() -> None:
         ],
         check=True,
     )
+
+    # Runtime smoke test on a tiny temporary sandbox before generating the full cohort.
+    with tempfile.TemporaryDirectory(prefix="mimic_semantic_smoke_") as tmp:
+        smoke_root = Path(tmp) / "synthetic_mimic"
+        subprocess.run(
+            [
+                sys.executable,
+                str(repo / "synthetic" / "generate_mimiciii_semantic_sandbox.py"),
+                "--output",
+                str(smoke_root),
+                "--n-admissions",
+                "3",
+                "--seed",
+                str(args.seed),
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                sys.executable,
+                str(repo / "src" / "10_build_semantic_windows.py"),
+                "--synthetic-root",
+                str(smoke_root),
+                "--output",
+                str(smoke_root / "semantic_eval_cases_24h.jsonl"),
+                "--window-hours",
+                "24",
+            ],
+            check=True,
+        )
 
     subprocess.run(
         [
