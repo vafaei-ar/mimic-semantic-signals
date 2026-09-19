@@ -93,6 +93,18 @@ PRESSORS = {
 INTUBATION_ITEM = (224385, "Intubation")
 
 
+def _days(value: float | int) -> pd.Timedelta:
+    return pd.to_timedelta(value, unit="D")
+
+
+def _hours(value: float | int) -> pd.Timedelta:
+    return pd.to_timedelta(value, unit="h")
+
+
+def _minutes(value: float | int) -> pd.Timedelta:
+    return pd.to_timedelta(value, unit="m")
+
+
 def _fmt(value: pd.Timestamp | None) -> str:
     if value is None or pd.isna(value):
         return ""
