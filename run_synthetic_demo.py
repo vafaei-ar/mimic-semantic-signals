@@ -16,6 +16,19 @@ def main() -> None:
     repo = Path(__file__).resolve().parent
     root = Path(args.output_root).expanduser().resolve()
 
+    # Fail fast on syntax errors before spending time generating the sandbox.
+    subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "py_compile",
+            str(repo / "synthetic" / "generate_mimiciii_semantic_sandbox.py"),
+            str(repo / "src" / "semantic_schema.py"),
+            str(repo / "src" / "10_build_semantic_windows.py"),
+        ],
+        check=True,
+    )
+
     subprocess.run(
         [
             sys.executable,
