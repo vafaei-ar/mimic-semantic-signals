@@ -79,3 +79,43 @@ If a local table differs, we should update the synthetic schema before building 
 ## Important limitation
 
 This synthetic sandbox validates software behavior and study logic. It cannot establish performance on real clinical language or real clinical outcomes. Final scientific results must come from the credentialed dataset under an approved data-processing configuration.
+
+
+## Run Jev on synthetic cases only
+
+The repository includes a hard-guarded runner that refuses any case not explicitly marked `synthetic_only=true`.
+
+Set the API key locally:
+
+```bash
+export TYPESAFE_API_KEY="..."
+```
+
+First validate the request without sending anything:
+
+```bash
+python src/11_run_jev_synthetic_only.py \
+  --cases data/synthetic_mimic/semantic_eval_cases_24h.jsonl \
+  --output outputs/jev_synthetic_raw.jsonl \
+  --limit 10 \
+  --dry-run
+```
+
+Then run a small live pilot:
+
+```bash
+python src/11_run_jev_synthetic_only.py \
+  --cases data/synthetic_mimic/semantic_eval_cases_24h.jsonl \
+  --output outputs/jev_synthetic_raw.jsonl \
+  --limit 100
+```
+
+Summarize the results against the known synthetic truth:
+
+```bash
+python src/12_summarize_jev_synthetic.py \
+  --results outputs/jev_synthetic_raw.jsonl \
+  --output-prefix outputs/jev_synthetic
+```
+
+This produces construct-level AUROC and Brier scores plus a long prediction table. The synthetic benchmark is a software and construct-development test, not evidence of clinical performance.
