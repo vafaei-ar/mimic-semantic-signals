@@ -122,3 +122,31 @@ The second pass answers two specific questions:
 ## MIMIC + external model APIs
 
 Do not send raw MIMIC text to Jev or any other external API unless the service configuration has been verified to satisfy the current PhysioNet requirements for credentialed data, including zero data retention, no training use, and no human review where required. Until that is established, semantic-model experiments in this repository should remain local.
+
+
+## Synthetic development sandbox
+
+While third-party retention requirements are being resolved, development can proceed using a schema-faithful synthetic MIMIC-III subset.
+
+Run:
+
+```bash
+git pull
+
+python run_synthetic_demo.py \
+  --output-root data/synthetic_mimic \
+  --n-admissions 500
+```
+
+Then verify the generated table headers against the exact locally downloaded MIMIC-III files:
+
+```bash
+python synthetic/validate_against_local_headers.py \
+  --real-root ~/datasets/MIMIC/physionet.org/files \
+  --synthetic-root data/synthetic_mimic \
+  --output outputs/synthetic_schema_check.csv
+```
+
+The synthetic data contain a controlled latent clinician-concern signal, including narrative-physiology discordant cases, so the semantic pipeline can be developed and tested against known ground truth before any real clinical text is processed by an external service.
+
+See `synthetic/README.md` for details.
