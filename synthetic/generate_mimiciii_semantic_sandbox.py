@@ -241,9 +241,7 @@ def generate(root: Path, n_admissions: int, seed: int) -> None:
             if event_type == "death":
                 discharge = event_time
             else:
-                discharge = event_time + pd.Timedelta(
-                    hours=float(rng.integers(12, 31))
-                )
+                discharge = event_time + _hours(float(rng.integers(12, 31)))
         else:
             discharge = icu_in + _hours(float(rng.integers(60, 97)))
 
