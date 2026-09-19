@@ -136,6 +136,7 @@ def main() -> None:
             record = {
                 "case_id": case["case_id"],
                 "synthetic_only": True,
+                "state": case.get("state", {}),
                 "gold": case.get("gold"),
                 "model": args.model,
             }
