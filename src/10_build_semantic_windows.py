@@ -214,10 +214,12 @@ def main() -> None:
             {
                 "case_id": f"syn_{int(r.hadm_id)}_{i:06d}",
                 "synthetic_only": True,
-                "state": {
+                "model_state": {
+                    "clinical_note": str(r.text),
+                },
+                "metadata": {
                     "note_category": str(r.category),
                     "hours_before_event": round(float(r.hours_before_event), 3),
-                    "clinical_note": str(r.text),
                 },
                 "questions": SEMANTIC_CONSTRUCTS,
                 "gold": {
