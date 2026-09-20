@@ -119,3 +119,42 @@ python src/12_summarize_jev_synthetic.py \
 ```
 
 This produces construct-level AUROC and Brier scores plus a long prediction table. The synthetic benchmark is a software and construct-development test, not evidence of clinical performance.
+
+
+## Local open Jev-shaped backend
+
+A fully local comparator is supported with:
+
+`com-kotobalabs/open-jev-deberta-v3-large`
+
+Install the optional local-model dependencies:
+
+```bash
+pip install -r requirements-open-jev.txt
+```
+
+Run it on the same case file:
+
+```bash
+python src/15_run_open_jev_local.py \
+  --cases data/synthetic_mimic/semantic_pilot_v2_160.jsonl \
+  --output outputs/open_jev_local_v2_raw.jsonl \
+  --limit 160
+```
+
+The first run downloads the model weights from Hugging Face. The clinical case text is not sent to Hugging Face; inference is performed by the local PyTorch model.
+
+For a strict offline run after the model has been cached, either pass a local model snapshot directory with `--model`, or set:
+
+```bash
+export HF_HUB_OFFLINE=1
+export TRANSFORMERS_OFFLINE=1
+```
+
+and use the locally cached model.
+
+The local runner exposes only `model_state.clinical_note` to the model. Future-derived evaluation fields such as time to event remain in `metadata` and are not model inputs.
+
+### Important model limitation
+
+The published open model is an independent Jev-shaped reproduction, not TypeSafe Jev. Its DeBERTa-v3-large encoder has a 512-token total context and truncates state to 256 tokens. It was trained on non-clinical public datasets, so clinical-note use is out of distribution and must be validated empirically. For long real notes, we will need an explicit chunking/aggregation strategy rather than silently relying on truncation.
