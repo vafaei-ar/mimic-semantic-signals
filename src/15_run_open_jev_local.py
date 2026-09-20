@@ -78,7 +78,7 @@ def main() -> None:
         os.environ["TRANSFORMERS_OFFLINE"] = "1"
 
     # Import after offline mode is set.
-    from typed_decisions.open_jev import OpenJev
+    from open_jev_loader import load_open_jev_corrected
 
     output = Path(args.output).expanduser().resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -86,7 +86,7 @@ def main() -> None:
     print(f"Loading local model: {args.model}")
     if contains_real:
         print("Real/credentialed cases detected: Hugging Face offline mode forced.")
-    model = OpenJev.from_pretrained(args.model, device=args.device)
+    model = load_open_jev_corrected(args.model, device=args.device)
     print(f"Device: {model.device}")
     print(
         "Model context limits: "
