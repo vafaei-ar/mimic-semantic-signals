@@ -211,7 +211,8 @@ def main() -> None:
             "test": len(split_rows["test"]),
             "ood_test": len(ood),
         },
-        "questions_per_original_case": 8,\n        "open_jev_questions_per_pack": args.questions_per_pack,
+        "questions_per_original_case": 8,
+        "open_jev_questions_per_pack": args.questions_per_pack,
         "warning": (
             "This corpus is suitable for pipeline development only until the "
             "synthetic note generator has substantially more independent template families."
