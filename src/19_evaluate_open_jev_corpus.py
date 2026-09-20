@@ -29,11 +29,11 @@ def main() -> None:
     args = ap.parse_args()
 
     from typed_decisions.metrics import summarize
-    from open_jev_loader import load_open_jev_corrected
+    from typed_decisions.open_jev import OpenJev
     from typed_decisions.schema import read_jsonl
     from typed_decisions.encoder import predict
 
-    loaded = load_open_jev_corrected(args.model, device=args.device)
+    loaded = OpenJev.from_pretrained(args.model, device=args.device)
     data = Path(args.data).expanduser().resolve()
     test = read_jsonl(data / "test.jsonl")
     ood = read_jsonl(data / "ood-test.jsonl")
