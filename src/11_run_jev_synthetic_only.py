@@ -60,7 +60,7 @@ def call_jev(
 ) -> dict:
     payload = {
         "model": model,
-        "state": case["state"],
+        "state": case["model_state"],
         "questions": to_jev_questions(case),
     }
     body = json.dumps(payload).encode("utf-8")
@@ -136,7 +136,8 @@ def main() -> None:
             record = {
                 "case_id": case["case_id"],
                 "synthetic_only": True,
-                "state": case.get("state", {}),
+                "model_state": case.get("model_state", {}),
+                "metadata": case.get("metadata", {}),
                 "gold": case.get("gold"),
                 "model": args.model,
             }
