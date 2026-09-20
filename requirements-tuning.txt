@@ -1,0 +1,5 @@
+-r requirements-open-jev.txt
+datasets
+accelerate
+peft>=0.19.1
+trl
