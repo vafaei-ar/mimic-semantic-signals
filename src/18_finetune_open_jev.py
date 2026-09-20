@@ -44,7 +44,7 @@ def main() -> None:
     from typed_decisions.augment import augment
     from typed_decisions.encoder import decision_loss, predict
     from typed_decisions.metrics import fit_temperature, summarize
-    from typed_decisions.open_jev import OpenJev
+    from open_jev_loader import load_open_jev_corrected
     from typed_decisions.schema import read_jsonl
 
     torch.manual_seed(args.seed)
@@ -54,7 +54,7 @@ def main() -> None:
     out.mkdir(parents=True, exist_ok=True)
     data = Path(args.data).expanduser().resolve()
 
-    loaded = OpenJev.from_pretrained(args.base, device=str(device_from_arg(args.device)))
+    loaded = load_open_jev_corrected(args.base, device=str(device_from_arg(args.device)))
     model = loaded.model
     coll = loaded.collator
     tok = loaded.tok
