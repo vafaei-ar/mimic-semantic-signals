@@ -170,7 +170,7 @@ def main() -> None:
     # negative controls in the same 24-hour temporal framing.
     is_none = admission_truth["event_type"].eq("none")
     admission_truth.loc[is_none, "event_time"] = (
-        admission_truth.loc[is_none, "last_truth_note"] + pd.Timedelta(hours=3)
+        admission_truth.loc[is_none, "last_truth_note"] + pd.to_timedelta(3, unit="h")
     )
     admission_truth["anchor_type"] = admission_truth["event_type"].where(
         ~is_none,
