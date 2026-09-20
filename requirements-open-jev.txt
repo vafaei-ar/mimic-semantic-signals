@@ -1,0 +1,8 @@
+-r requirements.txt
+torch>=2.4
+transformers>=4.56,<5
+safetensors
+huggingface_hub
+sentencepiece
+protobuf
+git+https://github.com/kotoba-lang/typed-decisions.git
