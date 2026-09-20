@@ -54,7 +54,9 @@ def main() -> None:
     ap.add_argument("--cases", required=True)
     ap.add_argument("--output", required=True)
     ap.add_argument("--limit", type=int, default=0)
-    ap.add_argument("--model", default=DEFAULT_MODEL)\n    ap.add_argument("--questions-per-pack", type=int, default=4)\n    ap.add_argument(
+    ap.add_argument("--model", default=DEFAULT_MODEL)
+    ap.add_argument("--questions-per-pack", type=int, default=4)
+    ap.add_argument(
         "--device",
         default=None,
         help="Optional torch device such as cuda, cpu, or mps. Default is automatic.",
