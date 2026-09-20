@@ -5,4 +5,4 @@ safetensors
 huggingface_hub
 sentencepiece
 protobuf
-git+https://github.com/kotoba-lang/typed-decisions.git
+git+https://github.com/kotoba-lang/typed-decisions.git@10d7834d3b99041f890db4615fb38ef95ced50cc
