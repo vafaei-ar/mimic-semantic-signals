@@ -274,15 +274,28 @@ def main() -> None:
     eligible_df = pd.DataFrame(eligibility)
 
     rng = random.Random(args.seed)
-    selected_hadms = []
+    selected_pairs: set[tuple[int, str]] = set()
     available_by_event = {}
+    selected_pairs_by_event = {}
     for event_type, g in eligible_df.groupby("event_type"):
         hadms = sorted(g["hadm_id"].astype(int).tolist())
         rng.shuffle(hadms)
         available_by_event[event_type] = len(hadms)
-        selected_hadms.extend(hadms[: min(args.n_per_event, len(hadms))])
+        chosen = hadms[: min(args.n_per_event, len(hadms))]
+        selected_pairs_by_event[event_type] = len(chosen)
+        for hadm_id in chosen:
+            selected_pairs.add((int(hadm_id), str(event_type)))
 
-    sample = longitudinal[longitudinal["hadm_id"].isin(selected_hadms)].copy()
+    pair_index = pd.MultiIndex.from_frame(
+        longitudinal[["hadm_id", "event_type"]].astype(
+            {"hadm_id": "int64", "event_type": "string"}
+        )
+    )
+    wanted_pairs = pd.MultiIndex.from_tuples(
+        sorted(selected_pairs),
+        names=["hadm_id", "event_type"],
+    )
+    sample = longitudinal[pair_index.isin(wanted_pairs)].copy()
     dbmap = admission_dbsource(root)
     sample["dbsource"] = sample["hadm_id"].map(dbmap).fillna("unknown")
 
@@ -329,9 +342,11 @@ def main() -> None:
         "n_per_event_requested": args.n_per_event,
         "seed": args.seed,
         "eligible_admissions_by_event": available_by_event,
-        "sampled_admissions": len(hadms),
+        "sampled_unique_admissions": len(hadms),
+        "sampled_event_admission_pairs": len(selected_pairs),
+        "selected_event_admission_pairs_by_event": selected_pairs_by_event,
         "records": len(records),
-        "expected_records_per_admission": 3,
+        "expected_records_per_event_admission_pair": 3,
         "counts_by_event": (
             sample.groupby("event_type")["hadm_id"].nunique().astype(int).to_dict()
         ),
