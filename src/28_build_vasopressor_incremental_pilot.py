@@ -115,14 +115,15 @@ def load_icustays(root: Path) -> pd.DataFrame:
         raise FileNotFoundError("ICUSTAYS not found.")
     d = lower_columns(pd.read_csv(
         f,
-        usecols=lambda c: c.lower() in {"hadm_id", "icustay_id", "dbsource", "intime", "outtime"},
+        usecols=lambda c: c.lower() in {"subject_id", "hadm_id", "icustay_id", "dbsource", "intime", "outtime"},
         low_memory=False,
     ))
+    d["subject_id"] = pd.to_numeric(d["subject_id"], errors="coerce")
     d["hadm_id"] = pd.to_numeric(d["hadm_id"], errors="coerce")
     d["icustay_id"] = pd.to_numeric(d["icustay_id"], errors="coerce")
     d["intime"] = parse_datetime(d["intime"])
     d["outtime"] = parse_datetime(d["outtime"])
-    return d.dropna(subset=["hadm_id", "icustay_id", "intime", "outtime"]).copy()
+    return d.dropna(subset=["subject_id", "hadm_id", "icustay_id", "intime", "outtime"]).copy()
 
 
 def load_bedside_notes(root: Path, hadm_filter: set[int] | None = None) -> pd.DataFrame:
@@ -294,6 +295,7 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=20260920)
     ap.add_argument("--vital-lookback-hours", type=float, default=6.0)
     ap.add_argument("--lab-lookback-hours", type=float, default=24.0)
+    ap.add_argument("--prediction-horizon-hours", type=float, default=6.0)
     args = ap.parse_args()
 
     root = resolve_root(args.root)
@@ -307,41 +309,65 @@ def main() -> None:
     notes = load_bedside_notes(root, hadm_filter=set(icu["hadm_id"].astype(int)))
     note_icu = assign_icu(notes, icu)
 
-    # Cases: closest eligible note in the 0-6h window before first vasopressor.
+    horizon = float(args.prediction_horizon_hours)
+    event_map = events.set_index("hadm_id")["event_time"]
+
+    # Cases: closest eligible note within the prediction horizon before first vasopressor.
     case_pool = note_icu.merge(events, on="hadm_id", how="inner")
     case_pool["hours_before_event"] = (
         case_pool["event_time"] - case_pool["note_time"]
     ).dt.total_seconds() / 3600.0
     case_pool = case_pool[
         (case_pool["hours_before_event"] > 0)
-        & (case_pool["hours_before_event"] <= 6)
+        & (case_pool["hours_before_event"] <= horizon)
         & (case_pool["event_time"] >= case_pool["intime"])
         & (case_pool["event_time"] <= case_pool["outtime"])
     ].copy()
     case_pool = (
-        case_pool.sort_values("hours_before_event")
-        .groupby("hadm_id", as_index=False)
+        case_pool.sort_values(["subject_id", "event_time", "hours_before_event"])
+        .groupby("subject_id", as_index=False)
         .first()
     )
+    case_subjects = set(case_pool["subject_id"].astype(int))
 
-    # Controls: ICU admissions with no canonical vasopressor during the admission.
-    control_pool = note_icu[~note_icu["hadm_id"].isin(event_hadms)].copy()
+    # Risk-set controls: at the note time the admission has not yet started a
+    # vasopressor, no first vasopressor occurs within the next horizon, and the
+    # ICU stay remains observable through that horizon. A control may receive a
+    # vasopressor later, which avoids the "never-treated admission" shortcut.
+    control_pool = note_icu[~note_icu["subject_id"].astype(int).isin(case_subjects)].copy()
+    control_pool["first_event_time"] = control_pool["hadm_id"].map(event_map)
+    control_pool["horizon_end"] = (
+        control_pool["note_time"] + pd.to_timedelta(horizon, unit="h")
+    )
+    control_pool = control_pool[
+        (
+            control_pool["first_event_time"].isna()
+            | (control_pool["first_event_time"] > control_pool["horizon_end"])
+        )
+        & (control_pool["outtime"] >= control_pool["horizon_end"])
+    ].copy()
     control_pool = (
         control_pool.sort_values("note_time")
-        .groupby(["hadm_id", "elapsed_bin_6h", "category"], as_index=False)
+        .groupby(["subject_id", "hadm_id", "elapsed_bin_6h", "category"], as_index=False)
         .first()
     )
 
-    used_control_hadms: set[int] = set()
+    used_control_subjects: set[int] = set()
     selected_controls = []
     matched_cases = []
 
-    for case in case_pool.sort_values(["dbsource", "category", "hours_since_icu", "hadm_id"]).itertuples(index=False):
-        available = control_pool[~control_pool["hadm_id"].isin(used_control_hadms)].copy()
+    for case in case_pool.sort_values(
+        ["dbsource", "category", "hours_since_icu", "subject_id"]
+    ).itertuples(index=False):
+        available = control_pool[
+            ~control_pool["subject_id"].astype(int).isin(used_control_subjects)
+        ].copy()
         if available.empty:
             break
 
-        available["elapsed_distance"] = (available["hours_since_icu"] - case.hours_since_icu).abs()
+        available["elapsed_distance"] = (
+            available["hours_since_icu"] - case.hours_since_icu
+        ).abs()
         priority = pd.Series(3, index=available.index, dtype=int)
         same_db = available["dbsource"].astype(str) == str(case.dbsource)
         same_cat = available["category"].astype(str) == str(case.category)
@@ -351,22 +377,24 @@ def main() -> None:
         priority.loc[same_db & same_cat & close12 & (priority > 0)] = 1
         priority.loc[same_db & close6 & (priority > 1)] = 2
         available["match_priority"] = priority
-        available = available[same_db & (available["elapsed_distance"] <= 12)].copy()
+        available = available[
+            same_db & (available["elapsed_distance"] <= 12)
+        ].copy()
         if available.empty:
             continue
 
         # Deterministic tie-breaking with seeded random jitter.
         available["jitter"] = [rng.random() for _ in range(len(available))]
         available = available.sort_values(
-            ["match_priority", "elapsed_distance", "jitter", "hadm_id"]
+            ["match_priority", "elapsed_distance", "jitter", "subject_id", "hadm_id"]
         )
-        take = available.drop_duplicates("hadm_id").head(args.controls_per_case)
+        take = available.drop_duplicates("subject_id").head(args.controls_per_case)
         if len(take) < args.controls_per_case:
             continue
 
         matched_cases.append(case)
         selected_controls.append(take)
-        used_control_hadms.update(take["hadm_id"].astype(int).tolist())
+        used_control_subjects.update(take["subject_id"].astype(int).tolist())
 
     if not matched_cases:
         raise RuntimeError("No fully matched vasopressor cases were found.")
@@ -388,6 +416,9 @@ def main() -> None:
         f"vasopilot_{'case' if y == 1 else 'control'}_{i:05d}"
         for i, y in enumerate(snapshots["label"].astype(int), start=1)
     ]
+    subject_values = sorted(snapshots["subject_id"].astype(int).unique().tolist())
+    subject_map = {sid: f"p{i:05d}" for i, sid in enumerate(subject_values, start=1)}
+    snapshots["patient_group"] = snapshots["subject_id"].astype(int).map(subject_map)
 
     phys = extract_physio(
         root,
@@ -397,7 +428,7 @@ def main() -> None:
     )
 
     feature_cols = [
-        "case_id", "label", "match_set", "category", "dbsource", "hours_since_icu"
+        "case_id", "label", "match_set", "patient_group", "category", "dbsource", "hours_since_icu"
     ]
     safe = snapshots[feature_cols].merge(phys, on="case_id", how="left")
 
@@ -419,6 +450,7 @@ def main() -> None:
                     "analysis": "vasopressor_case_control_incremental",
                     "label": int(row.label),
                     "match_set": int(row.match_set),
+                    "patient_group": str(row.patient_group),
                     "note_category": str(row.category),
                     "dbsource": str(row.dbsource),
                     "hours_since_icu": round(float(row.hours_since_icu), 3),
@@ -438,12 +470,14 @@ def main() -> None:
             "closest bedside note 0-6h before first vasopressor; explicit pressor terms excluded"
         ),
         "control_definition": (
-            "matched ICU admission with no canonical vasopressor during admission; explicit pressor terms excluded"
+            f"matched ICU risk-set snapshot with no prior first vasopressor and no first vasopressor within the next {horizon:g}h; later vasopressor initiation is allowed; explicit pressor terms excluded"
         ),
         "matching": (
-            "without replacement; same dbsource required; priority to same note category and ICU elapsed time within 6h, maximum 12h"
+            "without replacement by patient; one case admission per patient; same dbsource required; priority to same note category and ICU elapsed time within 6h, maximum 12h"
         ),
         "controls_per_case": args.controls_per_case,
+        "prediction_horizon_hours": horizon,
+        "unique_patients": int(snapshots["patient_group"].nunique()),
         "matched_cases": int(len(case_df)),
         "matched_controls": int(len(control_df)),
         "total_snapshots": int(len(snapshots)),
@@ -451,11 +485,12 @@ def main() -> None:
         "lab_lookback_hours": args.lab_lookback_hours,
         "structured_features": [
             c for c in safe.columns
-            if c not in {"case_id", "label", "match_set", "category", "dbsource"}
+            if c not in {"case_id", "label", "match_set", "patient_group", "category", "dbsource"}
         ],
         "warning": (
-            "Pilot case-control analysis. Controls are admissions with no vasopressor during the admission, "
-            "not a full time-varying risk-set sample. Use this to test incremental signal before scaling."
+            "Risk-set pilot for vasopressor initiation within the prediction horizon. "
+            "This is more clinically aligned than the earlier never-treated control design, "
+            "but still uses note-anchored matched snapshots rather than every eligible ICU landmark."
         ),
     }
     manifest_path = Path(args.manifest).expanduser().resolve()
