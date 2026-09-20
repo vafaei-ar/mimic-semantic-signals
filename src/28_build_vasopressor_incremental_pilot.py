@@ -243,6 +243,10 @@ def extract_physio(
         if not vitals.empty:
             vg = vitals[
                 (vitals["hadm_id"] == s.hadm_id)
+                & (
+                    pd.to_numeric(vitals["icustay_id"], errors="coerce")
+                    == int(s.icustay_id)
+                )
                 & (vitals["charttime"] <= s.note_time)
                 & (vitals["charttime"] >= s.note_time - pd.to_timedelta(vital_lookback_h, unit="h"))
             ].copy()
