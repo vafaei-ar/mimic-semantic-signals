@@ -304,7 +304,7 @@ def main() -> None:
     icu = load_icustays(root)
 
     # Load all bedside notes once; explicit pressor-term notes are removed for both groups.
-    notes = load_bedside_notes(root)
+    notes = load_bedside_notes(root, hadm_filter=set(icu["hadm_id"].astype(int)))
     note_icu = assign_icu(notes, icu)
 
     # Cases: closest eligible note in the 0-6h window before first vasopressor.
