@@ -140,7 +140,7 @@ def main() -> None:
     os.environ["HF_HUB_OFFLINE"] = "1"
     os.environ["TRANSFORMERS_OFFLINE"] = "1"
 
-    from open_jev_loader import load_open_jev_corrected
+    from typed_decisions.open_jev import OpenJev
 
     cases_path = Path(args.cases).expanduser().resolve()
     out = Path(args.output).expanduser().resolve()
@@ -167,7 +167,7 @@ def main() -> None:
         raise RuntimeError("No usable real local-only cases found.")
 
     print(f"Loading cached model offline: {args.model}")
-    model = load_open_jev_corrected(args.model, device=args.device)
+    model = OpenJev.from_pretrained(args.model, device=args.device)
     print(f"Device: {model.device}")
 
     completed = 0
