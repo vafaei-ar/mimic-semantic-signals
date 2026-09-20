@@ -64,6 +64,7 @@ def main() -> None:
     val = read_jsonl(data / "val.jsonl")
     test = read_jsonl(data / "test.jsonl")
     ood = read_jsonl(data / "ood-test.jsonl") if (data / "ood-test.jsonl").exists() else []
+    negation = read_jsonl(data / "negation-test.jsonl") if (data / "negation-test.jsonl").exists() else []
 
     model.train()
     head_params = list(model.head.parameters())
@@ -164,6 +165,10 @@ def main() -> None:
             predict(model, coll, ood, args.eval_batch, dev, temperature=T)
             if ood else []
         )
+        negation_rec = (
+            predict(model, coll, negation, args.eval_batch, dev, temperature=T)
+            if negation else []
+        )
 
     report = {
         "base": args.base,
@@ -173,6 +178,7 @@ def main() -> None:
         "val_states": len(val),
         "test_states": len(test),
         "ood_states": len(ood),
+        "negation_states": len(negation),
         "train_seconds": train_seconds,
         "loss_first": losses[0] if losses else None,
         "loss_last10_mean": (
@@ -182,6 +188,10 @@ def main() -> None:
         "temperature": float(T),
         "metrics_test": summarize(test_rec),
         "metrics_ood": summarize(ood_rec) if ood_rec else None,
+        "metrics_negation": summarize(negation_rec) if negation_rec else None,
+        "per_construct_test": {qid: summarize([r for r in test_rec if r["qid"] == qid]).get("all", {}) for qid in sorted({r["qid"] for r in test_rec})},
+        "per_construct_ood": {qid: summarize([r for r in ood_rec if r["qid"] == qid]).get("all", {}) for qid in sorted({r["qid"] for r in ood_rec})} if ood_rec else None,
+        "per_construct_negation": {qid: summarize([r for r in negation_rec if r["qid"] == qid]).get("all", {}) for qid in sorted({r["qid"] for r in negation_rec})} if negation_rec else None,
     }
     (out / "report.json").write_text(
         json.dumps(report, indent=2) + "\n",
@@ -217,6 +227,10 @@ def main() -> None:
         "metrics_ood": (
             report["metrics_ood"].get("all")
             if report["metrics_ood"] else None
+        ),
+        "metrics_negation": (
+            report["metrics_negation"].get("all")
+            if report["metrics_negation"] else None
         ),
     }
     (bundle / "open_jev_config.json").write_text(
