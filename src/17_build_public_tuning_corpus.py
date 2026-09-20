@@ -37,7 +37,11 @@ def instruction(q: dict) -> str:
     return text
 
 
-def typed_example(case: dict, ood: bool = False) -> dict:
+def typed_examples(
+    case: dict,
+    ood: bool = False,
+    questions_per_pack: int = 4,
+) -> list[dict]:
     qs = []
     golds = case["gold"]["constructs"]
     for q in case["questions"]:
@@ -52,17 +56,30 @@ def typed_example(case: dict, ood: bool = False) -> dict:
                 "gold": int(golds[name]),
             }
         )
-    return {
-        "state": str(case["model_state"]["clinical_note"]),
-        "source": "synthetic_clinical_semantics_ood" if ood else "synthetic_clinical_semantics",
-        "meta": {
-            "case_id": case["case_id"],
-            "group": admission_group(case["case_id"]),
-            "event_type": case.get("gold", {}).get("event_type"),
-            "discordant": case.get("gold", {}).get("discordant"),
-        },
-        "questions": qs,
-    }
+
+    rows = []
+    for pack_index, i in enumerate(range(0, len(qs), questions_per_pack)):
+        pack = qs[i:i + questions_per_pack]
+        rows.append(
+            {
+                "state": str(case["model_state"]["clinical_note"]),
+                "source": (
+                    "synthetic_clinical_semantics_ood"
+                    if ood
+                    else "synthetic_clinical_semantics"
+                ),
+                "meta": {
+                    "case_id": case["case_id"],
+                    "group": admission_group(case["case_id"]),
+                    "event_type": case.get("gold", {}).get("event_type"),
+                    "discordant": case.get("gold", {}).get("discordant"),
+                    "pack_index": pack_index,
+                    "questions_in_pack": len(pack),
+                },
+                "questions": pack,
+            }
+        )
+    return rows
 
 
 def sft_example(case: dict) -> dict:
@@ -112,6 +129,7 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=20260919)
     ap.add_argument("--train-frac", type=float, default=0.70)
     ap.add_argument("--val-frac", type=float, default=0.15)
+    ap.add_argument("--questions-per-pack", type=int, default=4)
     args = ap.parse_args()
 
     src = Path(args.cases).expanduser().resolve()
@@ -151,14 +169,23 @@ def main() -> None:
     for case in cases:
         g = admission_group(case["case_id"])
         split = "train" if g in train_g else ("val" if g in val_g else "test")
-        split_rows[split].append(typed_example(case, ood=False))
+        split_rows[split].extend(\n            typed_examples(\n                case,\n                ood=False,\n                questions_per_pack=args.questions_per_pack,\n            )\n        )
         split_sft[split].append(sft_example(case))
 
     for split in ("train", "val", "test"):
         write_jsonl(out / f"{split}.jsonl", split_rows[split])
         write_jsonl(out / f"diffusiongemma_{split}.jsonl", split_sft[split])
 
-    ood = [typed_example(c, ood=True) for c in cases if admission_group(c["case_id"]) in test_g]
+    ood = []
+    for c in cases:
+        if admission_group(c["case_id"]) in test_g:
+            ood.extend(
+                typed_examples(
+                    c,
+                    ood=True,
+                    questions_per_pack=args.questions_per_pack,
+                )
+            )
     write_jsonl(out / "ood-test.jsonl", ood)
 
     fingerprint = hashlib.sha256(src.read_bytes()).hexdigest()
@@ -178,7 +205,7 @@ def main() -> None:
             "test": len(split_rows["test"]),
             "ood_test": len(ood),
         },
-        "questions_per_state": 8,
+        "questions_per_original_case": 8,\n        "open_jev_questions_per_pack": args.questions_per_pack,
         "warning": (
             "This corpus is suitable for pipeline development only until the "
             "synthetic note generator has substantially more independent template families."
