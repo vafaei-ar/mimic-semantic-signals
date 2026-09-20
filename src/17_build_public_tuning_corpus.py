@@ -169,7 +169,13 @@ def main() -> None:
     for case in cases:
         g = admission_group(case["case_id"])
         split = "train" if g in train_g else ("val" if g in val_g else "test")
-        split_rows[split].extend(\n            typed_examples(\n                case,\n                ood=False,\n                questions_per_pack=args.questions_per_pack,\n            )\n        )
+        split_rows[split].extend(
+            typed_examples(
+                case,
+                ood=False,
+                questions_per_pack=args.questions_per_pack,
+            )
+        )
         split_sft[split].append(sft_example(case))
 
     for split in ("train", "val", "test"):
