@@ -69,6 +69,66 @@ def summarize_repeat_diff(repeat_df: pd.DataFrame, a: str, b: str) -> dict:
     }
 
 
+def matched_set_bootstrap_auc_diff(
+    averaged: pd.DataFrame,
+    model_a: str,
+    model_b: str,
+    seed: int,
+    n_boot: int = 2000,
+) -> dict:
+    """Cluster bootstrap AUROC difference by matched case-control set."""
+    from sklearn.metrics import roc_auc_score
+
+    wide = (
+        averaged.pivot_table(
+            index=["case_id", "label", "match_set"],
+            columns="model",
+            values="probability",
+        )
+        .dropna(subset=[model_a, model_b])
+        .reset_index()
+    )
+    match_sets = wide["match_set"].drop_duplicates().to_numpy()
+    if len(match_sets) < 2:
+        return {
+            "difference": np.nan,
+            "ci95": [np.nan, np.nan],
+            "bootstrap_replicates": 0,
+        }
+
+    observed = float(
+        roc_auc_score(wide["label"], wide[model_a])
+        - roc_auc_score(wide["label"], wide[model_b])
+    )
+
+    by_set = {k: g.copy() for k, g in wide.groupby("match_set", sort=False)}
+    rng = np.random.default_rng(seed)
+    diffs = []
+    for _ in range(n_boot):
+        sampled = rng.choice(match_sets, size=len(match_sets), replace=True)
+        parts = [by_set[k] for k in sampled]
+        boot = pd.concat(parts, ignore_index=True)
+        if boot["label"].nunique() < 2:
+            continue
+        diffs.append(
+            float(
+                roc_auc_score(boot["label"], boot[model_a])
+                - roc_auc_score(boot["label"], boot[model_b])
+            )
+        )
+
+    arr = np.asarray(diffs, dtype=float)
+    return {
+        "difference": observed,
+        "ci95": [
+            float(np.quantile(arr, 0.025)),
+            float(np.quantile(arr, 0.975)),
+        ] if len(arr) else [np.nan, np.nan],
+        "bootstrap_replicates": int(len(arr)),
+        "cluster": "match_set",
+    }
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(
         description="Compare physiology-only, semantics-only, and combined vasopressor models."
@@ -79,12 +139,13 @@ def main() -> None:
     ap.add_argument("--repeats", type=int, default=20)
     ap.add_argument("--folds", type=int, default=5)
     ap.add_argument("--seed", type=int, default=20260920)
+    ap.add_argument("--bootstrap-replicates", type=int, default=2000)
     args = ap.parse_args()
 
     from sklearn.compose import ColumnTransformer
     from sklearn.impute import SimpleImputer
     from sklearn.linear_model import LogisticRegression
-    from sklearn.metrics import brier_score_loss, roc_auc_score
+    from sklearn.metrics import average_precision_score, brier_score_loss, roc_auc_score
     from sklearn.model_selection import StratifiedGroupKFold
     from sklearn.pipeline import Pipeline
     from sklearn.preprocessing import OneHotEncoder, StandardScaler
@@ -115,6 +176,11 @@ def main() -> None:
         "semantics_only": baseline_cols + semantic_cols,
         "physiology_plus_semantics": baseline_cols + physiology_cols + semantic_cols,
     }
+    for semantic_col in semantic_cols:
+        short = semantic_col.removeprefix("sem_")
+        models[f"physiology_plus_{short}"] = (
+            baseline_cols + physiology_cols + [semantic_col]
+        )
 
     def make_pipeline(cols: list[str]):
         num = [c for c in cols if c not in categorical_cols]
@@ -176,6 +242,7 @@ def main() -> None:
                     "model": model_name,
                     "n_test": len(test_idx),
                     "auroc": float(roc_auc_score(y[test_idx], p)),
+                    "auprc": float(average_precision_score(y[test_idx], p)),
                     "brier": float(brier_score_loss(y[test_idx], p)),
                 })
 
@@ -189,6 +256,7 @@ def main() -> None:
                 "model": model_name,
                 "n": len(df),
                 "auroc": float(roc_auc_score(y, p_all)),
+                "auprc": float(average_precision_score(y, p_all)),
                 "brier": float(brier_score_loss(y, p_all)),
             })
             for idx, p in enumerate(p_all):
@@ -197,6 +265,9 @@ def main() -> None:
                     "model": model_name,
                     "case_id": df.iloc[idx]["case_id"],
                     "label": int(y[idx]),
+                    "match_set": int(df.iloc[idx]["match_set"]),
+                    "patient_group": str(df.iloc[idx]["patient_group"])
+                    if "patient_group" in df.columns else "",
                     "probability": float(p),
                 })
 
@@ -217,6 +288,8 @@ def main() -> None:
             auroc_sd=("auroc", "std"),
             auroc_p2_5=("auroc", lambda x: x.quantile(0.025)),
             auroc_p97_5=("auroc", lambda x: x.quantile(0.975)),
+            auprc_mean=("auprc", "mean"),
+            auprc_sd=("auprc", "std"),
             brier_mean=("brier", "mean"),
             brier_sd=("brier", "std"),
             repeats=("auroc", "size"),
@@ -224,6 +297,33 @@ def main() -> None:
         .reset_index()
     )
     summary.to_csv(out / "model_summary.csv", index=False)
+
+    averaged_oof = (
+        oof_df.groupby(
+            ["case_id", "label", "match_set", "patient_group", "model"],
+            as_index=False,
+        )["probability"]
+        .mean()
+    )
+    averaged_oof.to_csv(out / "oof_predictions_averaged.csv", index=False)
+
+    matched_bootstrap = matched_set_bootstrap_auc_diff(
+        averaged_oof,
+        "physiology_plus_semantics",
+        "physiology_only",
+        seed=args.seed + 100,
+        n_boot=args.bootstrap_replicates,
+    )
+
+    single_semantic_incremental = {}
+    for semantic_col in semantic_cols:
+        short = semantic_col.removeprefix("sem_")
+        model_name = f"physiology_plus_{short}"
+        single_semantic_incremental[short] = summarize_repeat_diff(
+            repeat_df,
+            model_name,
+            "physiology_only",
+        )
 
     comparisons = {
         "combined_minus_physiology_auroc": summarize_repeat_diff(
@@ -259,13 +359,16 @@ def main() -> None:
         },
         "models": summary.to_dict(orient="records"),
         "paired_repeat_auroc_differences": comparisons,
+        "matched_set_bootstrap_combined_minus_physiology_auroc": matched_bootstrap,
+        "single_semantic_incremental_auroc": single_semantic_incremental,
         "contains_note_text": False,
         "contains_source_patient_identifiers": False,
         "interpretation": (
             "The primary incremental estimate is combined_minus_physiology_auroc, "
             "computed from full out-of-fold predictions for each repeated grouped split. "
-            "The p2_5/p97_5 values describe variability across repeated CV partitions, "
-            "not a formal inferential confidence interval. Persistent positive gain across "
+            "The p2_5/p97_5 values describe variability across repeated CV partitions. "
+            "The matched-set bootstrap interval on averaged out-of-fold predictions is the "
+            "primary sampling-uncertainty summary for the AUROC gain. Persistent positive gain across "
             "repeats supports incremental semantic discrimination beyond the structured "
             "physiology included in this pilot."
         ),
