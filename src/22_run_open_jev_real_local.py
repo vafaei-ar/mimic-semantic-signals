@@ -64,6 +64,60 @@ def aggregate_probabilities(name: str, values: list[float]) -> float:
     return float(max(values))
 
 
+def context_safe_question_packs(
+    model,
+    state: str,
+    names: list[str],
+    questions: list[dict],
+    max_questions_per_pack: int,
+) -> list[tuple[list[str], list[dict]]]:
+    """Greedily form the largest question packs that fit the model context."""
+    packs: list[tuple[list[str], list[dict]]] = []
+    current_names: list[str] = []
+    current_questions: list[dict] = []
+
+    def fits(qs: list[dict]) -> bool:
+        typed = [model._question(i, q) for i, q in enumerate(qs)]
+        try:
+            model.collator.encode_one(state, typed)
+            return True
+        except ValueError as exc:
+            if "max_len" in str(exc):
+                return False
+            raise
+
+    for name, question in zip(names, questions):
+        trial_names = current_names + [name]
+        trial_questions = current_questions + [question]
+
+        if (
+            len(trial_questions) <= max_questions_per_pack
+            and fits(trial_questions)
+        ):
+            current_names = trial_names
+            current_questions = trial_questions
+            continue
+
+        if current_questions:
+            packs.append((current_names, current_questions))
+            current_names = [name]
+            current_questions = [question]
+        else:
+            current_names = [name]
+            current_questions = [question]
+
+        if not fits(current_questions):
+            raise RuntimeError(
+                "A single semantic question does not fit the Open-Jev context "
+                "with the current note chunk. Reduce --chunk-tokens."
+            )
+
+    if current_questions:
+        packs.append((current_names, current_questions))
+
+    return packs
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(
         description=(
@@ -138,10 +192,17 @@ def main() -> None:
             names, questions = make_questions(case)
             per_construct = {name: [] for name in names}
 
+            pack_sizes_used = []
             for chunk_text in chunk_texts:
-                for i in range(0, len(questions), args.questions_per_pack):
-                    q_pack = questions[i:i + args.questions_per_pack]
-                    n_pack = names[i:i + args.questions_per_pack]
+                packs = context_safe_question_packs(
+                    model,
+                    chunk_text,
+                    names,
+                    questions,
+                    max_questions_per_pack=args.questions_per_pack,
+                )
+                pack_sizes_used.extend(len(q_pack) for _, q_pack in packs)
+                for n_pack, q_pack in packs:
                     answers = model.decide(chunk_text, q_pack)
                     for name, answer in zip(n_pack, answers):
                         p = answer.get("noul")
@@ -167,6 +228,8 @@ def main() -> None:
                     "chunk_tokens": args.chunk_tokens,
                     "chunk_overlap": args.chunk_overlap,
                     "max_chunks": args.max_chunks,
+                    "question_pack_max_requested": args.questions_per_pack,
+                    "question_pack_sizes_used": sorted(set(pack_sizes_used)),
                     "aggregation": (
                         "max across chunks for concern constructs; "
                         "min across chunks for reassuring_stability"
@@ -190,6 +253,7 @@ def main() -> None:
                 "failed": 0,
                 "forced_offline": True,
                 "raw_note_text_written_to_predictions": False,
+                "question_packing": "automatic context-safe greedy packing",
                 "output": str(out),
             },
             indent=2,
