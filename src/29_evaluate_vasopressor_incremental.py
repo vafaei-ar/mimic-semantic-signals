@@ -44,21 +44,28 @@ def load_semantics(path: Path) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def bootstrap_metric_diff(fold_df: pd.DataFrame, a: str, b: str, seed: int, n_boot: int = 5000):
+def summarize_repeat_diff(repeat_df: pd.DataFrame, a: str, b: str) -> dict:
     vals = (
-        fold_df.pivot_table(index=["repeat", "fold"], columns="model", values="auroc")
+        repeat_df.pivot_table(index="repeat", columns="model", values="auroc")
         .dropna(subset=[a, b])
     )
     diffs = (vals[a] - vals[b]).to_numpy(dtype=float)
-    if len(diffs) < 2:
-        return {"mean": float(np.mean(diffs)) if len(diffs) else np.nan, "ci95": [np.nan, np.nan]}
-    rng = np.random.default_rng(seed)
-    boot = np.empty(n_boot)
-    for i in range(n_boot):
-        boot[i] = rng.choice(diffs, size=len(diffs), replace=True).mean()
+    if len(diffs) == 0:
+        return {
+            "mean": np.nan,
+            "sd": np.nan,
+            "p2_5": np.nan,
+            "p97_5": np.nan,
+            "repeats": 0,
+            "pct_positive": np.nan,
+        }
     return {
-        "mean": float(diffs.mean()),
-        "ci95": [float(np.quantile(boot, 0.025)), float(np.quantile(boot, 0.975))],
+        "mean": float(np.mean(diffs)),
+        "sd": float(np.std(diffs, ddof=1)) if len(diffs) > 1 else 0.0,
+        "p2_5": float(np.quantile(diffs, 0.025)),
+        "p97_5": float(np.quantile(diffs, 0.975)),
+        "repeats": int(len(diffs)),
+        "pct_positive": float(100.0 * np.mean(diffs > 0)),
     }
 
 
@@ -94,7 +101,7 @@ def main() -> None:
     categorical_cols = [c for c in ["category", "dbsource"] if c in df.columns]
     baseline_numeric = [c for c in ["hours_since_icu"] if c in df.columns]
     excluded = {
-        "case_id", "label", "match_set",
+        "case_id", "label", "match_set", "patient_group",
         *categorical_cols, *baseline_numeric, *semantic_cols,
     }
     physiology_cols = [
@@ -142,19 +149,28 @@ def main() -> None:
             )),
         ])
 
-    rows = []
+    fold_rows = []
+    repeat_rows = []
+    oof_rows = []
+
     for repeat in range(args.repeats):
         cv = StratifiedGroupKFold(
             n_splits=args.folds,
             shuffle=True,
             random_state=args.seed + repeat,
         )
+        repeat_predictions = {
+            model_name: np.full(len(df), np.nan, dtype=float)
+            for model_name in models
+        }
+
         for fold, (train_idx, test_idx) in enumerate(cv.split(df, y, groups=groups)):
             for model_name, cols in models.items():
                 pipe = make_pipeline(cols)
                 pipe.fit(df.iloc[train_idx][cols], y[train_idx])
                 p = pipe.predict_proba(df.iloc[test_idx][cols])[:, 1]
-                rows.append({
+                repeat_predictions[model_name][test_idx] = p
+                fold_rows.append({
                     "repeat": repeat,
                     "fold": fold,
                     "model": model_name,
@@ -163,42 +179,67 @@ def main() -> None:
                     "brier": float(brier_score_loss(y[test_idx], p)),
                 })
 
-    fold_df = pd.DataFrame(rows)
+        for model_name, p_all in repeat_predictions.items():
+            if np.isnan(p_all).any():
+                raise RuntimeError(
+                    f"Missing out-of-fold predictions for repeat {repeat}, model {model_name}."
+                )
+            repeat_rows.append({
+                "repeat": repeat,
+                "model": model_name,
+                "n": len(df),
+                "auroc": float(roc_auc_score(y, p_all)),
+                "brier": float(brier_score_loss(y, p_all)),
+            })
+            for idx, p in enumerate(p_all):
+                oof_rows.append({
+                    "repeat": repeat,
+                    "model": model_name,
+                    "case_id": df.iloc[idx]["case_id"],
+                    "label": int(y[idx]),
+                    "probability": float(p),
+                })
+
+    fold_df = pd.DataFrame(fold_rows)
+    repeat_df = pd.DataFrame(repeat_rows)
+    oof_df = pd.DataFrame(oof_rows)
+
     out = Path(args.output_dir).expanduser().resolve()
     out.mkdir(parents=True, exist_ok=True)
     fold_df.to_csv(out / "cv_fold_metrics.csv", index=False)
+    repeat_df.to_csv(out / "cv_repeat_metrics.csv", index=False)
+    oof_df.to_csv(out / "oof_predictions.csv", index=False)
 
     summary = (
-        fold_df.groupby("model")
+        repeat_df.groupby("model")
         .agg(
             auroc_mean=("auroc", "mean"),
             auroc_sd=("auroc", "std"),
+            auroc_p2_5=("auroc", lambda x: x.quantile(0.025)),
+            auroc_p97_5=("auroc", lambda x: x.quantile(0.975)),
             brier_mean=("brier", "mean"),
             brier_sd=("brier", "std"),
-            folds=("auroc", "size"),
+            repeats=("auroc", "size"),
         )
         .reset_index()
     )
     summary.to_csv(out / "model_summary.csv", index=False)
 
     comparisons = {
-        "combined_minus_physiology_auroc": bootstrap_metric_diff(
-            fold_df,
+        "combined_minus_physiology_auroc": summarize_repeat_diff(
+            repeat_df,
             "physiology_plus_semantics",
             "physiology_only",
-            args.seed + 1,
         ),
-        "combined_minus_semantics_auroc": bootstrap_metric_diff(
-            fold_df,
+        "combined_minus_semantics_auroc": summarize_repeat_diff(
+            repeat_df,
             "physiology_plus_semantics",
             "semantics_only",
-            args.seed + 2,
         ),
-        "semantics_minus_physiology_auroc": bootstrap_metric_diff(
-            fold_df,
+        "semantics_minus_physiology_auroc": summarize_repeat_diff(
+            repeat_df,
             "semantics_only",
             "physiology_only",
-            args.seed + 3,
         ),
     }
 
@@ -214,16 +255,19 @@ def main() -> None:
             "folds": args.folds,
             "repeats": args.repeats,
             "total_fold_evaluations_per_model": int(args.folds * args.repeats),
+            "oof_auroc_estimates_per_model": int(args.repeats),
         },
         "models": summary.to_dict(orient="records"),
-        "paired_fold_auroc_differences": comparisons,
+        "paired_repeat_auroc_differences": comparisons,
         "contains_note_text": False,
         "contains_source_patient_identifiers": False,
         "interpretation": (
-            "The primary incremental test is combined_minus_physiology_auroc. "
-            "A positive difference with a bootstrap interval above zero is evidence that "
-            "semantic note features add discrimination beyond the structured physiology "
-            "included in this pilot."
+            "The primary incremental estimate is combined_minus_physiology_auroc, "
+            "computed from full out-of-fold predictions for each repeated grouped split. "
+            "The p2_5/p97_5 values describe variability across repeated CV partitions, "
+            "not a formal inferential confidence interval. Persistent positive gain across "
+            "repeats supports incremental semantic discrimination beyond the structured "
+            "physiology included in this pilot."
         ),
     }
     (out / "report.json").write_text(
