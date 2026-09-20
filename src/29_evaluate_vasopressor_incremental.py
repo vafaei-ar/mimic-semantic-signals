@@ -78,7 +78,7 @@ def main() -> None:
     from sklearn.impute import SimpleImputer
     from sklearn.linear_model import LogisticRegression
     from sklearn.metrics import brier_score_loss, roc_auc_score
-    from sklearn.model_selection import RepeatedStratifiedKFold
+    from sklearn.model_selection import StratifiedGroupKFold
     from sklearn.pipeline import Pipeline
     from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
@@ -89,18 +89,24 @@ def main() -> None:
         raise RuntimeError("No overlap between structured features and semantic predictions.")
 
     y = df["label"].astype(int).to_numpy()
+    groups = df["match_set"].astype(int).to_numpy()
     semantic_cols = [c for c in df.columns if c.startswith("sem_")]
     categorical_cols = [c for c in ["category", "dbsource"] if c in df.columns]
-    excluded = {"case_id", "label", "match_set", *categorical_cols, *semantic_cols}
+    baseline_numeric = [c for c in ["hours_since_icu"] if c in df.columns]
+    excluded = {
+        "case_id", "label", "match_set",
+        *categorical_cols, *baseline_numeric, *semantic_cols,
+    }
     physiology_cols = [
         c for c in df.columns
         if c not in excluded and pd.api.types.is_numeric_dtype(df[c])
     ]
+    baseline_cols = baseline_numeric + categorical_cols
 
     models = {
-        "physiology_only": physiology_cols + categorical_cols,
-        "semantics_only": semantic_cols + categorical_cols,
-        "physiology_plus_semantics": physiology_cols + semantic_cols + categorical_cols,
+        "physiology_only": baseline_cols + physiology_cols,
+        "semantics_only": baseline_cols + semantic_cols,
+        "physiology_plus_semantics": baseline_cols + physiology_cols + semantic_cols,
     }
 
     def make_pipeline(cols: list[str]):
@@ -132,35 +138,30 @@ def main() -> None:
             ("model", LogisticRegression(
                 max_iter=3000,
                 solver="liblinear",
-                class_weight="balanced",
                 C=1.0,
             )),
         ])
 
-    cv = RepeatedStratifiedKFold(
-        n_splits=args.folds,
-        n_repeats=args.repeats,
-        random_state=args.seed,
-    )
-
     rows = []
-    split_index = 0
-    for train_idx, test_idx in cv.split(df, y):
-        repeat = split_index // args.folds
-        fold = split_index % args.folds
-        split_index += 1
-        for model_name, cols in models.items():
-            pipe = make_pipeline(cols)
-            pipe.fit(df.iloc[train_idx][cols], y[train_idx])
-            p = pipe.predict_proba(df.iloc[test_idx][cols])[:, 1]
-            rows.append({
-                "repeat": repeat,
-                "fold": fold,
-                "model": model_name,
-                "n_test": len(test_idx),
-                "auroc": float(roc_auc_score(y[test_idx], p)),
-                "brier": float(brier_score_loss(y[test_idx], p)),
-            })
+    for repeat in range(args.repeats):
+        cv = StratifiedGroupKFold(
+            n_splits=args.folds,
+            shuffle=True,
+            random_state=args.seed + repeat,
+        )
+        for fold, (train_idx, test_idx) in enumerate(cv.split(df, y, groups=groups)):
+            for model_name, cols in models.items():
+                pipe = make_pipeline(cols)
+                pipe.fit(df.iloc[train_idx][cols], y[train_idx])
+                p = pipe.predict_proba(df.iloc[test_idx][cols])[:, 1]
+                rows.append({
+                    "repeat": repeat,
+                    "fold": fold,
+                    "model": model_name,
+                    "n_test": len(test_idx),
+                    "auroc": float(roc_auc_score(y[test_idx], p)),
+                    "brier": float(brier_score_loss(y[test_idx], p)),
+                })
 
     fold_df = pd.DataFrame(rows)
     out = Path(args.output_dir).expanduser().resolve()
@@ -207,6 +208,7 @@ def main() -> None:
         "controls": int((1 - y).sum()),
         "physiology_features": physiology_cols,
         "semantic_features": semantic_cols,
+        "baseline_adjustment": baseline_cols,
         "categorical_adjustment": categorical_cols,
         "cv": {
             "folds": args.folds,
