@@ -28,6 +28,23 @@ def aggregate_values(construct: str, values: list[float]) -> dict[str, float]:
     }
 
 
+
+def spearman_without_scipy(a: pd.Series, b: pd.Series) -> float:
+    """Spearman rho via rank transformation + Pearson correlation; no SciPy required."""
+    x = pd.to_numeric(a, errors="coerce")
+    y = pd.to_numeric(b, errors="coerce")
+    valid = x.notna() & y.notna()
+    x = x[valid]
+    y = y[valid]
+    if len(x) < 3:
+        return float("nan")
+    xr = x.rank(method="average")
+    yr = y.rank(method="average")
+    if xr.nunique() < 2 or yr.nunique() < 2:
+        return float("nan")
+    return float(xr.corr(yr, method="pearson"))
+
+
 def bootstrap_mean_ci(values: np.ndarray, seed: int, n_boot: int = 2000) -> tuple[float, float]:
     values = np.asarray(values, dtype=float)
     values = values[np.isfinite(values)]
@@ -162,11 +179,11 @@ def main() -> None:
                 "construct": construct,
                 "aggregation": aggregation,
                 "n": len(sub),
-                "spearman_probability_note_tokens": float(
-                    sub["probability"].corr(sub["note_tokens"], method="spearman")
+                "spearman_probability_note_tokens": spearman_without_scipy(
+                    sub["probability"], sub["note_tokens"]
                 ),
-                "spearman_probability_chunks": float(
-                    sub["probability"].corr(sub["chunks_evaluated"], method="spearman")
+                "spearman_probability_chunks": spearman_without_scipy(
+                    sub["probability"], sub["chunks_evaluated"]
                 ),
             }
         )
