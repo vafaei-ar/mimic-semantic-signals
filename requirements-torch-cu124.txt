@@ -1,0 +1,8 @@
+# Compatibility profile for Linux + Python 3.13 systems whose NVIDIA driver
+# supports CUDA 12.4/12.5 but not CUDA 13.
+#
+# Install this AFTER requirements-tuning.txt:
+#   pip install --force-reinstall -r requirements-torch-cu124.txt
+#
+--index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0+cu124
