@@ -35,12 +35,12 @@ def main() -> None:
             rec = json.loads(line)
             if rec.get("synthetic_only") is not True:
                 raise RuntimeError("Pilot selector only accepts synthetic_only=true cases.")
-            h = float(rec["state"]["hours_before_event"])
+            h = float(rec["metadata"]["hours_before_event"])
             rec["_stratum"] = (
                 str(rec.get("gold", {}).get("event_type")),
                 int(rec.get("gold", {}).get("discordant", 0)),
                 time_bin(h),
-                str(rec["state"].get("note_category")),
+                str(rec["metadata"].get("note_category")),
             )
             cases.append(rec)
 
@@ -77,8 +77,8 @@ def main() -> None:
     for rec in selected:
         event = str(rec.get("gold", {}).get("event_type"))
         discordant = int(rec.get("gold", {}).get("discordant", 0))
-        tb = time_bin(float(rec["state"]["hours_before_event"]))
-        note_category = str(rec["state"].get("note_category"))
+        tb = time_bin(float(rec["metadata"]["hours_before_event"]))
+        note_category = str(rec["metadata"].get("note_category"))
         summary[f"event::{event}"] += 1
         summary[f"discordant::{discordant}"] += 1
         summary[f"time::{tb}"] += 1
