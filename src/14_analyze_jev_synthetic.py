@@ -76,7 +76,7 @@ def main() -> None:
             rec = json.loads(line)
             if rec.get("status") != "ok":
                 continue
-            state = rec.get("state", {})
+            metadata = rec.get("metadata", {})
             gold = rec.get("gold", {})
             answers = rec.get("response", {})
             for construct, label in gold.get("constructs", {}).items():
@@ -85,7 +85,7 @@ def main() -> None:
                 prob = extract_probability(answers, construct)
                 if prob is None:
                     continue
-                hours = state.get("hours_before_event")
+                hours = metadata.get("hours_before_event")
                 records.append(
                     {
                         "case_id": rec.get("case_id"),
@@ -95,7 +95,7 @@ def main() -> None:
                         "event_type": gold.get("event_type"),
                         "anchor_type": gold.get("anchor_type"),
                         "discordant": gold.get("discordant"),
-                        "note_category": state.get("note_category"),
+                        "note_category": metadata.get("note_category"),
                         "hours_before_event": hours,
                         "time_bin": time_bin(hours),
                     }
