@@ -54,8 +54,7 @@ def main() -> None:
     ap.add_argument("--cases", required=True)
     ap.add_argument("--output", required=True)
     ap.add_argument("--limit", type=int, default=0)
-    ap.add_argument("--model", default=DEFAULT_MODEL)
-    ap.add_argument(
+    ap.add_argument("--model", default=DEFAULT_MODEL)\n    ap.add_argument("--questions-per-pack", type=int, default=4)\n    ap.add_argument(
         "--device",
         default=None,
         help="Optional torch device such as cuda, cpu, or mps. Default is automatic.",
@@ -89,12 +88,18 @@ def main() -> None:
             names, questions = local_questions(case)
             # Deliberately expose only clinical_note to the local model.
             state = str(case["model_state"]["clinical_note"])
-            answers = model.decide(state, questions)
-            response = {
-                "answers": {
-                    name: answer for name, answer in zip(names, answers)
-                }
-            }
+            merged_answers = {}
+            for i in range(0, len(questions), args.questions_per_pack):
+                q_pack = questions[i:i + args.questions_per_pack]
+                n_pack = names[i:i + args.questions_per_pack]
+                a_pack = model.decide(state, q_pack)
+                merged_answers.update(
+                    {
+                        name: answer
+                        for name, answer in zip(n_pack, a_pack)
+                    }
+                )
+            response = {"answers": merged_answers}
             record = {
                 "case_id": case.get("case_id"),
                 "synthetic_only": case.get("synthetic_only"),
