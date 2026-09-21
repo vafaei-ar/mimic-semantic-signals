@@ -10,7 +10,7 @@ from common import find_file, lower_columns, module_path, parse_datetime, read_c
 
 VASO_TERMS = [
     "norepinephrine", "noradrenaline", "epinephrine", "adrenaline",
-    "vasopressin", "phenylephrine", "dopamine", "dobutamine",
+    "vasopressin", "phenylephrine", "dopamine",
 ]
 INTUBATION_TERMS = ["intubation", "endotracheal intubation"]
 
