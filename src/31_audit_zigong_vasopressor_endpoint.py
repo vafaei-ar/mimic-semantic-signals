@@ -21,8 +21,8 @@ PRESSOR_PATTERNS = {
         r"去甲肾上腺素",
     ],
     "epinephrine": [
-        r"epinephrine",
-        r"adrenaline",
+        r"(?<!nor)(?<!deoxy)epinephrine",
+        r"(?<!nor)adrenaline",
         r"(?<!去甲)(?<!去氧)肾上腺素",
     ],
     "dopamine": [
@@ -248,7 +248,10 @@ def main() -> None:
 
         p["agent"] = "other"
         for agent, rx in PRESSOR_RX.items():
-            m = p["DrugName"].astype(str).str.contains(rx, regex=True, na=False)
+            m = (
+                p["agent"].eq("other")
+                & p["DrugName"].astype(str).str.contains(rx, regex=True, na=False)
+            )
             p.loc[m, "agent"] = agent
 
         for row in p[["PATIENT_ID", "Drug_time", "DrugName", "agent"]].itertuples(index=False):
