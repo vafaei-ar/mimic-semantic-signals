@@ -32,9 +32,7 @@ def audit_nwicu_bp(root: Path) -> dict:
     label = d_items["label"].fillna("").astype(str)
 
     candidate_mask = label.str.contains(
-        r"\bmap\b|mean arterial|arterial.*mean|mean.*arterial|"
-        r"blood pressure.*mean|bp.*mean|mean.*bp|"
-        r"non.?invasive.*mean|mean.*non.?invasive",
+        r"mean|pressure|\bbp\b|abp|nibp|nbp|arterial|systolic|diastolic",
         case=False,
         regex=True,
         na=False,
