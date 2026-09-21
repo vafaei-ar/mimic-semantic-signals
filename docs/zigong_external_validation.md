@@ -31,10 +31,15 @@ where possible, not on prescription time alone.
 
 ## First local step
 
-After credentialed PhysioNet access and download, run:
+After credentialed PhysioNet access and download, run the inventory against either
+the version directory or any parent directory that contains `DataTables.zip`.
+If the CSVs are still zipped, the script extracts the archive locally into an
+`_inventory_extracted` subdirectory before scanning.
+
+Example for wget's default recursive layout:
 
     python src/30_inventory_zigong.py \
-      --root /path/to/icu-infection-zigong-fourth/1.1 \
+      --root ~/datasets/zigong/physionet.org/files/icu-infection-zigong-fourth/1.1 \
       --output outputs/zigong_external/inventory.json
 
 The inventory is safe to share: it contains table/column metadata and aggregate
