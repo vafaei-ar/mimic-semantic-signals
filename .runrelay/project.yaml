@@ -76,3 +76,20 @@ tasks:
       wait_minutes: 15
     artifacts:
       - outputs/external_validation/structured_mapping_audit.json
+
+  build_mimic_exact6h:
+    description: Build the MIMIC-III exact-6h structured vasopressor development cohort aligned to external risk-set sampling.
+    command:
+      - bash
+      - scripts/run_mimic_exact6h_build.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/external_validation/mimic_exact6h_structured_report.json
