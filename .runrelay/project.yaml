@@ -276,3 +276,86 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/vasopressor_incremental_v4_prospective/laya/report.json
+
+  build_primary_v5:
+    description: Build the final corrected prospective MIMIC note cohort after excluding blank notes before matching and verifying exact 1:3 matched-set integrity.
+    command:
+      - bash
+      - scripts/run_primary_v5_build.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/vasopressor_incremental_v5_complete_matched/cohort_manifest.json
+
+  infer_primary_v5_openjev:
+    description: Run cached Open-Jev offline on the final complete-matched prospective cohort; row-level predictions remain local.
+    command:
+      - bash
+      - scripts/run_primary_v5_openjev.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 1
+      min_vram_gb: 6
+      wait_minutes: 60
+
+  infer_primary_v5_laya:
+    description: Run cached Laya offline on the final complete-matched prospective cohort; row-level predictions remain local.
+    command:
+      - bash
+      - scripts/run_primary_v5_laya.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 1
+      min_vram_gb: 6
+      wait_minutes: 60
+
+  evaluate_primary_v5_openjev:
+    description: Evaluate Open-Jev semantic increment in the final complete-matched prospective cohort and share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_primary_v5_eval_openjev.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/vasopressor_incremental_v5_complete_matched/open_jev/report.json
+
+  evaluate_primary_v5_laya:
+    description: Evaluate Laya semantic increment in the final complete-matched prospective cohort and share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_primary_v5_eval_laya.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/vasopressor_incremental_v5_complete_matched/laya/report.json
