@@ -359,3 +359,54 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/vasopressor_incremental_v5_complete_matched/laya/report.json
+
+  evaluate_v5_lexical_robustness:
+    description: Compare frozen v5 physiology and semantic models against a fold-fitted TF-IDF lexical baseline; share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_v5_lexical_robustness.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/vasopressor_incremental_v5_complete_matched/robustness/lexical_report.json
+
+  evaluate_v5_nonlinear_robustness:
+    description: Test whether Open-Jev and Laya semantics add discrimination beyond a prespecified nonlinear structured physiology comparator.
+    command:
+      - bash
+      - scripts/run_v5_nonlinear_robustness.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/vasopressor_incremental_v5_complete_matched/robustness/nonlinear_structured_report.json
+
+  evaluate_transport_missingness_sensitivity:
+    description: Re-evaluate frozen MIMIC to eICU/NWICU structured transport without missingness indicators and compare with the original indicator-based transport report.
+    command:
+      - bash
+      - scripts/run_transport_missingness_sensitivity.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/external_validation/structured_transport_values_only_sensitivity.json
