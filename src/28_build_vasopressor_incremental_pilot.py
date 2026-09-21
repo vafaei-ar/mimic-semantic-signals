@@ -533,7 +533,7 @@ def main() -> None:
         "contains_source_patient_identifiers_in_exported_features": False,
         "endpoint": "first canonical vasopressor initiation",
         "case_definition": (
-            "closest bedside note 0-6h before first vasopressor; explicit pressor terms excluded"
+            "closest prospectively available bedside note 0-6h before first vasopressor; availability anchored to max(CHARTTIME, STORETIME) when STORETIME exists; explicit pressor terms excluded"
         ),
         "control_definition": (
             f"matched ICU risk-set snapshot with no prior first vasopressor and no first vasopressor within the next {horizon:g}h; later vasopressor initiation is allowed; explicit pressor terms excluded"
