@@ -9,7 +9,7 @@ execution:
   profile: safe
   approval_default: manual
   machine_binding: fixed
-  machine_id: null
+  machine_id: pshjl4vf24
   runner_source: runrelay_control_repo
   exact_commit: true
   allow_arbitrary_commands: false
