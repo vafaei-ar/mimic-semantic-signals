@@ -410,3 +410,18 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/external_validation/structured_transport_values_only_sensitivity.json
+
+  validate_manuscript_robustness:
+    description: Compile-check the new manuscript robustness scripts before long analyses.
+    command:
+      - bash
+      - scripts/validate_manuscript_robustness.sh
+    approval: automatic
+    timeout_minutes: 20
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 2
+      gpu_count: 0
+      wait_minutes: 10
