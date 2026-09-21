@@ -134,7 +134,7 @@ def load_bedside_notes(root: Path, hadm_filter: set[int] | None = None) -> pd.Da
     pieces = []
     for chunk in read_columns(
         f,
-        ["hadm_id", "charttime", "category", "iserror", "text"],
+        ["hadm_id", "charttime", "storetime", "category", "iserror", "text"],
         chunksize=100_000,
     ):
         c = lower_columns(chunk)
@@ -151,11 +151,43 @@ def load_bedside_notes(root: Path, hadm_filter: set[int] | None = None) -> pd.Da
         c = c[c["category"].isin(BEDSIDE_CATEGORIES)]
         if c.empty:
             continue
-        c["note_time"] = parse_datetime(c["charttime"])
-        c = c.dropna(subset=["note_time", "text"])
+        c["chart_time"] = parse_datetime(c["charttime"])
+        if "storetime" in c.columns:
+            c["store_time"] = parse_datetime(c["storetime"])
+        else:
+            c["store_time"] = pd.NaT
+
+        c = c.dropna(subset=["chart_time", "text"])
+        c["storetime_available"] = c["store_time"].notna()
+
+        # Prospective availability anchor: the note cannot be used before it was
+        # both charted and stored. When STORETIME is unavailable, fall back to
+        # CHARTTIME and preserve that fact for aggregate reporting.
+        c["note_time"] = c["chart_time"]
+        has_store = c["store_time"].notna()
+        c.loc[has_store, "note_time"] = c.loc[
+            has_store, ["chart_time", "store_time"]
+        ].max(axis=1)
+        c["documentation_delay_hours"] = (
+            c["note_time"] - c["chart_time"]
+        ).dt.total_seconds() / 3600.0
+
         c = c[~c["text"].astype(str).map(has_explicit_pressor_term)]
         if not c.empty:
-            pieces.append(c[["hadm_id", "note_time", "category", "text"]])
+            pieces.append(
+                c[
+                    [
+                        "hadm_id",
+                        "note_time",
+                        "chart_time",
+                        "store_time",
+                        "storetime_available",
+                        "documentation_delay_hours",
+                        "category",
+                        "text",
+                    ]
+                ]
+            )
 
     if not pieces:
         raise RuntimeError("No eligible bedside notes found.")
@@ -424,6 +456,26 @@ def main() -> None:
     subject_map = {sid: f"p{i:05d}" for i, sid in enumerate(subject_values, start=1)}
     snapshots["patient_group"] = snapshots["subject_id"].astype(int).map(subject_map)
 
+    storetime_fraction = float(
+        snapshots["storetime_available"].fillna(False).astype(bool).mean()
+    ) if "storetime_available" in snapshots.columns else 0.0
+    delay = pd.to_numeric(
+        snapshots.get(
+            "documentation_delay_hours",
+            pd.Series(dtype=float),
+        ),
+        errors="coerce",
+    ).dropna()
+    documentation_delay_summary = {
+        "n": int(len(delay)),
+        "p05": float(delay.quantile(0.05)) if len(delay) else None,
+        "p25": float(delay.quantile(0.25)) if len(delay) else None,
+        "median": float(delay.median()) if len(delay) else None,
+        "p75": float(delay.quantile(0.75)) if len(delay) else None,
+        "p95": float(delay.quantile(0.95)) if len(delay) else None,
+        "max": float(delay.max()) if len(delay) else None,
+    }
+
     phys = extract_physio(
         root,
         snapshots,
@@ -458,6 +510,16 @@ def main() -> None:
                     "note_category": str(row.category),
                     "dbsource": str(row.dbsource),
                     "hours_since_icu": round(float(row.hours_since_icu), 3),
+                    "note_availability_basis": (
+                        "max(charttime, storetime)"
+                        if bool(getattr(row, "storetime_available", False))
+                        else "charttime_fallback"
+                    ),
+                    "documentation_delay_hours": (
+                        round(float(row.documentation_delay_hours), 3)
+                        if pd.notna(getattr(row, "documentation_delay_hours", np.nan))
+                        else None
+                    ),
                     "note_characters": len(str(row.text)),
                 },
                 "questions": SEMANTIC_CONSTRUCTS,
@@ -481,6 +543,12 @@ def main() -> None:
         ),
         "controls_per_case": args.controls_per_case,
         "prediction_horizon_hours": horizon,
+        "note_time_definition": (
+            "prospective availability time = max(CHARTTIME, STORETIME) when "
+            "STORETIME is present; CHARTTIME fallback when STORETIME is missing"
+        ),
+        "storetime_available_fraction_in_selected_snapshots": storetime_fraction,
+        "documentation_delay_hours_in_selected_snapshots": documentation_delay_summary,
         "unique_patients": int(snapshots["patient_group"].nunique()),
         "matched_cases": int(len(case_df)),
         "matched_controls": int(len(control_df)),
