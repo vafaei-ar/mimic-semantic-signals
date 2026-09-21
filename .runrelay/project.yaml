@@ -59,3 +59,20 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/external_validation/external_structured_riskset_report.json
+
+  audit_structured_mappings:
+    description: Audit NWICU blood-pressure item mappings and MIMIC-III vasopressor item 30125 using local dictionaries and aggregate usage counts.
+    command:
+      - bash
+      - scripts/run_structured_mapping_audit.sh
+    approval: automatic
+    timeout_minutes: 60
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/external_validation/structured_mapping_audit.json
