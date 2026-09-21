@@ -24,15 +24,12 @@ CANONICAL_VASO = {
     222315: "vasopressin_mv",
     30043: "dopamine_cv",
     30307: "dopamine_cv",
-    30125: "dopamine_cv",
     221662: "dopamine_mv",
-    30046: "isuprel_cv",
-    227692: "isuprel_mv",
 }
 
 VASO_TERMS = [
     "norepinephrine", "noradrenaline", "epinephrine", "adrenaline",
-    "vasopressin", "phenylephrine", "dopamine", "dobutamine",
+    "vasopressin", "phenylephrine", "dopamine",
 ]
 INTUBATION_TERMS = ["intubation", "endotracheal intubation"]
 
