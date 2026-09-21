@@ -70,6 +70,7 @@ def read_csv_robust(path: Path, **kwargs) -> pd.DataFrame:
 def iter_csv_robust(path: Path, chunksize: int, **kwargs):
     last_error = None
     for encoding in CSV_ENCODINGS:
+        first = True
         try:
             reader = pd.read_csv(
                 path,
@@ -77,7 +78,6 @@ def iter_csv_robust(path: Path, chunksize: int, **kwargs):
                 chunksize=chunksize,
                 **kwargs,
             )
-            first = True
             for chunk in reader:
                 first = False
                 yield chunk
