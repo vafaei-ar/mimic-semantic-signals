@@ -23,7 +23,7 @@ PRESSOR_PATTERNS = {
     "epinephrine": [
         r"epinephrine",
         r"adrenaline",
-        r"肾上腺素",
+        r"(?<!去甲)(?<!去氧)肾上腺素",
     ],
     "dopamine": [
         r"dopamine",
