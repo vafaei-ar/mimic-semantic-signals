@@ -1,0 +1,44 @@
+schema_version: 1
+
+project:
+  id: mimic-semantic-signals
+  repo: vafaei-ar/mimic-semantic-signals
+  visibility: public
+
+execution:
+  profile: safe
+  approval_default: manual
+  machine_binding: fixed
+  machine_id: null
+  runner_source: runrelay_control_repo
+  exact_commit: true
+  allow_arbitrary_commands: false
+
+security:
+  project_only_filesystem: false
+  network_access: false
+  inherit_environment: false
+  destructive_operations: false
+
+monitoring:
+  heartbeat_seconds: 60
+  telegram_include_log_tail: false
+  tmux_default: false
+
+tasks:
+  audit_external_pressors:
+    description: Curate and audit first vasopressor initiation endpoints in local eICU and NWICU datasets.
+    command:
+      - bash
+      - scripts/run_external_pressor_audit.sh
+    approval: manual
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/external_validation/external_pressor_endpoint_audit.json
