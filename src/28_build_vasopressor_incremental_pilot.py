@@ -457,6 +457,22 @@ def main() -> None:
     subject_map = {sid: f"p{i:05d}" for i, sid in enumerate(subject_values, start=1)}
     snapshots["patient_group"] = snapshots["subject_id"].astype(int).map(subject_map)
 
+    blank_note_mask = snapshots["text"].astype(str).str.strip().eq("")
+    if blank_note_mask.any():
+        raise RuntimeError(
+            f"Blank notes remained after cohort construction: {int(blank_note_mask.sum())}"
+        )
+
+    match_check = snapshots.groupby("match_set")["label"].agg(["size", "sum"])
+    expected_size = int(args.controls_per_case) + 1
+    invalid_sets = match_check[
+        (match_check["size"] != expected_size) | (match_check["sum"] != 1)
+    ]
+    if not invalid_sets.empty:
+        raise RuntimeError(
+            f"Invalid matched sets after cohort construction: {len(invalid_sets)}"
+        )
+
     storetime_fraction = float(
         snapshots["storetime_available"].fillna(False).astype(bool).mean()
     ) if "storetime_available" in snapshots.columns else 0.0
@@ -533,6 +549,8 @@ def main() -> None:
         "contains_credentialed_note_text_in_cases_output": True,
         "contains_source_patient_identifiers_in_exported_features": False,
         "empty_or_whitespace_notes_excluded_before_matching": True,
+        "matched_set_integrity_verified": True,
+        "expected_rows_per_match_set": int(args.controls_per_case) + 1,
         "endpoint": "first canonical vasopressor initiation",
         "case_definition": (
             "closest prospectively available bedside note 0-6h before first vasopressor; availability anchored to max(CHARTTIME, STORETIME) when STORETIME exists; explicit pressor terms excluded"
