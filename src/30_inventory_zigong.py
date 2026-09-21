@@ -51,6 +51,44 @@ TIME_HINTS = [
 
 ID_HINTS = ["patient_id", "inp_no", "patient", "subject", "id"]
 
+
+CSV_ENCODINGS = ["utf-8-sig", "utf-8", "gb18030"]
+
+
+def read_csv_robust(path: Path, **kwargs) -> pd.DataFrame:
+    last_error = None
+    for encoding in CSV_ENCODINGS:
+        try:
+            return pd.read_csv(path, encoding=encoding, **kwargs)
+        except UnicodeDecodeError as exc:
+            last_error = exc
+    if last_error is not None:
+        raise last_error
+    return pd.read_csv(path, **kwargs)
+
+
+def iter_csv_robust(path: Path, chunksize: int, **kwargs):
+    last_error = None
+    for encoding in CSV_ENCODINGS:
+        try:
+            reader = pd.read_csv(
+                path,
+                encoding=encoding,
+                chunksize=chunksize,
+                **kwargs,
+            )
+            first = True
+            for chunk in reader:
+                first = False
+                yield chunk
+            return
+        except UnicodeDecodeError as exc:
+            if not first:
+                raise
+            last_error = exc
+    if last_error is not None:
+        raise last_error
+
 VALUE_HINTS = [
     "value", "result", "item", "name", "label", "desc", "content",
     "项目", "名称", "结果", "内容",
@@ -68,7 +106,7 @@ def has_any(text: str, terms: list[str]) -> bool:
 
 def safe_row_count(path: Path, chunksize: int = 250_000) -> int:
     total = 0
-    for chunk in pd.read_csv(path, chunksize=chunksize, low_memory=False):
+    for chunk in iter_csv_robust(path, chunksize=chunksize, low_memory=False):
         total += len(chunk)
     return total
 
@@ -95,7 +133,7 @@ def chinese_fraction(series: pd.Series, max_values: int = 5000) -> dict:
 
 
 def inspect_table(path: Path) -> dict:
-    head = pd.read_csv(path, nrows=5000, low_memory=False)
+    head = read_csv_robust(path, nrows=5000, low_memory=False)
     cols = [normalize(c) for c in head.columns]
 
     info = {
@@ -135,7 +173,7 @@ def inspect_table(path: Path) -> dict:
 
 
 def nursing_deep_scan(path: Path) -> dict:
-    header = pd.read_csv(path, nrows=0)
+    header = read_csv_robust(path, nrows=0)
     cols = [normalize(c) for c in header.columns]
 
     note_cols = candidate_columns(cols, NOTE_HINTS)
@@ -153,7 +191,7 @@ def nursing_deep_scan(path: Path) -> dict:
     pressor_match_counts = Counter()
     pressor_match_columns = Counter()
 
-    for chunk in pd.read_csv(path, chunksize=100_000, low_memory=False):
+    for chunk in iter_csv_robust(path, chunksize=100_000, low_memory=False):
         rows += len(chunk)
 
         for c in note_cols:
