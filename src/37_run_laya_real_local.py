@@ -104,19 +104,10 @@ def main() -> None:
     os.environ["USE_TF"] = "0"
 
     import laya
-    from transformers import AutoTokenizer
-
-    tokenizer_dir = model_dir / "tokenizer"
-    if not tokenizer_dir.exists():
-        raise FileNotFoundError(f"Tokenizer directory missing: {tokenizer_dir}")
-
-    tok = AutoTokenizer.from_pretrained(
-        str(tokenizer_dir),
-        local_files_only=True,
-    )
 
     print(f"Loading pinned local Laya model offline: {model_dir}")
     agent = laya.load(str(model_dir), device=args.device)
+    tok = agent.tok
 
     cases_path = Path(args.cases).expanduser().resolve()
     out = Path(args.output).expanduser().resolve()
