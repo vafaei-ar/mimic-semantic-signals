@@ -583,10 +583,14 @@ def eicu_features(
                 out[f"{feature}_delta"] = np.nan
                 continue
             g = q.groupby("snapshot_id")["labresult"]
+            last = g.last()
+            first = g.first()
+            count = g.count()
+            delta = (last - first).where(count >= 2, np.nan)
             stats = pd.DataFrame({
-                "snapshot_id": g.last().index,
-                f"{feature}_last": g.last().values,
-                f"{feature}_delta": (g.last() - g.first()).values,
+                "snapshot_id": last.index,
+                f"{feature}_last": last.values,
+                f"{feature}_delta": delta.values,
             })
             out = out.merge(stats, on="snapshot_id", how="left")
     else:
@@ -685,10 +689,14 @@ def nwicu_features(
                 out[f"{feature}_delta"] = np.nan
                 continue
             g = q.groupby("snapshot_id")["valuenum"]
+            last = g.last()
+            first = g.first()
+            count = g.count()
+            delta = (last - first).where(count >= 2, np.nan)
             stats = pd.DataFrame({
-                "snapshot_id": g.last().index,
-                f"{feature}_last": g.last().values,
-                f"{feature}_delta": (g.last() - g.first()).values,
+                "snapshot_id": last.index,
+                f"{feature}_last": last.values,
+                f"{feature}_delta": delta.values,
             })
             out = out.merge(stats, on="snapshot_id", how="left")
     else:
@@ -732,10 +740,14 @@ def nwicu_features(
                 out[f"{feature}_delta"] = np.nan
                 continue
             g = q.groupby("snapshot_id")["valuenum"]
+            last = g.last()
+            first = g.first()
+            count = g.count()
+            delta = (last - first).where(count >= 2, np.nan)
             stats = pd.DataFrame({
-                "snapshot_id": g.last().index,
-                f"{feature}_last": g.last().values,
-                f"{feature}_delta": (g.last() - g.first()).values,
+                "snapshot_id": last.index,
+                f"{feature}_last": last.values,
+                f"{feature}_delta": delta.values,
             })
             out = out.merge(stats, on="snapshot_id", how="left")
     else:
