@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import zipfile
 from collections import Counter
 from pathlib import Path
 
@@ -93,6 +94,55 @@ VALUE_HINTS = [
     "value", "result", "item", "name", "label", "desc", "content",
     "项目", "名称", "结果", "内容",
 ]
+
+
+def discover_or_extract_csvs(root: Path) -> tuple[Path, list[Path], dict]:
+    """Find Zigong CSVs or locally extract DataTables.zip if needed."""
+    csvs = sorted(root.rglob("*.csv"))
+    if csvs:
+        return root, csvs, {
+            "archive_auto_extracted": False,
+            "archive_name": None,
+        }
+
+    archives = sorted(root.rglob("DataTables.zip"))
+    if not archives:
+        raise RuntimeError(
+            f"No CSV files or DataTables.zip found under {root}. "
+            "Point --root at the downloaded PhysioNet Zigong directory."
+        )
+    if len(archives) > 1:
+        raise RuntimeError(
+            "Multiple DataTables.zip archives found under --root; "
+            "point --root at the intended PhysioNet version directory."
+        )
+
+    archive = archives[0]
+    extract_dir = archive.parent / "_inventory_extracted"
+    extract_dir.mkdir(parents=True, exist_ok=True)
+
+    with zipfile.ZipFile(archive, "r") as zf:
+        base = extract_dir.resolve()
+        for member in zf.infolist():
+            target = (extract_dir / member.filename).resolve()
+            try:
+                target.relative_to(base)
+            except ValueError as exc:
+                raise RuntimeError(
+                    f"Unsafe path in {archive.name}: {member.filename}"
+                ) from exc
+        zf.extractall(extract_dir)
+
+    csvs = sorted(extract_dir.rglob("*.csv"))
+    if not csvs:
+        raise RuntimeError(
+            f"{archive.name} was extracted but no CSV files were found."
+        )
+
+    return extract_dir, csvs, {
+        "archive_auto_extracted": True,
+        "archive_name": archive.name,
+    }
 
 
 def normalize(s: object) -> str:
@@ -252,9 +302,7 @@ def main() -> None:
     if not root.exists():
         raise FileNotFoundError(root)
 
-    csvs = sorted(root.rglob("*.csv"))
-    if not csvs:
-        raise RuntimeError(f"No CSV files found under {root}")
+    scan_root, csvs, archive_info = discover_or_extract_csvs(root)
 
     tables = []
     for path in csvs:
@@ -288,6 +336,8 @@ def main() -> None:
         "contains_note_text": False,
         "contains_patient_identifiers": False,
         "csv_files_found": len(csvs),
+        "archive_auto_extracted": archive_info["archive_auto_extracted"],
+        "archive_name": archive_info["archive_name"],
         "expected_file_presence": expected_status,
         "tables": tables,
         "nursing_chart_deep_scan": nursing_scan,
