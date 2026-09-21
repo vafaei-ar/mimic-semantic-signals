@@ -7,6 +7,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from runrelay_progress import update_progress
+
 
 SEMANTIC_NAMES = [
     "overall_clinician_concern",
@@ -187,6 +189,15 @@ def main() -> None:
 
     repeat_rows = []
     oof_rows = []
+    progress_total = int(args.repeats * args.folds)
+    progress_current = 0
+    update_progress(
+        current=0,
+        total=progress_total,
+        phase="cross_validation",
+        message="Starting grouped nonlinear structured cross-validation",
+        unit="fold",
+    )
     for repeat in range(args.repeats):
         cv = StratifiedGroupKFold(
             n_splits=args.folds,
@@ -199,6 +210,15 @@ def main() -> None:
                 pipe = make_pipeline(cols)
                 pipe.fit(df.iloc[train_idx][cols], y[train_idx])
                 preds[name][test_idx] = pipe.predict_proba(df.iloc[test_idx][cols])[:, 1]
+
+            progress_current += 1
+            update_progress(
+                current=progress_current,
+                total=progress_total,
+                phase="cross_validation",
+                message=f"Completed repeat {repeat + 1}/{args.repeats}, fold {fold + 1}/{args.folds}",
+                unit="fold",
+            )
 
         for name, p in preds.items():
             if np.isnan(p).any():
