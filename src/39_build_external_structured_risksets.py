@@ -29,12 +29,31 @@ AGENT_PATTERNS = {
 
 NW_VITAL_ALIASES = {
     "heart_rate": ["pulse", "heart rate"],
-    "map": ["bp mean", "mean arterial pressure", "arterial bp mean"],
+    "map": [
+        "bp mean",
+        "mean arterial pressure",
+        "arterial bp mean",
+        "arterial blood pressure mean",
+        "non invasive blood pressure mean",
+        "non-invasive blood pressure mean",
+    ],
     "resp_rate": ["respiratory rate", "respirations", "respiration rate"],
     "spo2": ["pulse oximetry", "spo2", "o2 saturation", "oxygen saturation"],
     "temperature": ["temperature"],
-    "sbp": ["bp systolic", "systolic blood pressure"],
-    "dbp": ["bp diastolic", "diastolic blood pressure"],
+    "sbp": [
+        "bp systolic",
+        "systolic blood pressure",
+        "arterial blood pressure systolic",
+        "non invasive blood pressure systolic",
+        "non-invasive blood pressure systolic",
+    ],
+    "dbp": [
+        "bp diastolic",
+        "diastolic blood pressure",
+        "arterial blood pressure diastolic",
+        "non invasive blood pressure diastolic",
+        "non-invasive blood pressure diastolic",
+    ],
 }
 
 NW_LAB_ALIASES = {
@@ -425,10 +444,14 @@ def aggregate_rows(
             out[f"{feature}_delta"] = np.nan
             continue
         g = q.groupby("snapshot_id")[source_col]
+        last = g.last()
+        first = g.first()
+        count = g.count()
+        delta = (last - first).where(count >= 2, np.nan)
         stats = pd.DataFrame({
-            "snapshot_id": g.last().index,
-            f"{feature}_last": g.last().values,
-            f"{feature}_delta": (g.last() - g.first()).values,
+            "snapshot_id": last.index,
+            f"{feature}_last": last.values,
+            f"{feature}_delta": delta.values,
         })
         out = out.merge(stats, on="snapshot_id", how="left")
     return out
@@ -468,10 +491,21 @@ def eicu_features(
     # Add non-invasive MAP if systemic MAP is absent.
     va = find_one(root, "vitalAperiodic.csv.gz")
     aparts = []
+    aperiodic_header = list(pd.read_csv(va, nrows=0).columns)
+    aperiodic_keep = [
+        c for c in [
+            "patientunitstayid",
+            "observationoffset",
+            "noninvasivemean",
+            "noninvasivesystolic",
+            "noninvasivediastolic",
+        ]
+        if c in aperiodic_header
+    ]
     for chunk in pd.read_csv(
         va,
         chunksize=500_000,
-        usecols=["patientunitstayid", "observationoffset", "noninvasivemean"],
+        usecols=aperiodic_keep,
         low_memory=False,
     ):
         chunk["patientunitstayid"] = pd.to_numeric(chunk["patientunitstayid"], errors="coerce")
@@ -479,20 +513,31 @@ def eicu_features(
         if not q.empty:
             aparts.append(q)
     aper = pd.concat(aparts, ignore_index=True) if aparts else pd.DataFrame()
+    aperiodic_cols = set(pd.read_csv(va, nrows=0).columns)
+    fallback_values = {}
+    if "noninvasivemean" in aperiodic_cols:
+        fallback_values["map_noninvasive"] = "noninvasivemean"
+    if "noninvasivesystolic" in aperiodic_cols:
+        fallback_values["sbp_noninvasive"] = "noninvasivesystolic"
+    if "noninvasivediastolic" in aperiodic_cols:
+        fallback_values["dbp_noninvasive"] = "noninvasivediastolic"
+
     af = aggregate_rows(
         aper,
         snapshots,
         stay_col="patientunitstayid",
         time_col="observationoffset",
-        value_columns={"map_noninvasive": "noninvasivemean"},
+        value_columns=fallback_values,
         lookback_h=vital_lookback_h,
         time_scale_to_hours=1.0 / 60.0,
     )
     vf = vf.merge(af, on="snapshot_id", how="left")
-    if "map_last" in vf and "map_noninvasive_last" in vf:
-        vf["map_last"] = vf["map_last"].fillna(vf["map_noninvasive_last"])
-        vf["map_delta"] = vf["map_delta"].fillna(vf["map_noninvasive_delta"])
-        vf = vf.drop(columns=["map_noninvasive_last", "map_noninvasive_delta"])
+    for base in ["map", "sbp", "dbp"]:
+        fallback = f"{base}_noninvasive"
+        if f"{base}_last" in vf and f"{fallback}_last" in vf:
+            vf[f"{base}_last"] = vf[f"{base}_last"].fillna(vf[f"{fallback}_last"])
+            vf[f"{base}_delta"] = vf[f"{base}_delta"].fillna(vf[f"{fallback}_delta"])
+            vf = vf.drop(columns=[f"{fallback}_last", f"{fallback}_delta"])
 
     lab = find_one(root, "lab.csv.gz")
     anchors = snapshots.set_index("patientunitstayid")["anchor_hour"].to_dict()
@@ -859,6 +904,7 @@ def main() -> None:
         "prediction_horizon_hours": horizon,
         "vital_lookback_hours": args.vital_lookback_hours,
         "lab_lookback_hours": args.lab_lookback_hours,
+        "trend_definition": "delta = last minus first within lookback; requires at least two measurements, otherwise missing",
         "eicu": e_report,
         "nwicu": n_report,
         "next_decision": (
