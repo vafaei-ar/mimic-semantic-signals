@@ -158,6 +158,7 @@ def load_bedside_notes(root: Path, hadm_filter: set[int] | None = None) -> pd.Da
             c["store_time"] = pd.NaT
 
         c = c.dropna(subset=["chart_time", "text"])
+        c = c[c["text"].astype(str).str.strip().ne("")].copy()
         c["storetime_available"] = c["store_time"].notna()
 
         # Prospective availability anchor: the note cannot be used before it was
@@ -531,6 +532,7 @@ def main() -> None:
         "local_only": True,
         "contains_credentialed_note_text_in_cases_output": True,
         "contains_source_patient_identifiers_in_exported_features": False,
+        "empty_or_whitespace_notes_excluded_before_matching": True,
         "endpoint": "first canonical vasopressor initiation",
         "case_definition": (
             "closest prospectively available bedside note 0-6h before first vasopressor; availability anchored to max(CHARTTIME, STORETIME) when STORETIME exists; explicit pressor terms excluded"
