@@ -7,6 +7,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from runrelay_progress import update_progress
+
 
 PRIMARY_FEATURES = [
     "anchor_hour",
@@ -116,6 +118,16 @@ def main() -> None:
     y = mimic["label"].astype(int).to_numpy()
     groups = mimic["match_set"].astype(int).to_numpy()
 
+    progress_total = int(len(feature_sets))
+    progress_current = 0
+    update_progress(
+        current=0,
+        total=progress_total,
+        phase="transport_sensitivity",
+        message="Starting values-only transport sensitivity",
+        unit="feature_set",
+    )
+
     report = {
         "analysis": "Structured transport sensitivity without missingness indicators.",
         "preprocessing": (
@@ -208,6 +220,14 @@ def main() -> None:
             "values_only": values_only,
             "comparison_to_missingness_indicator_reference": comparison,
         }
+        progress_current += 1
+        update_progress(
+            current=progress_current,
+            total=progress_total,
+            phase="transport_sensitivity",
+            message=f"Completed {set_name}",
+            unit="feature_set",
+        )
 
     report["interpretation_guardrail"] = (
         "Large performance changes after removing missingness indicators would suggest that "
