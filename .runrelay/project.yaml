@@ -110,3 +110,86 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/external_validation/structured_transport_report.json
+
+  build_primary_corrected:
+    description: Rebuild the primary MIMIC note-anchored vasopressor cohort using only norepinephrine, epinephrine, phenylephrine, dopamine, and vasopressin.
+    command:
+      - bash
+      - scripts/run_primary_corrected_build.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/vasopressor_incremental_v3_corrected/cohort_manifest.json
+
+  infer_primary_corrected_openjev:
+    description: Run cached Open-Jev offline on the corrected primary MIMIC note cohort; predictions remain local.
+    command:
+      - bash
+      - scripts/run_primary_corrected_openjev.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 1
+      min_vram_gb: 6
+      wait_minutes: 60
+
+  infer_primary_corrected_laya:
+    description: Run cached Laya typed-decisions offline on the corrected primary MIMIC note cohort; predictions remain local.
+    command:
+      - bash
+      - scripts/run_primary_corrected_laya.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 1
+      min_vram_gb: 6
+      wait_minutes: 60
+
+  evaluate_primary_corrected_openjev:
+    description: Evaluate corrected Open-Jev semantic increment over physiology and share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_primary_corrected_eval_openjev.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/vasopressor_incremental_v3_corrected/open_jev/report.json
+
+  evaluate_primary_corrected_laya:
+    description: Evaluate corrected Laya semantic increment over physiology and share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_primary_corrected_eval_laya.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/vasopressor_incremental_v3_corrected/laya/report.json
