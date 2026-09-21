@@ -14,10 +14,10 @@ from common import find_file, lower_columns, module_path, parse_datetime, read_c
 # Item 30125 is intentionally excluded pending the explicit dictionary audit in
 # src/40_audit_structured_mappings.py.
 CANONICAL_VASO_CV = {
-    30043, 30044, 30046, 30047, 30051, 30119, 30120,
+    30043, 30044, 30047, 30051, 30119, 30120,
     30127, 30128, 30307, 30309,
 }
-CANONICAL_VASO_MV = {221289, 221662, 221749, 221906, 222315, 227692}
+CANONICAL_VASO_MV = {221289, 221662, 221749, 221906, 222315}
 
 VITAL_ITEMIDS = {
     "heart_rate": {211, 220045},
