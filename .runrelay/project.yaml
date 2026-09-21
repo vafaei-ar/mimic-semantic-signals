@@ -93,3 +93,20 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/external_validation/mimic_exact6h_structured_report.json
+
+  evaluate_structured_transport:
+    description: Train frozen exact-6h MIMIC portable physiology models and apply them without refitting to eICU and NWICU; share only aggregate performance.
+    command:
+      - bash
+      - scripts/run_structured_transport.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/external_validation/structured_transport_report.json
