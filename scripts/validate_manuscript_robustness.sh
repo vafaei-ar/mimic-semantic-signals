@@ -5,4 +5,5 @@ cd "$(git rev-parse --show-toplevel)"
   src/runrelay_progress.py \
   src/43_evaluate_lexical_robustness.py \
   src/44_evaluate_nonlinear_structured_robustness.py \
-  src/45_evaluate_transport_missingness_sensitivity.py
+  src/45_evaluate_transport_missingness_sensitivity.py \
+  src/46_evaluate_nonlinear_rf_robustness.py
