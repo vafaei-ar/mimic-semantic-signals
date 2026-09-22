@@ -445,6 +445,23 @@ tasks:
     artifacts:
       - outputs/vasopressor_incremental_v5_complete_matched/robustness/lead_time_sensitivity_report.json
 
+  evaluate_v5_documentation_context_sensitivity:
+    description: Test whether semantic increment persists after note-length adjustment and within complete matched sets having exact note-category matching; share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_v5_documentation_context_sensitivity.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/vasopressor_incremental_v5_complete_matched/robustness/documentation_context_sensitivity_report.json
+
   evaluate_transport_missingness_sensitivity:
     description: Re-evaluate frozen MIMIC to eICU/NWICU structured transport without missingness indicators and compare with the original indicator-based transport report.
     command:
