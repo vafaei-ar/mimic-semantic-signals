@@ -7,4 +7,5 @@ cd "$(git rev-parse --show-toplevel)"
   src/44_evaluate_nonlinear_structured_robustness.py \
   src/45_evaluate_transport_missingness_sensitivity.py \
   src/46_evaluate_nonlinear_rf_robustness.py \
-  src/47_evaluate_treatment_language_sensitivity.py
+  src/47_evaluate_treatment_language_sensitivity.py \
+  src/48_evaluate_lead_time_sensitivity.py
