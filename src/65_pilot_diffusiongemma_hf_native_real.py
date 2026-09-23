@@ -51,7 +51,7 @@ def build_prompt(note: str) -> str:
 
 
 def extract_scores(text: str) -> dict[str, float]:
-    candidates = re.findall(r"\\{[^{}]*\\}", text, flags=re.DOTALL)
+    candidates = re.findall(r"\{[^{}]*\}", text, flags=re.DOTALL)
     for raw in reversed(candidates):
         try:
             obj = json.loads(raw)
@@ -374,7 +374,7 @@ def main() -> None:
     seconds_per_attempt = inference_seconds / total if total else float("nan")
     report = {
         "analysis": "Native Hugging Face DiffusionGemma real-note operational pilot",
-        "status": "completed" if completed > 0 else "failed",
+        "status": "completed" if failed == 0 and completed == total else "failed",
         "local_only": True,
         "network_required": False,
         "clinical_note_inference_performed": True,
@@ -433,6 +433,8 @@ def main() -> None:
     }
     report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
+    if failed != 0 or completed != total:
+        raise SystemExit(2)
 
 
 if __name__ == "__main__":
