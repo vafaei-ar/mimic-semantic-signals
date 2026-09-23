@@ -6,8 +6,14 @@ MODEL_DIR="data/local_models/diffusiongemma-26B-A4B-it-NVFP4"
 OUT="outputs/multitask_benchmark/local_djev_setup_report.json"
 mkdir -p "$MODEL_DIR" "$(dirname "$OUT")"
 
+docker_sg() {
+  local cmd
+  printf -v cmd '%q ' docker "$@"
+  sg docker -c "$cmd"
+}
+
 echo "[djev-setup] Pulling local serving image"
-docker pull ghcr.io/taeold/djev-run:latest
+docker_sg pull ghcr.io/taeold/djev-run:latest
 
 echo "[djev-setup] Downloading public NVIDIA DiffusionGemma NVFP4 weights"
 .venv/bin/python - "$MODEL_DIR" <<'PY'
@@ -22,18 +28,16 @@ snapshot_download(
 print(model_dir)
 PY
 
-.venv/bin/python - "$MODEL_DIR" "$OUT" <<'PY'
-import json, subprocess, sys
+IMAGE_ID="$(docker_sg image inspect ghcr.io/taeold/djev-run:latest --format '{{.Id}}')"
+.venv/bin/python - "$MODEL_DIR" "$OUT" "$IMAGE_ID" <<'PY'
+import json, sys
 from pathlib import Path
 model=Path(sys.argv[1]).resolve()
 out=Path(sys.argv[2]).resolve()
+image_id=sys.argv[3]
 files=[p for p in model.rglob("*") if p.is_file()]
 size=sum(p.stat().st_size for p in files)
 safe=[p for p in files if p.suffix==".safetensors"]
-inspect=subprocess.run(
-    ["docker","image","inspect","ghcr.io/taeold/djev-run:latest","--format","{{.Id}}"],
-    capture_output=True,text=True,check=False,
-)
 required=["config.json","tokenizer.json","model.safetensors.index.json"]
 report={
     "analysis":"Local DiffusionGemma-Jev setup",
@@ -44,7 +48,7 @@ report={
     "safetensors_files":len(safe),
     "required_files_present":{x:(model/x).exists() for x in required},
     "container_image":"ghcr.io/taeold/djev-run:latest",
-    "container_image_id":inspect.stdout.strip() if inspect.returncode==0 else None,
+    "container_image_id":image_id,
     "credentialed_note_inference_performed":False,
 }
 if len(safe)<2 or not all(report["required_files_present"].values()):
