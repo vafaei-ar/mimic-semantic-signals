@@ -2,15 +2,24 @@
 
 ## Goal
 
-Compare the same clinical semantic decision task across:
+Compare the same clinical semantic decision task across local model implementations:
 
 1. Open-Jev DeBERTa base
-2. Open-Jev DeBERTa clinical-tuned
-3. DiffusionGemma base in Jev-compatible structured-read mode
-4. DiffusionGemma clinical-tuned
-5. Optional proprietary TypeSafe Jev comparator if compliant access is resolved
+2. Laya typed-decisions base
+3. DiffusionGemma-Jev base in local Jev-compatible structured-read mode
+4. Open-Jev clinical-tuned
+5. DiffusionGemma-Jev clinical-tuned, if a reproducible local adapter path is available
 
 The scientific question is whether narrative semantic signals are robust across model architectures, not whether one branded model wins.
+
+## Local-only inference policy
+
+All credentialed clinical-note inference must remain on the bound local workstation.
+
+- Do not send MIMIC, Zigong, or other restricted note text to Cloud Run or any remote inference API.
+- `taeold/djev-run` is treated as a useful serving/reference implementation of the Jev-compatible `/v1/systemone` contract, not as a remote study endpoint.
+- DiffusionGemma-Jev evaluation for this project must use a local `djev`/`djev-spark`-compatible server bound to localhost.
+- Public or synthetic corpora may be used for local tuning and benchmarking, but study inference remains local.
 
 ## Public vs private model tracks
 
@@ -85,12 +94,12 @@ Preferred first strategy:
 - exact same training/validation/test split as Open-Jev
 - preserve a separate structured-read evaluation path
 
-The current djev-spark server implements Jev-compatible structured reads, but does not yet expose a documented LoRA adapter path. Therefore:
+The local djev/djev-spark stack implements Jev-compatible structured reads. Therefore:
 
-1. train the adapter with Transformers/PEFT
-2. evaluate conventional structured decision prompting through Transformers
-3. separately evaluate the untuned model through djev-spark structured reads
-4. add tuned structured-read evaluation once the serving path supports the adapter reproducibly
+1. run the untuned DiffusionGemma-Jev model locally through the Jev-compatible structured-read path;
+2. train any adapter locally with Transformers/PEFT;
+3. evaluate conventional structured decision prompting locally through Transformers;
+4. add tuned structured-read evaluation only once the local serving path supports the adapter reproducibly.
 
 Do not merge the adapter into tied DiffusionGemma weights unless the upstream implementation explicitly supports it.
 
