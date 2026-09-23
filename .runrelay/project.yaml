@@ -479,6 +479,23 @@ tasks:
     artifacts:
       - outputs/vasopressor_incremental_v5_complete_matched/robustness/semantic_scores_only_report.json
 
+  refine_rrt_endpoint:
+    description: Compare conservative RRT initiation evidence tiers after excluding ambiguous dialysis off/out/removal bookkeeping; aggregate local audit only, no model inference.
+    command:
+      - bash
+      - scripts/run_rrt_endpoint_refinement.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_feasibility/rrt_endpoint_refinement.json
+
   audit_strict_multitask_endpoints:
     description: Audit conservative incident invasive-ventilation, RRT, and ICU-death endpoint tiers and prospective clean-note coverage before freezing the multi-outcome benchmark; no model inference.
     command:
