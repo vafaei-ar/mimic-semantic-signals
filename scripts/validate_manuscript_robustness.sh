@@ -50,3 +50,5 @@ bash -n scripts/run_multitask_djev_eval.sh
 bash -n scripts/run_multitask_next_phase.sh
 
 bash -n scripts/run_djev_failure_diagnosis.sh
+
+bash -n scripts/run_multitask_djev_recovery.sh
