@@ -57,3 +57,5 @@ bash -n scripts/run_multitask_djev_recovery.sh
 bash -n scripts/run_djev_cuda12_fp8_smoke.sh
 
 bash -n scripts/run_diffusiongemma_hf_native_smoke.sh
+
+bash -n scripts/run_diffusiongemma_hf_native_cached_smoke.sh
