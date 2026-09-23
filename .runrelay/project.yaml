@@ -479,6 +479,23 @@ tasks:
     artifacts:
       - outputs/vasopressor_incremental_v5_complete_matched/robustness/semantic_scores_only_report.json
 
+  audit_strict_multitask_endpoints:
+    description: Audit conservative incident invasive-ventilation, RRT, and ICU-death endpoint tiers and prospective clean-note coverage before freezing the multi-outcome benchmark; no model inference.
+    command:
+      - bash
+      - scripts/run_strict_multitask_endpoint_audit.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_feasibility/strict_endpoint_audit.json
+
   audit_multitask_endpoints:
     description: Aggregate feasibility audit for additional MIMIC-III deterioration outcomes before freezing a multi-outcome semantic benchmark; no model inference and no patient-level artifacts.
     command:
