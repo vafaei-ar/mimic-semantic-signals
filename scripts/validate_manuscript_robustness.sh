@@ -16,7 +16,10 @@ cd "$(git rev-parse --show-toplevel)"
   src/51_audit_multitask_endpoints.py \
   src/52_audit_strict_multitask_endpoints.py \
   src/53_refine_rrt_endpoint.py \
-  src/54_build_multitask_benchmark.py
+  src/54_build_multitask_benchmark.py \
+  src/55_evaluate_multitask_semantics.py
 
 bash -n scripts/run_multitask_openjev.sh
 bash -n scripts/run_multitask_laya.sh
+
+bash -n scripts/run_multitask_semantic_eval.sh
