@@ -511,6 +511,40 @@ tasks:
       min_vram_gb: 6
       wait_minutes: 60
 
+  evaluate_multitask_lexical_robustness:
+    description: Compare frozen multitask structured and semantic models against fold-fitted TF-IDF lexical baselines across ventilation, RRT, and ICU death; share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_multitask_lexical_robustness.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/lexical_report_v1.json
+
+  audit_local_djev_readiness:
+    description: Audit local-only DiffusionGemma-Jev readiness without installing packages, downloading weights, starting services, or processing clinical notes.
+    command:
+      - bash
+      - scripts/run_local_djev_readiness.sh
+    approval: automatic
+    timeout_minutes: 20
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 2
+      gpu_count: 0
+      wait_minutes: 10
+    artifacts:
+      - outputs/multitask_benchmark/local_djev_readiness.json
+
   evaluate_multitask_semantics:
     description: Evaluate frozen zero-shot Open-Jev and Laya semantic scores across invasive ventilation, RRT, and ICU death using strict 8-scores-only, structured-only, and combined logistic models; share aggregate metrics only.
     command:
