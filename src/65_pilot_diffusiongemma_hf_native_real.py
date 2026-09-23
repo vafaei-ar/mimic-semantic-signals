@@ -454,7 +454,7 @@ def main() -> None:
         "seed": args.seed,
         "parse_retry_policy": {
             "max_retries_after_initial_generation": args.parse_retries,
-            "prompt_changes_on_retry": false,
+            "prompt_changes_on_retry": False,
             "seed_schedule": "base_seed + note_ordinal*1000 + chunk_index*10 + attempt",
             "acceptance": "first completion containing all eight numeric scores in [0,1]",
         },
