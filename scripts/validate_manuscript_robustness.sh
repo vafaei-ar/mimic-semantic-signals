@@ -26,7 +26,8 @@ cd "$(git rev-parse --show-toplevel)"
   src/61_evaluate_multitask_djev.py \
   src/62_diagnose_failed_djev_setup.py \
   src/63_smoke_diffusiongemma_hf_native.py \
-  src/64_calibrate_diffusiongemma_hf_native.py
+  src/64_calibrate_diffusiongemma_hf_native.py \
+  src/65_pilot_diffusiongemma_hf_native_real.py
 
 bash -n scripts/run_multitask_openjev.sh
 bash -n scripts/run_multitask_laya.sh
@@ -62,3 +63,5 @@ bash -n scripts/run_diffusiongemma_hf_native_smoke.sh
 bash -n scripts/run_diffusiongemma_hf_native_cached_smoke.sh
 
 bash -n scripts/run_diffusiongemma_hf_native_graded_calibration.sh
+
+bash -n scripts/run_diffusiongemma_hf_native_real_pilot.sh
