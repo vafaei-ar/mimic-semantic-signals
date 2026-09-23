@@ -52,3 +52,5 @@ bash -n scripts/run_multitask_next_phase.sh
 bash -n scripts/run_djev_failure_diagnosis.sh
 
 bash -n scripts/run_multitask_djev_recovery.sh
+
+bash -n scripts/run_djev_cuda12_fp8_smoke.sh
