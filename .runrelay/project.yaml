@@ -511,6 +511,24 @@ tasks:
       min_vram_gb: 6
       wait_minutes: 60
 
+  smoke_diffusiongemma_hf_native:
+    description: Create an isolated PyTorch CUDA 12.4 and Transformers environment, download the official DiffusionGemma checkpoint, and run three synthetic native-Hugging-Face semantic-score smoke cases across two GPUs. No clinical notes are processed.
+    command:
+      - bash
+      - scripts/run_diffusiongemma_hf_native_smoke.sh
+    approval: manual
+    timeout_minutes: 480
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 64
+      gpu_count: 2
+      min_vram_gb: 36
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/diffusiongemma_hf_native_smoke_report.json
+
   smoke_djev_cuda12_fp8:
     description: Build an Ada-native CUDA 12.8 vLLM image from the pinned structured-reads fork, download the public FP8 DiffusionGemma checkpoint, and run one synthetic localhost-only Jev smoke test. No clinical notes are processed.
     command:
