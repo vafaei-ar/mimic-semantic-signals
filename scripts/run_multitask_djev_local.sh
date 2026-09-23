@@ -7,16 +7,22 @@ NAME="mimic-djev-local"
 NET="mimic-djev-internal"
 TOTAL=12032
 
+docker_sg() {
+  local cmd
+  printf -v cmd '%q ' docker "$@"
+  sg docker -c "$cmd"
+}
+
 cleanup() {
-  docker rm -f "$NAME" >/dev/null 2>&1 || true
-  docker network rm "$NET" >/dev/null 2>&1 || true
+  docker_sg rm -f "$NAME" >/dev/null 2>&1 || true
+  docker_sg network rm "$NET" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
 cleanup
 
-docker network create --internal "$NET" >/dev/null
+docker_sg network create --internal "$NET" >/dev/null
 
-docker run -d --rm \
+docker_sg run -d --rm \
   --name "$NAME" \
   --gpus "device=0" \
   --shm-size=32g \
