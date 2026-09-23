@@ -511,6 +511,41 @@ tasks:
       min_vram_gb: 6
       wait_minutes: 60
 
+  infer_multitask_diffusiongemma_hf_native:
+    description: Run the cached native Hugging Face DiffusionGemma fully offline on all 12,032 frozen multi-outcome MIMIC notes; row-level scores remain local and only aggregate inference diagnostics are shared.
+    command:
+      - bash
+      - scripts/run_multitask_diffusiongemma_hf_native.sh
+    approval: automatic
+    timeout_minutes: 900
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 64
+      gpu_count: 2
+      min_vram_gb: 36
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/diffusiongemma_hf_native_inference_report.json
+
+  evaluate_multitask_diffusiongemma_hf_native:
+    description: Evaluate frozen native-HF DiffusionGemma prompted semantic scores across ventilation, RRT, and ICU death with the same grouped logistic protocol; share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_multitask_diffusiongemma_hf_eval.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/diffusiongemma_hf_semantic_report_v1.json
+
   pilot_diffusiongemma_hf_native_real:
     description: Run a fully offline 18-note local MIMIC pilot across the three frozen multi-outcome cohorts to measure DiffusionGemma parsing, score resolution, chunking, and throughput; share aggregate diagnostics only.
     command:
