@@ -511,6 +511,24 @@ tasks:
       min_vram_gb: 6
       wait_minutes: 60
 
+  calibrate_diffusiongemma_hf_native_graded:
+    description: Reuse the cached native Hugging Face DiffusionGemma environment and checkpoint to run a fully offline ten-case graded synthetic semantic calibration; no downloads and no clinical notes.
+    command:
+      - bash
+      - scripts/run_diffusiongemma_hf_native_graded_calibration.sh
+    approval: automatic
+    timeout_minutes: 90
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 64
+      gpu_count: 2
+      min_vram_gb: 36
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/diffusiongemma_hf_native_graded_calibration.json
+
   smoke_diffusiongemma_hf_native_cached:
     description: Reuse the already-installed PyTorch CUDA 12.4 / Transformers environment and cached official DiffusionGemma checkpoint to run three fully offline synthetic semantic-score smoke cases. No downloads and no clinical notes.
     command:
