@@ -550,6 +550,23 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/lexical_report_v1.json
 
+  diagnose_failed_djev_setup:
+    description: Offline read-only diagnosis of the failed local DiffusionGemma-Jev setup using Docker/image/model-cache/disk/GPU state; no downloads, installs, or clinical-note inference.
+    command:
+      - bash
+      - scripts/run_djev_failure_diagnosis.sh
+    approval: automatic
+    timeout_minutes: 20
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 2
+      gpu_count: 0
+      wait_minutes: 10
+    artifacts:
+      - outputs/multitask_benchmark/djev_failure_diagnosis.json
+
   audit_local_djev_readiness:
     description: Audit local-only DiffusionGemma-Jev readiness without installing packages, downloading weights, starting services, or processing clinical notes.
     command:
