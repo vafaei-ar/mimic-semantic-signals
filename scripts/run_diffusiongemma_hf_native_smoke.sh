@@ -49,7 +49,21 @@ trap on_exit EXIT
 PHASE="create_isolated_environment"
 write_status "running" 0
 if [[ ! -x "$ENV_DIR/bin/python" ]]; then
-  python3 -m venv "$ENV_DIR"
+  python3 -m venv --without-pip "$ENV_DIR"
+fi
+if ! "$ENV_DIR/bin/python" -m pip --version >/dev/null 2>&1; then
+  GET_PIP="data/local_envs/get-pip.py"
+  .venv/bin/python - "$GET_PIP" <<'PY'
+import sys
+import urllib.request
+from pathlib import Path
+target=Path(sys.argv[1]).resolve()
+target.parent.mkdir(parents=True, exist_ok=True)
+with urllib.request.urlopen("https://bootstrap.pypa.io/get-pip.py", timeout=120) as r:
+    target.write_bytes(r.read())
+print(target)
+PY
+  "$ENV_DIR/bin/python" "$GET_PIP" "pip>=24,<26"
 fi
 "$ENV_DIR/bin/python" -m pip install --upgrade "pip>=24,<26"
 
