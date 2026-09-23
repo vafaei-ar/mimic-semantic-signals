@@ -479,6 +479,38 @@ tasks:
     artifacts:
       - outputs/vasopressor_incremental_v5_complete_matched/robustness/semantic_scores_only_report.json
 
+  infer_multitask_openjev:
+    description: Run cached Open-Jev fully offline on all frozen multi-outcome MIMIC note cohorts; row-level predictions remain local.
+    command:
+      - bash
+      - scripts/run_multitask_openjev.sh
+    approval: automatic
+    timeout_minutes: 720
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 1
+      min_vram_gb: 6
+      wait_minutes: 60
+
+  infer_multitask_laya:
+    description: Run cached Laya fully offline on all frozen multi-outcome MIMIC note cohorts; row-level predictions remain local.
+    command:
+      - bash
+      - scripts/run_multitask_laya.sh
+    approval: automatic
+    timeout_minutes: 720
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 1
+      min_vram_gb: 6
+      wait_minutes: 60
+
   build_multitask_benchmark:
     description: Build the frozen local MIMIC-III 12-hour invasive-ventilation, RRT, and ICU-death matched benchmark cohorts with endpoint-language exclusion and contemporaneous structured features; share aggregate manifest only.
     command:
