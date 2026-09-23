@@ -512,7 +512,7 @@ tasks:
       wait_minutes: 60
 
   run_multitask_djev_recovery:
-    description: Recover the unfinished local DiffusionGemma-Jev arm only: pull the serving image, download public NVFP4 weights, run localhost-only inference on frozen cohorts, and evaluate aggregate semantic performance.
+    description: Recover the unfinished local DiffusionGemma-Jev arm by pulling the serving image, downloading public NVFP4 weights, running localhost-only inference on frozen cohorts, and evaluating aggregate semantic performance.
     command:
       - bash
       - scripts/run_multitask_djev_recovery.sh
