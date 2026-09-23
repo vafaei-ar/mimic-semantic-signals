@@ -72,6 +72,30 @@ def extract_scores(text: str) -> dict[str, float]:
     raise ValueError("No valid eight-score JSON object found.")
 
 
+def parse_structure_signature(text: str) -> str:
+    candidates = re.findall(r"\{[^{}]*\}", text, flags=re.DOTALL)
+    parseable = 0
+    max_expected_keys = 0
+    for raw in candidates:
+        try:
+            obj = json.loads(raw)
+        except Exception:
+            continue
+        if isinstance(obj, dict):
+            parseable += 1
+            max_expected_keys = max(
+                max_expected_keys,
+                sum(1 for name in EXPECTED if name in obj),
+            )
+    mentions = sum(1 for name in EXPECTED if name in text)
+    char_bucket = (len(text) // 100) * 100
+    return (
+        f"json_candidates={len(candidates)}|parseable_objects={parseable}|"
+        f"max_expected_keys={max_expected_keys}|expected_key_mentions={mentions}|"
+        f"chars_bucket={char_bucket}"
+    )
+
+
 def load_cases(path: Path, limit: int) -> list[dict]:
     cases: list[dict] = []
     with path.open("r", encoding="utf-8") as f:
@@ -237,6 +261,8 @@ def main() -> None:
     completed = 0
     failed = 0
     errors: Counter[str] = Counter()
+    failure_stages: Counter[str] = Counter()
+    parse_failure_signatures: Counter[str] = Counter()
     all_scores: dict[str, list[float]] = {name: [] for name in EXPECTED}
     outcome_stats = {
         o: {
@@ -259,9 +285,13 @@ def main() -> None:
         st = outcome_stats[outcome]
         st["attempted"] += 1
         case_started = time.perf_counter()
+        stage = "read_note"
+        decoded = None
         try:
             note = str(case["model_state"]["clinical_note"])
+            stage = "tokenize_note"
             note_ids = tokenizer(note, add_special_tokens=False)["input_ids"]
+            stage = "chunk_note"
             chunks, truncated = chunk_token_ids(
                 note_ids,
                 size=chunk_tokens,
@@ -271,6 +301,7 @@ def main() -> None:
             chunk_scores: list[dict[str, float]] = []
             for chunk_index, ids in enumerate(chunks):
                 chunk_text = tokenizer.decode(ids, skip_special_tokens=True)
+                stage = "apply_chat_template"
                 inputs = processor.apply_chat_template(
                     [{"role": "user", "content": build_prompt(chunk_text)}],
                     tokenize=True,
@@ -292,6 +323,7 @@ def main() -> None:
                 local_seed = args.seed + ordinal * 100 + chunk_index
                 torch.manual_seed(local_seed)
                 torch.cuda.manual_seed_all(local_seed)
+                stage = "generate"
                 with torch.inference_mode():
                     generated = model.generate(
                         **inputs,
@@ -302,10 +334,13 @@ def main() -> None:
                     raise RuntimeError(
                         f"unexpected_generated_shape={tuple(sequences.shape)}"
                     )
+                stage = "decode_completion"
                 completion_ids = sequences[0, input_len:].detach().cpu().tolist()
                 decoded = tokenizer.decode(completion_ids, skip_special_tokens=True)
+                stage = "parse_completion"
                 chunk_scores.append(extract_scores(decoded))
 
+            stage = "aggregate_scores"
             aggregated = aggregate_scores(chunk_scores)
             for name, value in aggregated.items():
                 all_scores[name].append(float(value))
@@ -319,6 +354,9 @@ def main() -> None:
             failed += 1
             st["failed"] += 1
             errors[type(exc).__name__] += 1
+            failure_stages[stage] += 1
+            if stage == "parse_completion" and isinstance(decoded, str):
+                parse_failure_signatures[parse_structure_signature(decoded)] += 1
         finally:
             st["inference_seconds"].append(time.perf_counter() - case_started)
             current = ordinal + 1
@@ -420,6 +458,8 @@ def main() -> None:
         "failed": failed,
         "parse_or_inference_success_fraction": completed / total if total else 0.0,
         "error_type_counts": dict(errors),
+        "failure_stage_counts": dict(failure_stages),
+        "parse_failure_structural_signatures": dict(parse_failure_signatures),
         "global_unique_score_values": sorted(set(all_values)),
         "intermediate_value_fraction": (
             len(intermediate) / len(all_values) if all_values else 0.0
