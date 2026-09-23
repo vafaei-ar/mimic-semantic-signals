@@ -10,7 +10,7 @@ from pathlib import Path
 
 from runrelay_progress import update_progress
 from semantic_schema import SEMANTIC_CONSTRUCTS
-from 64_calibrate_diffusiongemma_hf_native import build_prompt, extract_scores
+import re
 
 
 EXPECTED = [q["name"] for q in SEMANTIC_CONSTRUCTS]
@@ -20,6 +20,56 @@ OUTCOMES = [
     "icu_death",
 ]
 POSITIVE_CONSTRUCTS = set(EXPECTED) - {"reassuring_stability"}
+
+
+def build_prompt(note: str) -> str:
+    parts = [
+        "You are a clinical semantic scoring system.",
+        "Score ONLY the information explicitly supported by the clinical note below.",
+        "For each construct, return a number from 0.0 to 1.0 representing how strongly the TRUE criterion is supported.",
+        "0.0 means the TRUE criterion is not supported; 1.0 means it is strongly supported.",
+        "Return exactly one JSON object with the eight keys shown below and numeric values only.",
+        "Do not add markdown, explanations, units, or extra keys.",
+        "",
+        "Clinical note:",
+        note,
+        "",
+        "Constructs:",
+    ]
+    for q in SEMANTIC_CONSTRUCTS:
+        parts.extend([
+            f"- {q['name']}: {q['question']}",
+            f"  TRUE: {q['criteria']['true']}",
+            f"  FALSE: {q['criteria']['false']}",
+        ])
+    parts.extend([
+        "",
+        "Required JSON keys in this exact order:",
+        ", ".join(EXPECTED),
+    ])
+    return "\n".join(parts)
+
+
+def extract_scores(text: str) -> dict[str, float]:
+    candidates = re.findall(r"\\{[^{}]*\\}", text, flags=re.DOTALL)
+    for raw in reversed(candidates):
+        try:
+            obj = json.loads(raw)
+        except Exception:
+            continue
+        if not isinstance(obj, dict) or not all(name in obj for name in EXPECTED):
+            continue
+        scores: dict[str, float] = {}
+        try:
+            for name in EXPECTED:
+                value = float(obj[name])
+                if not 0.0 <= value <= 1.0:
+                    raise ValueError
+                scores[name] = value
+        except Exception:
+            continue
+        return scores
+    raise ValueError("No valid eight-score JSON object found.")
 
 
 def load_cases(path: Path, limit: int) -> list[dict]:
