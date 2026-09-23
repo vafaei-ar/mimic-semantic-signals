@@ -163,12 +163,24 @@ def main() -> None:
         )
         first_device = next(model.parameters()).device
         inputs = {k: v.to(first_device) if hasattr(v, "to") else v for k, v in inputs.items()}
+        input_len = inputs["input_ids"].shape[-1]
         with torch.inference_mode():
             generated = model.generate(
                 **inputs,
                 max_new_tokens=args.max_new_tokens,
             )
-        decoded = processor.decode(generated[0], skip_special_tokens=True)
+        sequences = getattr(generated, "sequences", generated)
+        if sequences.ndim != 2 or sequences.shape[0] != 1:
+            raise RuntimeError(
+                f"Unexpected generated sequence shape: {tuple(sequences.shape)}"
+            )
+        completion_ids = sequences[0, input_len:].detach().cpu().tolist()
+        decoded = processor.tokenizer.decode(
+            completion_ids,
+            skip_special_tokens=True,
+        )
+        if not isinstance(decoded, str):
+            raise TypeError(f"Decoded completion is not text: {type(decoded).__name__}")
         scores = extract_scores(decoded)
         outputs.append(
             {
