@@ -16,7 +16,7 @@ execution:
 
 security:
   project_only_filesystem: false
-  network_access: false
+  network_access: true
   inherit_environment: false
   destructive_operations: false
 
