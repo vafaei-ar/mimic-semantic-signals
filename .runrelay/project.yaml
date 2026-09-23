@@ -16,7 +16,7 @@ execution:
 
 security:
   project_only_filesystem: false
-  network_access: false
+  network_access: true
   inherit_environment: false
   destructive_operations: false
 
@@ -510,6 +510,25 @@ tasks:
       gpu_count: 1
       min_vram_gb: 6
       wait_minutes: 60
+
+  run_multitask_djev_recovery:
+    description: Recover the unfinished local DiffusionGemma-Jev arm only: pull the serving image, download public NVFP4 weights, run localhost-only inference on frozen cohorts, and evaluate aggregate semantic performance.
+    command:
+      - bash
+      - scripts/run_multitask_djev_recovery.sh
+    approval: manual
+    timeout_minutes: 720
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 32
+      gpu_count: 1
+      min_vram_gb: 24
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/local_djev_setup_report.json
+      - outputs/multitask_benchmark/djev_semantic_report_v1.json
 
   run_multitask_next_phase:
     description: Run structured-feature ablations, sampled-design calibration diagnostics, nonlinear random-forest sensitivity, then locally install/download DiffusionGemma-Jev assets, run localhost-only djev inference on frozen cohorts, and evaluate aggregate djev semantics.
