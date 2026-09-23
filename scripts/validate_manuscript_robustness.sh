@@ -23,7 +23,8 @@ cd "$(git rev-parse --show-toplevel)"
   src/58_evaluate_multitask_structured_ablations.py \
   src/59_summarize_multitask_rf.py \
   src/60_evaluate_multitask_sampling_calibration.py \
-  src/61_evaluate_multitask_djev.py
+  src/61_evaluate_multitask_djev.py \
+  src/62_diagnose_failed_djev_setup.py
 
 bash -n scripts/run_multitask_openjev.sh
 bash -n scripts/run_multitask_laya.sh
@@ -47,3 +48,5 @@ bash -n scripts/run_multitask_djev_local.sh
 bash -n scripts/run_multitask_djev_eval.sh
 
 bash -n scripts/run_multitask_next_phase.sh
+
+bash -n scripts/run_djev_failure_diagnosis.sh
