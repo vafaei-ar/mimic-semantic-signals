@@ -479,6 +479,23 @@ tasks:
     artifacts:
       - outputs/vasopressor_incremental_v5_complete_matched/robustness/semantic_scores_only_report.json
 
+  build_multitask_benchmark:
+    description: Build the frozen local MIMIC-III 12-hour invasive-ventilation, RRT, and ICU-death matched benchmark cohorts with endpoint-language exclusion and contemporaneous structured features; share aggregate manifest only.
+    command:
+      - bash
+      - scripts/run_multitask_benchmark_build.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/cohort_manifest_v1.json
+
   refine_rrt_endpoint:
     description: Compare conservative RRT initiation evidence tiers after excluding ambiguous dialysis off/out/removal bookkeeping; aggregate local audit only, no model inference.
     command:
