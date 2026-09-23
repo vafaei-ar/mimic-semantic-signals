@@ -19,7 +19,11 @@ cd "$(git rev-parse --show-toplevel)"
   src/54_build_multitask_benchmark.py \
   src/55_evaluate_multitask_semantics.py \
   src/56_summarize_multitask_lexical.py \
-  src/57_audit_local_djev_readiness.py
+  src/57_audit_local_djev_readiness.py \
+  src/58_evaluate_multitask_structured_ablations.py \
+  src/59_summarize_multitask_rf.py \
+  src/60_evaluate_multitask_sampling_calibration.py \
+  src/61_evaluate_multitask_djev.py
 
 bash -n scripts/run_multitask_openjev.sh
 bash -n scripts/run_multitask_laya.sh
@@ -29,3 +33,17 @@ bash -n scripts/run_multitask_semantic_eval.sh
 bash -n scripts/run_multitask_lexical_robustness.sh
 
 bash -n scripts/run_local_djev_readiness.sh
+
+bash -n scripts/run_multitask_structured_ablations.sh
+
+bash -n scripts/run_multitask_nonlinear_rf.sh
+
+bash -n scripts/run_multitask_sampling_calibration.sh
+
+bash -n scripts/setup_local_djev.sh
+
+bash -n scripts/run_multitask_djev_local.sh
+
+bash -n scripts/run_multitask_djev_eval.sh
+
+bash -n scripts/run_multitask_next_phase.sh
