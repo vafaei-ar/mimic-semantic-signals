@@ -70,6 +70,7 @@ def main():
         "identity":run(["id"]),
         "docker_group":run(["getent","group","docker"]),
         "sudo_noninteractive_docker_info":run(["sudo","-n","docker","info","--format","{{json .ServerVersion}}"]),
+        "sg_docker_info":run(["sg","docker","-c","docker info --format '{{json .ServerVersion}}'"]),
         "docker_image_inspect":run(["docker","image","inspect","ghcr.io/taeold/djev-run:latest","--format","{{.Id}}"]),
         "docker_ps_named":run(["docker","ps","-a","--filter","name=mimic-djev-local","--format","{{.ID}} {{.Status}} {{.Image}}"]),
         "gpu":run(["nvidia-smi","--query-gpu=index,name,memory.total,memory.free","--format=csv,noheader,nounits"]),
