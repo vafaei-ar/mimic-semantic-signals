@@ -3,6 +3,8 @@ set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 .venv/bin/python -m py_compile \
   src/runrelay_progress.py \
+  src/22_run_open_jev_real_local.py \
+  src/37_run_laya_real_local.py \
   src/43_evaluate_lexical_robustness.py \
   src/44_evaluate_nonlinear_structured_robustness.py \
   src/45_evaluate_transport_missingness_sensitivity.py \
@@ -15,3 +17,6 @@ cd "$(git rev-parse --show-toplevel)"
   src/52_audit_strict_multitask_endpoints.py \
   src/53_refine_rrt_endpoint.py \
   src/54_build_multitask_benchmark.py
+
+bash -n scripts/run_multitask_openjev.sh
+bash -n scripts/run_multitask_laya.sh
