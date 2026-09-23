@@ -200,6 +200,7 @@ def main() -> None:
     ap.add_argument("--per-outcome", type=int, default=6)
     ap.add_argument("--max-chunks", type=int, default=8)
     ap.add_argument("--max-new-tokens", type=int, default=256)
+    ap.add_argument("--parse-retries", type=int, default=2)
     ap.add_argument("--seed", type=int, default=20260923)
     args = ap.parse_args()
 
@@ -263,6 +264,8 @@ def main() -> None:
     errors: Counter[str] = Counter()
     failure_stages: Counter[str] = Counter()
     parse_failure_signatures: Counter[str] = Counter()
+    parse_retries_used_total = 0
+    chunks_using_parse_retry = 0
     all_scores: dict[str, list[float]] = {name: [] for name in EXPECTED}
     outcome_stats = {
         o: {
@@ -320,25 +323,41 @@ def main() -> None:
                     k: v.to(first_device) if hasattr(v, "to") else v
                     for k, v in inputs.items()
                 }
-                local_seed = args.seed + ordinal * 100 + chunk_index
-                torch.manual_seed(local_seed)
-                torch.cuda.manual_seed_all(local_seed)
-                stage = "generate"
-                with torch.inference_mode():
-                    generated = model.generate(
-                        **inputs,
-                        max_new_tokens=args.max_new_tokens,
-                    )
-                sequences = getattr(generated, "sequences", generated)
-                if sequences.ndim != 2 or sequences.shape[0] != 1:
-                    raise RuntimeError(
-                        f"unexpected_generated_shape={tuple(sequences.shape)}"
-                    )
-                stage = "decode_completion"
-                completion_ids = sequences[0, input_len:].detach().cpu().tolist()
-                decoded = tokenizer.decode(completion_ids, skip_special_tokens=True)
-                stage = "parse_completion"
-                chunk_scores.append(extract_scores(decoded))
+                parsed = None
+                retries_used_for_chunk = 0
+                for attempt in range(args.parse_retries + 1):
+                    local_seed = args.seed + ordinal * 1000 + chunk_index * 10 + attempt
+                    torch.manual_seed(local_seed)
+                    torch.cuda.manual_seed_all(local_seed)
+                    stage = "generate"
+                    with torch.inference_mode():
+                        generated = model.generate(
+                            **inputs,
+                            max_new_tokens=args.max_new_tokens,
+                        )
+                    sequences = getattr(generated, "sequences", generated)
+                    if sequences.ndim != 2 or sequences.shape[0] != 1:
+                        raise RuntimeError(
+                            f"unexpected_generated_shape={tuple(sequences.shape)}"
+                        )
+                    stage = "decode_completion"
+                    completion_ids = sequences[0, input_len:].detach().cpu().tolist()
+                    decoded = tokenizer.decode(completion_ids, skip_special_tokens=True)
+                    stage = "parse_completion"
+                    try:
+                        parsed = extract_scores(decoded)
+                        retries_used_for_chunk = attempt
+                        break
+                    except ValueError:
+                        if attempt >= args.parse_retries:
+                            raise
+                        continue
+                if parsed is None:
+                    raise RuntimeError("parse retry loop ended without scores")
+                chunk_scores.append(parsed)
+                if retries_used_for_chunk > 0:
+                    parse_retries_used_total += retries_used_for_chunk
+                    chunks_using_parse_retry += 1
 
             stage = "aggregate_scores"
             aggregated = aggregate_scores(chunk_scores)
@@ -433,6 +452,14 @@ def main() -> None:
         "torch_cuda_version": torch.version.cuda,
         "transformers_version": transformers.__version__,
         "seed": args.seed,
+        "parse_retry_policy": {
+            "max_retries_after_initial_generation": args.parse_retries,
+            "prompt_changes_on_retry": false,
+            "seed_schedule": "base_seed + note_ordinal*1000 + chunk_index*10 + attempt",
+            "acceptance": "first completion containing all eight numeric scores in [0,1]",
+        },
+        "parse_retries_used_total": parse_retries_used_total,
+        "chunks_using_parse_retry": chunks_using_parse_retry,
         "pilot_design": {
             "outcomes": OUTCOMES,
             "per_outcome": args.per_outcome,
