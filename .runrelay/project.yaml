@@ -479,6 +479,23 @@ tasks:
     artifacts:
       - outputs/vasopressor_incremental_v5_complete_matched/robustness/semantic_scores_only_report.json
 
+  audit_multitask_endpoints:
+    description: Aggregate feasibility audit for additional MIMIC-III deterioration outcomes before freezing a multi-outcome semantic benchmark; no model inference and no patient-level artifacts.
+    command:
+      - bash
+      - scripts/run_multitask_endpoint_feasibility.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_feasibility/endpoint_feasibility_report.json
+
   evaluate_transport_missingness_sensitivity:
     description: Re-evaluate frozen MIMIC to eICU/NWICU structured transport without missingness indicators and compare with the original indicator-based transport report.
     command:
