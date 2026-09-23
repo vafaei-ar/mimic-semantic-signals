@@ -7,6 +7,8 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from runrelay_progress import update_progress
+
 
 DEFAULT_ENDPOINT = "http://127.0.0.1:8011/v1/systemone"
 LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
@@ -48,6 +50,9 @@ def main() -> None:
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--model", default="jev-latest")
     ap.add_argument("--timeout", type=float, default=120.0)
+    ap.add_argument("--progress-offset", type=int, default=0)
+    ap.add_argument("--progress-total", type=int, default=0)
+    ap.add_argument("--progress-phase", default="djev_inference")
     args = ap.parse_args()
 
     ensure_local_endpoint(args.endpoint)
@@ -121,6 +126,17 @@ def main() -> None:
 
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
             f.flush()
+            attempted = completed + failed
+            if attempted % 25 == 0 or attempted == len(cases):
+                total = args.progress_total if args.progress_total > 0 else len(cases)
+                current = args.progress_offset + attempted
+                update_progress(
+                    current=current,
+                    total=total,
+                    phase=args.progress_phase,
+                    message=f"Local DiffusionGemma-Jev completed {current}/{total} frozen benchmark notes",
+                    unit="note",
+                )
 
     print(
         json.dumps(
