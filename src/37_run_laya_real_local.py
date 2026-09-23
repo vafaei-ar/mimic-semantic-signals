@@ -5,6 +5,8 @@ import json
 import os
 from pathlib import Path
 
+from runrelay_progress import update_progress
+
 
 POSITIVE_CONSTRUCTS = {
     "overall_clinician_concern",
@@ -88,6 +90,9 @@ def main() -> None:
     ap.add_argument("--chunk-overlap", type=int, default=100)
     ap.add_argument("--max-chunks", type=int, default=8)
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--progress-offset", type=int, default=0)
+    ap.add_argument("--progress-total", type=int, default=0)
+    ap.add_argument("--progress-phase", default="semantic_inference")
     args = ap.parse_args()
 
     model_dir = Path(args.model_dir).expanduser().resolve()
@@ -199,6 +204,16 @@ def main() -> None:
                 f.write(json.dumps(record, ensure_ascii=False) + "\n")
                 f.flush()
                 completed += 1
+                if completed % 25 == 0 or completed + failed == len(cases):
+                    total = args.progress_total if args.progress_total > 0 else len(cases)
+                    current = args.progress_offset + completed + failed
+                    update_progress(
+                        current=current,
+                        total=total,
+                        phase=args.progress_phase,
+                        message=f"Laya completed {current}/{total} frozen benchmark notes",
+                        unit="note",
+                    )
             except Exception as exc:
                 failed += 1
                 f.write(
@@ -216,6 +231,16 @@ def main() -> None:
                     + "\n"
                 )
                 f.flush()
+                if (completed + failed) % 25 == 0 or completed + failed == len(cases):
+                    total = args.progress_total if args.progress_total > 0 else len(cases)
+                    current = args.progress_offset + completed + failed
+                    update_progress(
+                        current=current,
+                        total=total,
+                        phase=args.progress_phase,
+                        message=f"Laya completed {current}/{total} frozen benchmark notes",
+                        unit="note",
+                    )
 
     print(
         json.dumps(
