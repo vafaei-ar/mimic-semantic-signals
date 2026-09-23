@@ -12,4 +12,5 @@ cd "$(git rev-parse --show-toplevel)"
   src/49_evaluate_documentation_context_sensitivity.py \
   src/50_evaluate_semantic_scores_only.py \
   src/51_audit_multitask_endpoints.py \
-  src/52_audit_strict_multitask_endpoints.py
+  src/52_audit_strict_multitask_endpoints.py \
+  src/53_refine_rrt_endpoint.py
