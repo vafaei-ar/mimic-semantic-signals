@@ -24,7 +24,8 @@ cd "$(git rev-parse --show-toplevel)"
   src/59_summarize_multitask_rf.py \
   src/60_evaluate_multitask_sampling_calibration.py \
   src/61_evaluate_multitask_djev.py \
-  src/62_diagnose_failed_djev_setup.py
+  src/62_diagnose_failed_djev_setup.py \
+  src/63_smoke_diffusiongemma_hf_native.py
 
 bash -n scripts/run_multitask_openjev.sh
 bash -n scripts/run_multitask_laya.sh
@@ -54,3 +55,5 @@ bash -n scripts/run_djev_failure_diagnosis.sh
 bash -n scripts/run_multitask_djev_recovery.sh
 
 bash -n scripts/run_djev_cuda12_fp8_smoke.sh
+
+bash -n scripts/run_diffusiongemma_hf_native_smoke.sh
