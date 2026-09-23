@@ -511,6 +511,24 @@ tasks:
       min_vram_gb: 6
       wait_minutes: 60
 
+  smoke_diffusiongemma_hf_native_cached:
+    description: Reuse the already-installed PyTorch CUDA 12.4 / Transformers environment and cached official DiffusionGemma checkpoint to run three fully offline synthetic semantic-score smoke cases. No downloads and no clinical notes.
+    command:
+      - bash
+      - scripts/run_diffusiongemma_hf_native_cached_smoke.sh
+    approval: automatic
+    timeout_minutes: 60
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 64
+      gpu_count: 2
+      min_vram_gb: 36
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/diffusiongemma_hf_native_smoke_report.json
+
   smoke_diffusiongemma_hf_native:
     description: Create an isolated PyTorch CUDA 12.4 and Transformers environment, download the official DiffusionGemma checkpoint, and run three synthetic native-Hugging-Face semantic-score smoke cases across two GPUs. No clinical notes are processed.
     command:
