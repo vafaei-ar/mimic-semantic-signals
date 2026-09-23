@@ -511,6 +511,23 @@ tasks:
       min_vram_gb: 6
       wait_minutes: 60
 
+  evaluate_multitask_semantics:
+    description: Evaluate frozen zero-shot Open-Jev and Laya semantic scores across invasive ventilation, RRT, and ICU death using strict 8-scores-only, structured-only, and combined logistic models; share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_multitask_semantic_eval.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/zero_shot_semantic_report_v1.json
+
   build_multitask_benchmark:
     description: Build the frozen local MIMIC-III 12-hour invasive-ventilation, RRT, and ICU-death matched benchmark cohorts with endpoint-language exclusion and contemporaneous structured features; share aggregate manifest only.
     command:
