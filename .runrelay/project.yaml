@@ -618,6 +618,23 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/supervised_text_encoder_v2_smoke.json
 
+  audit_supervised_text_encoder_v2_checkpoint:
+    description: Hash and verify the selected epoch-4 local supervised encoder v2 checkpoint without opening the locked test split; share aggregate checkpoint provenance only.
+    command:
+      - bash
+      - scripts/run_supervised_text_encoder_v2_checkpoint_audit.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/multitask_benchmark/supervised_text_encoder_v2_checkpoint_audit.json
+
   train_supervised_text_encoder_v2:
     description: Train the frozen repaired v2 supervised Open-Jev DeBERTa three-outcome upper-bound model on train only and select checkpoint on validation only; locked test remains untouched.
     command:
