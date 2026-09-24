@@ -47,3 +47,14 @@ This analysis is deliberately structured-only. Semantic and lexical v2 evaluatio
 New high-level reports use numbered filenames so that GitHub directory listings communicate reading order.
 
 Detailed protocols and result freezes keep descriptive filenames because they are referenced by code, jobs, historical commits, and other freeze documents. They should not be renamed merely for aesthetics.
+
+
+## Post-review v2.1 gate
+
+A second code review identified two primary corrections that must be made before any structured-only result is opened: adult/NICU eligibility and GCS-verbal ETT handling. Additional endpoint, language, timing, split-freeze, and treatment-context sensitivities are also prespecified.
+
+Read next:
+
+- `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`
+
+The current `E8R7Q5M3` output is not manuscript-facing and should not be read/frozen before the v2.1 correction is completed.
