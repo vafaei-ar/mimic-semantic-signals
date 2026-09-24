@@ -1486,3 +1486,20 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/integrity/external_review_integrity_audit_v1.json
+
+  build_corrected_landmark12_v2_cohorts:
+    description: Build corrected v2 12-hour landmark cohorts with source-compatible ventilation/RRT ascertainment, normalized note hygiene, symmetric horizon eligibility, and note selection before any outcome-language sensitivity; share aggregate manifest only.
+    command:
+      - bash
+      - scripts/run_corrected_landmark12_v2_cohort_build.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/population_landmark12_cohort_manifest_v2.json
