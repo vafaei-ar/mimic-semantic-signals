@@ -130,3 +130,7 @@ bash -n scripts/run_zigong_nursing_clock_alignment_audit.sh
 .venv/bin/python -m py_compile src/79_audit_zigong_dictionary_times.py
 
 bash -n scripts/run_zigong_dictionary_timing_audit.sh
+
+.venv/bin/python -m py_compile src/80_audit_zigong_nursing_ventilation_fields.py
+
+bash -n scripts/run_zigong_nursing_ventilation_field_audit.sh
