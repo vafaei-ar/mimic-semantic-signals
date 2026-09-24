@@ -198,3 +198,7 @@ bash -n scripts/run_population_landmark12_note_workload.sh
 bash -n scripts/run_population_landmark12_openjev.sh
 
 bash -n scripts/run_population_landmark12_laya.sh
+
+.venv/bin/python -m py_compile src/97_evaluate_population_landmark12_semantic_extension.py
+
+bash -n scripts/run_population_landmark12_semantic_extension.sh
