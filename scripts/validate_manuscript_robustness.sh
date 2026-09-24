@@ -134,3 +134,7 @@ bash -n scripts/run_zigong_dictionary_timing_audit.sh
 .venv/bin/python -m py_compile src/80_audit_zigong_nursing_ventilation_fields.py
 
 bash -n scripts/run_zigong_nursing_ventilation_field_audit.sh
+
+.venv/bin/python -m py_compile src/81_audit_zigong_nursing_ventilation_endpoint.py
+
+bash -n scripts/run_zigong_nursing_ventilation_endpoint_audit.sh
