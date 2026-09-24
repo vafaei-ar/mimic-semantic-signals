@@ -175,3 +175,29 @@ Affected v1 eICU and Zigong analyses require corrected v2 reruns.
 The central claim should be frozen only after Steps 5–9 are interpretable.
 
 No additional model shopping should occur merely because a corrected v2 result is disappointing.
+
+
+## Post-review correction inserted before predictive-result lock
+
+A second code review occurred after the v2 cohort/features were built but before the structured-only result was opened.
+
+Read:
+
+- `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`
+
+This inserts a **v2.1 correction gate** between structured feature extraction and any manuscript-facing predictive result.
+
+The current `E8R7Q5M3` run belongs to the pre-v2.1 cohort/feature lineage and must not be promoted as the structured result.
+
+The revised order is:
+
+1. integrity audit;
+2. corrected v2 cohort;
+3. enhanced structured mapping/extraction;
+4. **post-review v2.1 adult + GCS correction**;
+5. fresh v2.1 structured evaluation with frozen split hashes;
+6. corrected semantic/TF-IDF evaluation;
+7. language/timing/treatment-context sensitivities;
+8. clinician construct validation;
+9. corrected external validation;
+10. manuscript claim lock.
