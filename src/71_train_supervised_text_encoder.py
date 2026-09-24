@@ -5,6 +5,7 @@ import json
 import math
 import os
 import random
+import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -534,4 +535,28 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as exc:
+        report_path = None
+        for i, arg in enumerate(sys.argv[:-1]):
+            if arg == "--report":
+                report_path = Path(sys.argv[i + 1]).expanduser().resolve()
+                break
+        failure = {
+            "analysis": "Post-freeze supervised Open-Jev DeBERTa multitask development failure diagnostic",
+            "local_only": True,
+            "network_enabled": False,
+            "test_split_read": False,
+            "contains_note_text": False,
+            "contains_source_patient_identifiers": False,
+            "patient_level_predictions_shared": False,
+            "status": "failed",
+            "error_type": type(exc).__name__,
+            "error_message": str(exc)[:2000],
+        }
+        if report_path is not None:
+            report_path.parent.mkdir(parents=True, exist_ok=True)
+            report_path.write_text(json.dumps(failure, indent=2) + "\n", encoding="utf-8")
+        print(json.dumps(failure, indent=2))
+        raise
