@@ -511,7 +511,7 @@ def main() -> None:
             "chunk_overlap": args.chunk_overlap,
             "max_chunks": args.max_chunks,
             "precision": "bfloat16 autocast",
-            "gradient_checkpointing": false,
+            "gradient_checkpointing": False,
             "gradient_clip_norm": 1.0,
             "seed": args.seed,
             "outcome_weights": outcome_weights,
