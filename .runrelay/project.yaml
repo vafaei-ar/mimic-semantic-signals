@@ -546,6 +546,23 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/diffusiongemma_hf_semantic_report_v1.json
 
+  build_multitask_tuning_cohorts:
+    description: Rebuild the three frozen MIMIC outcomes inside a deterministic patient-first 70/15/15 train/validation/test partition, with matching performed separately within each split; share aggregate manifest only.
+    command:
+      - bash
+      - scripts/run_multitask_tuning_cohort_build.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/tuning_cohort_manifest_v1.json
+
   audit_multitask_tuning_feasibility:
     description: Read-only local audit of model trainability, GPU/software readiness, and a leakage-safe patient-disjoint post-freeze train/validation/test split across the frozen multitask cohorts; share aggregate diagnostics only.
     command:
