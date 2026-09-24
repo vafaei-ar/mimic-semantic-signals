@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
-ROOT="${MIMIC_ROOT:-data/real_mimic_local/mimiciii}"
+ROOT="$HOME/datasets/MIMIC/physionet.org/files"
 LOCAL_OUT="data/real_mimic_local/multitask_tuning_v1"
 MANIFEST="outputs/multitask_benchmark/tuning_cohort_manifest_v1.json"
 
