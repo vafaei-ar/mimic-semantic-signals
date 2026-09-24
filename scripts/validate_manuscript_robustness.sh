@@ -184,3 +184,7 @@ bash -n scripts/run_population_landmark12_cohort_build.sh
 .venv/bin/python -m py_compile src/93_build_population_landmark12_structured.py
 
 bash -n scripts/run_population_landmark12_structured_build.sh
+
+.venv/bin/python -m py_compile src/94_evaluate_population_landmark12_structured.py
+
+bash -n scripts/run_population_landmark12_structured_calibration.sh
