@@ -26,6 +26,23 @@ monitoring:
   tmux_default: false
 
 tasks:
+  build_population_landmark12_note_workload:
+    description: Deduplicate the frozen 12-hour landmark predictor notes across ventilation, RRT, and ICU death by exact note text without reading labels; materialize a local unique corpus and share aggregate workload counts only.
+    command:
+      - bash
+      - scripts/run_population_landmark12_note_workload.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/multitask_benchmark/population_landmark12_note_workload_v1.json
+
   evaluate_population_landmark12_structured:
     description: Evaluate the frozen structured-only 12-hour population landmark model with 5-fold patient-grouped cross-fitting, population calibration, and prespecified decision-curve thresholds; share aggregate metrics only.
     command:
