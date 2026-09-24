@@ -326,10 +326,6 @@ def main() -> None:
     base = Path(args.base).expanduser().resolve()
     report_path = Path(args.report).expanduser().resolve()
     checkpoint_dir = Path(args.checkpoint_dir).expanduser().resolve()
-    if (base / "test").exists():
-        # Existence is expected, but this script intentionally never lists or opens it.
-        pass
-
     model_path = discover_checkpoint()
     tokenizer = AutoTokenizer.from_pretrained(str(model_path), local_files_only=True)
 
