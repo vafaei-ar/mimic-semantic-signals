@@ -1,5 +1,9 @@
 # MIMIC Semantic Signals
 
+> **Current project status (2026-09-24):** The project has progressed well beyond reconnaissance. We now have frozen single-outcome and multi-outcome semantic benchmarks, supervised text-learning comparisons, structured external transport to eICU/NWICU, cross-language narrative transport to Zigong, and a prevalence-preserving population calibration branch. The active analysis is the full-population semantic extension. See [docs/project_status_lancet_digital_health.md](docs/project_status_lancet_digital_health.md) for the current scientific findings, limitations, and prioritized path toward a Lancet Digital Health submission.
+
+Detailed protocol and result-freeze documents under `docs/` are authoritative. The historical reconnaissance material below is retained for provenance.
+
 This repository evaluates whether MIMIC can support publishable studies of **semantic clinical signals** before any Jev or LLM modeling is performed.
 
 The first milestone is a local, privacy-preserving reconnaissance run over available MIMIC modules. It compares four candidate scientific directions:
