@@ -546,6 +546,24 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/diffusiongemma_hf_semantic_report_v1.json
 
+  probe_supervised_text_encoder_recipe:
+    description: Train-only mechanistic probe of supervised encoder collapse comparing frozen/full encoder and CLS/mean pooling with fixed positive class weighting; validation and locked test remain untouched.
+    command:
+      - bash
+      - scripts/run_supervised_text_encoder_recipe_probe.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 32
+      gpu_count: 1
+      min_vram_gb: 20
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/supervised_text_encoder_recipe_probe_v1.json
+
   diagnose_supervised_text_encoder_learning:
     description: Diagnose chance-level supervised encoder development using train/validation only by checking TF-IDF cohort signal, selected-checkpoint train fit, encoder parameter movement, and a tiny train-only overfit probe; locked test remains untouched.
     command:
