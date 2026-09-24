@@ -160,3 +160,17 @@ Do not claim that:
 - the supervised encoder is a semantic-preserving JEV model.
 
 Use `docs/03_V2_ANALYSIS_LINEAGE.md` for the exact current provenance chain.
+
+
+## Second-review v2.1 correction gate
+
+A second independent code review found two additional primary corrections before the structured result can be opened:
+
+- the current ICU-death cohort does not restrict to adults/NICU-excluded stays;
+- GCS verbal currently treats ETT/tracheostomy-coded verbal responses as numeric 1.
+
+It also confirmed a ventilation endpoint asymmetry, treatment-language regex ambiguity, split-freeze weaknesses, and important treatment/timing sensitivity needs.
+
+These are now frozen in `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`.
+
+Therefore `E8R7Q5M3` is no longer the manuscript-facing structured gate. Its output, if terminal, should remain unopened/unpromoted until the v2.1 cohort and feature corrections are complete and a fresh structured evaluation is run.
