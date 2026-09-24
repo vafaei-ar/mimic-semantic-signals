@@ -114,3 +114,11 @@ bash -n scripts/run_supervised_text_encoder_v2_final_test.sh
 .venv/bin/python -m py_compile src/30_inventory_zigong.py
 
 bash -n scripts/run_zigong_inventory.sh
+
+.venv/bin/python -m py_compile src/31_audit_zigong_vasopressor_endpoint.py
+
+.venv/bin/python -m py_compile src/33_audit_zigong_time_origins.py
+
+bash -n scripts/run_zigong_pressor_endpoint_audit.sh
+
+bash -n scripts/run_zigong_time_origin_audit.sh
