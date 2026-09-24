@@ -167,7 +167,17 @@ def load_demographics(root: Path, unique: pd.DataFrame) -> tuple[pd.DataFrame, d
 
     q = unique.merge(d[["subject_id", "dob", "gender"]], on="subject_id", how="left")
     q["icu_intime"] = q["landmark_time"] - pd.to_timedelta(LANDMARK_H, unit="h")
-    age = (q["icu_intime"] - q["dob"]).dt.total_seconds() / (365.2425 * 24 * 3600)
+    # Use Python date arithmetic rather than pandas nanosecond timedeltas:
+    # MIMIC-III deidentification can shift DOBs for the oldest patients far enough
+    # back that a ~300-year subtraction overflows int64 nanoseconds.
+    age_values = []
+    for intime, dob in zip(q["icu_intime"], q["dob"]):
+        if pd.isna(intime) or pd.isna(dob):
+            age_values.append(np.nan)
+        else:
+            delta_days = (intime.to_pydatetime().date() - dob.to_pydatetime().date()).days
+            age_values.append(delta_days / 365.2425)
+    age = pd.Series(age_values, index=q.index, dtype=float)
     q["age_at_icu_years"] = age.clip(lower=0, upper=90)
     q["sex"] = q["gender"].where(q["gender"].isin(["M", "F"]), "UNKNOWN")
 
