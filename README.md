@@ -1,23 +1,80 @@
 # MIMIC Semantic Signals
 
-> **Current project status (2026-09-24):** The project has progressed well beyond reconnaissance. We now have frozen single-outcome and multi-outcome semantic benchmarks, supervised text-learning comparisons, structured external transport to eICU/NWICU, cross-language narrative transport to Zigong, and a prevalence-preserving population calibration branch. The active analysis is the full-population semantic extension. See [docs/project_status_lancet_digital_health.md](docs/project_status_lancet_digital_health.md) for the current scientific findings, limitations, and prioritized path toward a Lancet Digital Health submission.
+This repository studies whether prospectively available ICU narrative documentation contains reusable information about near-term deterioration beyond structured physiology, and whether a small set of clinically interpretable semantic scores can provide useful low-dimensional compression of that narrative signal.
 
-Detailed protocol and result-freeze documents under `docs/` are authoritative. The historical reconnaissance material below is retained for provenance.
+## Start here
 
-This repository evaluates whether MIMIC can support publishable studies of **semantic clinical signals** before any Jev or LLM modeling is performed.
+The repository contains both a corrected **v2 manuscript-facing lineage** and an intentionally preserved **v1 provenance archive**.
 
-The first milestone is a local, privacy-preserving reconnaissance run over available MIMIC modules. It compares four candidate scientific directions:
+Read these reports in order:
 
-1. **Semantic vital signs before deterioration** using longitudinal MIMIC-III notes.
-2. **Hidden clinician concern / narrative-physiology discordance** using MIMIC-III notes plus structured physiology.
-3. **Unresolved-care phenotype at discharge** using MIMIC-IV discharge summaries plus later ED/hospital utilization.
-4. **Narrative-measurement discordance in cardiology** using MIMIC-IV ECG/echo/core data.
+1. [01 — Read this first](docs/01_READ_FIRST.md)
+2. [02 — Current scientific status](docs/02_CURRENT_SCIENTIFIC_STATUS.md)
+3. [03 — Corrected v2 analysis lineage](docs/03_V2_ANALYSIS_LINEAGE.md)
+4. [04 — v1 provenance and integrity hold](docs/04_V1_PROVENANCE_AND_HOLD.md)
+5. [05 — External validation status](docs/05_EXTERNAL_VALIDATION_STATUS.md)
 
-## Design rule
+Detailed frozen protocols and result documents under `docs/` remain authoritative for exact cohort definitions, item IDs, model settings, artifact hashes, and prespecified interpretation rules.
 
-The reconnaissance scripts read patient-level MIMIC locally, but the export bundle is restricted to aggregate schemas, counts, overlaps, timing coverage, and feasibility summaries. The code does not intentionally export raw note text, `subject_id`, `hadm_id`, or `stay_id`.
+## Current stage
 
-## Expected local layout
+The v1 manuscript-facing results are under an integrity hold after an external review identified cohort and implementation problems that were confirmed by a local aggregate audit.
+
+The current primary analysis has been rebuilt as a corrected v2 lineage:
+
+- source-compatible 12-hour landmark cohorts are frozen;
+- note hygiene and note selection are corrected;
+- a stronger 34-feature structured baseline is frozen and extracted;
+- the active analysis is the **structured-only v2 predictive evaluation**;
+- corrected semantic/TF-IDF analyses remain locked until the structured result is complete and frozen.
+
+Current RunRelay gate at the latest documentation update:
+
+- `E8R7Q5M3 — Evaluate Enhanced Structured V2`
+- exact commit: `0f72c995d240900e15d65dd7b6e3c4f7048453ea`
+
+See [03 — Corrected v2 analysis lineage](docs/03_V2_ANALYSIS_LINEAGE.md) for the full ordered chain.
+
+## Scientific framing
+
+The study is not framed as “JEV beats LLMs.”
+
+Open-Jev, Laya, and DiffusionGemma are semantic measurement instruments. The scientific questions are:
+
+- whether narrative contains prospective information beyond strong structured physiology;
+- whether a small interpretable semantic representation preserves useful parts of that information;
+- how much is lost relative to high-dimensional lexical text;
+- whether the signal is stable across outcomes, sites, and languages;
+- whether the semantic constructs have clinician-validated meaning.
+
+## Repository organization
+
+- `docs/01_*.md`–`docs/05_*.md`: current navigation/synthesis layer.
+- `docs/*protocol*.md`: frozen prespecified analysis protocols.
+- `docs/*freeze*.md`: frozen cohort/result/mapping documents.
+- `src/`: analysis and cohort code.
+- `scripts/`: bounded execution wrappers.
+- `.runrelay/project.yaml`: authoritative named RunRelay tasks.
+- `data/real_mimic_local/`: local restricted/derived row-level data; never committed.
+- `outputs/`: aggregate derived outputs; only explicitly declared safe artifacts may leave the workstation.
+
+## Data governance
+
+Credentialed MIMIC and other restricted clinical data remain local.
+
+Do not commit or transmit:
+
+- raw note text;
+- patient identifiers;
+- row-level restricted clinical data;
+- credentials/secrets;
+- unrestricted project directories containing sensitive material.
+
+RunRelay jobs declare only safe aggregate artifacts for sharing.
+
+## Local environment
+
+Typical local layout:
 
 ```text
 ~/datasets/MIMIC/physionet.org/files/
@@ -30,9 +87,7 @@ The reconnaissance scripts read patient-level MIMIC locally, but the export bund
 └── mimic-cxr
 ```
 
-Version subdirectories are discovered recursively.
-
-## Setup
+Setup:
 
 ```bash
 git clone https://github.com/vafaei-ar/mimic-semantic-signals.git
@@ -43,114 +98,8 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Run
+## Historical material
 
-```bash
-python run_reconnaissance.py \
-  --root ~/datasets/MIMIC/physionet.org/files \
-  --output outputs/recon_v1
-```
+Early reconnaissance, v1 matched cohorts, v1 population analyses, model-tuning experiments, and v1 external validation code are intentionally retained for provenance.
 
-The runner continues when an optional module is unavailable and records failures in the manifest.
-
-## Main outputs
-
-```text
-outputs/recon_v1/
-├── inventory.csv
-├── inventory_summary.json
-├── linkage_matrix.csv
-├── linkage_details.csv
-├── note_categories.csv
-├── note_timing_summary.csv
-├── candidate_outcomes.csv
-├── outcome_event_counts.csv
-├── outcome_itemid_discovery.json
-├── pre_event_coverage.csv
-├── pre_event_coverage_by_category.csv
-├── discharge_followup.csv
-├── cardiac_linkage.csv
-├── candidate_feasibility.csv
-├── feasibility_report.md
-├── run_manifest.json
-└── mimic_feasibility_results.zip
-```
-
-### What the first run tests
-
-- Whether MIMIC-III has enough precisely timed notes before hard deterioration events at 6, 12, 24, and 48 hours.
-- Whether vasopressor and intubation events can be discovered from the local MIMIC-III release using `D_ITEMS` labels rather than assumed item IDs.
-- Whether MIMIC-IV discharge summaries have enough observable 7- and 30-day subsequent hospital/ED use for an unresolved-care phenotype study.
-- Whether ECG, echo, core EHR, and notes overlap at a scale that could support narrative-measurement discordance analyses.
-
-## What to send back
-
-Send only:
-
-```text
-outputs/recon_v1/mimic_feasibility_results.zip
-```
-
-That archive is intended to contain aggregate reconnaissance outputs only.
-
-## Next phase
-
-We will inspect the reconnaissance results and select the strongest one or two scientific questions. Only then will we define semantic constructs, run a small Jev/LLM comparator pilot, and plan human validation.
-
-**Current stage: reconnaissance only. No model has been selected and no study hypothesis is locked.**
-
-
-## Second-pass reconnaissance
-
-After `recon_v1`, run:
-
-```bash
-git pull
-
-python run_reconnaissance_v2.py \
-  --root ~/datasets/MIMIC/physionet.org/files \
-  --output outputs/recon_v2
-```
-
-Send back:
-
-```text
-outputs/recon_v2/mimic_feasibility_results_v2.zip
-```
-
-The second pass answers two specific questions:
-
-1. Are **actual narrative clinician notes** (physician, nursing, respiratory, general, consult) present often enough before deterioration, independent of radiology coverage?
-2. Are the preliminary vasopressor/intubation event definitions clinically defensible, or did broad text matching pull in inappropriate `D_ITEMS` labels?
-
-## MIMIC + external model APIs
-
-Do not send raw MIMIC text to Jev or any other external API unless the service configuration has been verified to satisfy the current PhysioNet requirements for credentialed data, including zero data retention, no training use, and no human review where required. Until that is established, semantic-model experiments in this repository should remain local.
-
-
-## Synthetic development sandbox
-
-While third-party retention requirements are being resolved, development can proceed using a schema-faithful synthetic MIMIC-III subset.
-
-Run:
-
-```bash
-git pull
-
-python run_synthetic_demo.py \
-  --output-root data/synthetic_mimic \
-  --n-admissions 500
-```
-
-Then verify the generated table headers against the exact locally downloaded MIMIC-III files:
-
-```bash
-python synthetic/validate_against_local_headers.py \
-  --real-root ~/datasets/MIMIC/physionet.org/files \
-  --synthetic-root data/synthetic_mimic \
-  --output outputs/synthetic_schema_check.csv
-```
-
-The synthetic data contain a controlled latent clinician-concern signal, including narrative-physiology discordant cases, so the semantic pipeline can be developed and tested against known ground truth before any real clinical text is processed by an external service.
-
-See `synthetic/README.md` for details.
+Do not infer current manuscript status from old filenames or scripts. Use [04 — v1 provenance and integrity hold](docs/04_V1_PROVENANCE_AND_HOLD.md) to understand what remains scientifically informative and what has been superseded.
