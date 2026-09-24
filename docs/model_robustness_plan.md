@@ -1,3 +1,5 @@
+> **Historical planning note (2026-09-24):** This is a v1-era model-planning document, not the current execution plan. DiffusionGemma was subsequently evaluated, and the project is now in the corrected v2 lineage. Read `docs/01_READ_FIRST.md` and `docs/03_V2_ANALYSIS_LINEAGE.md` before using this file.
+
 # Model robustness plan
 
 Updated: 2026-09-21
