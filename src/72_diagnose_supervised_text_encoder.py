@@ -99,8 +99,6 @@ def main() -> None:
 
         stage = "model_load"
         encoder = AutoModel.from_pretrained(str(checkpoint), local_files_only=True)
-        if hasattr(encoder, "gradient_checkpointing_enable"):
-            encoder.gradient_checkpointing_enable()
         model = mod.MultiTaskDeberta(encoder, int(encoder.config.hidden_size), 3)
         device = torch.device("cuda:0")
         model.to(device)
