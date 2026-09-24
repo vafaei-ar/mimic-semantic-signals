@@ -26,6 +26,42 @@ monitoring:
   tmux_default: false
 
 tasks:
+  infer_population_landmark12_openjev:
+    description: Run the frozen Open-Jev representation fully offline on the 36,117 deduplicated 12-hour population-landmark notes; row-level scores remain local and only aggregate inference diagnostics are shared.
+    command:
+      - bash
+      - scripts/run_population_landmark12_openjev.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 16
+      gpu_count: 1
+      min_vram_gb: 12
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/population_landmark12_openjev_inference_v1.json
+
+  infer_population_landmark12_laya:
+    description: Run the frozen pinned Laya representation fully offline on the 36,117 deduplicated 12-hour population-landmark notes; row-level scores remain local and only aggregate inference diagnostics are shared.
+    command:
+      - bash
+      - scripts/run_population_landmark12_laya.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 16
+      gpu_count: 1
+      min_vram_gb: 12
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/population_landmark12_laya_inference_v1.json
+
   build_population_landmark12_note_workload:
     description: Deduplicate the frozen 12-hour landmark predictor notes across ventilation, RRT, and ICU death by exact note text without reading labels; materialize a local unique corpus and share aggregate workload counts only.
     command:
