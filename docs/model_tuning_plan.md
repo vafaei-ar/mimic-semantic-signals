@@ -1,3 +1,5 @@
+> **Historical planning note (2026-09-24):** This file records an earlier tuning strategy. It is not the current manuscript-facing analysis plan. The corrected v2 program forbids opening semantic/text performance until the structured-only v2 gate is complete. Start with `docs/01_READ_FIRST.md` and `docs/03_V2_ANALYSIS_LINEAGE.md`.
+
 # Clinical semantic decision-model tuning plan
 
 ## Goal
