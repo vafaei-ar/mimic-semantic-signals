@@ -98,3 +98,8 @@ bash -n scripts/run_supervised_text_encoder_recipe_probe.sh
 bash -n scripts/run_supervised_text_encoder_v2_smoke.sh
 
 bash -n scripts/run_supervised_text_encoder_development_v2.sh
+
+HELP_TEXT="$("./.venv/bin/python" src/71_train_supervised_text_encoder.py --help)"
+for opt in --encoder-learning-rate --head-learning-rate --positive-class-weight --protocol --analysis-name; do
+  printf '%s\\n' "$HELP_TEXT" | grep -F -- "$opt" >/dev/null
+done
