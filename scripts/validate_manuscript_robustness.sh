@@ -156,3 +156,11 @@ bash -n scripts/run_zigong_tokenizer_language_audit_v2.sh
 .venv/bin/python -m py_compile src/85_audit_zigong_diffusiongemma_tokenizer.py
 
 bash -n scripts/run_zigong_diffusiongemma_tokenizer_audit.sh
+
+.venv/bin/python -m py_compile src/86_run_zigong_bilingual_gate_jev_laya.py
+
+.venv/bin/python -m py_compile src/87_run_zigong_bilingual_gate_diffusiongemma.py
+
+.venv/bin/python -m py_compile src/88_summarize_zigong_bilingual_gate.py
+
+bash -n scripts/run_zigong_bilingual_semantic_gate.sh
