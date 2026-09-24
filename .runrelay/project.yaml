@@ -26,6 +26,41 @@ monitoring:
   tmux_default: false
 
 tasks:
+  infer_zigong_diffusiongemma_ventilation24:
+    description: Run the frozen native-HF DiffusionGemma fully offline on all 340 frozen Zigong 24-hour ventilation predictor notes; labels are not read during inference, row-level scores remain local, and only aggregate diagnostics are shared.
+    command:
+      - bash
+      - scripts/run_zigong_diffusiongemma_inference.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 64
+      gpu_count: 2
+      min_vram_gb: 36
+      wait_minutes: 60
+    artifacts:
+      - outputs/zigong_external/diffusiongemma_inference_report_v1.json
+
+  evaluate_zigong_diffusiongemma_transport:
+    description: Fit the frozen eight-score DiffusionGemma semantic-only logistic model on the full MIMIC ventilation cohort and apply it unchanged to the frozen Zigong 24-hour cohort with matched-set bootstrap uncertainty; share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_zigong_diffusiongemma_transport_eval.sh
+    approval: automatic
+    timeout_minutes: 90
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/zigong_external/diffusiongemma_external_transport_v1.json
+
   run_zigong_bilingual_semantic_gate:
     description: Run the frozen synthetic English-Chinese semantic applicability gate for Open-Jev, Laya, and DiffusionGemma before any Zigong outcome scoring; no patient data or outcome labels are read.
     command:
