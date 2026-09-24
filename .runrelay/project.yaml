@@ -546,6 +546,23 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/diffusiongemma_hf_semantic_report_v1.json
 
+  audit_multitask_tuning_feasibility:
+    description: Read-only local audit of model trainability, GPU/software readiness, and a leakage-safe patient-disjoint post-freeze train/validation/test split across the frozen multitask cohorts; share aggregate diagnostics only.
+    command:
+      - bash
+      - scripts/run_tuning_feasibility_audit.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/multitask_benchmark/tuning_feasibility_audit_v1.json
+
   evaluate_multitask_diffusiongemma_lexical_robustness:
     description: Test frozen native-HF DiffusionGemma prompted semantic scores after the same fold-fitted TF-IDF lexical control across ventilation, RRT, and ICU death; share aggregate metrics only.
     command:
