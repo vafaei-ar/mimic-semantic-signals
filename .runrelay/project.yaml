@@ -26,6 +26,23 @@ monitoring:
   tmux_default: false
 
 tasks:
+  audit_zigong_nursing_clock_alignment:
+    description: Diagnose Zigong nursing ChartTime alignment against same-agent vasopressor orders and report relevant data-dictionary definitions using aggregate metadata only; do not define an endpoint.
+    command:
+      - bash
+      - scripts/run_zigong_nursing_clock_alignment_audit.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/zigong_external/nursing_clock_alignment_audit.json
+
   audit_zigong_pressor_endpoint:
     description: Audit aggregate agreement and timing between Zigong vasopressor orders and high-specificity nursing administration-like pressor mentions without sharing note text or patient identifiers.
     command:
