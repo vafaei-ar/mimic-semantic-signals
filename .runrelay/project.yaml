@@ -26,6 +26,23 @@ monitoring:
   tmux_default: false
 
 tasks:
+  audit_zigong_dictionary_timing:
+    description: Extract safe local Zigong data-dictionary metadata for nursing, medication, transfer, and discharge timing fields before any clock correction is frozen.
+    command:
+      - bash
+      - scripts/run_zigong_dictionary_timing_audit.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/zigong_external/dictionary_timing_audit.json
+
   audit_zigong_nursing_clock_alignment:
     description: Diagnose Zigong nursing ChartTime alignment against same-agent vasopressor orders and report relevant data-dictionary definitions using aggregate metadata only; do not define an endpoint.
     command:
