@@ -152,3 +152,7 @@ bash -n scripts/run_zigong_tokenizer_language_audit.sh
 .venv/bin/python -m py_compile src/84_audit_zigong_tokenizers_v2.py
 
 bash -n scripts/run_zigong_tokenizer_language_audit_v2.sh
+
+.venv/bin/python -m py_compile src/85_audit_zigong_diffusiongemma_tokenizer.py
+
+bash -n scripts/run_zigong_diffusiongemma_tokenizer_audit.sh
