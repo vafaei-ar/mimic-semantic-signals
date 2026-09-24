@@ -106,3 +106,7 @@ for opt in --encoder-learning-rate --head-learning-rate --positive-class-weight 
 done
 
 bash -n scripts/run_supervised_text_encoder_v2_checkpoint_audit.sh
+
+.venv/bin/python -m py_compile src/77_evaluate_supervised_text_encoder_v2_final_test.py
+
+bash -n scripts/run_supervised_text_encoder_v2_final_test.sh
