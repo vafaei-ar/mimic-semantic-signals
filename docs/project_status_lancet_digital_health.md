@@ -4,6 +4,12 @@ Updated: 2026-09-24
 
 This is the high-level scientific status document for the project. Detailed protocols and result freezes in `docs/` remain authoritative for exact cohort definitions, model settings, artifact hashes, and prespecified analyses.
 
+## Integrity hold
+
+As of 2026-09-24, manuscript-facing interpretation is paused after an external code review identified cohort and implementation issues that can affect headline estimates. Several are already confirmed directly from code, including ventilation endpoint/source observability, asymmetric matched risk-set logic, Open-Jev/Laya chunk-aggregation inconsistency, the eICU lab-window clamp, and Zigong leakage-regex problems. See `docs/integrity_review_hold_2026-09-24.md` and `docs/external_review_integrity_audit_protocol_v1.md`.
+
+All v1 results remain preserved for provenance. Do not use them as final Lancet Digital Health estimates until a corrected v2 lineage is frozen and rerun.
+
 ## Scientific question
 
 The project asks whether prospectively available ICU narrative documentation contains reusable information about near-term deterioration that is not fully represented by structured physiology, and whether a small set of clinically interpretable semantic scores can serve as a portable low-dimensional representation of that narrative signal.
