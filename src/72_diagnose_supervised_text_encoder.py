@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import os
+import sys
 import time
 from pathlib import Path
 
@@ -15,6 +16,7 @@ def load_training_module():
     if spec is None or spec.loader is None:
         raise RuntimeError("Could not load supervised encoder module.")
     mod = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = mod
     spec.loader.exec_module(mod)
     return mod
 
@@ -38,7 +40,7 @@ def main() -> None:
         "stages": [],
         "status": "started",
     }
-    stage = "start"
+    stage = "training_module_load"
     started = time.perf_counter()
 
     try:
