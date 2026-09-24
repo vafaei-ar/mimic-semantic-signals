@@ -26,6 +26,23 @@ monitoring:
   tmux_default: false
 
 tasks:
+  audit_zigong_nursing_ventilation_fields:
+    description: Characterize structured Zigong nursing ventilation and airway fields using aggregate counts and suppressed value frequencies only; do not define an endpoint or score any model.
+    command:
+      - bash
+      - scripts/run_zigong_nursing_ventilation_field_audit.sh
+    approval: automatic
+    timeout_minutes: 90
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/zigong_external/nursing_ventilation_field_audit.json
+
   audit_zigong_dictionary_timing:
     description: Extract safe local Zigong data-dictionary metadata for nursing, medication, transfer, and discharge timing fields before any clock correction is frozen.
     command:
