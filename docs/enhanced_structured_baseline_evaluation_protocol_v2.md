@@ -74,6 +74,7 @@ Pipeline:
    - max_leaf_nodes = 15;
    - min_samples_leaf = 50;
    - l2_regularization = 1.0;
+   - early_stopping = false;
    - class_weight = None;
    - random_state fixed by repeat/fold.
 
