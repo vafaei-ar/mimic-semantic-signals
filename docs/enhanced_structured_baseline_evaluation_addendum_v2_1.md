@@ -1,0 +1,94 @@
+# Enhanced structured evaluation addendum v2.1
+
+Updated: 2026-09-24
+
+This addendum supersedes the split-freeze and calibration-reporting details of:
+
+- `docs/enhanced_structured_baseline_evaluation_protocol_v2.md`
+
+It does not change the prespecified linear/nonlinear model hyperparameters.
+
+## Inputs
+
+The v2.1 evaluation may begin only after:
+
+1. corrected adult v2.1 cohort build;
+2. v2.1 GCS-verbal-corrected structured feature extraction;
+3. exact patient-grouped CV split freeze.
+
+## Exact split freeze
+
+The five repeated five-fold patient-grouped assignments are generated in a separate no-performance step.
+
+For each outcome, the split-freeze step writes a local protected file containing:
+
+- `case_id`;
+- `subject_id`;
+- `repeat_1_fold` through `repeat_5_fold`.
+
+Rules:
+
+- group = source patient;
+- `StratifiedGroupKFold`;
+- repeat seeds = 20260924–20260928;
+- five folds per repeat;
+- every patient must occupy exactly one fold within each repeat;
+- existing split files may be reused only if they are byte-for-byte/deterministically identical to the frozen assignment;
+- the aggregate split manifest records SHA-256 for every local split file.
+
+The predictive evaluator **loads** these split files. It does not regenerate or overwrite them.
+
+Later semantic/TF-IDF analyses must load the same split files and verify the same hashes.
+
+## Expected-count assertions
+
+The split-freeze manifest records, for each outcome:
+
+- row count;
+- case count;
+- control count;
+- unique-patient count;
+- split-file SHA-256.
+
+The v2.1 structured evaluator must assert those counts and hashes before fitting any model.
+
+Once the corrected v2.1 cohort result is frozen, those counts become the downstream expected-count contract.
+
+## Calibration terminology
+
+Report three distinct calibration quantities:
+
+1. **calibration-in-the-large (CITL)**
+   - intercept-only recalibration with the prediction logit used as an offset;
+   - ideal value 0.
+
+2. **joint recalibration intercept**
+   - intercept from logistic recalibration `logit(Y) = alpha + beta * logit(p)`;
+   - interpreted jointly with slope.
+
+3. **calibration slope**
+   - beta from the same joint recalibration model;
+   - ideal value 1.
+
+Do not label the joint recalibration intercept as calibration-in-the-large.
+
+## Bootstrap
+
+The paired patient-cluster bootstrap remains conditional on the repeat-averaged out-of-fold predictions and does not refit models.
+
+Report this limitation explicitly.
+
+The bootstrap should include:
+
+- CITL;
+- joint recalibration intercept;
+- calibration slope;
+- AUROC;
+- AUPRC;
+- Brier;
+- log loss;
+- decision-curve net benefit.
+
+## Result status
+
+The pre-v2.1 job `E8R7Q5M3` is not the manuscript-facing structured result and should not be opened/frozen as such.
