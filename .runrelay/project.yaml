@@ -1469,3 +1469,20 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/population_documentation_process_sensitivity_v1.json
+
+  audit_external_review_integrity:
+    description: Run the frozen PHI-safe aggregate audit of external code-review findings across MIMIC cohort/source behavior, note hygiene, semantic aggregation, eICU lab windows, and Zigong leakage regex behavior.
+    command:
+      - bash
+      - scripts/run_external_review_integrity_audit.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/integrity/external_review_integrity_audit_v1.json
