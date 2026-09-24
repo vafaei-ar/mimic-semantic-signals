@@ -188,4 +188,4 @@ bash -n scripts/run_population_landmark12_structured_build.sh
 .venv/bin/python -m py_compile src/94_evaluate_population_landmark12_structured.py
 
 bash -n scripts/run_population_landmark12_structured_calibration.sh
-\nPYTHONPATH=src .venv/bin/python -c 'import importlib.util; s=importlib.util.spec_from_file_location("popcal","src/94_evaluate_population_landmark12_structured.py"); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); m._self_check_weighted_bootstrap_math()'\n
+PYTHONPATH=src .venv/bin/python -c 'import importlib.util; s=importlib.util.spec_from_file_location("popcal","src/94_evaluate_population_landmark12_structured.py"); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); m._self_check_weighted_bootstrap_math()'
