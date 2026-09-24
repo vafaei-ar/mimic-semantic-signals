@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "purpose": "Label-free bilingual semantic consistency gate before any Zigong outcome performance is inspected.",
+  "constructs": [
+    "overall_clinician_concern",
+    "worsening_trajectory",
+    "respiratory_concern",
+    "hemodynamic_concern",
+    "poor_treatment_response",
+    "escalation_considered",
+    "diagnostic_uncertainty",
+    "reassuring_stability"
+  ],
+  "thresholds": {
+    "min_language_spearman": 0.7,
+    "max_median_absolute_language_difference": 0.15,
+    "min_positive_target_contrasts_both_languages": 7,
+    "min_strong_target_contrasts_both_languages": 6,
+    "strong_margin": 0.15
+  },
+  "contrasts": [
+    {
+      "construct": "overall_clinician_concern",
+      "negative": {
+        "en": "Synthetic note: The patient is comfortable, vital signs are unchanged, and the clinical team documents no new acute concern.",
+        "zh": "合成记录：患者目前舒适，生命体征无明显变化，医疗团队记录目前没有新的急性担忧。"
+      },
+      "positive": {
+        "en": "Synthetic note: The clinical team is increasingly concerned because the patient's overall condition appears to be deteriorating and may worsen soon.",
+        "zh": "合成记录：患者总体病情似乎正在恶化并可能很快进一步加重，医疗团队对此越来越担忧。"
+      }
+    },
+    {
+      "construct": "worsening_trajectory",
+      "negative": {
+        "en": "Synthetic note: Compared with the earlier assessment, the patient's condition is unchanged and there is no clear deterioration.",
+        "zh": "合成记录：与先前评估相比，患者病情没有明显变化，目前没有明确恶化趋势。"
+      },
+      "positive": {
+        "en": "Synthetic note: Compared with the earlier assessment, the patient's clinical condition is clearly worse and continues to deteriorate.",
+        "zh": "合成记录：与先前评估相比，患者临床状况明显变差，并且仍在继续恶化。"
+      }
+    },
+    {
+      "construct": "respiratory_concern",
+      "negative": {
+        "en": "Synthetic note: Breathing is comfortable, oxygen requirement is unchanged, and there is no increased work of breathing.",
+        "zh": "合成记录：患者呼吸舒适，氧需求没有增加，也没有呼吸做功增加。"
+      },
+      "positive": {
+        "en": "Synthetic note: Work of breathing is increasing, oxygen requirement is rising, and the team is concerned about respiratory deterioration.",
+        "zh": "合成记录：患者呼吸做功增加，氧需求持续上升，医疗团队担忧其呼吸状况正在恶化。"
+      }
+    },
+    {
+      "construct": "hemodynamic_concern",
+      "negative": {
+        "en": "Synthetic note: Blood pressure is stable, the extremities are warm, and peripheral perfusion is adequate.",
+        "zh": "合成记录：患者血压稳定，四肢温暖，外周灌注良好。"
+      },
+      "positive": {
+        "en": "Synthetic note: Blood pressure is falling, the extremities are cool, perfusion is poor, and the team is concerned about hemodynamic instability.",
+        "zh": "合成记录：患者血压持续下降，四肢发凉，灌注不良，医疗团队担忧存在血流动力学不稳定。"
+      }
+    },
+    {
+      "construct": "poor_treatment_response",
+      "negative": {
+        "en": "Synthetic note: After the current treatment, symptoms and abnormal vital signs improved as expected.",
+        "zh": "合成记录：经过当前治疗后，患者症状和异常生命体征均按预期改善。"
+      },
+      "positive": {
+        "en": "Synthetic note: Despite the current treatment, symptoms and abnormal vital signs show little improvement and the response is disappointing.",
+        "zh": "合成记录：尽管已经给予当前治疗，患者症状和异常生命体征仍几乎没有改善，治疗反应不理想。"
+      }
+    },
+    {
+      "construct": "escalation_considered",
+      "negative": {
+        "en": "Synthetic note: The team plans to continue the current monitoring and treatment without escalation of support or level of care.",
+        "zh": "合成记录：医疗团队计划继续目前的监测和治疗，不考虑升级支持措施或提高诊疗级别。"
+      },
+      "positive": {
+        "en": "Synthetic note: Because of the current clinical status, the team is considering stronger monitoring, additional support, and escalation to a higher level of care.",
+        "zh": "合成记录：鉴于患者目前的临床状况，医疗团队正在考虑加强监测、增加支持措施并升级至更高级别的诊疗。"
+      }
+    },
+    {
+      "construct": "diagnostic_uncertainty",
+      "negative": {
+        "en": "Synthetic note: The cause of the patient's findings is established and the management plan is clear.",
+        "zh": "合成记录：患者目前异常表现的原因已经明确，后续处理方案也很清楚。"
+      },
+      "positive": {
+        "en": "Synthetic note: The cause of the patient's findings remains unclear, several diagnoses are still being considered, and this uncertainty affects management.",
+        "zh": "合成记录：患者目前异常表现的原因仍不明确，医疗团队仍在考虑多种诊断，这种不确定性正在影响当前处理。"
+      }
+    },
+    {
+      "construct": "reassuring_stability",
+      "negative": {
+        "en": "Synthetic note: The patient has a new acute deterioration with worsening symptoms and the team is concerned about the change.",
+        "zh": "合成记录：患者出现新的急性恶化，症状加重，医疗团队对这一变化表示担忧。"
+      },
+      "positive": {
+        "en": "Synthetic note: The patient remains clinically stable and reassuring with no new acute concern.",
+        "zh": "合成记录：患者临床状况保持稳定且令人放心，目前没有新的急性问题。"
+      }
+    }
+  ]
+}
