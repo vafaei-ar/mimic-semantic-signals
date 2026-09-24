@@ -119,19 +119,19 @@ Structured-only population results:
 
 Decision-curve net benefit is positive across the full prespecified threshold range for RRT and ICU death, and mainly through 2% risk for ventilation.
 
-The population semantic extension is now the active analysis. It preserves the full population, explicitly models no-note rows, and compares:
+The population semantic extension is complete and frozen in `docs/population_landmark12_semantic_extension_result_freeze_v1.md`.
 
-1. structured;
-2. structured + note context;
-3. + Open-Jev;
-4. + Laya;
-5. + TF-IDF;
-6. TF-IDF + Open-Jev;
-7. TF-IDF + Laya.
+The main result is outcome-dependent:
 
-Primary semantic comparisons are against the note-context baseline, not against structured-only, so gains cannot be attributed simply to whether a note exists.
+| Outcome | Open-Jev ΔAUROC vs note context | Laya ΔAUROC vs note context | Open-Jev ΔAUROC after TF-IDF |
+| --- | ---: | ---: | ---: |
+| Ventilation | +0.00338 [-0.00134, 0.00823] | -0.00469 [-0.00835, -0.00131] | +0.00147 [-0.00260, 0.00570] |
+| RRT | -0.00075 [-0.00249, 0.00132] | -0.00033 [-0.00274, 0.00207] | -0.00092 [-0.00244, 0.00069] |
+| ICU death | **+0.01332 [0.00576, 0.02153]** | **+0.00720 [0.00160, 0.01347]** | **+0.00537 [0.00013, 0.01073]** |
 
-Active RunRelay job: `H8M3Q7V2`, `evaluate_population_landmark12_semantic_extension`. No result should be recorded here until the job is terminal and its aggregate artifact is frozen.
+For ICU death, Open-Jev retains a small lexical-independent AUROC increment. However, semantic additions do not improve AUPRC or Brier score consistently, and net-benefit gains are threshold-specific.
+
+The largest new observation is documentation-process signal. For ventilation, adding note availability/category/source/age to structured physiology increases AUROC from **0.707 to 0.860**. For RRT, the same context raises AUPRC from **0.144 to 0.222** while AUROC changes little. This effect must be decomposed before manuscript lock so that documentation-process signal is not conflated with narrative-content signal.
 
 ## Current interpretation
 
@@ -150,12 +150,12 @@ The main remaining weaknesses are scientific rather than computational:
 
 - construct validity: the eight semantic scores have not yet been validated against blinded clinician annotation;
 - external narrative replication: Zigong transport is promising but modest and model/language-specific;
-- population-level semantic utility: the current full-population semantic analysis is still running;
+- documentation-process confounding: note availability/timing/type carry substantial signal, especially for ventilation, and require explicit decomposition before manuscript lock;
 - general clinical relevance: a top-tier paper needs to show why interpretable semantic compression is useful beyond AUROC, for example reproducibility, portability, calibration, decision support, or efficiency.
 
 ## Prioritized path toward Lancet Digital Health
 
-1. **Finish and freeze the population semantic extension.** This is the current gate. It determines whether semantic information improves true-prevalence prediction, calibration, and decision-curve utility after accounting for note availability and lexical text.
+1. **Decompose the population note-context effect.** This is now the immediate analytic gate. Separate note availability, category/source, note age, and note-available-only semantic performance. Keep it explicitly labeled as a post-result sensitivity and do not reinterpret it as population calibration.
 2. **Add construct validation by clinicians.** Use a prespecified blinded sample of notes, multiple clinical raters, explicit definitions for the eight constructs, inter-rater reliability, and model-versus-human agreement/calibration. This is the most important missing validation of the semantic measurement layer.
 3. **Complete additional external structured validation** in MIMIC-BR, HiRID, and SICdb when approvals arrive, using frozen endpoints/models and no external tuning.
 4. **Seek another external narrative cohort if feasible.** The current external narrative evidence rests on Zigong and a cross-language model gate. A second independent narrative dataset would materially strengthen the claim of reusable semantic signals.
