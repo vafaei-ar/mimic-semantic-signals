@@ -26,6 +26,23 @@ monitoring:
   tmux_default: false
 
 tasks:
+  build_zigong_ventilation24_cohort:
+    description: Build the frozen local-only Zigong 24-hour invasive-ventilation narrative risk-set cohort with 1:3 patient-unique controls; share only the aggregate cohort manifest.
+    command:
+      - bash
+      - scripts/run_build_zigong_ventilation24_cohort.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/zigong_external/ventilation24_cohort_manifest.json
+
   audit_zigong_nursing_ventilation_endpoint_24h:
     description: Audit the same predeclared within-nursing Zigong invasive-ventilation definitions using a 6-hour washout and 24-hour external transport horizon, with aggregate incidence and clean pre-event note availability only; no model scoring.
     command:
