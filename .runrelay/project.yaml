@@ -600,6 +600,42 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/supervised_text_encoder_diagnostic_v1.json
 
+  smoke_supervised_text_encoder_v2:
+    description: Bounded train/validation smoke test of the frozen repaired v2 supervised encoder recipe with 3:1 positive weighting and differential learning rates; locked test remains untouched.
+    command:
+      - bash
+      - scripts/run_supervised_text_encoder_v2_smoke.sh
+    approval: automatic
+    timeout_minutes: 60
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 1
+      min_vram_gb: 20
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/supervised_text_encoder_v2_smoke.json
+
+  train_supervised_text_encoder_v2:
+    description: Train the frozen repaired v2 supervised Open-Jev DeBERTa three-outcome upper-bound model on train only and select checkpoint on validation only; locked test remains untouched.
+    command:
+      - bash
+      - scripts/run_supervised_text_encoder_development_v2.sh
+    approval: automatic
+    timeout_minutes: 480
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 32
+      gpu_count: 1
+      min_vram_gb: 20
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/supervised_text_encoder_development_v2.json
+
   smoke_supervised_text_encoder:
     description: Bounded local smoke test of the post-freeze supervised Open-Jev DeBERTa multitask upper-bound training path using train/validation only; locked test remains untouched and only aggregate diagnostics are shared.
     command:
