@@ -29,7 +29,11 @@ cd "$(git rev-parse --show-toplevel)"
   src/64_calibrate_diffusiongemma_hf_native.py \
   src/65_pilot_diffusiongemma_hf_native_real.py \
   src/66_run_diffusiongemma_hf_native_multitask.py \
-  src/67_evaluate_multitask_diffusiongemma_hf.py
+  src/67_evaluate_multitask_diffusiongemma_hf.py \
+  src/68_evaluate_multitask_diffusiongemma_lexical.py \
+  src/69_audit_tuning_feasibility.py \
+  src/70_build_multitask_tuning_cohorts.py \
+  src/71_train_supervised_text_encoder.py
 
 bash -n scripts/run_multitask_openjev.sh
 bash -n scripts/run_multitask_laya.sh
