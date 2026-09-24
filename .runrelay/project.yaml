@@ -1503,3 +1503,20 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/population_landmark12_cohort_manifest_v2.json
+
+  audit_enhanced_structured_baseline_v2:
+    description: Run the model-free v2 dictionary and prospective-availability audit for the enhanced structured baseline; share aggregate mapping/availability only.
+    command:
+      - bash
+      - scripts/run_enhanced_structured_baseline_discovery_v2.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/enhanced_structured_baseline_discovery_v2.json
