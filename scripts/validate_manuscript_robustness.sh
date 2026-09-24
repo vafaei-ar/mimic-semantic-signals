@@ -226,3 +226,12 @@ bash -n scripts/run_enhanced_structured_baseline_v2.sh
 .venv/bin/python -m py_compile src/103_evaluate_enhanced_structured_baseline_v2.py
 
 bash -n scripts/run_enhanced_structured_baseline_evaluation_v2.sh
+
+.venv/bin/python -m py_compile src/104_build_corrected_landmark12_v2_1_cohorts.py
+.venv/bin/python -m py_compile src/105_build_enhanced_structured_baseline_v2_1.py
+.venv/bin/python -m py_compile src/106_freeze_enhanced_structured_cv_splits_v2_1.py
+.venv/bin/python -m py_compile src/107_evaluate_enhanced_structured_baseline_v2_1.py
+bash -n scripts/run_corrected_landmark12_v2_1_cohort_build.sh
+bash -n scripts/run_enhanced_structured_baseline_v2_1.sh
+bash -n scripts/run_freeze_enhanced_structured_cv_splits_v2_1.sh
+bash -n scripts/run_enhanced_structured_baseline_evaluation_v2_1.sh
