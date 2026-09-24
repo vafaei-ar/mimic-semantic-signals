@@ -26,6 +26,23 @@ monitoring:
   tmux_default: false
 
 tasks:
+  evaluate_population_landmark12_semantic_extension:
+    description: Evaluate the frozen full-population 12-hour semantic extension with structured, note-context, Open-Jev, Laya, TF-IDF, and lexical-plus-semantic models using the same patient-grouped folds and paired patient-cluster bootstrap comparisons; share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_population_landmark12_semantic_extension.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/population_landmark12_semantic_extension_v1.json
+
   infer_population_landmark12_openjev:
     description: Run the frozen Open-Jev representation fully offline on the 36,117 deduplicated 12-hour population-landmark notes; row-level scores remain local and only aggregate inference diagnostics are shared.
     command:
