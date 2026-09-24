@@ -93,12 +93,12 @@ def candidate_id_map(cands: dict) -> dict[str,set[int]]:
     return out
 
 
-def add_counts(counter: dict, concept: str, outcome: str, ids: set[int], observed: pd.DataFrame, stay_col: str):
+def add_counts(counter: dict, concept: str, outcome: str, ids: set[int], observed: pd.DataFrame, stay_col: str, cohort_n: int):
     if not ids:
         counter.setdefault(concept,{})[outcome]={"candidate_itemids":0,"stays_with_value":0,"fraction":0.0}
         return
     q=observed[observed["itemid"].isin(ids) & observed["outcome"].eq(outcome)]
-    denom=int(observed.loc[observed["outcome"].eq(outcome),stay_col].nunique())
+    denom=int(cohort_n)
     n=int(q[stay_col].nunique())
     counter.setdefault(concept,{})[outcome]={
         "candidate_itemids":int(len(ids)),
@@ -236,12 +236,12 @@ def main():
     outcomes=("invasive_ventilation","renal_replacement_therapy","icu_death")
     for concept,ids in char_ids.items():
         for outcome in outcomes:
-            add_counts(availability["chartevents"],concept,outcome,ids,char_obs,"icustay_id")
+            add_counts(availability["chartevents"],concept,outcome,ids,char_obs,"icustay_id",cohort_report[outcome]["unique_icu_stays"])
     for concept,ids in lab_ids.items():
         for outcome in outcomes:
-            add_counts(availability["labevents"],concept,outcome,ids,lab_obs,"icustay_id")
+            add_counts(availability["labevents"],concept,outcome,ids,lab_obs,"icustay_id",cohort_report[outcome]["unique_icu_stays"])
     for outcome in outcomes:
-        add_counts(availability["urine_output"],"urine_output_6h",outcome,urine_ids,urine_obs,"icustay_id")
+        add_counts(availability["urine_output"],"urine_output_6h",outcome,urine_ids,urine_obs,"icustay_id",cohort_report[outcome]["unique_icu_stays"])
 
     update_progress(current=5,total=5,phase="done",message="Completed model-free enhanced baseline discovery audit",unit="stage")
     report={
