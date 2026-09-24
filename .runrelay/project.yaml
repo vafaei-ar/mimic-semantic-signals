@@ -26,6 +26,23 @@ monitoring:
   tmux_default: false
 
 tasks:
+  evaluate_population_landmark12_structured:
+    description: Evaluate the frozen structured-only 12-hour population landmark model with 5-fold patient-grouped cross-fitting, population calibration, and prespecified decision-curve thresholds; share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_population_landmark12_structured_calibration.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 16
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/population_landmark12_structured_calibration_v1.json
+
   build_population_landmark12_structured:
     description: Build frozen structured physiology and laboratory features at the 12-hour population landmark for all observable MIMIC stays using 6-hour vital and 24-hour laboratory lookbacks; share aggregate availability only.
     command:
