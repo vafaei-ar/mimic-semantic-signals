@@ -8,6 +8,8 @@ from pathlib import Path
 
 import numpy as np
 
+from semantic_schema import SEMANTIC_CONSTRUCTS
+
 OUTCOMES=("invasive_ventilation","renal_replacement_therapy","icu_death")
 
 
@@ -90,16 +92,7 @@ def main():
                     "source_outcomes":sorted(memberships[nid]),
                     "note_characters":len(text),
                 },
-                "questions":[
-                    "overall_clinician_concern",
-                    "worsening_trajectory",
-                    "respiratory_concern",
-                    "hemodynamic_concern",
-                    "poor_treatment_response",
-                    "escalation_considered",
-                    "diagnostic_uncertainty",
-                    "reassuring_stability",
-                ],
+                "questions":SEMANTIC_CONSTRUCTS,
                 "gold":None,
             }
             f.write(json.dumps(rec,ensure_ascii=False)+"\n")
@@ -127,6 +120,8 @@ def main():
         "note_character_count_across_outcome_rows":qstats(chars),
         "local_unique_corpus":str(corpus_path),
         "local_mapping":str(map_path),
+        "question_schema_source":"src/semantic_schema.py",
+        "question_count":int(len(SEMANTIC_CONSTRUCTS)),
         "guardrail":"Exact-text deduplication only. No outcome labels are read or used. Note text and case mappings remain local."
     }
     manifest.write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
