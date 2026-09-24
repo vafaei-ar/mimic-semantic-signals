@@ -1,3 +1,5 @@
+> **Current-status note (2026-09-24):** This file is the historical acquisition-plan document. For current external-analysis validity and rerun requirements, read `docs/05_EXTERNAL_VALIDATION_STATUS.md` first. In particular, eICU v1 is affected by the pre-admission lab-window clipping bug and Zigong v1 by the leakage-regex bug.
+
 # External data portfolio for Semantic Vital Signs
 
 Updated: 2026-09-20
