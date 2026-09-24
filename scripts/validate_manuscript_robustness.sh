@@ -94,3 +94,7 @@ bash -n scripts/run_supervised_text_encoder_diagnostic.sh
 bash -n scripts/run_supervised_text_encoder_learning_diagnostic.sh
 
 bash -n scripts/run_supervised_text_encoder_recipe_probe.sh
+
+bash -n scripts/run_supervised_text_encoder_v2_smoke.sh
+
+bash -n scripts/run_supervised_text_encoder_development_v2.sh
