@@ -75,3 +75,5 @@ bash -n scripts/run_multitask_diffusiongemma_hf_eval.sh
 bash -n scripts/run_multitask_diffusiongemma_lexical.sh
 
 bash -n scripts/run_tuning_feasibility_audit.sh
+
+bash -n scripts/run_multitask_tuning_cohort_build.sh
