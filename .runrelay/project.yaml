@@ -546,6 +546,23 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/diffusiongemma_hf_semantic_report_v1.json
 
+  evaluate_multitask_diffusiongemma_lexical_robustness:
+    description: Test frozen native-HF DiffusionGemma prompted semantic scores after the same fold-fitted TF-IDF lexical control across ventilation, RRT, and ICU death; share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_multitask_diffusiongemma_lexical.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/diffusiongemma_lexical_report_v1.json
+
   pilot_diffusiongemma_hf_native_real:
     description: Run a fully offline 18-note local MIMIC pilot across the three frozen multi-outcome cohorts to measure DiffusionGemma parsing, score resolution, chunking, and throughput; share aggregate diagnostics only.
     command:
