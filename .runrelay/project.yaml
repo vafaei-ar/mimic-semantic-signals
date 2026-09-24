@@ -1520,3 +1520,20 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/enhanced_structured_baseline_discovery_v2.json
+
+  build_enhanced_structured_baseline_v2:
+    description: Extract the frozen 34-feature enhanced structured baseline for corrected v2 landmark cohorts; keep row-level features local and share aggregate availability diagnostics only.
+    command:
+      - bash
+      - scripts/run_enhanced_structured_baseline_v2.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/enhanced_structured_baseline_features_v2.json
