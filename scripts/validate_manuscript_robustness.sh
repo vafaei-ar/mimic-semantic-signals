@@ -210,3 +210,7 @@ bash -n scripts/run_population_documentation_process_sensitivity.sh
 .venv/bin/python -m py_compile src/99_audit_external_review_integrity.py
 
 bash -n scripts/run_external_review_integrity_audit.sh
+
+.venv/bin/python -m py_compile src/100_build_corrected_landmark12_v2_cohorts.py
+
+bash -n scripts/run_corrected_landmark12_v2_cohort_build.sh
