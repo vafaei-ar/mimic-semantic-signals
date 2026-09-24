@@ -71,7 +71,7 @@ def read_indices(local_root: Path) -> tuple[pd.DataFrame, dict]:
         rows.append(d[["outcome","icustay_id","hadm_id","landmark_time","dbsource"]])
         reports[outcome]={"rows":int(len(d)),"unique_icu_stays":int(d["icustay_id"].nunique())}
     all_rows=pd.concat(rows,ignore_index=True)
-    unique=all_rows.drop_duplicates(["icustay_id","hadm_id","landmark_time"]).copy()
+    unique=all_rows.drop_duplicates(["outcome","icustay_id","hadm_id","landmark_time"]).copy()
     return unique,reports
 
 
