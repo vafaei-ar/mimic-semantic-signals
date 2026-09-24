@@ -1452,3 +1452,20 @@ tasks:
       min_ram_gb: 2
       gpu_count: 0
       wait_minutes: 10
+
+  evaluate_population_documentation_process_sensitivity:
+    description: Run the frozen post-result population documentation-process decomposition and note-available-only semantic sensitivity; share aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_population_documentation_process_sensitivity.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/population_documentation_process_sensitivity_v1.json
