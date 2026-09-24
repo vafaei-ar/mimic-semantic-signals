@@ -26,6 +26,40 @@ monitoring:
   tmux_default: false
 
 tasks:
+  audit_zigong_pressor_endpoint:
+    description: Audit aggregate agreement and timing between Zigong vasopressor orders and high-specificity nursing administration-like pressor mentions without sharing note text or patient identifiers.
+    command:
+      - bash
+      - scripts/run_zigong_pressor_endpoint_audit.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/zigong_external/vasopressor_endpoint_audit.json
+
+  audit_zigong_time_origins:
+    description: Audit whether Zigong nursing-chart, medication-order, and ICU-transfer clocks share a defensible practical time origin using aggregate timing summaries only.
+    command:
+      - bash
+      - scripts/run_zigong_time_origin_audit.sh
+    approval: automatic
+    timeout_minutes: 90
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/zigong_external/time_origin_audit.json
+
   inventory_zigong_external:
     description: Inventory the locally downloaded Zigong critical-care database for table structure, timing fields, narrative availability, and aggregate vasopressor-label evidence without sharing note text or patient identifiers.
     command:
