@@ -122,3 +122,7 @@ bash -n scripts/run_zigong_inventory.sh
 bash -n scripts/run_zigong_pressor_endpoint_audit.sh
 
 bash -n scripts/run_zigong_time_origin_audit.sh
+
+.venv/bin/python -m py_compile src/78_audit_zigong_nursing_clock_alignment.py
+
+bash -n scripts/run_zigong_nursing_clock_alignment_audit.sh
