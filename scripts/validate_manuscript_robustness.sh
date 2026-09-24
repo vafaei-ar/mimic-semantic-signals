@@ -192,3 +192,9 @@ PYTHONPATH=src .venv/bin/python -c 'import importlib.util; s=importlib.util.spec
 .venv/bin/python -m py_compile src/95_build_population_landmark12_note_corpus.py
 
 bash -n scripts/run_population_landmark12_note_workload.sh
+
+.venv/bin/python -m py_compile src/96_summarize_population_semantic_inference.py
+
+bash -n scripts/run_population_landmark12_openjev.sh
+
+bash -n scripts/run_population_landmark12_laya.sh
