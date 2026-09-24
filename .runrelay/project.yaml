@@ -26,6 +26,24 @@ monitoring:
   tmux_default: false
 
 tasks:
+  run_zigong_bilingual_semantic_gate:
+    description: Run the frozen synthetic English-Chinese semantic applicability gate for Open-Jev, Laya, and DiffusionGemma before any Zigong outcome scoring; no patient data or outcome labels are read.
+    command:
+      - bash
+      - scripts/run_zigong_bilingual_semantic_gate.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 64
+      gpu_count: 2
+      min_vram_gb: 36
+      wait_minutes: 60
+    artifacts:
+      - outputs/zigong_external/bilingual_semantic_gate_v1.json
+
   audit_zigong_diffusiongemma_tokenizer:
     description: Audit the DiffusionGemma tokenizer on the frozen Zigong cohort inside the exact native-HF CUDA 12.4 environment; read no labels, load no model weights, and perform no semantic inference.
     command:
