@@ -379,9 +379,13 @@ def main() -> None:
     device = torch.device("cuda:0")
     model.to(device)
 
+    encoder_lr = args.encoder_learning_rate if args.encoder_learning_rate > 0 else args.learning_rate
+    head_lr = args.head_learning_rate if args.head_learning_rate > 0 else args.learning_rate
     optimizer = torch.optim.AdamW(
-        model.parameters(),
-        lr=args.learning_rate,
+        [
+            {"params": model.encoder.parameters(), "lr": encoder_lr},
+            {"params": model.head.parameters(), "lr": head_lr},
+        ],
         weight_decay=args.weight_decay,
     )
     batches_per_epoch = len(train_loader)
@@ -429,6 +433,7 @@ def main() -> None:
                     note_logits,
                     labels,
                     reduction="none",
+                    pos_weight=torch.tensor(args.positive_class_weight, device=device),
                 )
                 loss = (per_note * weights).mean() / args.grad_accum
 
@@ -505,6 +510,9 @@ def main() -> None:
             "gradient_accumulation": args.grad_accum,
             "effective_note_batch_size": args.note_batch_size * args.grad_accum,
             "learning_rate": args.learning_rate,
+            "encoder_learning_rate": encoder_lr,
+            "head_learning_rate": head_lr,
+            "positive_class_weight": args.positive_class_weight,
             "weight_decay": args.weight_decay,
             "warmup_fraction": args.warmup_fraction,
             "chunk_tokens": args.chunk_tokens,
