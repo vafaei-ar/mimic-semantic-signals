@@ -229,6 +229,44 @@ def bootstrap_patient_cluster(df,n_boot,*,progress_base,total_progress,outcome,c
         "decision_curve_model_net_benefit_ci95":{k:ci(v) for k,v in nb.items()},
     }
 
+
+def _self_check_weighted_bootstrap_math():
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import average_precision_score,brier_score_loss,roc_auc_score
+
+    y=np.array([0,1,0,1,0,1,0,1],dtype=int)
+    p=np.array([0.05,0.80,0.20,0.65,0.40,0.55,0.10,0.90],dtype=float)
+    patient_codes=np.array([0,0,1,2,2,3,4,4],dtype=int)
+    patient_mult=np.array([2,0,1,3,1],dtype=int)
+    w=patient_mult[patient_codes].astype(float)
+    idx=np.repeat(np.arange(len(y)),w.astype(int))
+
+    prepared=_prepare_weighted_rank_metrics(y,p)
+    auc_fast,ap_fast=_weighted_auc_ap(prepared,w)
+    auc_exact=float(roc_auc_score(y[idx],p[idx]))
+    ap_exact=float(average_precision_score(y[idx],p[idx]))
+    brier_fast=float(np.dot(w,(p-y.astype(float))**2)/w.sum())
+    brier_exact=float(brier_score_loss(y[idx],p[idx]))
+
+    z=logit(p).reshape(-1,1)
+    exact=LogisticRegression(C=1e6,solver="lbfgs",max_iter=3000).fit(z[idx],y[idx])
+    ci_fast,cs_fast=_weighted_calibration(y,p,w)
+
+    checks=[
+        abs(auc_fast-auc_exact)<1e-12,
+        abs(ap_fast-ap_exact)<1e-12,
+        abs(brier_fast-brier_exact)<1e-12,
+        abs(ci_fast-float(exact.intercept_[0]))<1e-4,
+        abs(cs_fast-float(exact.coef_[0][0]))<1e-4,
+    ]
+    if not all(checks):
+        raise RuntimeError(
+            "Optimized weighted bootstrap failed equivalence self-check: "
+            f"auc={auc_fast}/{auc_exact}, ap={ap_fast}/{ap_exact}, "
+            f"brier={brier_fast}/{brier_exact}, "
+            f"cal={ci_fast},{cs_fast}/{exact.intercept_[0]},{exact.coef_[0][0]}"
+        )
+
 def main():
     ap=argparse.ArgumentParser(description="Population structured cross-fitted calibration and decision curve.")
     ap.add_argument("--base",required=True)
@@ -243,6 +281,8 @@ def main():
     from sklearn.model_selection import StratifiedGroupKFold
     from sklearn.pipeline import Pipeline
     from sklearn.preprocessing import StandardScaler
+
+    _self_check_weighted_bootstrap_math()
 
     base=Path(args.base).expanduser().resolve()
     out_path=Path(args.output).expanduser().resolve()
