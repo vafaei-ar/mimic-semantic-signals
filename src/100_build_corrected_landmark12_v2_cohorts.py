@@ -368,6 +368,7 @@ def assign_events_to_icu(events: pd.DataFrame, icu: pd.DataFrame) -> pd.DataFram
             & (missing["event_time"] <= missing["outtime"])
         ].copy()
         missing["subject_id"] = pd.to_numeric(missing["subject_id_icu"], errors="coerce")
+        missing["icustay_id"] = pd.to_numeric(missing["icustay_id_icu"], errors="coerce")
 
     keep = ["subject_id", "hadm_id", "icustay_id", "dbsource", "intime", "outtime", "event_time", "evidence"]
     frames = []
