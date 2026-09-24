@@ -222,3 +222,7 @@ bash -n scripts/run_enhanced_structured_baseline_discovery_v2.sh
 .venv/bin/python -m py_compile src/102_build_enhanced_structured_baseline_v2.py
 
 bash -n scripts/run_enhanced_structured_baseline_v2.sh
+
+.venv/bin/python -m py_compile src/103_evaluate_enhanced_structured_baseline_v2.py
+
+bash -n scripts/run_enhanced_structured_baseline_evaluation_v2.sh
