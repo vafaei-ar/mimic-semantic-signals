@@ -180,3 +180,7 @@ bash -n scripts/run_population_landmark_feasibility.sh
 .venv/bin/python -m py_compile src/92_build_population_landmark12_cohorts.py
 
 bash -n scripts/run_population_landmark12_cohort_build.sh
+
+.venv/bin/python -m py_compile src/93_build_population_landmark12_structured.py
+
+bash -n scripts/run_population_landmark12_structured_build.sh
