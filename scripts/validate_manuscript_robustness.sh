@@ -71,3 +71,5 @@ bash -n scripts/run_diffusiongemma_hf_native_real_pilot.sh
 bash -n scripts/run_multitask_diffusiongemma_hf_native.sh
 
 bash -n scripts/run_multitask_diffusiongemma_hf_eval.sh
+
+bash -n scripts/run_multitask_diffusiongemma_lexical.sh
