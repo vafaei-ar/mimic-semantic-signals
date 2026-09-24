@@ -97,7 +97,7 @@ def compile_rx(patterns: list[str]) -> re.Pattern:
 
 def stable_case_id(outcome: str, icustay_id: int) -> str:
     raw = f"population_landmark12_v2_1|{outcome}|{int(icustay_id)}"
-    return "pl12v2_" + hashlib.sha256(raw.encode("utf-8")).hexdigest()[:20]
+    return "pl12v21_" + hashlib.sha256(raw.encode("utf-8")).hexdigest()[:20]
 
 
 def load_icustays(root: Path) -> pd.DataFrame:
@@ -621,7 +621,7 @@ def build_outcome(
                 "local_only": True,
                 "model_state": {"clinical_note": str(row.text)},
                 "metadata": {
-                    "analysis": "population_landmark12_v2_corrected",
+                    "analysis": "population_landmark12_v2_1_corrected",
                     "outcome": outcome,
                     "label": int(row.label),
                     "note_available": True,
@@ -692,7 +692,7 @@ def build_outcome(
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Build corrected v2 12-hour landmark cohorts.")
+    ap = argparse.ArgumentParser(description="Build corrected adult v2.1 12-hour landmark cohorts.")
     ap.add_argument("--root", required=True)
     ap.add_argument("--local-output-root", required=True)
     ap.add_argument("--manifest", required=True)
@@ -704,7 +704,7 @@ def main() -> None:
     local_root.mkdir(parents=True, exist_ok=True)
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
 
-    update_progress(current=1, total=6, phase="dictionary", message="Validating source-compatible v2 endpoint item mappings", unit="stage")
+    update_progress(current=1, total=6, phase="dictionary", message="Validating source-compatible v2.1 endpoint item mappings", unit="stage")
     item_validation = validate_item_sources(root)
 
     update_progress(current=2, total=6, phase="source", message="Loading ICU stays and corrected endpoint evidence", unit="stage")
@@ -785,7 +785,7 @@ def main() -> None:
         ),
     }
 
-    update_progress(current=5, total=6, phase="checks", message="Checking v2 cohort invariants and note-selection independence", unit="stage")
+    update_progress(current=5, total=6, phase="checks", message="Checking v2.1 cohort invariants and note-selection independence", unit="stage")
     for outcome, info in {**outcomes, **sensitivity_outcomes}.items():
         if info["rows"] <= 0 or info["cases"] <= 0 or info["controls"] <= 0:
             raise RuntimeError(f"{outcome}: degenerate corrected cohort")
@@ -817,7 +817,7 @@ def main() -> None:
         ],
     }
 
-    update_progress(current=6, total=6, phase="done", message="Completed corrected v2 landmark cohort build", unit="stage")
+    update_progress(current=6, total=6, phase="done", message="Completed corrected adult v2.1 landmark cohort build", unit="stage")
     manifest_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
 
