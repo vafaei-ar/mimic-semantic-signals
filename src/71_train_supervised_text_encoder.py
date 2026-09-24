@@ -374,8 +374,6 @@ def main() -> None:
     )
 
     encoder = AutoModel.from_pretrained(str(model_path), local_files_only=True)
-    if hasattr(encoder, "gradient_checkpointing_enable"):
-        encoder.gradient_checkpointing_enable()
     hidden_size = int(encoder.config.hidden_size)
     model = MultiTaskDeberta(encoder, hidden_size, len(OUTCOMES))
     device = torch.device("cuda:0")
@@ -513,6 +511,7 @@ def main() -> None:
             "chunk_overlap": args.chunk_overlap,
             "max_chunks": args.max_chunks,
             "precision": "bfloat16 autocast",
+            "gradient_checkpointing": false,
             "gradient_clip_norm": 1.0,
             "seed": args.seed,
             "outcome_weights": outcome_weights,
