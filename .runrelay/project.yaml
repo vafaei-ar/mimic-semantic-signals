@@ -618,6 +618,24 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/supervised_text_encoder_v2_smoke.json
 
+  evaluate_supervised_text_encoder_v2_final_test:
+    description: One-time locked-test evaluation of the frozen epoch-4 supervised Open-Jev DeBERTa upper-bound checkpoint against structured and train-fitted TF-IDF baselines, with matched-set bootstrap uncertainty and aggregate metrics only.
+    command:
+      - bash
+      - scripts/run_supervised_text_encoder_v2_final_test.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 32
+      gpu_count: 1
+      min_vram_gb: 20
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/supervised_text_encoder_v2_final_test.json
+
   audit_supervised_text_encoder_v2_checkpoint:
     description: Hash and verify the selected epoch-4 local supervised encoder v2 checkpoint without opening the locked test split; share aggregate checkpoint provenance only.
     command:
