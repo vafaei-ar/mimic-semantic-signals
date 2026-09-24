@@ -83,36 +83,139 @@ def basic_metrics(y,p):
     return out
 
 
-def bootstrap_patient_cluster(df,n_boot):
-    from sklearn.metrics import average_precision_score,roc_auc_score,brier_score_loss
-    patients=df["subject_id"].drop_duplicates().to_numpy()
-    by={k:g for k,g in df.groupby("subject_id",sort=False)}
+def _weighted_calibration(y,p,w):
+    z=logit(p)
+    y=np.asarray(y,dtype=float)
+    w=np.asarray(w,dtype=float)
+    beta=np.array([0.0,1.0],dtype=float)
+    for _ in range(50):
+        eta=beta[0]+beta[1]*z
+        eta=np.clip(eta,-40.0,40.0)
+        mu=1.0/(1.0+np.exp(-eta))
+        resid=w*(y-mu)
+        grad=np.array([resid.sum(),np.dot(resid,z)],dtype=float)
+        v=w*mu*(1.0-mu)
+        h00=v.sum()
+        h01=np.dot(v,z)
+        h11=np.dot(v,z*z)
+        h=np.array([[h00,h01],[h01,h11]],dtype=float)
+        if not np.all(np.isfinite(h)) or np.linalg.det(h)<=1e-12:
+            break
+        step=np.linalg.solve(h,grad)
+        beta_new=beta+step
+        if np.max(np.abs(step))<1e-9:
+            beta=beta_new
+            break
+        beta=beta_new
+    return float(beta[0]),float(beta[1])
+
+
+def _prepare_weighted_rank_metrics(y,p):
+    y=np.asarray(y,dtype=int)
+    p=np.asarray(p,dtype=float)
+
+    order_asc=np.argsort(p,kind="mergesort")
+    p_asc=p[order_asc]
+    y_asc=y[order_asc]
+    starts_asc=np.r_[0,np.flatnonzero(np.diff(p_asc)!=0)+1]
+
+    order_desc=order_asc[::-1]
+    p_desc=p[order_desc]
+    y_desc=y[order_desc]
+    starts_desc=np.r_[0,np.flatnonzero(np.diff(p_desc)!=0)+1]
+
+    return {
+        "order_asc":order_asc,
+        "y_asc":y_asc,
+        "starts_asc":starts_asc,
+        "order_desc":order_desc,
+        "y_desc":y_desc,
+        "starts_desc":starts_desc,
+    }
+
+
+def _weighted_auc_ap(prepared,w):
+    w=np.asarray(w,dtype=float)
+
+    wa=w[prepared["order_asc"]]
+    ya=prepared["y_asc"]
+    gp=np.add.reduceat(wa*ya,prepared["starts_asc"])
+    gn=np.add.reduceat(wa*(1-ya),prepared["starts_asc"])
+    total_pos=gp.sum()
+    total_neg=gn.sum()
+    if total_pos<=0 or total_neg<=0:
+        return None,None
+    cum_neg_before=np.cumsum(gn)-gn
+    auc=float(np.sum(gp*(cum_neg_before+0.5*gn))/(total_pos*total_neg))
+
+    wd=w[prepared["order_desc"]]
+    yd=prepared["y_desc"]
+    gp_d=np.add.reduceat(wd*yd,prepared["starts_desc"])
+    gn_d=np.add.reduceat(wd*(1-yd),prepared["starts_desc"])
+    cum_tp=np.cumsum(gp_d)
+    cum_fp=np.cumsum(gn_d)
+    precision=np.divide(
+        cum_tp,cum_tp+cum_fp,
+        out=np.ones_like(cum_tp,dtype=float),
+        where=(cum_tp+cum_fp)>0,
+    )
+    recall_inc=gp_d/total_pos
+    ap=float(np.sum(recall_inc*precision))
+    return auc,ap
+
+
+def bootstrap_patient_cluster(df,n_boot,*,progress_base,total_progress,outcome,checkpoint=None):
+    y=df["label"].to_numpy(dtype=int)
+    p=df["prediction"].to_numpy(dtype=float)
+    patient_codes,patients=pd.factorize(df["subject_id"],sort=False)
+    n_patients=len(patients)
     rng=np.random.default_rng(SEED)
+
+    prepared=_prepare_weighted_rank_metrics(y,p)
+    squared_error=(p-y.astype(float))**2
+    threshold_masks={f"{pt:.4f}":(p>=pt) for pt in THRESHOLDS}
+
     scalar_keys=["auroc","auprc","brier","calibration_intercept","calibration_slope"]
     vals={k:[] for k in scalar_keys}
     nb={f"{pt:.4f}":[] for pt in THRESHOLDS}
 
-    for _ in range(n_boot):
-        sampled=rng.choice(patients,size=len(patients),replace=True)
-        pieces=[]
-        for j,pid in enumerate(sampled):
-            g=by[pid].copy()
-            g["_boot_patient_instance"]=j
-            pieces.append(g)
-        b=pd.concat(pieces,ignore_index=True)
-        y=b["label"].to_numpy(dtype=int)
-        p=b["prediction"].to_numpy(dtype=float)
-        if len(np.unique(y))<2:
+    for b in range(n_boot):
+        sampled=rng.integers(0,n_patients,size=n_patients)
+        patient_mult=np.bincount(sampled,minlength=n_patients).astype(float)
+        w=patient_mult[patient_codes]
+        n_eff=float(w.sum())
+        pos=float(np.dot(w,y))
+        neg=n_eff-pos
+        if pos<=0 or neg<=0:
             continue
-        vals["auroc"].append(float(roc_auc_score(y,p)))
-        vals["auprc"].append(float(average_precision_score(y,p)))
-        vals["brier"].append(float(brier_score_loss(y,p)))
-        cm=calibration_metrics(y,p)
-        vals["calibration_intercept"].append(cm["calibration_intercept"])
-        vals["calibration_slope"].append(cm["calibration_slope"])
-        dc=decision_curve(y,p)
-        for key in nb:
-            nb[key].append(dc[key]["model_net_benefit"])
+
+        auc,ap=_weighted_auc_ap(prepared,w)
+        if auc is None or ap is None:
+            continue
+        vals["auroc"].append(float(auc))
+        vals["auprc"].append(float(ap))
+        vals["brier"].append(float(np.dot(w,squared_error)/n_eff))
+        intercept,slope=_weighted_calibration(y,p,w)
+        vals["calibration_intercept"].append(intercept)
+        vals["calibration_slope"].append(slope)
+
+        for pt in THRESHOLDS:
+            key=f"{pt:.4f}"
+            mask=threshold_masks[key]
+            tp=float(np.dot(w,mask&(y==1)))
+            fp=float(np.dot(w,mask&(y==0)))
+            nb[key].append(float(tp/n_eff-(fp/n_eff)*(pt/(1-pt))))
+
+        if (b+1)%25==0 or (b+1)==n_boot:
+            update_progress(
+                current=progress_base+b+1,
+                total=total_progress,
+                phase="population_structured_bootstrap",
+                message=f"{outcome}: bootstrap {b+1}/{n_boot}",
+                unit="bootstrap",
+            )
+            if checkpoint is not None:
+                checkpoint()
 
     def ci(x):
         a=np.asarray(x,dtype=float)
@@ -121,10 +224,10 @@ def bootstrap_patient_cluster(df,n_boot):
         "replicates_requested":int(n_boot),
         "replicates_used":int(len(vals["auroc"])),
         "cluster":"source_patient",
+        "implementation":"patient multiplicity weights; fixed predictions; weighted rank metrics and two-parameter Newton calibration",
         "metrics_ci95":{k:ci(v) for k,v in vals.items()},
         "decision_curve_model_net_benefit_ci95":{k:ci(v) for k,v in nb.items()},
     }
-
 
 def main():
     ap=argparse.ArgumentParser(description="Population structured cross-fitted calibration and decision curve.")
@@ -159,8 +262,13 @@ def main():
         "outcomes":{},
     }
 
-    total=len(OUTCOMES)*args.folds
+    total=len(OUTCOMES)*(args.folds+args.bootstrap_replicates)
     cur=0
+
+    def write_checkpoint(status):
+        tmp=dict(report)
+        tmp["status"]=status
+        out_path.write_text(json.dumps(tmp,indent=2)+"\\n",encoding="utf-8")
     for oi,outcome in enumerate(OUTCOMES):
         d=base/outcome
         df=pd.read_csv(d/"structured_features_local.csv",low_memory=False)
@@ -213,7 +321,16 @@ def main():
         eval_df=df[["subject_id","label"]].copy()
         eval_df["prediction"]=pred
         metrics=basic_metrics(y,pred)
-        boot=bootstrap_patient_cluster(eval_df,args.bootstrap_replicates)
+        fold_progress=(oi+1)*args.folds+oi*args.bootstrap_replicates
+        boot=bootstrap_patient_cluster(
+            eval_df,
+            args.bootstrap_replicates,
+            progress_base=fold_progress,
+            total_progress=total,
+            outcome=outcome,
+            checkpoint=lambda: write_checkpoint("running"),
+        )
+        cur=fold_progress+args.bootstrap_replicates
 
         report["outcomes"][outcome]={
             "n":int(len(df)),
@@ -231,6 +348,7 @@ def main():
         "Decision-curve net benefit is exploratory and does not prescribe treatment thresholds. "
         "No semantic scores were used."
     )
+    report["status"]="completed"
     out_path.write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(report,indent=2))
 
