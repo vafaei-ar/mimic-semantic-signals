@@ -306,6 +306,8 @@ def main() -> None:
     ap.add_argument("--limit-notes-per-outcome", type=int, default=0)
     ap.add_argument("--max-train-batches", type=int, default=0)
     ap.add_argument("--seed", type=int, default=20260924)
+    ap.add_argument("--protocol", default="docs/multitask_supervised_text_encoder_protocol_v1.md")
+    ap.add_argument("--analysis-name", default="Post-freeze supervised Open-Jev DeBERTa multitask upper-bound development v1")
     ap.add_argument("--no-save", action="store_true")
     args = ap.parse_args()
 
@@ -476,7 +478,7 @@ def main() -> None:
                 checkpoint_dir.mkdir(parents=True, exist_ok=True)
                 torch.save(
                     {
-                        "protocol": "docs/multitask_supervised_text_encoder_protocol_v1.md",
+                        "protocol": args.protocol,
                         "base_checkpoint": "com-kotobalabs/open-jev-deberta-v3-large",
                         "epoch": epoch,
                         "outcomes": OUTCOMES,
@@ -491,8 +493,8 @@ def main() -> None:
 
     elapsed = time.perf_counter() - started
     report = {
-        "analysis": "Post-freeze supervised Open-Jev DeBERTa multitask upper-bound development v1",
-        "protocol": "docs/multitask_supervised_text_encoder_protocol_v1.md",
+        "analysis": args.analysis_name,
+        "protocol": args.protocol,
         "cohorts": "docs/multitask_tuning_cohort_freeze_v1.md",
         "local_only": True,
         "network_enabled": False,
