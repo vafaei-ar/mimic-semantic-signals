@@ -36,7 +36,8 @@ cd "$(git rev-parse --show-toplevel)"
   src/71_train_supervised_text_encoder.py \
   src/72_diagnose_supervised_text_encoder.py \
   src/73_diagnose_supervised_text_encoder_learning.py \
-  src/74_probe_supervised_text_encoder_recipe.py
+  src/74_probe_supervised_text_encoder_recipe.py \
+  src/76_audit_supervised_text_encoder_v2_checkpoint.py
 
 bash -n scripts/run_multitask_openjev.sh
 bash -n scripts/run_multitask_laya.sh
@@ -103,3 +104,5 @@ HELP_TEXT="$("./.venv/bin/python" src/71_train_supervised_text_encoder.py --help
 for opt in --encoder-learning-rate --head-learning-rate --positive-class-weight --protocol --analysis-name; do
   printf '%s\\n' "$HELP_TEXT" | grep -F -- "$opt" >/dev/null
 done
+
+bash -n scripts/run_supervised_text_encoder_v2_checkpoint_audit.sh
