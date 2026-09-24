@@ -13,6 +13,7 @@ Read these reports in order:
 3. [03 — Corrected v2 analysis lineage](docs/03_V2_ANALYSIS_LINEAGE.md)
 4. [04 — v1 provenance and integrity hold](docs/04_V1_PROVENANCE_AND_HOLD.md)
 5. [05 — External validation status](docs/05_EXTERNAL_VALIDATION_STATUS.md)
+6. [06 — Post-review v2.1 correction gate](docs/06_POSTREVIEW_V2_1_CORRECTIONS.md)
 
 Detailed frozen protocols and result documents under `docs/` remain authoritative for exact cohort definitions, item IDs, model settings, artifact hashes, and prespecified interpretation rules.
 
@@ -20,18 +21,16 @@ Detailed frozen protocols and result documents under `docs/` remain authoritativ
 
 The v1 manuscript-facing results are under an integrity hold after an external review identified cohort and implementation problems that were confirmed by a local aggregate audit.
 
-The current primary analysis has been rebuilt as a corrected v2 lineage:
+The primary analysis is now in a **post-review v2.1 correction gate**:
 
-- source-compatible 12-hour landmark cohorts are frozen;
-- note hygiene and note selection are corrected;
-- a stronger 34-feature structured baseline is frozen and extracted;
-- the active analysis is the **structured-only v2 predictive evaluation**;
-- corrected semantic/TF-IDF analyses remain locked until the structured result is complete and frozen.
+- the source-compatible v2 cohort/note corrections remain valid;
+- the ICU population is being tightened to adults with NICU exclusion;
+- ETT/tracheostomy-coded GCS verbal values will no longer count as physiologic GCS=1;
+- ventilation endpoint sensitivities and treatment-language regex corrections are prespecified;
+- exact CV split hashes and corrected calibration terminology are being added;
+- corrected semantic/TF-IDF analyses remain locked.
 
-Current RunRelay gate at the latest documentation update:
-
-- `E8R7Q5M3 — Evaluate Enhanced Structured V2`
-- exact commit: `0f72c995d240900e15d65dd7b6e3c4f7048453ea`
+The already-running `E8R7Q5M3` job belongs to the pre-v2.1 lineage. Its performance artifact should not be opened or promoted as the manuscript-facing structured result.
 
 See [03 — Corrected v2 analysis lineage](docs/03_V2_ANALYSIS_LINEAGE.md) for the full ordered chain.
 
@@ -49,7 +48,7 @@ Open-Jev, Laya, and DiffusionGemma are semantic measurement instruments. The sci
 
 ## Repository organization
 
-- `docs/01_*.md`–`docs/05_*.md`: current navigation/synthesis layer.
+- `docs/01_*.md`–`docs/06_*.md`: current navigation/synthesis layer.
 - `docs/*protocol*.md`: frozen prespecified analysis protocols.
 - `docs/*freeze*.md`: frozen cohort/result/mapping documents.
 - `src/`: analysis and cohort code.
