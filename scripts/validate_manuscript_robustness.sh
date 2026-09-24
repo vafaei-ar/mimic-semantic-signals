@@ -110,3 +110,7 @@ bash -n scripts/run_supervised_text_encoder_v2_checkpoint_audit.sh
 .venv/bin/python -m py_compile src/77_evaluate_supervised_text_encoder_v2_final_test.py
 
 bash -n scripts/run_supervised_text_encoder_v2_final_test.sh
+
+.venv/bin/python -m py_compile src/30_inventory_zigong.py
+
+bash -n scripts/run_zigong_inventory.sh
