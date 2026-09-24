@@ -26,6 +26,23 @@ monitoring:
   tmux_default: false
 
 tasks:
+  build_population_landmark12_cohorts:
+    description: Build the frozen prevalence-preserving 12-hour MIMIC landmark cohorts for ventilation, RRT, and ICU death, retaining all outcome-observable stays and separate prospective note availability; share aggregate manifest only.
+    command:
+      - bash
+      - scripts/run_population_landmark12_cohort_build.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/population_landmark12_cohort_manifest_v1.json
+
   audit_population_landmark_feasibility:
     description: Audit fixed 6h, 12h, 24h, and 36h ICU landmarks for prevalence-representative 12-hour outcome risk sets and prospective bedside-note availability using frozen endpoint definitions; no model inference.
     command:
