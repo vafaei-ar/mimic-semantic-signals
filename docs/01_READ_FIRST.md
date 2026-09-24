@@ -13,8 +13,9 @@ Read these numbered reports first:
 3. **`docs/03_V2_ANALYSIS_LINEAGE.md`** — ordered v2 provenance from integrity audit through the currently running structured evaluation.
 4. **`docs/04_V1_PROVENANCE_AND_HOLD.md`** — what the older v1 analyses showed, which parts remain useful as exploratory provenance, and why they cannot be used as final manuscript evidence.
 5. **`docs/05_EXTERNAL_VALIDATION_STATUS.md`** — current status of eICU, NWICU, Zigong, and planned external datasets.
+6. **`docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`** — the second-review corrections that now gate all manuscript-facing predictive results.
 
-After those five, read the detailed protocol/result-freeze documents linked from `03_V2_ANALYSIS_LINEAGE.md`.
+After the numbered reports, read the detailed protocol/result-freeze documents linked from `03_V2_ANALYSIS_LINEAGE.md`.
 
 ## Which documents are authoritative?
 
@@ -34,13 +35,11 @@ The current manuscript-facing lineage begins with the completed integrity audit 
 
 ## Current live gate
 
-The active RunRelay analysis is:
+The manuscript-facing gate is now the **v2.1 correction**, not the pre-v2.1 performance run.
 
-- `E8R7Q5M3 — Evaluate Enhanced Structured V2`
-- exact project commit: `0f72c995d240900e15d65dd7b6e3c4f7048453ea`
-- status at last documentation update: **running**
+The already-running `E8R7Q5M3` job was launched before the second review. Its result should remain unopened/unpromoted for manuscript use.
 
-This analysis is deliberately structured-only. Semantic and lexical v2 evaluation remains locked until this result is complete and frozen.
+Before any structured result is frozen, the analysis must rebuild the adult v2.1 cohort, correct GCS-verbal airway handling, freeze exact split hashes, and rerun the structured evaluation.
 
 ## Naming convention going forward
 
