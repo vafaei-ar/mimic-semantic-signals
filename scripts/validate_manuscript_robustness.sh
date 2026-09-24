@@ -77,3 +77,4 @@ bash -n scripts/run_multitask_diffusiongemma_lexical.sh
 bash -n scripts/run_tuning_feasibility_audit.sh
 
 bash -n scripts/run_multitask_tuning_cohort_build.sh
+\nbash -n scripts/run_supervised_text_encoder_smoke.sh\n\nbash -n scripts/run_supervised_text_encoder_development.sh\n
