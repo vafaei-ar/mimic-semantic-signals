@@ -90,6 +90,8 @@ Use 5 repeats of 5-fold `StratifiedGroupKFold`.
 
 Every row therefore receives exactly five out-of-fold predictions from each model.
 
+The repeat/fold assignment for every row is saved locally as a protected analysis file. Later v2 semantic and lexical models must reuse these exact assignments for the same outcome unless a separately frozen protocol explicitly justifies a different split.
+
 The primary point prediction for each model is the mean of its five out-of-fold predictions.
 
 Report:
