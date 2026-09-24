@@ -26,6 +26,23 @@ monitoring:
   tmux_default: false
 
 tasks:
+  audit_zigong_nursing_ventilation_endpoint:
+    description: Audit candidate within-nursing invasive-ventilation event definitions in Zigong using a 6-hour washout and 12-hour prediction horizon, with aggregate incidence and clean pre-event note availability only; no model scoring.
+    command:
+      - bash
+      - scripts/run_zigong_nursing_ventilation_endpoint_audit.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/zigong_external/nursing_ventilation_endpoint_feasibility.json
+
   audit_zigong_nursing_ventilation_fields:
     description: Characterize structured Zigong nursing ventilation and airway fields using aggregate counts and suppressed value frequencies only; do not define an endpoint or score any model.
     command:
