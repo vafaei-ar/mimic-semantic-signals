@@ -75,7 +75,7 @@ Frozen development settings:
 - gradient clipping: 1.0
 - scheduler: linear decay
 - warm-up: 10% of optimizer steps
-- gradient checkpointing: enabled when supported
+- gradient checkpointing: disabled after the pre-performance smoke test exposed a reproducible autograd graph-reuse failure; GPU diagnostic peak allocation was 6.6 GB, so checkpointing is not required for memory feasibility
 - seed: 20260924
 
 No hyperparameter search is planned for v1.
@@ -109,3 +109,7 @@ Only aggregate training diagnostics are shared.
 The development code must not enumerate, open, tokenize, score, or inspect files under the `test` split.
 
 Any accidental test access invalidates the development phase and requires a new untouched test partition before final evaluation.
+
+## Pre-performance implementation note
+
+Before any successful validation performance was observed, the initial smoke run failed on the second accumulated backward pass with a reproducible autograd graph-reuse error while DeBERTa gradient checkpointing was enabled. A PHI-safe diagnostic confirmed checkpoint discovery, tokenization, train/validation loading, collation, forward, and a single backward pass, with approximately 6.6 GB peak allocated GPU memory. Gradient checkpointing was therefore disabled as an operational compatibility fix before model development. All other frozen training settings remain unchanged.
