@@ -218,3 +218,7 @@ bash -n scripts/run_corrected_landmark12_v2_cohort_build.sh
 .venv/bin/python -m py_compile src/101_audit_enhanced_structured_baseline_v2.py
 
 bash -n scripts/run_enhanced_structured_baseline_discovery_v2.sh
+
+.venv/bin/python -m py_compile src/102_build_enhanced_structured_baseline_v2.py
+
+bash -n scripts/run_enhanced_structured_baseline_v2.sh
