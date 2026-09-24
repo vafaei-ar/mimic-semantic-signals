@@ -556,14 +556,17 @@ def main() -> None:
             "rows": int(len(keep)),
             "feature_count": int(len(feature_cols)),
             "numeric_feature_missing_fraction": float(keep[numeric_cols].isna().mean().mean()),
+            "clinical_numeric_feature_missing_fraction": float(
+                keep[clinical_numeric_cols].isna().mean().mean()
+            ),
             "rows_with_all_clinical_numeric_features_missing": int(
                 keep[clinical_numeric_cols].isna().all(axis=1).sum()
             ),
             "per_feature_nonmissing_fraction": nonmissing,
-            "local_feature_file": str(outdir / "enhanced_structured_features_v2_local.csv"),
+            "local_feature_file": str(outdir / "enhanced_structured_features_v2_1_local.csv"),
         }
 
-    update_progress(current=6, total=6, phase="done", message="Completed enhanced structured feature extraction", unit="stage")
+    update_progress(current=6, total=6, phase="done", message="Completed enhanced structured v2.1 feature extraction", unit="stage")
 
     report = {
         "analysis": "Enhanced structured baseline feature extraction v2.1",
