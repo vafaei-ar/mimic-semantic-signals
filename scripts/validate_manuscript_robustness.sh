@@ -206,3 +206,7 @@ bash -n scripts/run_population_landmark12_semantic_extension.sh
 .venv/bin/python -m py_compile src/98_evaluate_population_documentation_process_sensitivity.py
 
 bash -n scripts/run_population_documentation_process_sensitivity.sh
+
+.venv/bin/python -m py_compile src/99_audit_external_review_integrity.py
+
+bash -n scripts/run_external_review_integrity_audit.sh
