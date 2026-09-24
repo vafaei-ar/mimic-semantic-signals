@@ -546,6 +546,24 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/diffusiongemma_hf_semantic_report_v1.json
 
+  diagnose_supervised_text_encoder:
+    description: PHI-safe local diagnostic of supervised Open-Jev encoder checkpoint discovery, tokenizer/data loading, collation, model load, forward, and backward using train/validation only; locked test remains untouched.
+    command:
+      - bash
+      - scripts/run_supervised_text_encoder_diagnostic.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 16
+      gpu_count: 1
+      min_vram_gb: 20
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/supervised_text_encoder_diagnostic_v1.json
+
   smoke_supervised_text_encoder:
     description: Bounded local smoke test of the post-freeze supervised Open-Jev DeBERTa multitask upper-bound training path using train/validation only; locked test remains untouched and only aggregate diagnostics are shared.
     command:
