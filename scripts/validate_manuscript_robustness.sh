@@ -189,3 +189,6 @@ bash -n scripts/run_population_landmark12_structured_build.sh
 
 bash -n scripts/run_population_landmark12_structured_calibration.sh
 PYTHONPATH=src .venv/bin/python -c 'import importlib.util; s=importlib.util.spec_from_file_location("popcal","src/94_evaluate_population_landmark12_structured.py"); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); m._self_check_weighted_bootstrap_math()'
+.venv/bin/python -m py_compile src/95_build_population_landmark12_note_corpus.py
+
+bash -n scripts/run_population_landmark12_note_workload.sh
