@@ -2,65 +2,82 @@
 
 Updated: 2026-09-24
 
-An external code review identified implementation and cohort-definition issues after completion of the v1 analyses. Several concerns are confirmed directly from the repository code. A local aggregate audit is in progress under the frozen protocol `docs/external_review_integrity_audit_protocol_v1.md`.
+## Status
 
-Until the audit is complete and a corrected v2 protocol is frozen, the affected v1 results must be treated as provenance/exploratory results rather than manuscript-ready confirmatory evidence.
+The integrity audit is **complete**.
 
-## Code-confirmed issues
+Authoritative audit result:
+
+- `docs/external_review_integrity_audit_result_freeze_v1.md`
+
+Current corrected lineage:
+
+- `docs/03_V2_ANALYSIS_LINEAGE.md`
+
+The hold remains in force for affected v1 manuscript-facing estimates until the corrected v2 analyses are complete and frozen.
+
+## Confirmed issues
+
+The audit confirmed:
 
 1. **Ventilation endpoint/source observability**
-   - the invasive-ventilation endpoint uses MetaVision `PROCEDUREEVENTS_MV` item 224385 as endpoint evidence;
-   - population cohorts include both MetaVision and CareVue stays;
-   - population note-context models include ICU `dbsource`;
-   - therefore source system can encode endpoint observability.
+   - the v1 ventilation endpoint was overwhelmingly MetaVision-observable;
+   - v1 population cohorts included many CareVue controls;
+   - `dbsource` could therefore encode endpoint observability.
 
-2. **Outcome-language exclusion precedes note selection**
-   - notes containing endpoint-language patterns are removed before the latest eligible note is selected;
-   - this can make note availability and note age outcome-dependent.
+2. **Outcome-language filtering changed note identity/availability**
+   - notes containing endpoint-language patterns were removed before the latest eligible note was selected;
+   - this changed note availability and note age in an outcome-dependent way.
 
 3. **Matched case/control asymmetry**
-   - incident cases are screened for disqualifying evidence before the washout boundary;
-   - controls are screened for disqualifying evidence through each prediction horizon;
-   - eligible case subjects are removed from the control pool entirely, so earlier valid risk-set snapshots from future cases cannot serve as controls.
+   - the old matched analysis used different disqualifying-evidence logic for cases and controls;
+   - future case subjects were globally removed from the control pool.
 
-4. **Open-Jev/Laya chunk aggregation mismatch**
-   - inference stores max-across-chunks for concern constructs and min for reassuring stability;
-   - v1 vasopressor and multitask evaluators instead use the mean of `chunk_values`;
-   - DiffusionGemma evaluation uses its stored max/min aggregate.
-   - The population semantic evaluator uses stored `noul` values and is not affected by this specific evaluator bug.
+4. **Open-Jev/Laya aggregation inconsistency**
+   - inference stored max/min chunk aggregation;
+   - several v1 evaluators recomputed the mean of `chunk_values`.
 
-5. **Note normalization**
-   - current MIMIC note loaders compare category values without trimming whitespace;
-   - the current `iserror` filter compares string values to exactly `"1"` rather than using numeric nonzero status.
+5. **MIMIC note normalization**
+   - Physician and Respiratory categories had trailing spaces and were excluded by exact untrimmed matching;
+   - numeric `ISERROR=1.0` rows were missed by the old string comparison.
 
 6. **External-validation implementation**
-   - eICU laboratory lookback is clipped at ICU-relative hour zero, unlike MIMIC/NWICU lookbacks;
-   - the Zigong leakage regex includes broad Chinese substrings and a doubled-backslash ETT boundary pattern.
+   - eICU labs were clipped at ICU hour zero, removing 40.3% of intended relevant pre-anchor lab rows;
+   - the Zigong leakage regex was over-broad and the ETT boundary pattern was broken.
 
-## Result families currently on hold
+## v1 result families on hold
 
-The following v1 result families should not be used as final manuscript headline estimates until corrected:
+Do not use as final manuscript headline evidence:
 
-- matched vasopressor semantic estimates;
-- matched multi-outcome Open-Jev/Laya comparisons;
-- population ventilation analyses involving note context/source;
-- structured eICU transport estimates that depend on the current lab window;
-- Zigong narrative transport estimates built from the current leakage filter.
+- matched vasopressor semantic increments;
+- matched multi-outcome semantic/model-family comparisons;
+- v1 population ventilation/context effects;
+- v1 population semantic estimates as current primary estimates;
+- eICU v1 transport estimates affected by the lab-window bug;
+- Zigong v1 narrative transport estimates from the old leakage filter.
 
-The original v1 files remain unchanged for provenance.
+The original files remain unchanged for provenance.
 
-## Documentation-process sensitivity
+## Corrective status
 
-RunRelay job `K5Q8V7R3` completed successfully and is retained as a post-result diagnostic only.
+The corrected v2 program has already completed:
 
-For invasive ventilation:
+- source-compatible cohort rebuild;
+- corrected note normalization;
+- note selection before language sensitivity;
+- removal of `dbsource` from the predictive feature set;
+- enhanced 34-feature structured mapping;
+- local structured feature extraction.
 
-- structured → + note availability: ΔAUROC +0.0276;
-- + category/source after note availability: ΔAUROC +0.1247;
-- + note age after category/source: ΔAUROC +0.00012.
+The active gate at the latest update is the structured-only v2 predictive evaluation.
 
-This result should not be interpreted as evidence that documentation process itself is clinically predictive until the source-system observability problem is removed.
+See:
 
-## Next gate
+- `docs/02_CURRENT_SCIENTIFIC_STATUS.md`
+- `docs/03_V2_ANALYSIS_LINEAGE.md`
 
-Complete the aggregate integrity audit. Then freeze one corrected v2 protocol that fixes endpoint observability, note-selection/leakage logic, case-control risk-set symmetry, semantic aggregation, note normalization, and external-data implementation differences before rerunning any manuscript-facing models.
+## Interpretation rule
+
+A v1 result may be cited only as historical/exploratory provenance unless a current v2 freeze explicitly rehabilitates the same claim.
+
+Do not present the old ventilation documentation-context jump as a biological or workflow signal. The audit established that source-system observability was a major component.
