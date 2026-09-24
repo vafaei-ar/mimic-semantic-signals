@@ -26,6 +26,23 @@ monitoring:
   tmux_default: false
 
 tasks:
+  audit_zigong_diffusiongemma_tokenizer:
+    description: Audit the DiffusionGemma tokenizer on the frozen Zigong cohort inside the exact native-HF CUDA 12.4 environment; read no labels, load no model weights, and perform no semantic inference.
+    command:
+      - bash
+      - scripts/run_zigong_diffusiongemma_tokenizer_audit.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/zigong_external/diffusiongemma_tokenizer_audit_v1.json
+
   audit_zigong_tokenizer_language_v2:
     description: Audit exact working tokenizer paths for Open-Jev, Laya, and DiffusionGemma on the frozen Zigong cohort, including frozen chunking coverage; read no labels and perform no semantic inference.
     command:
