@@ -26,6 +26,24 @@ monitoring:
   tmux_default: false
 
 tasks:
+  audit_zigong_tokenizer_language_v2:
+    description: Audit exact working tokenizer paths for Open-Jev, Laya, and DiffusionGemma on the frozen Zigong cohort, including frozen chunking coverage; read no labels and perform no semantic inference.
+    command:
+      - bash
+      - scripts/run_zigong_tokenizer_language_audit_v2.sh
+    approval: automatic
+    timeout_minutes: 90
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 12
+      gpu_count: 1
+      min_vram_gb: 6
+      wait_minutes: 30
+    artifacts:
+      - outputs/zigong_external/tokenizer_language_audit_v2.json
+
   audit_zigong_tokenizer_language:
     description: Audit aggregate Chinese-language and tokenizer applicability on the frozen local Zigong ventilation cohort for Open-Jev, Laya, and DiffusionGemma without reading labels or performing model inference.
     command:
