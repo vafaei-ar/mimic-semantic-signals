@@ -172,3 +172,7 @@ bash -n scripts/run_zigong_bilingual_semantic_gate.sh
 bash -n scripts/run_zigong_diffusiongemma_inference.sh
 
 bash -n scripts/run_zigong_diffusiongemma_transport_eval.sh
+
+.venv/bin/python -m py_compile src/91_audit_population_landmark_feasibility.py
+
+bash -n scripts/run_population_landmark_feasibility.sh
