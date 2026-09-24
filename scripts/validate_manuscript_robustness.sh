@@ -33,7 +33,8 @@ cd "$(git rev-parse --show-toplevel)"
   src/68_evaluate_multitask_diffusiongemma_lexical.py \
   src/69_audit_tuning_feasibility.py \
   src/70_build_multitask_tuning_cohorts.py \
-  src/71_train_supervised_text_encoder.py
+  src/71_train_supervised_text_encoder.py \
+  src/72_diagnose_supervised_text_encoder.py
 
 bash -n scripts/run_multitask_openjev.sh
 bash -n scripts/run_multitask_laya.sh
@@ -85,3 +86,5 @@ bash -n scripts/run_multitask_tuning_cohort_build.sh
 bash -n scripts/run_supervised_text_encoder_smoke.sh
 
 bash -n scripts/run_supervised_text_encoder_development.sh
+
+bash -n scripts/run_supervised_text_encoder_diagnostic.sh
