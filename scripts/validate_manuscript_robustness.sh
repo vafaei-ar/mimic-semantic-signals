@@ -144,3 +144,7 @@ bash -n scripts/run_zigong_nursing_ventilation_endpoint_audit_24h.sh
 .venv/bin/python -m py_compile src/82_build_zigong_ventilation24_cohort.py
 
 bash -n scripts/run_build_zigong_ventilation24_cohort.sh
+
+.venv/bin/python -m py_compile src/83_audit_zigong_tokenizers.py
+
+bash -n scripts/run_zigong_tokenizer_language_audit.sh
