@@ -782,7 +782,7 @@ def main() -> None:
             icu,
             note_icu,
             vent_explicit_endpoint,
-            vent_explicit_endpoint,
+            vent_disqual,
             local_root,
             output_name="invasive_ventilation_explicit_evidence_sensitivity",
             language_key="invasive_ventilation",
@@ -805,6 +805,18 @@ def main() -> None:
             raise RuntimeError(f"{outcome}: degenerate corrected cohort")
         if info["note_available_rows"] <= 0:
             raise RuntimeError(f"{outcome}: no notes after corrected hygiene")
+
+    # The explicit-intubation sensitivity broadens the case endpoint only.
+    # It must preserve the primary broad ventilation exclusion/control rule so
+    # support-only stays already outside the primary at-risk population cannot
+    # re-enter merely because their evidence is not an explicit intubation item.
+    if (
+        sensitivity_outcomes["invasive_ventilation_explicit_evidence"]["controls"]
+        != outcomes["invasive_ventilation"]["controls"]
+    ):
+        raise RuntimeError(
+            "Explicit-intubation sensitivity changed the primary ventilation control set"
+        )
 
     report = {
         "analysis": "Corrected adult 12-hour landmark cohort build v2.1",
