@@ -143,6 +143,18 @@ def main() -> None:
         idx = pd.read_csv(index_path, low_memory=False)
         idx["dbsource"] = idx["dbsource"].fillna("unknown").astype(str).str.strip().str.lower()
         idx = idx[idx["dbsource"].eq(source)].copy()
+
+        # Hash the frozen population-index representation exactly as materialized
+        # by the G8 context builder. Converting 0/1 to False/True before hashing
+        # changes the string representation without changing note identity.
+        current_note_identity = note_identity_hash(idx)
+        expected_note_identity = context_results["analyses"][name]["note_identity_sha256"]
+        if current_note_identity != expected_note_identity:
+            raise RuntimeError(
+                f"{name}: frozen note-identity contract violation: "
+                f"observed {current_note_identity}, expected {expected_note_identity}"
+            )
+
         idx["has_note"] = pd.to_numeric(idx["has_note"], errors="coerce").fillna(0).ne(0)
 
         observed = {
@@ -158,14 +170,6 @@ def main() -> None:
                     f"{name}: analysis-population contract violation for {key}: "
                     f"observed {value}, expected {expected[key]}"
                 )
-
-        current_note_identity = note_identity_hash(idx)
-        expected_note_identity = context_results["analyses"][name]["note_identity_sha256"]
-        if current_note_identity != expected_note_identity:
-            raise RuntimeError(
-                f"{name}: frozen note-identity contract violation: "
-                f"observed {current_note_identity}, expected {expected_note_identity}"
-            )
 
         selected = idx[idx["has_note"]].copy()
         selected_ids = set(selected["case_id"].astype(str))
