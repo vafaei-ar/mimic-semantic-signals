@@ -362,3 +362,24 @@ The context feature definition was therefore corrected prospectively:
 The E9 row-level context hashes are therefore **provisional and superseded**. A new context materialization is required after validation.
 
 The same review also showed that `doc_hours_since_last_note` is exactly the selected-note age already included in ordinary note context under the same note eligibility/timing rule. It was removed from the documentation-behavior block to avoid duplicating the same predictor under two names.
+
+
+## J8R6Q4M2 fixed-note corpus failure
+
+The first fixed-note corpus materialization attempt `J8R6Q4M2` failed before writing any artifact.
+
+- status: failed;
+- exit code: 1;
+- runtime: 2.370 seconds;
+- terminal phase: invasive-ventilation corpus materialization;
+- artifact: none.
+
+Cause: the corpus builder converted the stored `has_note` values from numeric `0/1` to Python `False/True` before computing the frozen note-identity hash. The selected-note rows were unchanged, but the string representation used in the hash changed, producing a false note-identity mismatch against the G8 contract.
+
+Correction before any text inference:
+
+- compute and verify the frozen note-identity hash on the raw population-index representation first;
+- only then normalize `has_note` to boolean for filtering;
+- a regression test now demonstrates that raw and boolean representations hash differently even though they represent the same note availability.
+
+Because the implementation changed, the corrected corpus materialization must be a new execution rather than a retry of J8.
