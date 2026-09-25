@@ -12,7 +12,9 @@ import pandas as pd
 
 from preregistration_stats import (
     one_sided_centered_bootstrap_pvalue,
+    patient_cluster_bootstrap_row_indices,
     patient_cluster_refit_indices,
+    paired_prediction_cluster_bootstrap_delta_auc,
 )
 from registration_gate import require_osf_registration
 
@@ -111,21 +113,54 @@ class V21IntegrityTests(unittest.TestCase):
             ["poor_treatment_response", "escalation_considered"],
         )
 
-    def test_refit_bootstrap_inference_freeze(self):
+    def test_refit_bootstrap_inference_freeze_is_superseded(self):
         path = ROOT / "config" / "v2_1_refit_bootstrap_inference_freeze.json"
         freeze = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(freeze["status"], "superseded_before_registration")
         self.assertEqual(freeze["bootstrap_replicates"], 500)
-        self.assertEqual(freeze["primary_partition_seed"], 20260924)
-        self.assertAlmostEqual(freeze["minimum_attainable_pvalue"], 1 / 501)
-        self.assertIn(
-            "Holm adjustment",
-            freeze["multiplicity"],
+        self.assertEqual(
+            freeze["superseded_by"],
+            "config/v2_1_primary_inference_freeze.json",
         )
-        self.assertIn(
-            "do not reduce B",
-            freeze["runtime_contingency"],
-        )
+        self.assertEqual(freeze["runtime_benchmark_job"], "Y5R7M2Q8")
         self.assertFalse(freeze["real_outcome_performance_seen_when_frozen"])
+
+    def test_primary_inference_freeze(self):
+        path = ROOT / "config" / "v2_1_primary_inference_freeze.json"
+        freeze = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            freeze["status"],
+            "frozen_before_v2_1_predictive_performance",
+        )
+        self.assertEqual(
+            freeze["primary_uncertainty"]["bootstrap_replicates"],
+            5000,
+        )
+        self.assertFalse(freeze["formal_hypothesis_testing"])
+        self.assertIn("No confirmatory p-values", freeze["multiplicity"])
+        self.assertEqual(
+            freeze["amendment_basis"]["runtime_benchmark_job"],
+            "Y5R7M2Q8",
+        )
+        self.assertFalse(
+            freeze["amendment_basis"]["real_v2_1_predictive_performance_seen"]
+        )
+
+    def test_refit_runtime_result_contract(self):
+        path = ROOT / "config" / "v2_1_refit_runtime_result_contract.json"
+        contract = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(contract["canonical_job"], "Y5R7M2Q8")
+        self.assertEqual(contract["validation_job"], "X4R7M2Q8")
+        self.assertAlmostEqual(
+            contract["ventilation_exact_refit_seconds"],
+            5470.322735227644,
+        )
+        self.assertGreater(
+            contract["ventilation_projected_500_refit_hours_serial"],
+            700,
+        )
+        self.assertFalse(contract["real_predictors_used"])
+        self.assertFalse(contract["real_outcome_labels_used"])
 
     def test_preregistration_power_result_contract(self):
         path = ROOT / "config" / "v2_1_preregistration_power_result_contract.json"
@@ -413,6 +448,45 @@ class V21IntegrityTests(unittest.TestCase):
             explicit["controls"],
             primary["invasive_ventilation"]["controls"],
         )
+
+    def test_patient_cluster_prediction_bootstrap_is_deterministic(self):
+        subject = np.array([1, 1, 2, 3, 4, 5, 6, 7])
+        y = np.array([0, 0, 0, 1, 0, 1, 0, 1])
+        p0 = np.array([0.05, 0.08, 0.10, 0.55, 0.20, 0.62, 0.30, 0.70])
+        p1 = np.array([0.04, 0.07, 0.09, 0.60, 0.18, 0.68, 0.28, 0.76])
+
+        a = paired_prediction_cluster_bootstrap_delta_auc(
+            y, p0, p1, subject, n_boot=50, seed=123
+        )
+        b = paired_prediction_cluster_bootstrap_delta_auc(
+            y, p0, p1, subject, n_boot=50, seed=123
+        )
+        self.assertEqual(a["bootstrap_replicates"], 50)
+        self.assertTrue(a["conditional_on_fitted_predictions"])
+        self.assertTrue(
+            np.array_equal(
+                a["bootstrap_delta_auroc"],
+                b["bootstrap_delta_auroc"],
+            )
+        )
+        self.assertEqual(a["ci95"], b["ci95"])
+
+    def test_patient_cluster_bootstrap_rows_keep_whole_patients(self):
+        subject = np.array([1, 1, 2, 3, 3, 3, 4])
+        idx = patient_cluster_bootstrap_row_indices(
+            subject,
+            np.random.default_rng(7),
+        )
+        counts = {
+            sid: int(np.sum(subject[idx] == sid))
+            for sid in np.unique(subject)
+        }
+        original = {
+            sid: int(np.sum(subject == sid))
+            for sid in np.unique(subject)
+        }
+        for sid in counts:
+            self.assertEqual(counts[sid] % original[sid], 0)
 
     def test_patient_bootstrap_keeps_fixed_fold(self):
         subject = np.array([1, 1, 2, 3, 3, 4, 5, 5])
