@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "status": "frozen_from_submitted_osf_form_with_exact_text_fields_pending_verbatim_import",
+  "registration_id": "ahxn9",
+  "binding_rule": "These settings are binding for v2.1. Exact values that are not recoverable from the pending OSF registration remain fail-closed until the verbatim submitted form is retrieved.",
+  "instruments": {
+    "open_jev": {
+      "model_id": "com-kotobalabs/open-jev-deberta-v3-large",
+      "model_revision": "19bf9a64815add579fbf6c907bef584d9277a8e4",
+      "typed_decisions_commit": "10d7834d3b99041f890db4615fb38ef95ced50cc",
+      "chunk_tokens": 220,
+      "chunk_overlap_tokens": 40,
+      "max_chunks": 8
+    },
+    "laya": {
+      "package": "laya",
+      "package_version": "0.3.4",
+      "checkpoint_repo": "convaiinnovations/laya-typed-decisions",
+      "checkpoint_revision_existing_repo_freeze": "f9ab0b228f0fc0f14d873dbc99038f135c2da1b2",
+      "chunk_tokens": 600,
+      "chunk_overlap_tokens": 100,
+      "max_chunks": 8
+    },
+    "diffusiongemma": {
+      "model_id": "google/diffusiongemma-26B-A4B-it",
+      "model_revision_prefix_from_submitted_form": "f7f5b7f5",
+      "model_revision_exact": null,
+      "backend": "native_transformers_bf16",
+      "forbidden_model_ids": [
+        "nvidia/diffusiongemma-26B-A4B-it-NVFP4"
+      ],
+      "forbidden_substrings_case_insensitive": [
+        "nvfp4"
+      ],
+      "require_exact_revision_before_inference": true
+    }
+  },
+  "semantic_schema": {
+    "sha256_prefix_from_submitted_form": "72763082",
+    "sha256_exact": null,
+    "require_exact_sha256_before_inference": true
+  },
+  "chunk_aggregation": {
+    "concern_constructs": "maximum_across_chunks",
+    "reassuring_stability": "minimum_across_chunks"
+  },
+  "lab_plausibility_limits": {
+    "convention": "strict_lower_and_upper_bounds unless otherwise stated",
+    "lactate": {
+      "gt": 0,
+      "lt": 50
+    },
+    "creatinine": {
+      "gt": 0,
+      "lt": 150
+    },
+    "bun": {
+      "gt": 0,
+      "lt": 300
+    },
+    "wbc": {
+      "gt": 0,
+      "lt": 1000
+    },
+    "hemoglobin": {
+      "gt": 0,
+      "lt": 50
+    },
+    "platelets": {
+      "gt": 0,
+      "lt": 10000
+    },
+    "sodium": {
+      "gt": 0,
+      "lt": 200
+    },
+    "potassium": {
+      "gt": 0,
+      "lt": 30
+    },
+    "bicarbonate": {
+      "gt": 0,
+      "lt": 10000
+    },
+    "chloride": {
+      "gt": 0,
+      "lt": 10000
+    },
+    "glucose": {
+      "gt": 0,
+      "lt": 10000
+    },
+    "bilirubin_total": {
+      "gt": 0,
+      "lt": 150
+    },
+    "inr": {
+      "gt": 0,
+      "lt": 50
+    },
+    "ph": {
+      "gt": 6,
+      "lt": 8.5
+    }
+  },
+  "submitted_form_text_pending_verbatim_import": {
+    "directional_hypotheses": {
+      "H4": null,
+      "H5": null,
+      "H9": null
+    },
+    "exploratory_analysis_list": null,
+    "reason": "The pending OSF registration is not yet publicly readable and the user's summary did not include the verbatim wording. These fields must not be reconstructed.",
+    "require_verbatim_import_before_real_label_inference": true
+  }
+}
