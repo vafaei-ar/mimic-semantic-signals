@@ -48,6 +48,8 @@ The corrected corpus was re-materialized successfully in `P7R4Q9V2` with the fro
 
 The primary corrected stripped-text hashes are recorded in `config/v2_1_fixed_note_corpus_result_contract.json`. The full prospective note remains the secondary text sensitivity. No semantic or TF-IDF inference occurred before this refreeze.
 
+Known vocabulary limits remain. The frozen patterns do not strip `vented`, `s/p HD`, or standalone `iHD`. These are documented limitations of the direct-language sensitivity and will not trigger another preregistration corpus expansion. The stripping procedure is intended to reduce obvious endpoint or treatment wording, not to remove every synonymous or contextual expression.
+
 ## G. Semantic representations
 
 The eight constructs are overall clinician concern, worsening trajectory, respiratory concern, hemodynamic concern, poor treatment response, escalation considered, diagnostic uncertainty, and reassuring stability.
