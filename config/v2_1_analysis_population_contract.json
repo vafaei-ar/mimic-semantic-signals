@@ -10,7 +10,13 @@
       "unique_patients": 8982,
       "cases": 279,
       "controls": 10837,
-      "note_available_rows": 4499
+      "note_available_rows": 4499,
+      "prevalence": 0.02509895645915797,
+      "note_coverage": 0.4047319179560993,
+      "case_note_rows": 135,
+      "control_note_rows": 4364,
+      "case_note_coverage": 0.4838709677419355,
+      "control_note_coverage": 0.40269447264002955
     },
     "renal_replacement_therapy": {
       "source": "metavision",
@@ -18,7 +24,13 @@
       "unique_patients": 15080,
       "cases": 314,
       "controls": 19081,
-      "note_available_rows": 7709
+      "note_available_rows": 7709,
+      "prevalence": 0.016189739623614332,
+      "note_coverage": 0.3974735756638309,
+      "case_note_rows": 143,
+      "control_note_rows": 7566,
+      "case_note_coverage": 0.4554140127388535,
+      "control_note_coverage": 0.39652009852733083
     },
     "icu_death": {
       "source": "metavision",
@@ -26,7 +38,13 @@
       "unique_patients": 15312,
       "cases": 214,
       "controls": 19597,
-      "note_available_rows": 7889
+      "note_available_rows": 7889,
+      "prevalence": 0.010802079652718188,
+      "note_coverage": 0.3982131139266064,
+      "case_note_rows": 83,
+      "control_note_rows": 7806,
+      "case_note_coverage": 0.3878504672897196,
+      "control_note_coverage": 0.39832627442975965
     }
   },
   "prespecified_replications": {
@@ -36,7 +54,13 @@
       "unique_patients": 19736,
       "cases": 306,
       "controls": 25326,
-      "note_available_rows": 23272
+      "note_available_rows": 23272,
+      "prevalence": 0.011938202247191011,
+      "note_coverage": 0.9079275905118602,
+      "case_note_rows": 283,
+      "control_note_rows": 22989,
+      "case_note_coverage": 0.9248366013071896,
+      "control_note_coverage": 0.9077232883203032
     }
   },
   "death_all_source_provenance": {
