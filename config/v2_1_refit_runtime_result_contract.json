@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "status": "frozen_preregistration_runtime_only",
+  "canonical_job": "Y5R7M2Q8",
+  "validation_job": "X4R7M2Q8",
+  "project_commit": "4d39e8400722f8611a4d04a528125c29251a91e6",
+  "artifact_path": "outputs/multitask_benchmark/refit_bootstrap_benchmark_v2_1_ventilation.json",
+  "artifact_sha256": "7a2e2aadf5b26f8abe49b71f1e77a4a61d5cb9cd79568c56370121a309d422fe",
+  "real_predictors_used": false,
+  "real_outcome_labels_used": false,
+  "ventilation_exact_refit_seconds": 5470.322735227644,
+  "ventilation_projected_500_refit_hours_serial": 759.7670465593951,
+  "null_calibration": {
+    "trials": 2000,
+    "bootstrap_replicates_per_trial": 500,
+    "rejection_rate_alpha_0_05": 0.052,
+    "rejection_rate_alpha_0_05_over_3": 0.0155
+  },
+  "inference_consequence": "500-replicate exact refit plan superseded before OSF registration; operative rule is config/v2_1_primary_inference_freeze.json"
+}
