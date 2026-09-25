@@ -14,6 +14,7 @@
       "\\bendotracheal\\b",
       "\\bmechanical\\s+ventilat\\w*\\b",
       "\\bventilator\\b",
+      "\\bvent\\b",
       "\\bETT\\b"
     ],
     "renal_replacement_therapy": [
@@ -25,7 +26,10 @@
       "\\bhemofiltration\\b",
       "\\bhaemofiltration\\b",
       "\\brenal\\s+replacement\\b",
-      "\\btrialysis\\b"
+      "\\btrialysis\\b",
+      "\\bultrafiltration\\b",
+      "\\b(?:on|for|needs?|needed|requires?|required|started|starting|start|initiat\\w*)\\s+i?HD\\b",
+      "\\bi?HD\\s+(?:cath\\w*|line|session|today|tomorrow)\\b"
     ],
     "icu_death": [
       "\\bdying\\b",
@@ -47,7 +51,9 @@
   "guardrails": [
     "Note identity, timing, category, eligibility, and has_note are fixed before stripping.",
     "BiPAP alone is not stripped as invasive-ventilation language.",
-    "Bare HD and bare RRT are not stripped.",
+    "Bare HD and bare RRT are not stripped; only context-limited HD expressions are stripped.",
+    "The standalone ICU shorthand vent is stripped as direct ventilation language.",
+    "Ultrafiltration is stripped as direct renal-replacement/treatment language.",
     "Stripping reduces direct tautology but is not claimed to remove all treatment intent or prognostic language."
   ]
 }
