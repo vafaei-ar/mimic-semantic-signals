@@ -91,6 +91,40 @@ class V21IntegrityTests(unittest.TestCase):
             data = require_osf_registration(td)
             self.assertEqual(data["registration_id"], "abcd1")
 
+    def test_context_feature_freeze_excludes_vent_endpoint_items(self):
+        path = ROOT / "config" / "v2_1_context_feature_freeze.json"
+        freeze = json.loads(path.read_text(encoding="utf-8"))
+        endpoint_ids = {
+            224385, 223849, 224684, 224688,
+            225306, 225585, 225588, 225590, 225592, 226431, 228069,
+        }
+
+        def collect(obj):
+            out = set()
+            if isinstance(obj, dict):
+                for value in obj.values():
+                    out |= collect(value)
+            elif isinstance(obj, list):
+                for value in obj:
+                    if isinstance(value, int):
+                        out.add(value)
+            return out
+
+        treatment_ids = collect(freeze["treatment"])
+        self.assertTrue(endpoint_ids.isdisjoint(treatment_ids))
+        self.assertEqual(freeze["canonical_audit_job"], "A7R4Q2M6")
+        self.assertEqual(
+            freeze["treatment"]["code_status"]["outcome_scope"],
+            ["icu_death"],
+        )
+
+    def test_context_builder_runner_uses_frozen_contracts(self):
+        text = (
+            ROOT / "scripts" / "run_build_preregistration_context_features_v2_1.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("config/v2_1_analysis_population_contract.json", text)
+        self.assertIn("config/v2_1_context_feature_freeze.json", text)
+
     def test_preregistration_runners_use_analysis_population_lock(self):
         for rel in [
             "scripts/run_freeze_enhanced_structured_cv_splits_v2_1.sh",
