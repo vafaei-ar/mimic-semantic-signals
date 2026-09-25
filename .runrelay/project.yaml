@@ -1795,3 +1795,21 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/preregistration_context_features_v2_1.json
+
+
+  build_fixed_note_corpora_v2_1:
+    description: Materialize source-specific fixed-note full and language-stripped corpora for v2.1 confirmatory analyses and CareVue death replication; keep note text local and share aggregate hashes/counts only.
+    command:
+      - bash
+      - scripts/run_build_fixed_note_corpora_v2_1.sh
+    approval: automatic
+    timeout_minutes: 60
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 20
+    artifacts:
+      - outputs/multitask_benchmark/fixed_note_corpora_v2_1.json
