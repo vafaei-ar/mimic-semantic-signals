@@ -1,6 +1,6 @@
 # Technical appendix to the v2.1 post-review confirmatory SAP
 
-**Draft status:** the scientific design is frozen; the refit-bootstrap replicate count remains pending the revised outcome-specific synthetic exact-runtime benchmark after W9R6M4N2 timed out.
+**Draft status:** the scientific design is frozen; the refit-bootstrap count is frozen at 500 replicates per confirmatory outcome. The revised outcome-specific synthetic exact-runtime benchmark is engineering-only and cannot change the inferential replicate count.
 
 ## A. Analysis populations
 
@@ -95,7 +95,7 @@ For each outcome, the primary estimate is repeat-1 out-of-fold ΔAUROC. The pati
 
 This bootstrap conditions on the repeat-1 fold partition. Repeats 2–5 quantify split-assignment stability separately.
 
-The refit-bootstrap replicate count is `{{REFIT_BOOTSTRAP_REPLICATES}}`. The one-sided centered-bootstrap p-value is
+The refit-bootstrap replicate count is `500`. The one-sided centered-bootstrap p-value is
 
 [
 p = \frac{1 + \#\{(\Delta_b-\Delta_{obs}) \ge \Delta_{obs}\}}{B+1}.
@@ -133,3 +133,8 @@ Any implementation defect discovered after registration is logged with date, aff
 
 
 The initial combined benchmark `W9R6M4N2` timed out before emitting an artifact because it combined full-size runtime fitting with repeated model-refit null simulations. It is not used to set the replicate count. The revised benchmark isolates one exact full-size refit replicate per outcome and evaluates p-value null behavior separately with cheap synthetic statistics.
+
+
+## Runtime benchmark execution rule
+
+Runtime benchmark results do not change B = 500. They are used only to determine whether the exact patient-cluster refit bootstrap needs engineering changes such as outcome-specific tasks, checkpointed replicate batches, or controlled parallel execution. Any such engineering change must preserve the frozen patient sampling, fixed-fold membership, model specification, held-out multiplicity, seed stream, interval, and p-value definitions. If execution is still impractical, the plan must be amended before OSF registration rather than silently reducing the number of replicates.
