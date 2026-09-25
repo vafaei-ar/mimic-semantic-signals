@@ -17,6 +17,7 @@ PYTHONPATH=src .venv/bin/python -m unittest tests.test_v2_1_integrity -v
   src/113_audit_treatment_context_availability_v2_1.py \
   src/114_build_preregistration_context_features_v2_1.py \
   src/115_build_fixed_note_corpora_v2_1.py \
+  src/116_audit_hgb_thread_runtime_v2_1.py \
   src/preregistration_stats.py \
   src/registration_gate.py
 
@@ -52,7 +53,8 @@ out.write_text(json.dumps({
         "112_audit_death_source_strategy_v2_1.py",
         "113_audit_treatment_context_availability_v2_1.py",
         "114_build_preregistration_context_features_v2_1.py",
-        "115_build_fixed_note_corpora_v2_1.py"
+        "115_build_fixed_note_corpora_v2_1.py",
+        "116_audit_hgb_thread_runtime_v2_1.py"
     ],
     "registration_gate_expected_state": "locked_until_docs/registration/osf_registration.json_exists"
 }, indent=2) + "\n", encoding="utf-8")
@@ -62,3 +64,4 @@ PY
 bash -n scripts/run_refit_bootstrap_benchmark_v2_1_ventilation.sh
 bash -n scripts/run_refit_bootstrap_benchmark_v2_1_rrt.sh
 bash -n scripts/run_refit_bootstrap_benchmark_v2_1_death.sh
+bash -n scripts/run_hgb_thread_runtime_audit_v2_1.sh
