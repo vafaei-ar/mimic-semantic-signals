@@ -111,6 +111,22 @@ class V21IntegrityTests(unittest.TestCase):
             ["poor_treatment_response", "escalation_considered"],
         )
 
+    def test_refit_bootstrap_inference_freeze(self):
+        path = ROOT / "config" / "v2_1_refit_bootstrap_inference_freeze.json"
+        freeze = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(freeze["bootstrap_replicates"], 500)
+        self.assertEqual(freeze["primary_partition_seed"], 20260924)
+        self.assertAlmostEqual(freeze["minimum_attainable_pvalue"], 1 / 501)
+        self.assertIn(
+            "Holm adjustment",
+            freeze["multiplicity"],
+        )
+        self.assertIn(
+            "do not reduce B",
+            freeze["runtime_contingency"],
+        )
+        self.assertFalse(freeze["real_outcome_performance_seen_when_frozen"])
+
     def test_preregistration_power_result_contract(self):
         path = ROOT / "config" / "v2_1_preregistration_power_result_contract.json"
         contract = json.loads(path.read_text(encoding="utf-8"))
