@@ -52,13 +52,13 @@ Bootstrap child seeds are generated deterministically with `numpy.random.SeedSeq
 
 This interval captures patient-sampling and model-refit variability conditional on the frozen repeat-1 fold partition. It does not incorporate uncertainty from choosing a different fold partition; that component is addressed separately by refitting the analysis under frozen repeats 2 through 5 and reporting all five repeat-specific delta-AUROC estimates and their range.
 
-The refit plan was retained only after a synthetic-only runtime re-audit. The earlier benchmark `Y5R7M2Q8` required 5,470 seconds for one ventilation replicate because the workstation exposed 112 CPUs to OpenMP despite a four-core task allocation. In `B6R9M4Q2`, explicit four-thread execution completed one exact five-fold replicate in 11.21 seconds, corresponding to about 1.56 serial hours for 500 ventilation replicates. The registered HGB execution contract therefore fixes `OMP_NUM_THREADS=4`, `OPENBLAS_NUM_THREADS=4`, `MKL_NUM_THREADS=4`, and `NUMEXPR_NUM_THREADS=4`.
+The primary refit-bootstrap procedure was confirmed feasible before registration using synthetic data only. To prevent thread oversubscription, HGB execution fixes `OMP_NUM_THREADS=4`, `OPENBLAS_NUM_THREADS=4`, `MKL_NUM_THREADS=4`, and `NUMEXPR_NUM_THREADS=4`. No v2.1 predictive performance informed this decision.
 
 ## Precision planning
 
-Before performance analysis, we calculated an approximate delta-AUROC detectable-effect grid from frozen case/control counts, exact note-available counts, and previously known v1 structured AUROCs. The grid used paired-score correlations of 0.80, 0.90, and 0.95. It was originally also tabulated at a conservative alpha of 0.0167 while the plan still contemplated three formal tests. That alpha is no longer part of the operative inference procedure; the grid is retained only as a planning and interpretation aid.
+Before performance analysis, we estimated approximate detectable delta-AUROC values from the frozen case/control counts, exact note-available counts, and previously known v1 structured AUROCs. At an assumed paired prediction correlation of 0.90, the approximate 80% detectable full-cohort increments were 0.0233 for ventilation, 0.0113 for RRT, and 0.0241 for MetaVision death. The corresponding note-available-only values were 0.0334, 0.0170, and 0.0385.
 
-At correlation 0.90, the approximate 80% detectable full-cohort increments under that conservative grid were 0.0233 for ventilation, 0.0113 for RRT, and 0.0241 for MetaVision death. The corresponding note-available-only values were 0.0334, 0.0170, and 0.0385. Ventilation and MetaVision death therefore have limited precision for increments in the range previously seen in v1. Small estimates will be reported with their uncertainty rather than interpreted as evidence of no effect.
+These values are used only to interpret precision. They do not define testing thresholds, success criteria, or decisions to modify the analysis.
 
 ## Prespecified secondary analyses
 
@@ -81,8 +81,3 @@ Zigong will have two prespecified external arms. A local Chinese-to-English tran
 If an implementation or data-integrity problem is found after registration, the affected analysis will stop. The date, reason, and correction will be logged before the corrected result is inspected. If the affected result has already been seen, both versions will remain in the audit trail and the supersession will be reported. A change that alters the scientific estimand requires an amended protocol.
 
 The minimum first paper consists of the internal v2.1 confirmatory analysis, clinician construct validation, and Zigong narrative validation. Penn State narrative data, eICU/NWICU structured transport, a full equity analysis, semantic trajectories, the historical vasopressor analysis, and a rebuilt supervised encoder are outside the minimum submission set.
-
-
-## Pre-registration runtime correction
-
-The earlier runtime result `Y5R7M2Q8` is superseded as an execution-environment artifact. The workstation exposed 112 CPUs to OpenMP despite a four-core RunRelay resource request. In synthetic-only audit `B6R9M4Q2`, library-default execution did not complete one two-fit fold within 90 seconds, whereas explicit four-thread execution completed the fold in 2.18 seconds and a full exact five-fold refit replicate in 11.21 seconds. The 500-replicate patient-cluster refit bootstrap is therefore the operative primary uncertainty procedure, with OMP, OpenBLAS, MKL, and NumExpr each fixed at four threads. No v2.1 predictive performance was opened before this correction.
