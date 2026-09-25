@@ -216,6 +216,19 @@ class V21IntegrityTests(unittest.TestCase):
             0.02413225844794707,
         )
 
+    def test_tfidf_no_note_encoding_is_frozen(self):
+        path = ROOT / "config" / "v2_1_semantic_model_roster.json"
+        roster = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            roster["tfidf"]["no_note_encoding"],
+            "all_zero_sparse_vector",
+        )
+        self.assertEqual(
+            roster["tfidf"]["no_note_context_indicator"],
+            "use existing has_note predictor from rich comparator",
+        )
+        self.assertEqual(roster["tfidf"]["corpus"], "stripped")
+
     def test_fixed_note_corpus_result_contract(self):
         path = ROOT / "config" / "v2_1_fixed_note_corpus_result_contract.json"
         contract = json.loads(path.read_text(encoding="utf-8"))
