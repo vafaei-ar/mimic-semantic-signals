@@ -161,7 +161,9 @@ def build_note_behavior(root: Path, unique: pd.DataFrame) -> tuple[pd.DataFrame,
         out["doc_note_chars_latest_12h"] = g["note_chars"].last()
         out["doc_note_category_groups_12h"] = g["category_group"].nunique()
         latest = g["note_time"].last()
-        second_latest = g["note_time"].nth(-2)
+        second_latest = g["note_time"].agg(
+            lambda s: s.iloc[-2] if len(s) >= 2 else pd.NaT
+        )
         lm = unique.drop_duplicates("icustay_id").set_index("icustay_id")["landmark_time"]
         out["doc_hours_since_last_note"] = (lm - latest).dt.total_seconds() / 3600.0
         out["doc_last_note_gap_hours"] = (latest - second_latest).dt.total_seconds() / 3600.0
