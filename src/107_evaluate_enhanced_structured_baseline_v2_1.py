@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 
 from runrelay_progress import update_progress
+from registration_gate import require_osf_registration
 
 
 OUTCOMES = ("invasive_ventilation", "renal_replacement_therapy", "icu_death")
@@ -649,6 +650,7 @@ def main():
     )
     args = ap.parse_args()
 
+    require_osf_registration()
     _self_check_weighted_metrics()
 
     base = Path(args.base).expanduser().resolve()
