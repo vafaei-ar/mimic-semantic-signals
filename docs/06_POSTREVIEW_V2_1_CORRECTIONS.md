@@ -383,3 +383,25 @@ Correction before any text inference:
 - a regression test now demonstrates that raw and boolean representations hash differently even though they represent the same note availability.
 
 Because the implementation changed, the corrected corpus materialization must be a new execution rather than a retry of J8.
+
+
+## N8R6Q4M2 fixed-note corpus failure
+
+The second fixed-note corpus materialization attempt `N8R6Q4M2` also failed before writing any artifact.
+
+- status: failed;
+- exit code: 1;
+- runtime: 1.809 seconds;
+- terminal phase: invasive-ventilation corpus materialization;
+- artifact: none.
+
+Cause: after fixing the `has_note` representation order, the corpus builder still hashed the raw CSV `note_time` string representation, whereas the frozen G8 context hash was computed after parsing `note_time` to pandas datetime and coercing the identifier columns to integer. The selected rows were unchanged; the representation used for hashing still differed.
+
+Correction before any text inference:
+
+- reproduce the G8 analysis-index normalization exactly before hashing: numeric IDs/label to int64, landmark time parsed, note time parsed with missing values coerced;
+- verify the G8 note-identity hash on that normalized frame;
+- only after verification normalize `has_note` to boolean for filtering;
+- a regression test now demonstrates the raw-string and G8-normalized hashes differ and verifies the corrected ordering.
+
+Because the implementation changed again, the next corpus build must be a new execution rather than a retry of N8.
