@@ -125,6 +125,19 @@ def load_icustays(root: Path) -> pd.DataFrame:
     return d
 
 
+def age_years_at_icu(intime, dob) -> float:
+    if pd.isna(intime) or pd.isna(dob):
+        return float("nan")
+    days = (pd.Timestamp(intime).to_pydatetime().date() - pd.Timestamp(dob).to_pydatetime().date()).days
+    return days / 365.2425
+
+
+def adult_eligibility_mask(age_years: pd.Series, first_careunit: pd.Series) -> pd.Series:
+    age = pd.to_numeric(age_years, errors="coerce")
+    nicu = first_careunit.fillna("UNKNOWN").astype(str).str.strip().str.upper().eq("NICU")
+    return age.ge(18) & (~nicu)
+
+
 def restrict_to_adults(root: Path, icu: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
     f = find_file(module_path(root, "mimiciii"), ["PATIENTS.csv.gz", "PATIENTS.csv"])
     if f is None:
@@ -142,19 +155,16 @@ def restrict_to_adults(root: Path, icu: pd.DataFrame) -> tuple[pd.DataFrame, dic
     p["subject_id"] = p["subject_id"].astype("int64")
 
     q = icu.merge(p[["subject_id", "dob"]], on="subject_id", how="left")
-    age_values = []
-    for intime, dob in zip(q["intime"], q["dob"]):
-        if pd.isna(intime) or pd.isna(dob):
-            age_values.append(np.nan)
-        else:
-            days = (intime.to_pydatetime().date() - dob.to_pydatetime().date()).days
-            age_values.append(days / 365.2425)
-    q["age_at_icu_years_uncapped"] = pd.Series(age_values, index=q.index, dtype=float)
+    q["age_at_icu_years_uncapped"] = pd.Series(
+        [age_years_at_icu(intime, dob) for intime, dob in zip(q["intime"], q["dob"])],
+        index=q.index,
+        dtype=float,
+    )
 
     missing_age = q["age_at_icu_years_uncapped"].isna()
     pediatric = q["age_at_icu_years_uncapped"].lt(18)
     nicu = q["first_careunit"].astype(str).str.strip().str.upper().eq("NICU")
-    keep = (~missing_age) & (~pediatric) & (~nicu)
+    keep = adult_eligibility_mask(q["age_at_icu_years_uncapped"], q["first_careunit"])
 
     report = {
         "rows_before": int(len(q)),
