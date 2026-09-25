@@ -4,13 +4,27 @@ cd "$(git rev-parse --show-toplevel)"
 
 PYTHONPATH=src .venv/bin/python -m unittest tests.test_v2_1_integrity -v
 
-.venv/bin/python -m py_compile   src/104_build_corrected_landmark12_v2_1_cohorts.py   src/105_build_enhanced_structured_baseline_v2_1.py   src/106_freeze_enhanced_structured_cv_splits_v2_1.py   src/107_evaluate_enhanced_structured_baseline_v2_1.py   src/108_quarantine_pre_registration_e8.py   src/109_audit_preregistration_context_v2_1.py   src/110_simulate_preregistration_power_v2_1.py   src/111_benchmark_refit_bootstrap_v2_1.py   src/preregistration_stats.py   src/registration_gate.py
+.venv/bin/python -m py_compile \
+  src/104_build_corrected_landmark12_v2_1_cohorts.py \
+  src/105_build_enhanced_structured_baseline_v2_1.py \
+  src/106_freeze_enhanced_structured_cv_splits_v2_1.py \
+  src/107_evaluate_enhanced_structured_baseline_v2_1.py \
+  src/108_quarantine_pre_registration_e8.py \
+  src/109_audit_preregistration_context_v2_1.py \
+  src/110_simulate_preregistration_power_v2_1.py \
+  src/111_benchmark_refit_bootstrap_v2_1.py \
+  src/112_audit_death_source_strategy_v2_1.py \
+  src/113_audit_treatment_context_availability_v2_1.py \
+  src/preregistration_stats.py \
+  src/registration_gate.py
 
 bash -n scripts/require_osf_registration.sh
 bash -n scripts/run_quarantine_pre_registration_e8.sh
 bash -n scripts/run_preregistration_context_audit_v2_1.sh
 bash -n scripts/run_preregistration_power_v2_1.sh
 bash -n scripts/run_refit_bootstrap_benchmark_v2_1.sh
+bash -n scripts/run_death_source_strategy_audit_v2_1.sh
+bash -n scripts/run_treatment_context_availability_audit_v2_1.sh
 
 mkdir -p outputs/integrity
 PYTHONPATH=src .venv/bin/python - <<'PY'
@@ -22,6 +36,18 @@ out.write_text(json.dumps({
     "status": "passed",
     "real_clinical_data_read": False,
     "real_outcome_performance_computed": False,
+    "validated_sources": [
+        "104_build_corrected_landmark12_v2_1_cohorts.py",
+        "105_build_enhanced_structured_baseline_v2_1.py",
+        "106_freeze_enhanced_structured_cv_splits_v2_1.py",
+        "107_evaluate_enhanced_structured_baseline_v2_1.py",
+        "108_quarantine_pre_registration_e8.py",
+        "109_audit_preregistration_context_v2_1.py",
+        "110_simulate_preregistration_power_v2_1.py",
+        "111_benchmark_refit_bootstrap_v2_1.py",
+        "112_audit_death_source_strategy_v2_1.py",
+        "113_audit_treatment_context_availability_v2_1.py"
+    ],
     "registration_gate_expected_state": "locked_until_docs/registration/osf_registration.json_exists"
 }, indent=2) + "\n", encoding="utf-8")
 print(out.read_text())
