@@ -19,6 +19,7 @@ on:
       - "config/v2_1_language_stripping_freeze.json"
       - "scripts/run_build_preregistration_context_features_v2_1.sh"
       - "config/v2_1_context_feature_freeze.json"
+      - "config/v2_1_context_feature_result_contract.json"
       - "scripts/run_v2_1_preregistration_synthetic_checks.sh"
       - "scripts/run_freeze_enhanced_structured_cv_splits_v2_1.sh"
       - "scripts/run_preregistration_power_v2_1.sh"
