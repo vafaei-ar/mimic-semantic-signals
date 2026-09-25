@@ -239,3 +239,20 @@ The explicit-intubation sensitivity now:
 - must preserve the same control count as the primary ventilation cohort.
 
 The broad respiratory-support sensitivity remains symmetric by design: broad support evidence defines both the post-landmark case endpoint and the disqualifying/control rule.
+
+
+## Death source-system proxy gate
+
+The preregistration context audit `R3V8M5Q2` completed before any v2.1 clinical outcome performance was opened.
+
+It showed that the mixed-source ICU-death comparator remains strongly source-identifying even after collapsing note categories:
+
+- documentation-behavior source-prediction AUROC: 0.9597;
+- current full-comparator source-prediction AUROC: 0.9888;
+- preregistration diagnostic threshold: 0.80.
+
+This is a **label-free source-system confounding diagnostic**, not mortality prediction performance.
+
+Therefore the pooled all-source ICU-death comparator is **not frozen for registration**. CV split freezing for ICU death is deferred until a source-system strategy is chosen without inspecting mortality performance.
+
+The next allowed step is a preregistration-only decomposition of source recoverability by structured, note-context, and documentation-behavior blocks, together with descriptive CareVue/MetaVision cohort counts. The source strategy must then be locked before any death predictive evaluation.
