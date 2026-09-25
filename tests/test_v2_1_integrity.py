@@ -110,6 +110,18 @@ class V21IntegrityTests(unittest.TestCase):
             ["poor_treatment_response", "escalation_considered"],
         )
 
+    def test_preregistration_power_result_contract(self):
+        path = ROOT / "config" / "v2_1_preregistration_power_result_contract.json"
+        contract = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(contract["canonical_job"], "V9R6M4N2")
+        self.assertFalse(contract["real_outcome_predictions_used"])
+        self.assertFalse(contract["real_outcome_labels_read"])
+        self.assertAlmostEqual(
+            contract["full_cohort_80pct_mde_at_rho_0_90_holm"]["invasive_ventilation"],
+            0.02327854017134698,
+        )
+        self.assertEqual(contract["note_available_cases"]["icu_death"], 83)
+
     def test_fixed_note_corpus_result_contract(self):
         path = ROOT / "config" / "v2_1_fixed_note_corpus_result_contract.json"
         contract = json.loads(path.read_text(encoding="utf-8"))
