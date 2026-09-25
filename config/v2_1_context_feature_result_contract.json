@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "status": "frozen_preregistration_context_features",
+  "canonical_job": "G8R6Q4M2",
+  "project_commit": "7af5679eecb162b1d6f5819744680f395732bf97",
+  "artifact_path": "outputs/multitask_benchmark/preregistration_context_features_v2_1.json",
+  "artifact_sha256": "04cd6ab090518ad570909e57705d1331ceefeb632327666c9c4fa238588eabbf",
+  "fio2_cleaning": {
+    "target_unit": "percent",
+    "valid_range": [
+      20,
+      100
+    ],
+    "carevue": {
+      "numeric_rows": 26245,
+      "fraction_scale_rows_converted": 26210,
+      "percent_scale_rows_retained": 35,
+      "invalid_or_out_of_range_rows_rejected": 0
+    },
+    "metavision": {
+      "numeric_rows": 26787,
+      "fraction_scale_rows_converted": 9,
+      "percent_scale_rows_retained": 26673,
+      "invalid_or_out_of_range_rows_rejected": 105
+    }
+  },
+  "analyses": {
+    "invasive_ventilation": {
+      "source": "metavision",
+      "rows": 11116,
+      "unique_patients": 8982,
+      "feature_count": 19,
+      "local_feature_file_sha256": "171e39595d8acadd595abfabb0a423fbb306899b347386d3595866da04ed5ab0",
+      "note_identity_sha256": "4a5f75dc9fd16fd0e3394c97d47d99d842230cc301ab01e4794ca969bd7271f3"
+    },
+    "renal_replacement_therapy": {
+      "source": "metavision",
+      "rows": 19395,
+      "unique_patients": 15080,
+      "feature_count": 19,
+      "local_feature_file_sha256": "d008836347be7958e7e56227ea66e9b7dbaaeef1ea9f985456d850a1b6a09843",
+      "note_identity_sha256": "750f84b5f887928c90592137e5b0c7bb035530ce446a3542b3def0f9d5eab858"
+    },
+    "icu_death": {
+      "source": "metavision",
+      "rows": 19811,
+      "unique_patients": 15312,
+      "feature_count": 23,
+      "local_feature_file_sha256": "57990b9292f3a7efa1e4ae9626641141aa974cb4bcec109a38e887323444fec8",
+      "note_identity_sha256": "9d604176b53dac81f8a5e2d08e26dedcbea1f9e604baf200565d50a2e89b97dd"
+    },
+    "icu_death_carevue": {
+      "source": "carevue",
+      "rows": 25632,
+      "unique_patients": 19736,
+      "feature_count": 23,
+      "local_feature_file_sha256": "c98009cc5497608c8a8942a0ac7ab4920ded99b1c140c0967472c35bf4a99229",
+      "note_identity_sha256": "bc1c29e740b418cb0a5ad477e4de6be16ec9ce8d031fe8b6c2b1db2cce11bfc1"
+    }
+  }
+}
