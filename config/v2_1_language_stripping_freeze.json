@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_v2_1_predictive_performance",
+  "primary_corpus": "stripped",
+  "secondary_corpus": "full_unstripped",
+  "flags": [
+    "IGNORECASE"
+  ],
+  "replacement": " ",
+  "post_replacement_normalization": "none",
+  "patterns": {
+    "invasive_ventilation": [
+      "\\b(?:re[-\\s]?)?intubat\\w*\\b",
+      "\\bendotracheal\\b",
+      "\\bmechanical\\s+ventilat\\w*\\b",
+      "\\bventilator\\b",
+      "\\bETT\\b"
+    ],
+    "renal_replacement_therapy": [
+      "\\bdialysis\\b",
+      "\\bhemodialysis\\b",
+      "\\bhaemodialysis\\b",
+      "\\bCVVH\\w*\\b",
+      "\\bCRRT\\b",
+      "\\bhemofiltration\\b",
+      "\\bhaemofiltration\\b",
+      "\\brenal\\s+replacement\\b",
+      "\\btrialysis\\b"
+    ],
+    "icu_death": [
+      "\\bdying\\b",
+      "\\bdeath\\b",
+      "\\bdeceased\\b",
+      "\\bcomfort care\\b",
+      "\\bcomfort measures\\b",
+      "\\bCMO\\b",
+      "\\bwithdraw\\w*\\s+(?:of\\s+)?(?:care|support|treatment)\\b",
+      "\\bhospice\\b",
+      "\\bDNR\\b",
+      "\\bDNI\\b",
+      "\\bdo not resuscitate\\b",
+      "\\bdo not intubate\\b",
+      "\\bgoals? of care\\b",
+      "\\bpalliative\\b"
+    ]
+  },
+  "guardrails": [
+    "Note identity, timing, category, eligibility, and has_note are fixed before stripping.",
+    "BiPAP alone is not stripped as invasive-ventilation language.",
+    "Bare HD and bare RRT are not stripped.",
+    "Stripping reduces direct tautology but is not claimed to remove all treatment intent or prognostic language."
+  ]
+}
