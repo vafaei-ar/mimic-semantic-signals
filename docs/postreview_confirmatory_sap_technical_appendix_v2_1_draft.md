@@ -1,6 +1,6 @@
 # Technical appendix to the v2.1 post-review confirmatory SAP
 
-This appendix records the implementation details fixed before OSF registration. The original 500-replicate exact refit-bootstrap plan remains in the repository as superseded provenance. No v2.1 predictive performance was examined before that change.
+This appendix records the implementation details fixed before OSF registration. An interim fixed-prediction uncertainty amendment remains in the repository as superseded provenance; after a synthetic threading/runtime re-audit, the original 500-replicate exact patient-cluster refit-bootstrap procedure was restored before any v2.1 predictive performance was examined.
 
 ## A. Analysis populations
 
@@ -40,9 +40,13 @@ This is a prespecified documentation-behavior comparator motivated by prior work
 
 ## F. Fixed-note text preprocessing
 
-The prospective note is selected before any language handling. Outcome-specific stripping is case-insensitive and replaces each frozen direct-language match with one ASCII space. It does not otherwise normalize the text. The corpus build verified, for every source-specific analysis, that the number of notes changed by stripping exactly matched the frozen direct-language flag.
+The prospective note is selected before any language handling. Outcome-specific stripping is case-insensitive and replaces each frozen direct-language match with one ASCII space. It does not otherwise normalize the text.
 
-The primary corpus hashes are recorded in config/v2_1_fixed_note_corpus_result_contract.json. Because the preregistration review identified two residual stripping gaps, the corpus must be re-materialized before registration using the corrected frozen vocabulary: standalone `vent` for ventilation, and contextual `HD` plus `ultrafiltration` expressions for RRT. The note identities remain fixed; only the text transformation and resulting corpus hashes will change.
+The preregistration review broadened the frozen stripping vocabulary before any v2.1 text inference: standalone `vent` was added for ventilation, and `ultrafiltration` plus context-limited hemodialysis `HD` expressions were added for RRT. Bare `HD` and bare `RRT` remain unstripped because they can denote hospital day and rapid response team, respectively.
+
+The corrected corpus was re-materialized successfully in `P7R4Q9V2` with the frozen note identities unchanged. The corrected transformation changed 646 ventilation notes versus 618 under the earlier vocabulary, and 465 RRT notes versus 347 earlier; the MetaVision and CareVue death corpora were unchanged at 797 and 1,159 changed notes. The corrected corpus artifact SHA-256 is `b6ace04ec469261d0c25b6c685c3c027c1b5bd8154b9dc028c7baa95e1edb4a0`.
+
+The primary corrected stripped-text hashes are recorded in `config/v2_1_fixed_note_corpus_result_contract.json`. The full prospective note remains the secondary text sensitivity. No semantic or TF-IDF inference occurred before this refreeze.
 
 ## G. Semantic representations
 
