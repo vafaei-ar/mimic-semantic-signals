@@ -206,3 +206,21 @@ When execution resumes:
 8. only then open corrected semantic/TF-IDF inference/evaluation;
 9. run the treatment-language and timing sensitivities;
 10. proceed to clinician validation and corrected external transport.
+
+
+## Hard stop before registration
+
+Real-label predictive performance is now executable only after an OSF registration record is present. This is enforced in the v2.1 evaluator and in each outcome-specific runner.
+
+The permitted pre-registration execution set is limited to:
+
+1. synthetic/static integrity tests;
+2. E8 partial-output quarantine;
+3. corrected adult cohort construction and descriptive freeze;
+4. corrected structured feature extraction and note-identity freeze;
+5. label-free treatment/documentation/source-proxy audits;
+6. deterministic CV split freezing;
+7. aggregate-count power/MDE planning;
+8. synthetic-only refit-bootstrap runtime/null benchmarking.
+
+No AUROC, AUPRC, calibration, Brier score, log loss, or decision-curve result on real outcome labels may be produced before registration.
