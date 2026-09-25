@@ -36,6 +36,7 @@ Use the prior 6 hours ending at the landmark.
 1. **Latest FiO2**
    - MetaVision: item 223835.
    - CareVue replication: items 189, 190, 191, 727, 2981, 3420, 3422, 7570.
+   - normalize to percent before selecting the latest valid value: values in (0,1] are multiplied by 100; values in [20,100] are retained; all other numeric values are treated as missing.
    - preserve missingness; do not force room-air values when none are charted.
 
 2. **Latest oxygen flow**
@@ -152,13 +153,14 @@ Prior 12-hour features:
 - `doc_note_chars_total_12h`;
 - `doc_note_chars_latest_12h`;
 - `doc_note_category_groups_12h`;
-- `doc_hours_since_last_note`;
 - `doc_nursing_note_count_12h`;
 - `doc_physician_note_count_12h`;
 - `doc_respiratory_note_count_12h`;
 - `doc_other_note_count_12h`.
 
 The previously proposed `doc_last_note_gap_hours` is **excluded**. Its first implementation was all-missing because of index misalignment and it is unnecessary for the frozen primary documentation-behavior block.
+
+`doc_hours_since_last_note` is also excluded from the documentation-behavior block because, under the same eligible note categories and timing rule, it is exactly the selected-note age already carried in ordinary note context. This avoids duplicating the same predictor under two names.
 
 Ordinary note context remains separate:
 
