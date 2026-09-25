@@ -83,18 +83,65 @@ class V21IntegrityTests(unittest.TestCase):
 
             p = Path(td) / "docs" / "registration" / "osf_registration.json"
             p.parent.mkdir(parents=True)
-            p.write_text(
-                json.dumps(
-                    {
-                        "status": "registered",
-                        "registration_id": "abcd1",
-                        "registered_at": "2026-10-01T00:00:00Z",
-                    }
-                ),
-                encoding="utf-8",
-            )
+            pending = {
+                "status": "pending_approval",
+                "registration_id": "abcd1",
+                "registered_at": "2026-10-01T00:00:00Z",
+                "doi": None,
+                "verification": {
+                    "osf_hosted_files_download_verified": False,
+                    "registered_form_text_retrieved": False,
+                    "osf_form_addendum_verbatim_verified": False,
+                },
+            }
+            p.write_text(json.dumps(pending), encoding="utf-8")
+            with self.assertRaises(RuntimeError):
+                require_osf_registration(td)
+
+            approved = {
+                **pending,
+                "status": "approved",
+                "doi": "10.17605/OSF.IO/ABCD1",
+                "verification": {
+                    "osf_hosted_files_download_verified": True,
+                    "registered_form_text_retrieved": True,
+                    "osf_form_addendum_verbatim_verified": True,
+                },
+            }
+            p.write_text(json.dumps(approved), encoding="utf-8")
             data = require_osf_registration(td)
             self.assertEqual(data["registration_id"], "abcd1")
+
+    def test_osf_registered_instrument_freeze(self):
+        freeze = json.loads(
+            (ROOT / "config" / "v2_1_osf_registered_instrument_freeze.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(freeze["instruments"]["open_jev"]["model_revision"], "19bf9a64815add579fbf6c907bef584d9277a8e4")
+        self.assertEqual(freeze["instruments"]["open_jev"]["typed_decisions_commit"], "10d7834d3b99041f890db4615fb38ef95ced50cc")
+        self.assertEqual(freeze["instruments"]["open_jev"]["chunk_tokens"], 220)
+        self.assertEqual(freeze["instruments"]["laya"]["package_version"], "0.3.4")
+        self.assertEqual(freeze["instruments"]["laya"]["chunk_tokens"], 600)
+        self.assertEqual(freeze["instruments"]["diffusiongemma"]["model_id"], "google/diffusiongemma-26B-A4B-it")
+        self.assertEqual(freeze["instruments"]["diffusiongemma"]["model_revision_exact"], "f7f5b7f5fa82ffc52addd066915886d497f5517b")
+        self.assertIn("nvidia/diffusiongemma-26B-A4B-it-NVFP4", freeze["instruments"]["diffusiongemma"]["forbidden_model_ids"])
+        self.assertEqual(freeze["semantic_schema"]["sha256_exact"], "72763082c314a4542817ccfcd42d2b10d9446fc8e84c3391a2140790b2483623")
+        self.assertIsNone(freeze["submitted_form_text_pending_verbatim_import"]["directional_hypotheses"]["H4"])
+
+    def test_preanalysis_clarifications(self):
+        freeze = json.loads(
+            (ROOT / "config" / "v2_1_preanalysis_clarifications_2026-09-25.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(freeze["h5_sparse_logistic"]["C"], 1.0)
+        self.assertEqual(freeze["h5_sparse_logistic"]["solver"], "liblinear")
+        self.assertEqual(freeze["h5_sparse_logistic"]["max_iter"], 5000)
+        self.assertEqual(freeze["ece"]["bins"], 10)
+        self.assertEqual(freeze["ece"]["scheme"], "equal_width_probability")
+        self.assertEqual(freeze["decision_curve"]["thresholds"], [0.0025, 0.005, 0.0075, 0.01, 0.015, 0.02, 0.03, 0.05])
+        self.assertEqual(freeze["bootstrap_failure_rule"]["maximum_degenerate_replacement_fraction"], 0.05)
 
     def test_semantic_model_roster_matches_schema(self):
         roster = json.loads(
