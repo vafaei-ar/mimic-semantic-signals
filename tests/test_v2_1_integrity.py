@@ -134,30 +134,31 @@ class V21IntegrityTests(unittest.TestCase):
         )
         self.assertEqual(
             freeze["primary_uncertainty"]["bootstrap_replicates"],
-            5000,
+            500,
         )
         self.assertFalse(freeze["formal_hypothesis_testing"])
         self.assertIn("No confirmatory p-values", freeze["multiplicity"])
         self.assertEqual(
-            freeze["amendment_basis"]["runtime_benchmark_job"],
-            "Y5R7M2Q8",
+            freeze["amendment_basis"]["runtime_reaudit_job"],
+            "B6R9M4Q2",
         )
         self.assertFalse(
             freeze["amendment_basis"]["real_v2_1_predictive_performance_seen"]
         )
+        self.assertEqual(freeze["execution_thread_contract"]["OMP_NUM_THREADS"], 4)
 
     def test_refit_runtime_result_contract(self):
         path = ROOT / "config" / "v2_1_refit_runtime_result_contract.json"
         contract = json.loads(path.read_text(encoding="utf-8"))
-        self.assertEqual(contract["canonical_job"], "Y5R7M2Q8")
-        self.assertEqual(contract["validation_job"], "X4R7M2Q8")
+        self.assertEqual(contract["canonical_job"], "B6R9M4Q2")
+        self.assertEqual(contract["superseded_job"], "Y5R7M2Q8")
         self.assertAlmostEqual(
             contract["ventilation_exact_refit_seconds"],
-            5470.322735227644,
+            11.20727626234293,
         )
-        self.assertGreater(
+        self.assertLess(
             contract["ventilation_projected_500_refit_hours_serial"],
-            700,
+            2.0,
         )
         self.assertFalse(contract["real_predictors_used"])
         self.assertFalse(contract["real_outcome_labels_used"])
