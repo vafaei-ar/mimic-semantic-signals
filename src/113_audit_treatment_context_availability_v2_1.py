@@ -196,6 +196,20 @@ def chartevent_audit(root: Path, indices: dict[str, pd.DataFrame]) -> dict:
                 ids |= source_ids
             q = pre6[pre6["itemid"].isin(ids)].copy()
             available = set(q["icustay_id"].astype(int))
+            by_source = {}
+            for source in ("carevue", "metavision"):
+                source_idx = idx[idx["dbsource"].eq(source)]
+                source_q = q[q["dbsource"].eq(source)]
+                source_available = set(source_q["icustay_id"].astype(int))
+                by_source[source] = {
+                    "source_rows": int(len(source_idx)),
+                    "rows_available": int(source_idx["icustay_id"].isin(source_available).sum()),
+                    "availability_fraction": (
+                        float(source_idx["icustay_id"].isin(source_available).mean())
+                        if len(source_idx) else None
+                    ),
+                    "event_rows": int(len(source_q)),
+                }
             r["features"][concept] = {
                 "rows_available": int(idx["icustay_id"].isin(available).sum()),
                 "availability_fraction": float(idx["icustay_id"].isin(available).mean()),
@@ -204,6 +218,7 @@ def chartevent_audit(root: Path, indices: dict[str, pd.DataFrame]) -> dict:
                     str(int(k)): int(v)
                     for k, v in q["itemid"].value_counts().sort_index().items()
                 },
+                "by_source": by_source,
             }
 
         # High-flow and NIV strings in the dedicated delivery-device fields.
@@ -225,6 +240,24 @@ def chartevent_audit(root: Path, indices: dict[str, pd.DataFrame]) -> dict:
         cq = allpre[allpre["itemid"].isin(code_ids)].sort_values(["icustay_id", "charttime"])
         latest = cq.groupby("icustay_id", as_index=False).last() if not cq.empty else cq
         counts = latest["value"].fillna("MISSING").astype(str).str.strip().value_counts()
+        code_by_source = {}
+        for source in ("carevue", "metavision"):
+            source_idx = idx[idx["dbsource"].eq(source)]
+            source_latest = latest[latest["dbsource"].eq(source)] if not latest.empty else latest
+            source_counts = source_latest["value"].fillna("MISSING").astype(str).str.strip().value_counts()
+            code_by_source[source] = {
+                "source_rows": int(len(source_idx)),
+                "rows_available": int(len(source_latest)),
+                "availability_fraction": (
+                    float(len(source_latest) / len(source_idx)) if len(source_idx) else None
+                ),
+                "latest_value_counts": {
+                    str(k): int(v) for k, v in source_counts.items() if int(v) >= 5
+                },
+                "suppressed_rare_total": int(
+                    sum(int(v) for v in source_counts.values if int(v) < 5)
+                ),
+            }
         r["code_status"] = {
             "rows_available": int(len(latest)),
             "availability_fraction": float(len(latest) / len(idx)) if len(idx) else None,
@@ -232,6 +265,7 @@ def chartevent_audit(root: Path, indices: dict[str, pd.DataFrame]) -> dict:
                 str(k): int(v) for k, v in counts.items() if int(v) >= 5
             },
             "suppressed_rare_total": int(sum(int(v) for v in counts.values if int(v) < 5)),
+            "by_source": code_by_source,
         }
         reports[outcome] = r
 
@@ -436,7 +470,7 @@ def main() -> None:
             "No feature was selected or dropped using outcome labels.",
             "No post-landmark treatment information was used.",
             "Invasive ventilator/intubation endpoint-defining item IDs are absent from the candidate predictor map.",
-            "CareVue and MetaVision medication timing representations are reported separately rather than silently equated.",
+            "CareVue and MetaVision medication timing and CHARTEVENTS availability are reported separately rather than silently equated.",
         ],
     }
     output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
