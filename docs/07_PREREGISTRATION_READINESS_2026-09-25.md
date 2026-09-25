@@ -4,7 +4,7 @@ Updated: 2026-09-25
 
 ## Status
 
-**Ready for human review and external OSF submission. Real-label v2.1 predictive performance remains locked.**
+**Temporary preregistration hold pending a synthetic HGB threading/runtime re-audit and corrected fixed-note corpus re-freeze. Real-label v2.1 predictive performance remains locked.**
 
 Current review-candidate commit:
 
@@ -215,8 +215,10 @@ The external OSF submission itself is a public/consequential action and is **not
 
 ## Remaining actions before predictive execution
 
-1. Human review of the OSF-facing SAP and technical appendix, including prose and metadata.
-2. Submit the post-review analysis plan to OSF.
-3. Add the actual registration record at `docs/registration/osf_registration.json`.
-4. Re-run the preregistration validation on the exact post-registration commit.
-5. Only then begin real-label structured and semantic/lexical analyses.
+1. Complete the synthetic-only workstation HGB threading/runtime audit and decide the final registered uncertainty procedure before OSF submission.
+2. Re-materialize the fixed-note corpora after the corrected `vent`, contextual `HD`, and `ultrafiltration` stripping rules; freeze the new aggregate hashes/counts.
+3. Human-review the OSF-facing SAP and technical appendix, including the final uncertainty procedure and updated corpus hashes.
+4. Submit the post-review analysis plan to OSF.
+5. Add the actual registration record at `docs/registration/osf_registration.json`.
+6. Re-run the preregistration validation on the exact post-registration commit.
+7. Only then begin real-label structured and semantic/lexical analyses.
