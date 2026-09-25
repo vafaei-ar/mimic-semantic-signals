@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "purpose": "OSF registration manifest for the frozen v2.1 post-review analysis state",
+  "baseline_validated_commit": "de3677b3d2dc0f1a1ea855a2892394275aef8650",
+  "baseline_validation_job": "S7Q4M9V2",
+  "statement": "The files listed under frozen_config_blobs must remain byte-identical to the baseline validated commit. Git blob SHA-1 values are used as byte-identity checks for repository files. The canonical fixed-note corpus aggregate artifact SHA-256 is recorded separately.",
+  "frozen_config_blobs": [
+    {
+      "path": "config/v2_1_analysis_population_contract.json",
+      "git_blob_sha1": "716104531cb7102e8ee3f24a70bd9ec6c16c0473"
+    },
+    {
+      "path": "config/v2_1_context_feature_freeze.json",
+      "git_blob_sha1": "fcfbe1cd9117dbec051c7decb41b4c86f6a5f5ee"
+    },
+    {
+      "path": "config/v2_1_context_feature_result_contract.json",
+      "git_blob_sha1": "0274ef60c4c3821348a8c576017aecb8307611cc"
+    },
+    {
+      "path": "config/v2_1_cv_split_result_contract.json",
+      "git_blob_sha1": "0845dac1239ef7fe1eccd914c0146ed739003178"
+    },
+    {
+      "path": "config/v2_1_fixed_note_corpus_result_contract.json",
+      "git_blob_sha1": "c9725be30f6f9692d1035d49f7d808f7ea45bd39"
+    },
+    {
+      "path": "config/v2_1_language_stripping_freeze.json",
+      "git_blob_sha1": "cc16a21e6af0495959811def599ac4f6c9861155"
+    },
+    {
+      "path": "config/v2_1_preregistration_power_result_contract.json",
+      "git_blob_sha1": "5c8b4e7c3b89eb945a4ffe30768423125014df21"
+    },
+    {
+      "path": "config/v2_1_primary_inference_freeze.json",
+      "git_blob_sha1": "68afaac627c376ef9baf783017d0e6920e6834f9"
+    },
+    {
+      "path": "config/v2_1_refit_bootstrap_inference_freeze.json",
+      "git_blob_sha1": "7de99f32b9ec8679826a07693a82c002f174108c"
+    },
+    {
+      "path": "config/v2_1_refit_runtime_result_contract.json",
+      "git_blob_sha1": "73ba7c330a731adb44a9f345eff6b8f4e627b3e9"
+    },
+    {
+      "path": "config/v2_1_semantic_missingness_freeze.json",
+      "git_blob_sha1": "4df3be06cc64ed2b89a4619ae856ea060bcd8470"
+    },
+    {
+      "path": "config/v2_1_semantic_model_roster.json",
+      "git_blob_sha1": "f837d65f58d81b2bc283f8f679127f030ada6fb8"
+    }
+  ],
+  "canonical_fixed_note_corpus": {
+    "job": "P7R4Q9V2",
+    "artifact_path": "outputs/multitask_benchmark/fixed_note_corpora_v2_1.json",
+    "artifact_sha256": "b6ace04ec469261d0c25b6c685c3c027c1b5bd8154b9dc028c7baa95e1edb4a0",
+    "stripped_corpus_sha256": {
+      "invasive_ventilation": "42ea0a0c220c9cf21354451acd621a4e8ce90494a9498082abd2197920c7fa33",
+      "renal_replacement_therapy": "3b6637762e716f8318d0c1d7b38981a6fd3cbbaf2e6b4e95d5047ac5b280c715",
+      "icu_death_metavision": "8e60221c0c5db1074c0f14f5bd39b78252d0e5388bec8c3ca90b992c5a1a4aba",
+      "icu_death_carevue": "b322015403eb2717919b153036e0f8ce97d872ecd67c9265632e485b3ff1c6e9"
+    }
+  },
+  "registration_files": [
+    "docs/postreview_confirmatory_sap_v2_1_draft.md",
+    "docs/postreview_confirmatory_sap_technical_appendix_v2_1_draft.md"
+  ],
+  "final_registration_commit_rule": "Cite the exact commit containing the final edited SAP, technical appendix, and this manifest. Do not cite the baseline commit as the registration commit."
+}
