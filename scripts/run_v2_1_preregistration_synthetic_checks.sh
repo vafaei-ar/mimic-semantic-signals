@@ -58,3 +58,7 @@ out.write_text(json.dumps({
 }, indent=2) + "\n", encoding="utf-8")
 print(out.read_text())
 PY
+
+bash -n scripts/run_refit_bootstrap_benchmark_v2_1_ventilation.sh
+bash -n scripts/run_refit_bootstrap_benchmark_v2_1_rrt.sh
+bash -n scripts/run_refit_bootstrap_benchmark_v2_1_death.sh
