@@ -1,6 +1,6 @@
 # Post-review confirmatory statistical analysis plan for v2.1
 
-**Draft status:** the design is frozen. The patient-cluster refit-bootstrap replicate count remains to be filled from the synthetic-only W9R6M4N2 runtime benchmark. No v2.1 predictive performance has been examined.
+**Draft status:** the design is frozen. The patient-cluster refit-bootstrap replicate count remains to be filled from the revised outcome-specific synthetic exact-runtime benchmark after W9R6M4N2 timed out. No v2.1 predictive performance has been examined.
 
 ## Purpose and study status
 
@@ -90,3 +90,6 @@ Zigong will have two prespecified external arms. A local Chinese-to-English tran
 If an implementation defect or data-integrity problem is found after registration, the affected analysis will stop and the date, reason, and correction will be documented before the corrected result is inspected. If the original result has already been seen, both versions will remain in the audit trail and the supersession will be reported.
 
 The first paper requires the internal v2.1 confirmatory analysis, clinician construct validation, and Zigong narrative validation. Penn State narrative data, eICU/NWICU structured transport, a full equity analysis, semantic trajectories, the historical vasopressor analysis, and a rebuilt supervised encoder are not required for initial submission.
+
+
+The initial combined benchmark `W9R6M4N2` timed out before emitting an artifact because it combined full-size runtime fitting with repeated model-refit null simulations. It is not used to set the replicate count. The revised benchmark isolates one exact full-size refit replicate per outcome and evaluates p-value null behavior separately with cheap synthetic statistics.
