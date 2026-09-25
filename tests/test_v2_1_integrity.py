@@ -135,6 +135,16 @@ class V21IntegrityTests(unittest.TestCase):
             ["icu_death"],
         )
 
+    def test_fio2_normalization(self):
+        import pandas as pd
+        values = pd.Series([0.21, 1.0, 20.0, 50.0, 100.0, 0.0, 1.1, 19.9, 101.0, 401.0])
+        out, diag = context_builder.normalize_fio2_percent(values)
+        expected = [21.0, 100.0, 20.0, 50.0, 100.0]
+        self.assertEqual(out.dropna().tolist(), expected)
+        self.assertEqual(diag["fraction_scale_rows_converted"], 2)
+        self.assertEqual(diag["percent_scale_rows_retained"], 3)
+        self.assertEqual(diag["invalid_or_out_of_range_rows_rejected"], 5)
+
     def test_context_itemid_collection_ignores_nonnumeric_metadata(self):
         freeze = json.loads(
             (ROOT / "config" / "v2_1_context_feature_freeze.json").read_text(
