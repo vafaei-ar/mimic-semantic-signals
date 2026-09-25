@@ -93,6 +93,23 @@ class V21IntegrityTests(unittest.TestCase):
             data = require_osf_registration(td)
             self.assertEqual(data["registration_id"], "abcd1")
 
+    def test_semantic_model_roster_matches_schema(self):
+        roster = json.loads(
+            (ROOT / "config" / "v2_1_semantic_model_roster.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        expected = [x["name"] for x in load_numbered(
+            "semantic_schema_v21", "semantic_schema.py"
+        ).SEMANTIC_CONSTRUCTS]
+        self.assertEqual(roster["primary_constructs"], expected)
+        self.assertEqual(roster["primary_semantic_model"], "open_jev")
+        self.assertEqual(roster["primary_corpus"], "stripped")
+        self.assertEqual(
+            roster["excluded_from_state_dominant"],
+            ["poor_treatment_response", "escalation_considered"],
+        )
+
     def test_fixed_note_corpus_result_contract(self):
         path = ROOT / "config" / "v2_1_fixed_note_corpus_result_contract.json"
         contract = json.loads(path.read_text(encoding="utf-8"))
