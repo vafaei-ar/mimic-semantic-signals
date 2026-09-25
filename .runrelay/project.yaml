@@ -1777,3 +1777,21 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/treatment_context_availability_audit_v2_1.json
+
+
+  build_preregistration_context_features_v2_1:
+    description: Materialize the frozen source-specific treatment/support and documentation-context features for v2.1 confirmatory analyses and CareVue death replication; keep row-level files local and share aggregate hashes/availability only.
+    command:
+      - bash
+      - scripts/run_build_preregistration_context_features_v2_1.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/preregistration_context_features_v2_1.json
