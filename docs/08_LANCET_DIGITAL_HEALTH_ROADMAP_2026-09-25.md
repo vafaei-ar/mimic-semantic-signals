@@ -96,7 +96,7 @@ The strongest conclusions currently supported by the whole project, without prom
 
 ## Lancet Digital Health path
 
-The immediate next step is **not another RunRelay prediction job**.
+The immediate next step is **not a real-label prediction job**. The preregistration-safe runtime and corpus corrections must close first.
 
 The ordered plan is:
 
