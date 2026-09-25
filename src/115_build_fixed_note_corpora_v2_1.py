@@ -40,6 +40,24 @@ def note_identity_hash(index: pd.DataFrame) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
+def verify_note_identity_and_normalize_has_note(
+    idx: pd.DataFrame,
+    expected_hash: str,
+    analysis_name: str,
+) -> tuple[pd.DataFrame, str]:
+    observed_hash = note_identity_hash(idx)
+    if observed_hash != expected_hash:
+        raise RuntimeError(
+            f"{analysis_name}: frozen note-identity contract violation: "
+            f"observed {observed_hash}, expected {expected_hash}"
+        )
+    out = idx.copy()
+    out["has_note"] = (
+        pd.to_numeric(out["has_note"], errors="coerce").fillna(0).ne(0)
+    )
+    return out, observed_hash
+
+
 def compile_outcome_regex(patterns: list[str]) -> re.Pattern:
     return re.compile("|".join(f"(?:{p})" for p in patterns), flags=re.IGNORECASE)
 
@@ -147,15 +165,12 @@ def main() -> None:
         # Hash the frozen population-index representation exactly as materialized
         # by the G8 context builder. Converting 0/1 to False/True before hashing
         # changes the string representation without changing note identity.
-        current_note_identity = note_identity_hash(idx)
         expected_note_identity = context_results["analyses"][name]["note_identity_sha256"]
-        if current_note_identity != expected_note_identity:
-            raise RuntimeError(
-                f"{name}: frozen note-identity contract violation: "
-                f"observed {current_note_identity}, expected {expected_note_identity}"
-            )
-
-        idx["has_note"] = pd.to_numeric(idx["has_note"], errors="coerce").fillna(0).ne(0)
+        idx, current_note_identity = verify_note_identity_and_normalize_has_note(
+            idx,
+            expected_note_identity,
+            name,
+        )
 
         observed = {
             "rows": int(len(idx)),
