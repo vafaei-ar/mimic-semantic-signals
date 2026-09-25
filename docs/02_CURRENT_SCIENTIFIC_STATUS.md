@@ -25,9 +25,9 @@ The authoritative audit is `docs/external_review_integrity_audit_result_freeze_v
 
 All affected v1 results remain preserved for provenance but are not final manuscript evidence.
 
-## Corrected v2 cohort
+## Corrected v2 cohort — pre-v2.1 result, now superseded for manuscript use
 
-The new primary analysis uses a fixed 12-hour ICU landmark and a 12-hour prediction horizon.
+The v2 analysis used a fixed 12-hour ICU landmark and a 12-hour prediction horizon. After the second review, these counts are retained as provenance but are **not the final manuscript cohort**, because the source-independent ICU-death branch did not explicitly restrict to adults/NICU-excluded stays.
 
 | Outcome | Source rule | Rows | Cases | Prevalence | Note coverage |
 | --- | --- | ---: | ---: | ---: | ---: |
@@ -45,9 +45,9 @@ Key v2 corrections:
 - note availability therefore no longer depends on deleting outcome-language notes;
 - matched case-control sampling is no longer the primary multi-outcome design.
 
-## Direct treatment/outcome language remains an important sensitivity
+## Direct treatment/outcome language — v2 prevalence estimates are provisional
 
-The corrected predictor note is genuinely prospective and is no longer deleted based on its text. This means some notes contain direct treatment/outcome terminology.
+The predictor-note selection correction remains valid: the note is selected prospectively before any text deletion. However, the v2 direct-language regexes themselves were found to over- and under-match, so the percentages below are provenance only until the corrected v2.1 regex is applied.
 
 Among note-available rows, direct outcome-language prevalence in cases is approximately:
 
@@ -59,7 +59,7 @@ This is real prospective information, but it can make intervention prediction ta
 
 For RRT especially, unstripped text performance cannot be interpreted as latent semantic deterioration signal.
 
-## Stronger structured baseline
+## Stronger structured baseline — mapping retained, extraction requires v2.1 correction
 
 The v1 11-feature physiology baseline was too thin for the final incremental-value claim.
 
@@ -71,7 +71,7 @@ The corrected v2 structured comparator now contains 34 frozen raw features:
 - lactate, creatinine, BUN, WBC, hemoglobin, platelets, sodium, potassium, bicarbonate, chloride, glucose, total bilirubin, INR, and blood pH;
 - 6-hour net urine output.
 
-Feature extraction completed successfully:
+The pre-v2.1 feature extraction completed technically, but two issues prevent it from being the manuscript-facing feature result: pediatric/NICU stays can enter the death cohort, and ETT/tracheostomy-coded verbal GCS can be treated as numeric 1. The following availability figures are therefore provisional:
 
 | Outcome | Numeric missing fraction | All-numeric-missing rows |
 | --- | ---: | ---: |
@@ -86,22 +86,20 @@ The exact mapping and extraction freeze are:
 
 ## Active analysis
 
-The current gate is the structured-only predictive evaluation:
+The current manuscript-facing gate is the **post-review v2.1 correction**, documented in:
 
-**`E8R7Q5M3 — Evaluate Enhanced Structured V2`**
+- `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`
 
-It uses:
+The already-running `E8R7Q5M3` structured evaluation was launched before the adult/NICU and GCS-verbal issues were identified. Its performance artifact should remain unopened/unpromoted for manuscript use.
 
-- five repeats of five patient-grouped folds;
-- fixed reusable split assignments;
-- regularized logistic regression;
-- a nonlinear histogram-gradient-boosting comparator;
-- 1,000 paired patient-cluster bootstrap replicates;
-- AUROC, AUPRC, Brier score, log loss, calibration, and exploratory decision-curve metrics.
+The next valid structured result must come from:
 
-No semantic, TF-IDF, note-context, or source-system feature is included.
+1. adult/NICU-excluded v2.1 cohort;
+2. ETT-safe GCS verbal extraction;
+3. separately frozen patient-grouped split files with SHA-256;
+4. fresh linear/nonlinear structured evaluation with corrected calibration reporting.
 
-The structured result must be frozen before corrected v2 semantic/text inference begins.
+No semantic, TF-IDF, note-context, or treatment-context performance should be opened before that sequence is complete.
 
 ## What the older v1 results still tell us
 
@@ -138,8 +136,8 @@ The project is not yet ready for submission.
 
 The most important remaining scientific gates are:
 
-1. finish and freeze the corrected structured v2 baseline;
-2. rerun corrected semantic and lexical comparisons using identical v2 splits;
+1. finish and freeze the corrected adult v2.1 structured baseline;
+2. rerun corrected semantic and lexical comparisons using identical frozen v2.1 split hashes;
 3. quantify whether any semantic increment survives the nonlinear structured comparator;
 4. perform blinded clinician construct validation with multiple raters;
 5. correct/repeat affected eICU and Zigong external analyses;
