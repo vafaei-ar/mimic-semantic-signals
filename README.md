@@ -14,25 +14,20 @@ Read these reports in order:
 4. [04 — v1 provenance and integrity hold](docs/04_V1_PROVENANCE_AND_HOLD.md)
 5. [05 — External validation status](docs/05_EXTERNAL_VALIDATION_STATUS.md)
 6. [06 — Post-review v2.1 correction gate](docs/06_POSTREVIEW_V2_1_CORRECTIONS.md)
+7. [07 — Preregistration readiness checkpoint](docs/07_PREREGISTRATION_READINESS_2026-09-25.md)
+8. [08 — Lancet Digital Health roadmap](docs/08_LANCET_DIGITAL_HEALTH_ROADMAP_2026-09-25.md)
 
 Detailed frozen protocols and result documents under `docs/` remain authoritative for exact cohort definitions, item IDs, model settings, artifact hashes, and prespecified interpretation rules.
 
 ## Current stage
 
-The v1 manuscript-facing results are under an integrity hold after an external review identified cohort and implementation problems that were confirmed by a local aggregate audit.
+The corrected v2.1 confirmatory design is now **ready for human review and external OSF registration**. Real-label v2.1 predictive performance remains deliberately locked.
 
-The primary analysis is now in a **post-review v2.1 correction gate**:
+The final OSF review candidate is commit `c21b8db2f214e95b8f5b6e46e0e79e23426a9035`. Validation job `Z7M4Q8R2` completed successfully using synthetic/static checks only; it read no real clinical data and computed no real outcome performance.
 
-- the source-compatible v2 cohort/note corrections remain valid;
-- the ICU population is being tightened to adults with NICU exclusion;
-- ETT/tracheostomy-coded GCS verbal values will no longer count as physiologic GCS=1;
-- ventilation endpoint sensitivities and treatment-language regex corrections are prespecified;
-- exact CV split hashes and corrected calibration terminology are being added;
-- corrected semantic/TF-IDF analyses remain locked.
+The repository fails closed until a valid `docs/registration/osf_registration.json` is present. The immediate next step is human review and OSF submission, not another predictive analysis job.
 
-The already-running `E8R7Q5M3` job belongs to the pre-v2.1 lineage. Its performance artifact should not be opened or promoted as the manuscript-facing structured result.
-
-See [03 — Corrected v2 analysis lineage](docs/03_V2_ANALYSIS_LINEAGE.md) for the full ordered chain.
+See [07 — Preregistration readiness checkpoint](docs/07_PREREGISTRATION_READINESS_2026-09-25.md) and [08 — Lancet Digital Health roadmap](docs/08_LANCET_DIGITAL_HEALTH_ROADMAP_2026-09-25.md).
 
 ## Scientific framing
 
