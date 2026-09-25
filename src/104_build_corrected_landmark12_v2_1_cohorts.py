@@ -59,6 +59,7 @@ LANGUAGE_PATTERNS = {
         r"\bendotracheal\b",
         r"\bmechanical\s+ventilat\w*\b",
         r"\bventilator\b",
+        r"\bvent\b",
         r"\bETT\b",
     ],
     "renal_replacement_therapy": [
@@ -71,6 +72,9 @@ LANGUAGE_PATTERNS = {
         r"\bhaemofiltration\b",
         r"\brenal\s+replacement\b",
         r"\btrialysis\b",
+        r"\bultrafiltration\b",
+        r"\b(?:on|for|needs?|needed|requires?|required|started|starting|start|initiat\w*)\s+i?HD\b",
+        r"\bi?HD\s+(?:cath\w*|line|session|today|tomorrow)\b",
     ],
     "icu_death": [
         r"\bdying\b",
