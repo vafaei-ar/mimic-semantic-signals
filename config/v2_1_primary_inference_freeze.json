@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_v2_1_predictive_performance",
+  "amendment_basis": {
+    "real_v2_1_predictive_performance_seen": false,
+    "runtime_benchmark_job": "Y5R7M2Q8",
+    "runtime_benchmark_artifact_sha256": "7a2e2aadf5b26f8abe49b71f1e77a4a61d5cb9cd79568c56370121a309d422fe",
+    "ventilation_seconds_per_exact_refit_replicate": 5470.322735227644,
+    "ventilation_projected_500_refit_hours_serial": 759.7670465593951,
+    "power_planning_job": "V9R6M4N2",
+    "power_planning_artifact_sha256": "2dcc4c23fc222f5db6aa123cfd2b33e96278ce46ae4e478adacaefb9f89ee08a"
+  },
+  "primary_estimand": "repeat-1 out-of-fold delta_AUROC = AUROC(rich comparator + stripped Open-Jev) - AUROC(rich comparator)",
+  "primary_partition_repeat": 1,
+  "primary_partition_seed": 20260924,
+  "primary_uncertainty": {
+    "method": "patient-cluster bootstrap of paired repeat-1 out-of-fold predictions without model refitting",
+    "bootstrap_replicates": 5000,
+    "bootstrap_unit": "source_patient",
+    "sampling_rule": "sample source patients with replacement; include all ICU rows from sampled patients with patient multiplicity in both model prediction vectors",
+    "child_seed_rule": "numpy.random.SeedSequence(20260924).spawn(5000)",
+    "interval": "two-sided 95% percentile interval for delta_AUROC",
+    "interpretation": "conditional on the frozen fitted cross-validated prediction functions and repeat-1 partition; quantifies patient-sampling variability of observed discrimination, not full training-sample refit variance"
+  },
+  "split_stability": {
+    "repeats": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "report": "delta_AUROC point estimate for each repeat plus range across repeats",
+    "purpose": "show sensitivity to refitting under alternative frozen patient-grouped fold assignments"
+  },
+  "formal_hypothesis_testing": false,
+  "multiplicity": "No confirmatory p-values or binary significance decisions. Ventilation, RRT, and MetaVision ICU death are three prespecified co-primary estimands reported separately. No Holm testing is applied.",
+  "claim_rule": "Do not label an outcome positive/negative by a p-value or CI crossing zero. Report effect estimate, primary conditional interval, and split-stability estimates; interpret magnitude and uncertainty.",
+  "secondary_uncertainty": "Secondary metrics and sensitivity analyses use compatible patient-cluster fixed-prediction bootstrap intervals where feasible; they do not create additional confirmatory claims.",
+  "supersedes": "config/v2_1_refit_bootstrap_inference_freeze.json"
+}
