@@ -151,12 +151,19 @@ No v2.1 execution has been requested yet.
 The previously submitted job:
 
 - `E8R7Q5M3 — Evaluate Enhanced Structured V2`
+- exact commit: `0f72c995d240900e15d65dd7b6e3c4f7048453ea`
+- canonical status: **failed**
+- exit code: 124
+- stop reason: 240-minute timeout
+- terminal progress: 1,026 / 3,075 work units (33.37%)
+- terminal phase: RRT repeat 1, fold 1
+- declared artifacts: none
 
-belongs to the pre-v2.1 cohort/feature lineage.
+The execution log contains no scientific/model traceback; only scikit-learn deprecation warnings before RunRelay terminated the process at the task timeout. The run had completed the full ventilation stage, including 1,000 bootstrap iterations, but the aggregate output file is written only after all outcomes, so no performance artifact was published.
 
-**Do not read, freeze, or promote its performance artifact as the manuscript-facing structured result.**
+This belongs to the pre-v2.1 cohort/feature lineage and will **not** be retried.
 
-It may be retained later as provenance if useful, but it cannot resolve the adult/NICU or GCS-verbal issues because those are upstream of model fitting.
+It cannot resolve the adult/NICU or GCS-verbal issues because those are upstream of model fitting.
 
 ## Step 6 — Freeze exact v2.1 patient-grouped splits: future
 
