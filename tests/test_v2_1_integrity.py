@@ -91,6 +91,27 @@ class V21IntegrityTests(unittest.TestCase):
             data = require_osf_registration(td)
             self.assertEqual(data["registration_id"], "abcd1")
 
+    def test_expected_count_enforcement(self):
+        d = pd.DataFrame(
+            {
+                "subject_id": [1, 2, 3],
+                "label": [1, 0, 0],
+                "has_note": [1, 0, 1],
+            }
+        )
+        expected = {
+            "rows": 3,
+            "unique_patients": 3,
+            "cases": 1,
+            "controls": 2,
+            "note_available_rows": 2,
+        }
+        features.assert_expected_counts("synthetic", d, expected)
+        bad = dict(expected)
+        bad["cases"] = 2
+        with self.assertRaises(RuntimeError):
+            features.assert_expected_counts("synthetic", d, bad)
+
     def test_expected_count_contract(self):
         path = ROOT / "config" / "corrected_landmark12_v2_1_expected_counts.json"
         contract = json.loads(path.read_text(encoding="utf-8"))
