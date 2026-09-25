@@ -406,20 +406,30 @@ def bootstrap_two_models(
         for name, p in predictions.items()
     }
 
-    # Parallel-safe deterministic bootstrap stream. Each replicate gets an
-    # independent child seed derived from the frozen master seed.
-    children = np.random.SeedSequence(BOOTSTRAP_SEED).spawn(n_boot)
+    # Frozen pre-analysis clarification: obtain exactly n_boot valid replicates.
+    # Only single-class/data-degenerate bootstrap draws may be replaced.
+    max_replacements = int(np.floor(0.05 * n_boot))
+    max_attempts = n_boot + max_replacements
+    children = np.random.SeedSequence(BOOTSTRAP_SEED).spawn(max_attempts)
     seeds = [int(child.generate_state(1)[0]) for child in children]
 
     used = 0
+    attempted = 0
+    replaced_degenerate = 0
     n_jobs = max(1, int(n_jobs))
     batch_size = max(1, int(batch_size))
 
-    for start_idx in range(0, n_boot, batch_size):
-        end_idx = min(start_idx + batch_size, n_boot)
+    while used < n_boot:
+        if attempted >= max_attempts:
+            raise RuntimeError(
+                f"{outcome}: bootstrap degeneracy exceeded the frozen 5% replacement limit "
+                f"({replaced_degenerate} replacements for target {n_boot})."
+            )
+        end_idx = min(attempted + batch_size, max_attempts)
+        batch_seeds = seeds[attempted:end_idx]
         results = Parallel(n_jobs=n_jobs, prefer="threads")(
             delayed(_bootstrap_one)(
-                seeds[b],
+                seed,
                 patient_codes,
                 n_patients,
                 y,
@@ -429,32 +439,52 @@ def bootstrap_two_models(
                 log_loss_row,
                 threshold_masks,
             )
-            for b in range(start_idx, end_idx)
+            for seed in batch_seeds
         )
+        attempted = end_idx
 
         for result in results:
             if result is None:
+                replaced_degenerate += 1
+                if replaced_degenerate > max_replacements:
+                    raise RuntimeError(
+                        f"{outcome}: bootstrap degeneracy exceeded the frozen 5% replacement limit."
+                    )
                 continue
+            if used >= n_boot:
+                break
             used += 1
 
             for name in predictions:
                 for key, value in result["models"][name]["metrics"].items():
+                    if not np.isfinite(value):
+                        raise RuntimeError(
+                            f"{outcome}: non-finite bootstrap metric {name}/{key}; refusing silent replacement."
+                        )
                     per_model[name][key].append(float(value))
                 for key, value in result["models"][name][
                     "decision_curve_net_benefit"
                 ].items():
+                    if not np.isfinite(value):
+                        raise RuntimeError(
+                            f"{outcome}: non-finite decision-curve bootstrap value; refusing silent replacement."
+                        )
                     nb[name][key].append(float(value))
 
             for key, value in result["diffs"].items():
+                if not np.isfinite(value):
+                    raise RuntimeError(
+                        f"{outcome}: non-finite bootstrap difference {key}; refusing silent replacement."
+                    )
                 diffs[key].append(float(value))
 
         update_progress(
-            current=progress_base + end_idx,
+            current=progress_base + used,
             total=total_progress,
             phase="enhanced_structured_v2_1_bootstrap",
             message=(
-                f"{outcome}: paired patient bootstrap "
-                f"{end_idx}/{n_boot} using {n_jobs} workers"
+                f"{outcome}: valid paired patient bootstrap "
+                f"{used}/{n_boot}; degenerate replacements={replaced_degenerate}"
             ),
             unit="bootstrap",
         )
@@ -462,6 +492,9 @@ def bootstrap_two_models(
     return {
         "replicates_requested": int(n_boot),
         "replicates_used": int(used),
+        "replicates_attempted": int(attempted),
+        "degenerate_replacements": int(replaced_degenerate),
+        "maximum_degenerate_replacements": int(max_replacements),
         "cluster": "source_patient",
         "parallel_workers": int(n_jobs),
         "bootstrap_seed_method": (
