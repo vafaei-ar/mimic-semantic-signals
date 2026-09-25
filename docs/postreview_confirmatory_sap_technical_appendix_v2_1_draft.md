@@ -52,7 +52,7 @@ Patients without an eligible note have all eight semantic values missing. Note-a
 
 ## H. Lexical reference
 
-The stripped-text TF-IDF reference is fitted within each training fold. It uses lowercase text, Unicode accent stripping, word unigrams and bigrams, min_df=5, max_df=0.98, at most 10,000 features, and sublinear term frequency. The unstripped lexical analysis is secondary.
+The stripped-text TF-IDF reference is fitted within each training fold. It uses lowercase text, Unicode accent stripping, word unigrams and bigrams, min_df=5, max_df=0.98, at most 10,000 features, and sublinear term frequency. Rows without an eligible note receive an all-zero TF-IDF vector; has_note remains in the comparator so this zero vector is not interpreted as an observed empty note. The unstripped lexical analysis is secondary.
 
 ## I. Cross-validation
 
