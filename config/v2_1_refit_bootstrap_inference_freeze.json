@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "frozen_before_v2_1_predictive_performance",
+  "status": "superseded_before_registration",
   "bootstrap_replicates": 500,
   "bootstrap_unit": "patient_cluster",
   "primary_partition_repeat": 1,
@@ -18,5 +18,9 @@
   "fold_partition_variance": "not covered by the refit bootstrap; repeats 2-5 are separate split-stability analyses",
   "runtime_benchmark_role": "engineering feasibility only; benchmark results may motivate parallelization, checkpointing, or task partitioning but do not change B or the inferential estimand",
   "runtime_contingency": "if 500 replicates are operationally too slow, optimize execution and re-benchmark before registration; do not reduce B based on observed runtime alone",
-  "real_outcome_performance_seen_when_frozen": false
+  "real_outcome_performance_seen_when_frozen": false,
+  "superseded_by": "config/v2_1_primary_inference_freeze.json",
+  "superseded_reason": "Synthetic exact-runtime benchmark Y5R7M2Q8 showed one ventilation replicate required 5470.3 seconds, projecting 759.8 serial hours for 500 replicates for ventilation alone. No v2.1 predictive performance had been examined. The SAP was therefore amended before OSF registration.",
+  "runtime_benchmark_job": "Y5R7M2Q8",
+  "runtime_benchmark_artifact_sha256": "7a2e2aadf5b26f8abe49b71f1e77a4a61d5cb9cd79568c56370121a309d422fe"
 }
