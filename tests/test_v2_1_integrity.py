@@ -31,6 +31,7 @@ def load_numbered(name: str, filename: str):
 cohort = load_numbered("cohort_v21", "104_build_corrected_landmark12_v2_1_cohorts.py")
 features = load_numbered("features_v21", "105_build_enhanced_structured_baseline_v2_1.py")
 context_builder = load_numbered("context_builder_v21", "114_build_preregistration_context_features_v2_1.py")
+corpus_builder = load_numbered("corpus_builder_v21", "115_build_fixed_note_corpora_v2_1.py")
 
 
 class V21IntegrityTests(unittest.TestCase):
@@ -109,6 +110,29 @@ class V21IntegrityTests(unittest.TestCase):
             primary["icu_death"]["note_identity_sha256"],
             "9d604176b53dac81f8a5e2d08e26dedcbea1f9e604baf200565d50a2e89b97dd",
         )
+
+    def test_frozen_note_hash_checked_before_has_note_bool_conversion(self):
+        df = pd.DataFrame(
+            {
+                "case_id": ["a", "b"],
+                "icustay_id": [1, 2],
+                "has_note": [0, 1],
+                "note_time": ["", "2026-01-01 00:00:00"],
+                "category": ["", "Nursing"],
+            }
+        )
+        expected = corpus_builder.note_identity_hash(df)
+        normalized, observed = (
+            corpus_builder.verify_note_identity_and_normalize_has_note(
+                df,
+                expected,
+                "synthetic",
+            )
+        )
+        self.assertEqual(observed, expected)
+        self.assertEqual(normalized["has_note"].tolist(), [False, True])
+        bool_hash = corpus_builder.note_identity_hash(normalized)
+        self.assertNotEqual(bool_hash, expected)
 
     def test_language_stripping_freeze_matches_cohort_patterns(self):
         path = ROOT / "config" / "v2_1_language_stripping_freeze.json"
