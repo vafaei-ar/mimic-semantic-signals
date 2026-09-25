@@ -1554,3 +1554,105 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/enhanced_structured_baseline_evaluation_v2.json
+
+  build_corrected_landmark12_v2_1_cohorts:
+    description: Build the post-review adult corrected v2.1 landmark cohorts with NICU exclusion, case-only event_time, corrected language flags, and prespecified ventilation endpoint sensitivities; share aggregate manifest only.
+    command:
+      - bash
+      - scripts/run_corrected_landmark12_v2_1_cohort_build.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/population_landmark12_cohort_manifest_v2_1.json
+
+  build_enhanced_structured_baseline_v2_1:
+    description: Extract the corrected adult v2.1 34-feature structured baseline with ETT-safe GCS verbal handling; keep row-level features local and share aggregate diagnostics only.
+    command:
+      - bash
+      - scripts/run_enhanced_structured_baseline_v2_1.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/enhanced_structured_baseline_features_v2_1.json
+
+  freeze_enhanced_structured_cv_splits_v2_1:
+    description: Freeze deterministic five-repeat five-fold patient-grouped split assignments for corrected v2.1 cohorts and share aggregate counts plus split hashes only.
+    command:
+      - bash
+      - scripts/run_freeze_enhanced_structured_cv_splits_v2_1.sh
+    approval: automatic
+    timeout_minutes: 60
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/multitask_benchmark/enhanced_structured_cv_splits_v2_1.json
+
+  evaluate_enhanced_structured_v2_1_ventilation:
+    description: Evaluate the corrected adult v2.1 structured baseline for invasive ventilation only using frozen split hashes, repeated patient-grouped cross-fitting, parallel paired bootstrap, and corrected calibration reporting.
+    command:
+      - bash
+      - scripts/run_enhanced_structured_baseline_evaluation_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/enhanced_structured_baseline_evaluation_v2_1_ventilation.json
+
+  evaluate_enhanced_structured_v2_1_rrt:
+    description: Evaluate the corrected adult v2.1 structured baseline for RRT only using frozen split hashes, repeated patient-grouped cross-fitting, parallel paired bootstrap, and corrected calibration reporting.
+    command:
+      - bash
+      - scripts/run_enhanced_structured_baseline_evaluation_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/enhanced_structured_baseline_evaluation_v2_1_rrt.json
+
+  evaluate_enhanced_structured_v2_1_death:
+    description: Evaluate the corrected adult v2.1 structured baseline for ICU death only using frozen split hashes, repeated patient-grouped cross-fitting, parallel paired bootstrap, and corrected calibration reporting.
+    command:
+      - bash
+      - scripts/run_enhanced_structured_baseline_evaluation_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/enhanced_structured_baseline_evaluation_v2_1_death.json
