@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_v2_1_predictive_performance",
+  "bootstrap_replicates": 500,
+  "bootstrap_unit": "patient_cluster",
+  "primary_partition_repeat": 1,
+  "primary_partition_seed": 20260924,
+  "patient_sampling": "sample source patients with replacement; duplicate all ICU rows by patient multiplicity; retain each patient's frozen repeat-1 fold",
+  "refit_rule": "refit rich comparator and rich comparator + stripped Open-Jev in all five folds for every replicate",
+  "heldout_multiplicity": "retain bootstrap multiplicity in held-out AUROC calculation",
+  "child_seed_rule": "numpy.random.SeedSequence(20260924).spawn(500)",
+  "hgb_random_state": 20260924,
+  "primary_interval": "two-sided 95% percentile interval from the 500 refit-bootstrap delta-AUROC replicates",
+  "one_sided_hypothesis": "H0: delta_AUROC <= 0; H1: delta_AUROC > 0",
+  "one_sided_pvalue": "p=(1+count((delta_b-delta_observed)>=delta_observed))/(B+1)",
+  "multiplicity": "Holm adjustment across ventilation, RRT, and MetaVision ICU-death primary p-values at family-wise alpha 0.05",
+  "minimum_attainable_pvalue": 0.001996007984031936,
+  "fold_partition_variance": "not covered by the refit bootstrap; repeats 2-5 are separate split-stability analyses",
+  "runtime_benchmark_role": "engineering feasibility only; benchmark results may motivate parallelization, checkpointing, or task partitioning but do not change B or the inferential estimand",
+  "runtime_contingency": "if 500 replicates are operationally too slow, optimize execution and re-benchmark before registration; do not reduce B based on observed runtime alone",
+  "real_outcome_performance_seen_when_frozen": false
+}
