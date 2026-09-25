@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "status": "frozen_post_osf_submission_pre_v2_1_real_label_performance",
+  "date": "2026-09-25",
+  "classification": "pre_analysis_clarification_not_deviation",
+  "h5_sparse_logistic": {
+    "penalty": "l2",
+    "C": 1,
+    "solver": "liblinear",
+    "max_iter": 5000,
+    "tol": 0.0001,
+    "fit_intercept": true,
+    "class_weight": null,
+    "preprocessing": {
+      "fit_scope": "training_fold_only",
+      "continuous_dense": "training-fold median imputation where needed, then StandardScaler",
+      "semantic_scores": "training-fold median imputation, then StandardScaler",
+      "binary_indicators": "unscaled",
+      "categorical": "training-fold one-hot encoding; ignore unknown held-out categories",
+      "tfidf": "prespecified sparse TF-IDF representation; no additional standardization"
+    }
+  },
+  "ece": {
+    "bins": 10,
+    "scheme": "equal_width_probability",
+    "range": [
+      0,
+      1
+    ],
+    "interval_rule": "left_closed_right_open_except_final_includes_one",
+    "empty_bins": "zero_contribution",
+    "weighting": "bin_n_over_total",
+    "discrepancy": "absolute_observed_event_rate_minus_mean_predicted_probability"
+  },
+  "decision_curve": {
+    "thresholds": [
+      0.0025,
+      0.005,
+      0.0075,
+      0.01,
+      0.015,
+      0.02,
+      0.03,
+      0.05
+    ]
+  },
+  "bootstrap_failure_rule": {
+    "target_valid_replicates": 500,
+    "replace_only_for": "single-class held-out evaluation causing AUROC to be mathematically undefined",
+    "replacement_seed_rule": "next deterministic child seed from the same predeclared seed sequence",
+    "log_all_replacements": true,
+    "non_degenerate_failure_rule": "halt; do not silently replace model-fitting errors, non-finite predictions, contract mismatches, or unexpected exceptions",
+    "maximum_degenerate_replacement_fraction": 0.05,
+    "if_exceeded": "halt_for_review"
+  },
+  "real_label_unlock_requires": [
+    "OSF status approved",
+    "OSF-hosted attached files downloaded and SHA-256 verified",
+    "DOI recorded",
+    "verbatim submitted OSF form imported",
+    "exact registered DiffusionGemma revision imported",
+    "exact registered semantic schema SHA-256 imported",
+    "post-registration synthetic/static validation passes on exact commit"
+  ]
+}
