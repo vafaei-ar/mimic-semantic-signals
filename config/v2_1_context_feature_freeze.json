@@ -70,7 +70,16 @@
         ]
       },
       "high_flow_regex": "high.?flow|hfnc|vapotherm|optiflow",
-      "niv_device_regex": "bipap|bi-pap|cpap|non.?invasive"
+      "niv_device_regex": "bipap|bi-pap|cpap|non.?invasive",
+      "fio2_normalization": {
+        "target_unit": "percent",
+        "rules": [
+          "0 < value <= 1: multiply by 100",
+          "20 <= value <= 100: keep unchanged",
+          "otherwise: set missing"
+        ],
+        "rationale": "Unify fraction-scale and percent-scale FiO2 and reject physiologically impossible/miscoded values before model fitting."
+      }
     },
     "vasoactive": {
       "metavision": {
@@ -164,14 +173,14 @@
       "doc_note_chars_total_12h",
       "doc_note_chars_latest_12h",
       "doc_note_category_groups_12h",
-      "doc_hours_since_last_note",
       "doc_nursing_note_count_12h",
       "doc_physician_note_count_12h",
       "doc_respiratory_note_count_12h",
       "doc_other_note_count_12h"
     ],
     "excluded_features": [
-      "doc_last_note_gap_hours"
+      "doc_last_note_gap_hours",
+      "doc_hours_since_last_note"
     ]
   },
   "note_context": {
