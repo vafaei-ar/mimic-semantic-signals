@@ -405,3 +405,34 @@ Correction before any text inference:
 - a regression test now demonstrates the raw-string and G8-normalized hashes differ and verifies the corrected ordering.
 
 Because the implementation changed again, the next corpus build must be a new execution rather than a retry of N8.
+
+
+## W9R6M4N2 refit-bootstrap benchmark timeout
+
+The first refit-bootstrap benchmark `W9R6M4N2` failed by timeout.
+
+- status: failed;
+- exit code: 124;
+- stop reason: timeout;
+- runtime: 14,401.642 seconds;
+- terminal phase: invasive-ventilation synthetic benchmark;
+- artifact: none;
+- real outcome labels/predictors: none.
+
+The job combined three distinct purposes in one task:
+
+1. an exact full-size HGB patient-cluster refit runtime replicate;
+2. an additional non-bootstrap full-size fit;
+3. eight model-refit synthetic null replicates per outcome.
+
+It also wrote its declared artifact only after all three outcomes completed. This made the runtime benchmark unnecessarily expensive and non-checkpointed.
+
+Correction before registration:
+
+- benchmark each outcome in a separate named task;
+- time exactly one full-size refit-bootstrap replicate using the registered five-fold HGB specification;
+- checkpoint after each completed fold and each runtime replicate;
+- test the one-sided centered-bootstrap p-value separately using cheap Gaussian synthetic-null statistics with 500 bootstrap draws per trial;
+- do not use model-refit null simulations to determine runtime feasibility.
+
+The scientific bootstrap definition is unchanged. The refit-bootstrap replicate count remains unfrozen until the revised exact-runtime benchmark is complete.
