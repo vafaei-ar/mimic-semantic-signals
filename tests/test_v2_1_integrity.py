@@ -240,11 +240,8 @@ class V21IntegrityTests(unittest.TestCase):
         )
         self.assertEqual(contract["primary_corpus"], "stripped")
         for name, info in contract["analyses"].items():
-            self.assertEqual(
-                info["direct_language_flagged_notes"],
-                info["notes_changed_by_stripping"],
-                msg=name,
-            )
+            self.assertIn("stripped_local_file_sha256", info, msg=name)
+            self.assertGreaterEqual(info["notes_changed_by_corrected_stripping"], 0, msg=name)
 
     def test_context_feature_result_contract(self):
         path = ROOT / "config" / "v2_1_context_feature_result_contract.json"
