@@ -112,3 +112,17 @@ A source-proxy decomposition is required to determine whether the confirmatory d
 2. source-stratified with separate CareVue and MetaVision models and a prespecified endpoint-level combination rule.
 
 No choice will be based on mortality-model performance.
+
+
+## Post-audit implementation correction
+
+Inspection of the failed source-strategy run `T7M4Q9R3` identified an implementation defect in one candidate documentation-behavior feature: `doc_last_note_gap_hours` was entirely missing because the second-latest-note Series was indexed incorrectly before subtraction.
+
+No clinical outcome performance had been run.
+
+Actions taken before registration:
+
+- the note-gap calculation was corrected in the context-audit code;
+- the all-missing R3 version of `doc_last_note_gap_hours` is **not a frozen predictor** and is excluded from the source-strategy decomposition;
+- if this feature is retained in the final documentation-behavior comparator, its corrected values must be regenerated and audited before the comparator is frozen;
+- all other R3 documentation candidates and the fixed-note identity hashes remain unaffected by this indexing defect.
