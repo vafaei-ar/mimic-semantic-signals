@@ -3,40 +3,56 @@
   "status": "frozen_preregistration_planning_only",
   "canonical_job": "V9R6M4N2",
   "project_commit": "2d74f4d6c327dc1ec7698db98c3d67258e033bb0",
-  "artifact_path": "outputs/multitask_benchmark/preregistration_power_v2_1.json",
   "artifact_sha256": "2dcc4c23fc222f5db6aa123cfd2b33e96278ce46ae4e478adacaefb9f89ee08a",
-  "real_outcome_predictions_used": false,
-  "real_outcome_labels_read": false,
-  "planning_baseline_auroc_source": "known v1 population structured AUROCs used as assumptions only",
-  "paired_prediction_correlation_scenarios": [
+  "v1_planning_auroc": {
+    "invasive_ventilation": 0.707,
+    "renal_replacement_therapy": 0.948,
+    "icu_death": 0.793
+  },
+  "paired_correlation_scenarios": [
     0.8,
     0.9,
     0.95
   ],
-  "target_power": [
-    0.8,
-    0.9
-  ],
-  "holm_first_step_alpha": 0.016666666666666666,
-  "full_cohort_80pct_mde_at_rho_0_90_holm": {
-    "invasive_ventilation": 0.02327854017134698,
-    "renal_replacement_therapy": 0.011326027311216855,
-    "icu_death": 0.02413225844794707
+  "holm_first_alpha": 0.016666666666666666,
+  "full_cohort_mde_80_holm": {
+    "invasive_ventilation": {
+      "0.80": 0.03279212494535825,
+      "0.90": 0.02327854017134698,
+      "0.95": 0.016502529438455312
+    },
+    "renal_replacement_therapy": {
+      "0.80": 0.01563439351067974,
+      "0.90": 0.011326027311216855,
+      "0.95": 0.008139668162919953
+    },
+    "icu_death": {
+      "0.80": 0.03382878753916402,
+      "0.90": 0.02413225844794707,
+      "0.95": 0.017164485565416415
+    }
   },
-  "note_available_80pct_mde_at_rho_0_90_holm": {
-    "invasive_ventilation": 0.033398623028943794,
-    "renal_replacement_therapy": 0.01699004932241956,
-    "icu_death": 0.03849309793747496
-  },
-  "note_available_cases": {
-    "invasive_ventilation": 135,
-    "renal_replacement_therapy": 143,
-    "icu_death": 83
-  },
-  "interpretation": [
-    "The three full-cohort outcome-specific contrasts remain confirmatory.",
-    "No pooled cross-outcome primary estimand is introduced to recover power.",
-    "Note-available-only analyses remain secondary/descriptive.",
-    "Null or imprecise results are not evidence that the true incremental effect is exactly zero."
-  ]
+  "note_available_mde_80_holm": {
+    "invasive_ventilation": {
+      "cases": 135,
+      "controls": 4364,
+      "0.80": 0.046939666727026236,
+      "0.90": 0.033398623028943794,
+      "0.95": 0.023709954477368615
+    },
+    "renal_replacement_therapy": {
+      "cases": 143,
+      "controls": 7566,
+      "0.80": 0.02315822194031482,
+      "0.90": 0.01699004932241956,
+      "0.95": 0.012303789516648431
+    },
+    "icu_death": {
+      "cases": 83,
+      "controls": 7806,
+      "0.80": 0.05361286316731898,
+      "0.90": 0.03849309793747496,
+      "0.95": 0.027487551695058787
+    }
+  }
 }
