@@ -18,6 +18,7 @@ on:
       - "scripts/run_build_fixed_note_corpora_v2_1.sh"
       - "config/v2_1_language_stripping_freeze.json"
       - "config/v2_1_fixed_note_corpus_result_contract.json"
+      - "config/v2_1_preregistration_power_result_contract.json"
       - "config/v2_1_semantic_model_roster.json"
       - "scripts/run_build_preregistration_context_features_v2_1.sh"
       - "config/v2_1_context_feature_freeze.json"
