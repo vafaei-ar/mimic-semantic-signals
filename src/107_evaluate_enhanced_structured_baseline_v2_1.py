@@ -97,13 +97,19 @@ def calibration_metrics(y, p):
     joint_intercept, slope = _weighted_joint_recalibration(y, p, w)
 
     tmp = pd.DataFrame({"y": y, "p": p})
-    try:
-        tmp["bin"] = pd.qcut(tmp["p"], q=10, duplicates="drop")
-    except Exception:
-        tmp["bin"] = pd.cut(tmp["p"], bins=10, duplicates="drop")
-
+    # Frozen pre-analysis clarification: 10 equal-width bins on [0,1].
+    edges = np.linspace(0.0, 1.0, 11)
+    tmp["bin"] = pd.cut(
+        tmp["p"],
+        bins=edges,
+        right=False,
+        include_lowest=True,
+        labels=False,
+    )
+    tmp.loc[tmp["p"].eq(1.0), "bin"] = 9
     tab = (
-        tmp.groupby("bin", observed=True)
+        tmp.dropna(subset=["bin"])
+        .groupby("bin", observed=True)
         .agg(n=("y", "size"), mean_pred=("p", "mean"), observed=("y", "mean"))
         .reset_index(drop=True)
     )
@@ -119,7 +125,7 @@ def calibration_metrics(y, p):
         "calibration_in_the_large": citl,
         "joint_recalibration_intercept": joint_intercept,
         "calibration_slope": slope,
-        "ece_10_quantile_bins": ece,
+        "ece_10_equal_width_bins": ece,
         "calibration_bins": [
             {
                 "n": int(r.n),
@@ -181,7 +187,7 @@ def scalar_metrics(metrics):
             "calibration_in_the_large",
             "joint_recalibration_intercept",
             "calibration_slope",
-            "ece_10_quantile_bins",
+            "ece_10_equal_width_bins",
         )
     }
 
