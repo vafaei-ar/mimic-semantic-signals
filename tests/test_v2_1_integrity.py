@@ -30,6 +30,7 @@ def load_numbered(name: str, filename: str):
 
 cohort = load_numbered("cohort_v21", "104_build_corrected_landmark12_v2_1_cohorts.py")
 features = load_numbered("features_v21", "105_build_enhanced_structured_baseline_v2_1.py")
+context_builder = load_numbered("context_builder_v21", "114_build_preregistration_context_features_v2_1.py")
 
 
 class V21IntegrityTests(unittest.TestCase):
@@ -133,6 +134,17 @@ class V21IntegrityTests(unittest.TestCase):
             freeze["treatment"]["code_status"]["outcome_scope"],
             ["icu_death"],
         )
+
+    def test_context_itemid_collection_ignores_nonnumeric_metadata(self):
+        freeze = json.loads(
+            (ROOT / "config" / "v2_1_context_feature_freeze.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        ids = context_builder.flatten_itemids(
+            freeze["treatment"]["code_status"]
+        )
+        self.assertEqual(ids, {128, 223758})
 
     def test_context_builder_runner_uses_frozen_contracts(self):
         text = (
