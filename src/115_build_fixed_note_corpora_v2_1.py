@@ -86,6 +86,7 @@ def main() -> None:
     )
     ap.add_argument("--local-root", required=True)
     ap.add_argument("--analysis-populations", required=True)
+    ap.add_argument("--context-feature-results", required=True)
     ap.add_argument("--strip-freeze", required=True)
     ap.add_argument("--output", required=True)
     args = ap.parse_args()
@@ -93,6 +94,9 @@ def main() -> None:
     local_root = Path(args.local_root).expanduser().resolve()
     contract = json.loads(
         Path(args.analysis_populations).expanduser().resolve().read_text(encoding="utf-8")
+    )
+    context_results = json.loads(
+        Path(args.context_feature_results).expanduser().resolve().read_text(encoding="utf-8")
     )
     freeze = json.loads(
         Path(args.strip_freeze).expanduser().resolve().read_text(encoding="utf-8")
@@ -111,6 +115,7 @@ def main() -> None:
         "secondary_corpus": freeze["secondary_corpus"],
         "strip_freeze": "config/v2_1_language_stripping_freeze.json",
         "analysis_population_contract": "config/v2_1_analysis_population_contract.json",
+        "context_feature_result_contract": "config/v2_1_context_feature_result_contract.json",
         "transformation": {
             "flags": freeze["flags"],
             "replacement": replacement,
@@ -153,6 +158,14 @@ def main() -> None:
                     f"{name}: analysis-population contract violation for {key}: "
                     f"observed {value}, expected {expected[key]}"
                 )
+
+        current_note_identity = note_identity_hash(idx)
+        expected_note_identity = context_results["analyses"][name]["note_identity_sha256"]
+        if current_note_identity != expected_note_identity:
+            raise RuntimeError(
+                f"{name}: frozen note-identity contract violation: "
+                f"observed {current_note_identity}, expected {expected_note_identity}"
+            )
 
         selected = idx[idx["has_note"]].copy()
         selected_ids = set(selected["case_id"].astype(str))
@@ -231,7 +244,7 @@ def main() -> None:
             "source": source,
             "eligible_rows": int(len(idx)),
             "note_available_rows": int(len(selected)),
-            "note_identity_sha256": note_identity_hash(idx),
+            "note_identity_sha256": current_note_identity,
             "direct_language_flagged_notes": direct_expected,
             "notes_changed_by_stripping": int(notes_changed),
             "total_regex_matches": int(total_matches),
@@ -245,7 +258,7 @@ def main() -> None:
         }
 
     report["guardrails"] = [
-        "Note identity and eligibility were frozen before text transformation.",
+        "Note identity and eligibility were frozen before text transformation and matched the G8 context-feature result contract.",
         "The stripped corpus changes text only; note timing/category/has_note are unchanged.",
         "The number of changed notes exactly matches the cohort direct-language flag for each source-specific analysis.",
         "No semantic model, TF-IDF model, or clinical prediction model was run.",
