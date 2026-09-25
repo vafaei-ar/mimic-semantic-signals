@@ -123,6 +123,48 @@ class V21IntegrityTests(unittest.TestCase):
         )
         self.assertEqual(contract["note_available_cases"]["icu_death"], 83)
 
+    def test_cv_split_result_contract(self):
+        path = ROOT / "config" / "v2_1_cv_split_result_contract.json"
+        contract = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(contract["canonical_job"], "T9R6M4N2")
+        self.assertEqual(
+            contract["artifact_sha256"],
+            "b0bac28207ca07dec3539512eda856d2ead09ab8f7f704cfe8a4d6d800e27484",
+        )
+        self.assertEqual(
+            contract["analyses"]["invasive_ventilation"]["split_sha256"],
+            "30d6d4e591bfe3ff0dc736d8619dcead94f1c3880b160dbfed7efbffce727b35",
+        )
+        self.assertEqual(
+            contract["analyses"]["renal_replacement_therapy"]["split_sha256"],
+            "1a2b8e23045ac79429bcb65b6ff3c382226be1fbab5a9460f2d8c1ca49bb5ee0",
+        )
+        self.assertEqual(
+            contract["analyses"]["icu_death"]["split_sha256"],
+            "444a0dac02358d1d4eafe83b96d3804df30134de00e4b54509beb7bbbe411658",
+        )
+
+    def test_preregistration_power_result_contract(self):
+        path = ROOT / "config" / "v2_1_preregistration_power_result_contract.json"
+        contract = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(contract["canonical_job"], "V9R6M4N2")
+        self.assertEqual(
+            contract["artifact_sha256"],
+            "2dcc4c23fc222f5db6aa123cfd2b33e96278ce46ae4e478adacaefb9f89ee08a",
+        )
+        self.assertAlmostEqual(
+            contract["full_cohort_mde_80_holm"]["invasive_ventilation"]["0.90"],
+            0.02327854017134698,
+        )
+        self.assertAlmostEqual(
+            contract["full_cohort_mde_80_holm"]["renal_replacement_therapy"]["0.90"],
+            0.011326027311216855,
+        )
+        self.assertAlmostEqual(
+            contract["full_cohort_mde_80_holm"]["icu_death"]["0.90"],
+            0.02413225844794707,
+        )
+
     def test_fixed_note_corpus_result_contract(self):
         path = ROOT / "config" / "v2_1_fixed_note_corpus_result_contract.json"
         contract = json.loads(path.read_text(encoding="utf-8"))
