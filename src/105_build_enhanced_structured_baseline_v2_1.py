@@ -61,7 +61,34 @@ GU_IRRIGANT_INPUT_ID = 227488
 OUTCOMES = ("invasive_ventilation", "renal_replacement_therapy", "icu_death")
 
 
-def read_population(local_root: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
+def note_available_count(s: pd.Series) -> int:
+    if pd.api.types.is_bool_dtype(s):
+        return int(s.fillna(False).sum())
+    numeric = pd.to_numeric(s, errors="coerce")
+    if numeric.notna().all():
+        return int(numeric.ne(0).sum())
+    normalized = s.fillna("").astype(str).str.strip().str.lower()
+    return int(normalized.isin({"true", "1", "yes"}).sum())
+
+
+def assert_expected_counts(outcome: str, d: pd.DataFrame, expected: dict) -> None:
+    label = pd.to_numeric(d["label"], errors="raise").astype(int)
+    observed = {
+        "rows": int(len(d)),
+        "unique_patients": int(d["subject_id"].nunique()),
+        "cases": int(label.sum()),
+        "controls": int(len(d) - label.sum()),
+        "note_available_rows": note_available_count(d["has_note"]),
+    }
+    for key, value in observed.items():
+        if int(expected[key]) != int(value):
+            raise RuntimeError(
+                f"{outcome}: expected-count contract violation for {key}: "
+                f"observed {value}, expected {expected[key]}"
+            )
+
+
+def read_population(local_root: Path, expected_counts: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
     frames = []
     for outcome in OUTCOMES:
         path = local_root / outcome / "population_index_local.csv"
@@ -81,6 +108,9 @@ def read_population(local_root: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
             raise RuntimeError(f"{outcome}: age < 18 present in v2.1 adult cohort")
         if d["first_careunit"].astype(str).str.strip().str.upper().eq("NICU").any():
             raise RuntimeError(f"{outcome}: NICU stay present in v2.1 adult cohort")
+        if outcome not in expected_counts["outcomes"]:
+            raise RuntimeError(f"{outcome}: missing from expected-count contract")
+        assert_expected_counts(outcome, d, expected_counts["outcomes"][outcome])
         frames.append(d)
 
     pop = pd.concat(frames, ignore_index=True)
@@ -498,15 +528,18 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Build enhanced structured baseline features for corrected adult v2.1 landmark cohorts.")
     ap.add_argument("--root", required=True)
     ap.add_argument("--local-root", required=True)
+    ap.add_argument("--expected-counts", required=True)
     ap.add_argument("--manifest", required=True)
     args = ap.parse_args()
 
     root = resolve_root(args.root)
     local_root = Path(args.local_root).expanduser().resolve()
+    expected_counts_path = Path(args.expected_counts).expanduser().resolve()
+    expected_counts = json.loads(expected_counts_path.read_text(encoding="utf-8"))
     manifest = Path(args.manifest).expanduser().resolve()
     manifest.parent.mkdir(parents=True, exist_ok=True)
 
-    pop, unique = read_population(local_root)
+    pop, unique = read_population(local_root, expected_counts)
 
     update_progress(current=1, total=6, phase="demographics", message="Extracting age and sex for corrected v2 ICU stays", unit="stage")
     demographics, demographic_report = load_demographics(root, unique)
@@ -577,6 +610,9 @@ def main() -> None:
         "analysis": "Enhanced structured baseline feature extraction v2.1",
         "mapping_freeze": "docs/enhanced_structured_baseline_mapping_freeze_v2.md",
         "mapping_addendum": "docs/enhanced_structured_baseline_mapping_addendum_v2_1.md",
+        "expected_count_contract": str(expected_counts_path),
+        "expected_count_contract_canonical_job": expected_counts.get("canonical_job"),
+        "expected_count_contract_artifact_sha256": expected_counts.get("artifact_sha256"),
         "local_only": True,
         "contains_patient_identifiers": False,
         "contains_row_level_data": False,
@@ -595,6 +631,7 @@ def main() -> None:
         "outcomes": outcome_reports,
         "guardrails": [
             "No predictive model was fit or scored.",
+            "Cohort row/case/control/patient/note counts matched the frozen v2.1 expected-count contract before feature scanning.",
             "No dbsource feature is present.",
             "No outcome-conditioned feature selection was performed.",
             "All row-level features remain local and are not declared as artifacts.",
