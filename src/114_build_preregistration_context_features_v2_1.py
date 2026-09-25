@@ -64,7 +64,9 @@ def flatten_itemids(mapping: dict) -> set[int]:
         if isinstance(value, dict):
             out |= flatten_itemids(value)
         elif isinstance(value, list):
-            out |= {int(x) for x in value}
+            for x in value:
+                if isinstance(x, (int, np.integer)):
+                    out.add(int(x))
     return out
 
 
