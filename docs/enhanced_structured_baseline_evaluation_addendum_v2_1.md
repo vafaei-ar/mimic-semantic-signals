@@ -107,3 +107,39 @@ The v2.1 evaluator therefore changes execution mechanics without changing the pr
 - each outcome task has a 360-minute upper bound.
 
 These changes are operational/reproducibility fixes, not post-result model selection. The pre-v2.1 job produced no performance artifact and the v2.1 predictive performance has not been opened.
+
+
+## Preregistration inferential lock
+
+No real-label v2.1 predictive evaluator may run until `docs/registration/osf_registration.json` exists and validates as a submitted registration record. The executable runners enforce this condition.
+
+For the eventual confirmatory semantic comparison, the planned patient-cluster refit bootstrap uses explicit duplicated patient rows rather than sample weights:
+
+- source patients are resampled with replacement;
+- all ICU rows from a resampled patient are duplicated by that patient's bootstrap multiplicity;
+- each patient retains its frozen primary fold;
+- within each bootstrap replicate, models are refit in each of the five primary folds;
+- duplicated patients therefore cannot cross from training into testing;
+- this captures patient-sampling and model-refit variability conditional on the primary fold assignment;
+- it does not capture uncertainty from choosing a different fold partition, so frozen repeats 2–5 are reported separately as split-stability analyses.
+
+The planned one-sided test is for (H_0: \Delta AUROC \le 0) against (H_1: \Delta AUROC > 0). The null-centered bootstrap p-value is
+
+`p = (1 + count((delta_b - delta_observed) >= delta_observed)) / (B + 1)`.
+
+Its behavior must be checked on synthetic null data before the SAP is registered. The three outcome-level primary tests will be treated as one confirmatory family with Holm multiplicity control.
+
+The refit-bootstrap replicate count will be frozen only after the synthetic runtime benchmark. The current planning target is 500 replicates.
+
+## Death source-proxy diagnostic before registration
+
+For ICU death, note categories are collapsed to groups shared across CareVue and MetaVision:
+
+- Nursing and Nursing/other -> nursing;
+- Physician and Consult -> physician;
+- Respiratory -> respiratory;
+- General and all remaining eligible categories -> other.
+
+A label-free diagnostic predicts CareVue versus MetaVision from the planned comparator feature matrix. AUROC above 0.80 is treated as evidence that source-system information remains strongly recoverable and blocks registration until the comparator or stratification strategy is revised.
+
+Device-driven measurement density is not classified as documentation behavior; such variables belong to treatment/device context.
