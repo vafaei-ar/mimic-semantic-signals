@@ -6,9 +6,9 @@ This document records a second independent code review received after the correc
 
 ## Result-handling rule
 
-The output of `E8R7Q5M3`, if/when terminal, is **not manuscript-facing** until the corrections below are resolved.
+The pre-v2.1 job `E8R7Q5M3` subsequently terminated with exit code 124 after reaching the 240-minute timeout. It produced no declared performance artifact.
 
-Do not read or promote its predictive-performance artifact as the structured v2 result.
+It is **not manuscript-facing** and will not be retried. The corrections below must be resolved before a fresh structured evaluation is run.
 
 The v2.1 correction should be completed first, followed by a fresh structured evaluation on the corrected cohort/features.
 
