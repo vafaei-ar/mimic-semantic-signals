@@ -265,14 +265,98 @@ def _quantile_ci(values):
     return [float(np.quantile(a, 0.025)), float(np.quantile(a, 0.975))]
 
 
-def bootstrap_two_models(df, n_boot, progress_base, total_progress, outcome):
+def _bootstrap_one(
+    seed,
+    patient_codes,
+    n_patients,
+    y,
+    prepared,
+    predictions,
+    squared_error,
+    log_loss_row,
+    threshold_masks,
+):
+    rng = np.random.default_rng(int(seed))
+    sampled = rng.integers(0, n_patients, size=n_patients)
+    patient_mult = np.bincount(sampled, minlength=n_patients).astype(float)
+    w = patient_mult[patient_codes]
+    n_eff = float(w.sum())
+    pos = float(np.dot(w, y))
+    neg = n_eff - pos
+
+    if pos <= 0 or neg <= 0:
+        return None
+
+    model_results = {}
+    current_metrics = {}
+
+    for name, p in predictions.items():
+        auc, ap = _weighted_auc_ap(prepared[name], w)
+        if auc is None or ap is None:
+            return None
+
+        brier = float(np.dot(w, squared_error[name]) / n_eff)
+        ll = float(np.dot(w, log_loss_row[name]) / n_eff)
+        citl = _weighted_citl(y, p, w)
+        joint_intercept, slope = _weighted_joint_recalibration(y, p, w)
+
+        values = {
+            "auroc": auc,
+            "auprc": ap,
+            "brier": brier,
+            "log_loss": ll,
+            "calibration_in_the_large": citl,
+            "joint_recalibration_intercept": joint_intercept,
+            "calibration_slope": slope,
+        }
+        current_metrics[name] = {
+            k: values[k]
+            for k in ("auroc", "auprc", "brier", "log_loss")
+        }
+
+        model_nb = {}
+        for pt in THRESHOLDS:
+            key = f"{pt:.4f}"
+            mask = threshold_masks[name][key]
+            tp = float(np.dot(w, mask & (y == 1)))
+            fp = float(np.dot(w, mask & (y == 0)))
+            model_nb[key] = float(
+                tp / n_eff - (fp / n_eff) * (pt / (1 - pt))
+            )
+
+        model_results[name] = {
+            "metrics": values,
+            "decision_curve_net_benefit": model_nb,
+        }
+
+    diffs = {
+        metric: float(
+            current_metrics["nonlinear"][metric]
+            - current_metrics["linear"][metric]
+        )
+        for metric in ("auroc", "auprc", "brier", "log_loss")
+    }
+
+    return {"models": model_results, "diffs": diffs}
+
+
+def bootstrap_two_models(
+    df,
+    n_boot,
+    progress_base,
+    total_progress,
+    outcome,
+    n_jobs=4,
+    batch_size=25,
+):
+    from joblib import Parallel, delayed
+
     y = df["label"].to_numpy(dtype=int)
     p_linear = df["linear_prediction"].to_numpy(dtype=float)
     p_nonlinear = df["nonlinear_prediction"].to_numpy(dtype=float)
 
     patient_codes, patients = pd.factorize(df["subject_id"], sort=False)
     n_patients = len(patients)
-    rng = np.random.default_rng(BOOTSTRAP_SEED)
 
     prepared = {
         "linear": _prepare_weighted_rank_metrics(y, p_linear),
@@ -315,79 +399,67 @@ def bootstrap_two_models(df, n_boot, progress_base, total_progress, outcome):
         for name, p in predictions.items()
     }
 
+    # Parallel-safe deterministic bootstrap stream. Each replicate gets an
+    # independent child seed derived from the frozen master seed.
+    children = np.random.SeedSequence(BOOTSTRAP_SEED).spawn(n_boot)
+    seeds = [int(child.generate_state(1)[0]) for child in children]
+
     used = 0
+    n_jobs = max(1, int(n_jobs))
+    batch_size = max(1, int(batch_size))
 
-    for b in range(n_boot):
-        sampled = rng.integers(0, n_patients, size=n_patients)
-        patient_mult = np.bincount(sampled, minlength=n_patients).astype(float)
-        w = patient_mult[patient_codes]
-        n_eff = float(w.sum())
-        pos = float(np.dot(w, y))
-        neg = n_eff - pos
+    for start_idx in range(0, n_boot, batch_size):
+        end_idx = min(start_idx + batch_size, n_boot)
+        results = Parallel(n_jobs=n_jobs, prefer="threads")(
+            delayed(_bootstrap_one)(
+                seeds[b],
+                patient_codes,
+                n_patients,
+                y,
+                prepared,
+                predictions,
+                squared_error,
+                log_loss_row,
+                threshold_masks,
+            )
+            for b in range(start_idx, end_idx)
+        )
 
-        if pos <= 0 or neg <= 0:
-            continue
-
-        current_metrics = {}
-
-        for name, p in predictions.items():
-            auc, ap = _weighted_auc_ap(prepared[name], w)
-            if auc is None or ap is None:
-                break
-
-            brier = float(np.dot(w, squared_error[name]) / n_eff)
-            ll = float(np.dot(w, log_loss_row[name]) / n_eff)
-            citl = _weighted_citl(y, p, w)
-            joint_intercept, slope = _weighted_joint_recalibration(y, p, w)
-
-            values = {
-                "auroc": auc,
-                "auprc": ap,
-                "brier": brier,
-                "log_loss": ll,
-                "calibration_in_the_large": citl,
-                "joint_recalibration_intercept": joint_intercept,
-                "calibration_slope": slope,
-            }
-            for key, value in values.items():
-                per_model[name][key].append(float(value))
-
-            current_metrics[name] = {
-                k: values[k]
-                for k in ("auroc", "auprc", "brier", "log_loss")
-            }
-
-            for pt in THRESHOLDS:
-                key = f"{pt:.4f}"
-                mask = threshold_masks[name][key]
-                tp = float(np.dot(w, mask & (y == 1)))
-                fp = float(np.dot(w, mask & (y == 0)))
-                nb[name][key].append(
-                    float(tp / n_eff - (fp / n_eff) * (pt / (1 - pt)))
-                )
-        else:
-            for metric in diffs:
-                diffs[metric].append(
-                    float(
-                        current_metrics["nonlinear"][metric]
-                        - current_metrics["linear"][metric]
-                    )
-                )
+        for result in results:
+            if result is None:
+                continue
             used += 1
 
-        if (b + 1) % 25 == 0 or (b + 1) == n_boot:
-            update_progress(
-                current=progress_base + b + 1,
-                total=total_progress,
-                phase="enhanced_structured_v2_1_bootstrap",
-                message=f"{outcome}: paired patient bootstrap {b+1}/{n_boot}",
-                unit="bootstrap",
-            )
+            for name in predictions:
+                for key, value in result["models"][name]["metrics"].items():
+                    per_model[name][key].append(float(value))
+                for key, value in result["models"][name][
+                    "decision_curve_net_benefit"
+                ].items():
+                    nb[name][key].append(float(value))
+
+            for key, value in result["diffs"].items():
+                diffs[key].append(float(value))
+
+        update_progress(
+            current=progress_base + end_idx,
+            total=total_progress,
+            phase="enhanced_structured_v2_1_bootstrap",
+            message=(
+                f"{outcome}: paired patient bootstrap "
+                f"{end_idx}/{n_boot} using {n_jobs} workers"
+            ),
+            unit="bootstrap",
+        )
 
     return {
         "replicates_requested": int(n_boot),
         "replicates_used": int(used),
         "cluster": "source_patient",
+        "parallel_workers": int(n_jobs),
+        "bootstrap_seed_method": (
+            "numpy SeedSequence master seed with one deterministic child seed per replicate"
+        ),
         "implementation": (
             "patient multiplicity weights applied to repeat-averaged cross-fitted predictions; "
             "models are not refit inside bootstrap replicates"
@@ -410,7 +482,6 @@ def bootstrap_two_models(df, n_boot, progress_base, total_progress, outcome):
             for k, v in diffs.items()
         },
     }
-
 
 def _self_check_weighted_metrics():
     from sklearn.metrics import average_precision_score, roc_auc_score
@@ -569,6 +640,13 @@ def main():
     ap.add_argument("--split-manifest", required=True)
     ap.add_argument("--output", required=True)
     ap.add_argument("--bootstrap-replicates", type=int, default=1000)
+    ap.add_argument("--bootstrap-jobs", type=int, default=4)
+    ap.add_argument(
+        "--outcome",
+        choices=("all",) + OUTCOMES,
+        default="all",
+        help="Evaluate one outcome or all outcomes.",
+    )
     args = ap.parse_args()
 
     _self_check_weighted_metrics()
@@ -579,10 +657,11 @@ def main():
     out_path = Path(args.output).expanduser().resolve()
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
+    selected_outcomes = OUTCOMES if args.outcome == "all" else (args.outcome,)
     repeats = len(REPEAT_SEEDS)
     fold_work = repeats * FOLDS
     work_per_outcome = fold_work + args.bootstrap_replicates
-    total_progress = len(OUTCOMES) * work_per_outcome
+    total_progress = len(selected_outcomes) * work_per_outcome
 
     report = {
         "analysis": "Enhanced structured baseline predictive evaluation v2.1",
@@ -600,6 +679,8 @@ def main():
         "group": "source_patient",
         "decision_thresholds": [float(x) for x in THRESHOLDS],
         "bootstrap_replicates": int(args.bootstrap_replicates),
+        "bootstrap_jobs": int(args.bootstrap_jobs),
+        "selected_outcomes": list(selected_outcomes),
         "model_specs": {
             "linear": {
                 "imputation": "training-fold median + missingness indicators",
@@ -625,7 +706,7 @@ def main():
         "outcomes": {},
     }
 
-    for oi, outcome in enumerate(OUTCOMES):
+    for oi, outcome in enumerate(selected_outcomes):
         path = base / outcome / "enhanced_structured_features_v2_1_local.csv"
         df = pd.read_csv(path, low_memory=False)
 
@@ -763,6 +844,7 @@ def main():
             progress_base=outcome_base_progress + fold_work,
             total_progress=total_progress,
             outcome=outcome,
+            n_jobs=args.bootstrap_jobs,
         )
 
         report["outcomes"][outcome] = {
@@ -792,6 +874,15 @@ def main():
             "bootstrap": boot,
             "local_prediction_file": str(pred_path),
         }
+
+        # Write a safe aggregate checkpoint after each completed outcome so a
+        # later timeout does not discard already completed aggregate results.
+        report["status"] = "partial"
+        report["completed_outcomes"] = list(report["outcomes"].keys())
+        out_path.write_text(
+            json.dumps(report, indent=2) + "\n",
+            encoding="utf-8",
+        )
 
     report["guardrails"] = [
         "All predictions are patient-grouped out-of-fold predictions.",
