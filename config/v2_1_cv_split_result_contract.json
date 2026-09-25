@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_v2_1_predictive_performance",
+  "canonical_job": "T9R6M4N2",
+  "project_commit": "2d74f4d6c327dc1ec7698db98c3d67258e033bb0",
+  "artifact_sha256": "b0bac28207ca07dec3539512eda856d2ead09ab8f7f704cfe8a4d6d800e27484",
+  "repeat_seeds": [
+    20260924,
+    20260925,
+    20260926,
+    20260927,
+    20260928
+  ],
+  "folds_per_repeat": 5,
+  "primary_repeat": 1,
+  "analyses": {
+    "invasive_ventilation": {
+      "source": "metavision",
+      "rows": 11116,
+      "cases": 279,
+      "unique_patients": 8982,
+      "split_sha256": "30d6d4e591bfe3ff0dc736d8619dcead94f1c3880b160dbfed7efbffce727b35"
+    },
+    "renal_replacement_therapy": {
+      "source": "metavision",
+      "rows": 19395,
+      "cases": 314,
+      "unique_patients": 15080,
+      "split_sha256": "1a2b8e23045ac79429bcb65b6ff3c382226be1fbab5a9460f2d8c1ca49bb5ee0"
+    },
+    "icu_death": {
+      "source": "metavision",
+      "rows": 19811,
+      "cases": 214,
+      "unique_patients": 15312,
+      "split_sha256": "444a0dac02358d1d4eafe83b96d3804df30134de00e4b54509beb7bbbe411658"
+    },
+    "icu_death_carevue": {
+      "source": "carevue",
+      "rows": 25632,
+      "cases": 306,
+      "unique_patients": 19736,
+      "split_sha256": "490c70902518a9620a9f3c0808f2275f56652e423e8820c78a8fa4d7dca30a2f"
+    }
+  }
+}
