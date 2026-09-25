@@ -92,3 +92,18 @@ The bootstrap should include:
 ## Result status
 
 The pre-v2.1 job `E8R7Q5M3` is not the manuscript-facing structured result and should not be opened/frozen as such.
+
+
+## Runtime hardening after pre-v2.1 timeout
+
+The pre-v2.1 all-outcome evaluation job \`E8R7Q5M3\` reached the 240-minute RunRelay timeout after completing the ventilation outcome and entering the first RRT fold. No scientific traceback occurred, and no aggregate artifact was emitted because the evaluator wrote its output only at the very end.
+
+The v2.1 evaluator therefore changes execution mechanics without changing the prespecified models or 1,000-bootstrap target:
+
+- ventilation, RRT, and ICU death are separate named RunRelay tasks;
+- each task uses four deterministic bootstrap workers;
+- every bootstrap replicate receives a deterministic child seed derived from the frozen master seed;
+- the evaluator writes a safe aggregate checkpoint after each completed outcome;
+- each outcome task has a 360-minute upper bound.
+
+These changes are operational/reproducibility fixes, not post-result model selection. The pre-v2.1 job produced no performance artifact and the v2.1 predictive performance has not been opened.
