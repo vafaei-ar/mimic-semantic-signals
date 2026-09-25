@@ -294,3 +294,25 @@ A fresh validation on the corrected project commit is required before the treatm
 ### Validation coverage correction
 
 The preregistration validation runner initially compiled source files only through `src/111`. Therefore S6M3Q8R2 validated the pre-existing suite but did not actually compile the newly added `src/112` source-strategy audit. The named validation runner has now been corrected to compile and shell-check both `src/112` and `src/113` and their runners.
+
+
+## Frozen ICU-death source-system strategy
+
+After the corrected source-strategy audit `X9R4Q2M6` completed without mortality-performance analysis, the confirmatory ICU-death population was restricted to MetaVision.
+
+Reason: source system remained readily recoverable from the candidate comparator even with a simple patient-grouped logistic diagnostic:
+
+- latest note category only: AUROC 0.8528;
+- note context without category: 0.8226;
+- documentation behavior without category: 0.9527;
+- core structured values only: 0.7672;
+- core structured plus missingness: 0.8126;
+- current full comparator: 0.9796.
+
+The frozen confirmatory death cohort therefore contains 19,811 MetaVision rows, 214 cases, and 19,597 controls. CareVue death remains a separate prespecified replication/sensitivity with 25,632 rows and 306 cases.
+
+See:
+- `docs/death_source_strategy_freeze_v2_1.md`;
+- `config/v2_1_analysis_population_contract.json`.
+
+The pooled all-source death cohort remains provenance only and is not used for the confirmatory death comparison.
