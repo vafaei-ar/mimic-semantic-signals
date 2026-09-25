@@ -256,3 +256,6 @@ bash -n scripts/run_refit_bootstrap_benchmark_v2_1.sh
 
 .venv/bin/python -m py_compile src/112_audit_death_source_strategy_v2_1.py
 bash -n scripts/run_death_source_strategy_audit_v2_1.sh
+
+.venv/bin/python -m py_compile src/113_audit_treatment_context_availability_v2_1.py
+bash -n scripts/run_treatment_context_availability_audit_v2_1.sh
