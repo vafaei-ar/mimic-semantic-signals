@@ -32,7 +32,7 @@ def note_identity_hash(index: pd.DataFrame) -> str:
     cols = ["case_id", "icustay_id", "has_note", "note_time", "category"]
     x = index[cols].copy()
     for c in cols:
-        x[c] = x[c].fillna("").astype(str)
+        x[c] = x[c].astype("object").where(x[c].notna(), "").map(str)
     payload = "\n".join(
         "|".join(row)
         for row in x.sort_values("case_id").itertuples(index=False, name=None)
