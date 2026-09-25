@@ -122,6 +122,10 @@ Include withdrawal wording with an optional `of`, e.g. `withdrawal of care`, in 
 
 ## 5. Structured treatment-context comparator
 
+Detailed prespecification:
+
+- `docs/structured_treatment_context_discovery_protocol_v2_1.md`
+
 The 34-feature physiology baseline remains useful and should be preserved.
 
 Before semantic claims are finalized, add a **secondary treatment-context structured comparator** using concept mappings frozen without outcome-performance inspection.
@@ -139,6 +143,10 @@ PEEP/ventilator settings require special care because they may overlap the venti
 The scientific purpose is to test whether a semantic increment is actually treatment/support information omitted from the physiology-only comparator.
 
 ## 6. Prospective timing sensitivities
+
+Detailed prespecification:
+
+- `docs/prospective_timing_sensitivity_protocol_v2_1.md`
 
 Primary v2.1 extraction keeps the existing clinically conventional chart/specimen-time features for continuity, but manuscript-facing robustness should include:
 
