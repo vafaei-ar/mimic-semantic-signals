@@ -65,3 +65,5 @@ bash -n scripts/run_refit_bootstrap_benchmark_v2_1_ventilation.sh
 bash -n scripts/run_refit_bootstrap_benchmark_v2_1_rrt.sh
 bash -n scripts/run_refit_bootstrap_benchmark_v2_1_death.sh
 bash -n scripts/run_hgb_thread_runtime_audit_v2_1.sh
+
+bash -n scripts/set_hgb_thread_env_v2_1.sh
