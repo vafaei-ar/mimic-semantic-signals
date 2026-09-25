@@ -152,7 +152,7 @@ def main() -> None:
     out_path = Path(args.output).expanduser().resolve()
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    update_progress(current=1, total=4, phase="source_decomposition", message="Loading frozen death cohort and feature blocks", unit="stage")
+    update_progress(current=1, total=11, phase="source_decomposition", message="Loading frozen death cohort and feature blocks", unit="stage")
     idx = pd.read_csv(local_root / "icu_death" / "population_index_local.csv", low_memory=False)
     idx["dbsource"] = idx["dbsource"].fillna("unknown").astype(str).str.strip().str.lower()
     idx["category_group"] = idx["category"].map(collapse_note_category)
@@ -196,7 +196,6 @@ def main() -> None:
     ]
     note_context_numeric = ["has_note", "note_age_at_landmark_hours"]
 
-    update_progress(current=2, total=4, phase="source_decomposition", message="Computing label-free source-prediction decomposition", unit="stage")
     blocks = {
         "latest_note_category_only": ([], ["category_group"], False),
         "note_context_without_category": (note_context_numeric, [], True),
@@ -216,7 +215,14 @@ def main() -> None:
         ),
     }
     aucs = {}
-    for name, (num, cat, indicators) in blocks.items():
+    for bi, (name, (num, cat, indicators)) in enumerate(blocks.items(), start=2):
+        update_progress(
+            current=bi,
+            total=11,
+            phase="source_decomposition",
+            message=f"Computing label-free source diagnostic: {name}",
+            unit="feature_block",
+        )
         aucs[name] = source_proxy_auc(
             death,
             list(dict.fromkeys(num)),
@@ -224,7 +230,7 @@ def main() -> None:
             add_missing_indicators=indicators,
         )
 
-    update_progress(current=3, total=4, phase="source_decomposition", message="Summarizing source-specific counts and structured missingness fingerprints", unit="stage")
+    update_progress(current=10, total=11, phase="source_decomposition", message="Summarizing source-specific counts and structured missingness fingerprints", unit="stage")
     desc = source_descriptives(idx)
 
     missingness = {}
@@ -240,7 +246,7 @@ def main() -> None:
         sorted(missingness.items(), key=lambda kv: kv[1]["absolute_difference"], reverse=True)[:15]
     )
 
-    update_progress(current=4, total=4, phase="source_decomposition", message="Writing aggregate source-system design audit", unit="stage")
+    update_progress(current=11, total=11, phase="source_decomposition", message="Writing aggregate source-system design audit", unit="stage")
     report = {
         "analysis": "v2.1 ICU-death CareVue/MetaVision source-proxy decomposition",
         "source_proxy_model": "5-fold patient-grouped regularized logistic regression; diagnostic only",
