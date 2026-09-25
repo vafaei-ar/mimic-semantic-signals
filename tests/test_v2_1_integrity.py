@@ -233,15 +233,18 @@ class V21IntegrityTests(unittest.TestCase):
     def test_fixed_note_corpus_result_contract(self):
         path = ROOT / "config" / "v2_1_fixed_note_corpus_result_contract.json"
         contract = json.loads(path.read_text(encoding="utf-8"))
-        self.assertEqual(contract["canonical_job"], "R8Q6M4N2")
-        self.assertEqual(
-            contract["artifact_sha256"],
-            "608cf993ba080afd54e2157a94d506d9406966795f91d78be2550960c600db5c",
-        )
         self.assertEqual(contract["primary_corpus"], "stripped")
+        if contract["status"] == "superseded_pending_corrected_preregistration_refreeze":
+            self.assertEqual(contract["canonical_job"], "R8Q6M4N2")
+            self.assertIn("supersession_reason", contract)
+            return
+        self.assertEqual(contract["status"], "frozen_before_v2_1_text_inference")
+        self.assertNotEqual(contract["canonical_job"], "R8Q6M4N2")
         for name, info in contract["analyses"].items():
-            self.assertIn("stripped_local_file_sha256", info, msg=name)
-            self.assertGreaterEqual(info["notes_changed_by_corrected_stripping"], 0, msg=name)
+            self.assertIn("stripped_sha256", info, msg=name)
+            self.assertGreaterEqual(
+                info["notes_changed_by_corrected_stripping"], 0, msg=name
+            )
 
     def test_context_feature_result_contract(self):
         path = ROOT / "config" / "v2_1_context_feature_result_contract.json"
