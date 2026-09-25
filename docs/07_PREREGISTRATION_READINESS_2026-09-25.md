@@ -4,9 +4,24 @@ Updated: 2026-09-25
 
 ## Status
 
-**Preregistration-ready candidate pending final repository validation, human review of the OSF-facing prose, and external OSF submission. Real-label v2.1 predictive performance remains locked.**
+**Preregistration-ready candidate. Final synthetic/static repository validation completed successfully; the remaining gates are human review of the OSF-facing prose and external OSF submission. Real-label v2.1 predictive performance remains locked.**
 
 No v2.1 clinical outcome performance, semantic inference, or TF-IDF performance has been opened.
+
+## Final preregistration validation
+
+Final registration-candidate validation:
+
+- job: `S7Q4M9V2 — Validate OSF Registration Candidate`;
+- exact validated project commit: `de3677b3d2dc0f1a1ea855a2892394275aef8650`;
+- task: `validate_v2_1_preregistration`;
+- status: completed;
+- exit code: 0;
+- integrity tests: 33/33 passed;
+- declared artifact: `outputs/integrity/v2_1_preregistration_synthetic_checks.json`;
+- artifact SHA-256: `8afe0a4ee899d8c0ae5a4f9ffaefd349183d3bac2744ffb2e26a7f53af3974e8`.
+
+This checkpoint text is a status-only documentation update after S7; it does not alter executable code, analysis contracts, cohort definitions, feature definitions, corpus hashes, split hashes, or inference rules.
 
 ## Frozen confirmatory populations
 
@@ -199,9 +214,8 @@ The external OSF submission is public/consequential and is not performed automat
 
 ## Remaining actions before predictive execution
 
-1. Run one final synthetic/static preregistration validation on the current registration-candidate commit.
-2. Human-review the main SAP and technical appendix, including prose and metadata.
-3. Submit the post-review analysis plan to OSF.
-4. Add the actual registration record at `docs/registration/osf_registration.json`.
-5. Validate the exact post-registration commit.
-6. Only then begin real-label structured, semantic, and lexical analyses.
+1. Human-review the main SAP and technical appendix, including prose and metadata.
+2. Submit the post-review analysis plan to OSF.
+3. Add the actual registration record at `docs/registration/osf_registration.json`.
+4. Validate the exact post-registration commit.
+5. Only then begin real-label structured, semantic, and lexical analyses.
