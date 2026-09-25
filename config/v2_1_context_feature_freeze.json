@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_v2_1_predictive_performance",
+  "canonical_audit_job": "A7R4Q2M6",
+  "canonical_audit_commit": "58238190dd69e5d1e37216b0acfd6ee9e247eb55",
+  "canonical_audit_artifact_sha256": "5775b15b0ab553d78099e7bfa6108da85c4c81be649a04d0e0032277a9b66428",
+  "treatment": {
+    "lookback_hours": 6,
+    "respiratory": {
+      "fio2": {
+        "metavision": [
+          223835
+        ],
+        "carevue": [
+          189,
+          190,
+          191,
+          727,
+          2981,
+          3420,
+          3422,
+          7570
+        ]
+      },
+      "oxygen_flow": {
+        "metavision": [
+          223834,
+          227287,
+          227582
+        ],
+        "carevue": [
+          470,
+          471
+        ]
+      },
+      "oxygen_device": {
+        "metavision": [
+          226732
+        ],
+        "carevue": [
+          467,
+          468
+        ]
+      },
+      "niv_items": {
+        "metavision": [
+          227577,
+          227578,
+          227579,
+          227580,
+          227581,
+          227582,
+          227583
+        ],
+        "carevue": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          1040,
+          1457,
+          1914,
+          2866,
+          3111,
+          5850,
+          6060,
+          6875
+        ]
+      },
+      "high_flow_regex": "high.?flow|hfnc|vapotherm|optiflow",
+      "niv_device_regex": "bipap|bi-pap|cpap|non.?invasive"
+    },
+    "vasoactive": {
+      "metavision": {
+        "epinephrine": [
+          221289
+        ],
+        "dopamine": [
+          221662
+        ],
+        "phenylephrine": [
+          221749
+        ],
+        "norepinephrine": [
+          221906
+        ],
+        "vasopressin": [
+          222315
+        ]
+      },
+      "carevue": {
+        "dopamine": [
+          30043,
+          30307
+        ],
+        "epinephrine": [
+          30044,
+          30119,
+          30309
+        ],
+        "norepinephrine": [
+          30047,
+          30120
+        ],
+        "phenylephrine": [
+          30127,
+          30128
+        ],
+        "vasopressin": [
+          30051
+        ]
+      }
+    },
+    "sedative_analgesic": {
+      "metavision": {
+        "midazolam": [
+          221668
+        ],
+        "fentanyl": [
+          221744,
+          225942
+        ],
+        "propofol": [
+          222168
+        ],
+        "dexmedetomidine": [
+          225150
+        ]
+      },
+      "carevue": {
+        "fentanyl": [
+          30118,
+          30308
+        ],
+        "midazolam": [
+          30124
+        ],
+        "propofol": [
+          30131
+        ],
+        "dexmedetomidine": [
+          30167
+        ]
+      }
+    },
+    "code_status": {
+      "metavision": [
+        223758
+      ],
+      "carevue": [
+        128
+      ],
+      "outcome_scope": [
+        "icu_death"
+      ]
+    }
+  },
+  "documentation_behavior": {
+    "lookback_hours": 12,
+    "features": [
+      "doc_note_count_12h",
+      "doc_note_chars_total_12h",
+      "doc_note_chars_latest_12h",
+      "doc_note_category_groups_12h",
+      "doc_hours_since_last_note",
+      "doc_nursing_note_count_12h",
+      "doc_physician_note_count_12h",
+      "doc_respiratory_note_count_12h",
+      "doc_other_note_count_12h"
+    ],
+    "excluded_features": [
+      "doc_last_note_gap_hours"
+    ]
+  },
+  "note_context": {
+    "features": [
+      "has_note",
+      "note_age_at_landmark_hours",
+      "category_group"
+    ],
+    "category_groups": [
+      "nursing",
+      "physician",
+      "respiratory",
+      "other"
+    ]
+  }
+}
