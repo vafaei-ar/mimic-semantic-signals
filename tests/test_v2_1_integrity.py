@@ -91,6 +91,16 @@ class V21IntegrityTests(unittest.TestCase):
             data = require_osf_registration(td)
             self.assertEqual(data["registration_id"], "abcd1")
 
+    def test_structured_runner_passes_expected_counts(self):
+        runner = (ROOT / "scripts" / "run_enhanced_structured_baseline_v2_1.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("--expected-counts", runner)
+        self.assertIn(
+            "config/corrected_landmark12_v2_1_expected_counts.json",
+            runner,
+        )
+
     def test_expected_count_enforcement(self):
         d = pd.DataFrame(
             {
