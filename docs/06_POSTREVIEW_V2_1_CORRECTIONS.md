@@ -224,3 +224,18 @@ The permitted pre-registration execution set is limited to:
 8. synthetic-only refit-bootstrap runtime/null benchmarking.
 
 No AUROC, AUPRC, calibration, Brier score, log loss, or decision-curve result on real outcome labels may be produced before registration.
+
+
+## Ventilation explicit-endpoint sensitivity clarification
+
+During inspection of the first adult v2.1 descriptive cohort manifest, the explicit-intubation sensitivity was found to have unintentionally relaxed the pre-landmark risk-set exclusion by using the explicit endpoint itself as the disqualifying definition.
+
+This was corrected **before any predictive performance was run or opened**.
+
+The explicit-intubation sensitivity now:
+
+- uses the same broad pre-landmark ventilation exclusion/control rule as the primary ventilation cohort;
+- broadens only the post-landmark case endpoint from procedure item 224385 to procedure or explicit intubation chart evidence;
+- must preserve the same control count as the primary ventilation cohort.
+
+The broad respiratory-support sensitivity remains symmetric by design: broad support evidence defines both the post-landmark case endpoint and the disqualifying/control rule.
