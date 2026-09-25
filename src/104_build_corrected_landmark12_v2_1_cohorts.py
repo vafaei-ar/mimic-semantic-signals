@@ -95,6 +95,10 @@ def compile_rx(patterns: list[str]) -> re.Pattern:
     return re.compile("|".join(f"(?:{p})" for p in patterns), flags=re.IGNORECASE)
 
 
+def case_only_event_time(first_endpoint_time: pd.Series, is_case: pd.Series) -> pd.Series:
+    return first_endpoint_time.where(pd.Series(is_case, index=first_endpoint_time.index).astype(bool))
+
+
 def stable_case_id(outcome: str, icustay_id: int) -> str:
     raw = f"population_landmark12_v2_1|{outcome}|{int(icustay_id)}"
     return "pl12v21_" + hashlib.sha256(raw.encode("utf-8")).hexdigest()[:20]
@@ -556,7 +560,7 @@ def build_outcome(
 
     pop = risk[risk["is_case"] | risk["fully_observed_control"]].copy()
     pop["label"] = pop["is_case"].astype(int)
-    pop["event_time"] = pop["first_endpoint_time"].where(pop["is_case"])
+    pop["event_time"] = case_only_event_time(pop["first_endpoint_time"], pop["is_case"])
 
     candidate = note_icu[
         (note_icu["hours_since_icu"] >= LANDMARK_H - 12.0)
