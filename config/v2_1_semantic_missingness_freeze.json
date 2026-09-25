@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_v2_1_predictive_performance",
+  "scope": "semantic-score preprocessing",
+  "nonlinear_hgb_models": {
+    "missing_score_rule": "retain NaN; HistGradientBoostingClassifier handles missing values natively",
+    "has_note_rule": "retain prespecified has_note comparator feature"
+  },
+  "logistic_models_including_semantic_scores": {
+    "missing_score_rule": "within each training fold, compute the median of each semantic score using finite training-fold values only; impute that training-fold median into missing semantic values in both training and held-out rows",
+    "no_test_leakage": true,
+    "has_note_rule": "retain prespecified has_note comparator feature so imputed no-note rows remain distinguishable from observed-note rows",
+    "complete_note_available_requirement": "note-available rows must have all eight semantic scores; otherwise fail the analysis rather than silently impute model-inference failures"
+  },
+  "tfidf_no_note_rule": "rows without an eligible note receive an all-zero TF-IDF vector; has_note remains in the comparator",
+  "rationale": "Logistic regression cannot consume NaN. Fold-specific training medians avoid held-out leakage while has_note preserves the distinction between no-note rows and observed notes."
+}
