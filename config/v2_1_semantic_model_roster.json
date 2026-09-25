@@ -49,6 +49,9 @@
     "max_df": 0.98,
     "max_features": 10000,
     "sublinear_tf": true,
-    "fit_scope": "training_fold_only"
+    "fit_scope": "training_fold_only",
+    "no_note_encoding": "all_zero_sparse_vector",
+    "no_note_context_indicator": "use existing has_note predictor from rich comparator",
+    "note_available_text_source": "frozen stripped corpus for primary analysis"
   }
 }
