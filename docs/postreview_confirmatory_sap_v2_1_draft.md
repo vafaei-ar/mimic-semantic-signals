@@ -1,6 +1,6 @@
 # Post-review confirmatory statistical analysis plan for v2.1
 
-**Draft status:** the design is frozen. The patient-cluster refit-bootstrap replicate count remains to be filled from the revised outcome-specific synthetic exact-runtime benchmark after W9R6M4N2 timed out. No v2.1 predictive performance has been examined.
+**Draft status:** the scientific design is frozen, including 500 patient-cluster refit-bootstrap replicates per confirmatory outcome. The revised outcome-specific synthetic runtime benchmark is engineering-only and cannot change the inferential design. No v2.1 predictive performance has been examined.
 
 ## Purpose and study status
 
