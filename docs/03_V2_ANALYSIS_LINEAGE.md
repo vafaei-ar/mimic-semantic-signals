@@ -1,33 +1,35 @@
-# 03 — Corrected v2 analysis lineage
+# 03 — Corrected v2/v2.1 analysis lineage
 
 Updated: 2026-09-24
 
-This file is the ordered provenance map for the current manuscript-facing analysis.
+This is the ordered provenance map for the current manuscript-facing analysis.
 
-Detailed protocol/result files are authoritative. This report tells you **what to read, in what order, and why**.
+Detailed frozen protocol/result files remain authoritative for exact definitions, settings, counts, seeds, hashes, and interpretation rules. This report tells you what to read, in what order, and which branches are superseded.
 
 ## Visual lineage
 
 ```mermaid
 flowchart TD
     A[External code review] --> B[Integrity audit]
-    B --> C[Corrected v2 cohort protocol]
-    C --> D[Corrected v2 cohort build]
-    D --> E[Enhanced structured feature discovery]
-    E --> F[Exact 34-feature mapping freeze]
-    F --> G[Structured feature extraction]
-    G --> H[Structured-only evaluation]
-    H --> I[Corrected semantic + TF-IDF evaluation]
-    I --> J[Fixed-note language-stripped sensitivity]
-    J --> K[Clinician construct validation]
-    K --> L[Corrected external validation]
-    L --> M[Manuscript claim lock]
+    B --> C[Corrected v2 cohort]
+    C --> D[Enhanced structured discovery]
+    D --> E[Exact 34-feature mapping]
+    E --> F[Pre-v2.1 feature extraction]
+    F --> G[Second code review]
+    G --> H[v2.1 adult/NICU + GCS correction]
+    H --> I[Freeze exact patient-grouped CV split hashes]
+    I --> J[Fresh v2.1 structured evaluation]
+    J --> K[Corrected semantic + TF-IDF evaluation]
+    K --> L[Language/timing/treatment-context sensitivities]
+    L --> M[Clinician construct validation]
+    M --> N[Corrected external validation]
+    N --> O[Manuscript claim lock]
 
     B:::done
     C:::done
     D:::done
     E:::done
-    F:::done
+    F:::provisional
     G:::done
     H:::active
     I:::future
@@ -35,8 +37,11 @@ flowchart TD
     K:::future
     L:::future
     M:::future
+    N:::future
+    O:::future
 
     classDef done fill:#e8f5e9,stroke:#2e7d32,color:#111;
+    classDef provisional fill:#fff3e0,stroke:#ef6c00,color:#111;
     classDef active fill:#fff8e1,stroke:#f9a825,color:#111;
     classDef future fill:#f5f5f5,stroke:#757575,color:#111;
 ```
@@ -54,31 +59,32 @@ Canonical audit job:
 - `N7Q8V4R5`
 - artifact SHA-256: `c7c91a33f9ab41ed1efa87dc9efc09ade8a9624efe50ce88db89e82b5932e0a8`
 
-Purpose: establish which v1 analyses are not manuscript-ready and freeze the required corrections before rebuilding.
+This established why the v1 manuscript-facing estimates are provenance only.
 
-## Step 2 — Corrected v2 cohort: completed
+## Step 2 — Corrected v2 cohort: completed, then superseded by v2.1 eligibility correction
 
 Read:
 
 1. `docs/corrected_landmark12_v2_protocol.md`
 2. `docs/corrected_landmark12_v2_cohort_result_freeze.md`
 
-Canonical cohort job:
+Canonical v2 cohort job:
 
 - `Q8R3V7M4`
 - artifact SHA-256: `e1113d0a280389c61ea5b6d326ca81bb3e128854aba3d085837baa2e8d180e12`
 
-Key decisions:
+v2 successfully corrected:
 
-- fixed 12-hour landmark;
-- 12-hour horizon;
-- ventilation/RRT MetaVision-only;
-- ICU death source-independent;
-- no `dbsource` predictor;
-- note selected before any language sensitivity;
-- no primary matched case-control sampling.
+- ventilation/RRT source compatibility;
+- note-category normalization;
+- numeric error-flag handling;
+- note selection before language sensitivity;
+- removal of `dbsource` as a predictor;
+- the matched-cohort control-pool problem.
 
-## Step 3 — Enhanced structured baseline discovery/mapping: completed
+The second review then found that the all-source ICU-death branch had no adult/NICU restriction. Therefore the v2 cohort counts remain provenance until rebuilt as v2.1.
+
+## Step 3 — Enhanced structured discovery/mapping: completed
 
 Read:
 
@@ -86,118 +92,148 @@ Read:
 2. `docs/enhanced_structured_baseline_discovery_lineage_note.md`
 3. `docs/enhanced_structured_baseline_mapping_freeze_v2.md`
 
-The first two discovery audits contained availability-accounting bugs and are preserved only for provenance. The final corrected discovery audit was:
+Final corrected discovery audit:
 
-- job `X8R4Q7M3`
+- `X8R4Q7M3`
 - artifact SHA-256: `acb466d70fe1ef6af9ef7a58ae784a2810d5206aee0cf218329beb40e5d99a7b`
 
-The exact 34-feature mapping was frozen only after the corrected audit.
+The core 34-feature mapping remains the base mapping.
 
-## Step 4 — Enhanced structured feature extraction: completed
+## Step 4 — Pre-v2.1 structured feature extraction: technically completed, not manuscript-final
 
 Read:
 
 - `docs/enhanced_structured_baseline_feature_result_freeze_v2.md`
 
-Canonical extraction job:
+Canonical extraction:
 
 - `C8R6Q9M5`
 - artifact SHA-256: `7c40ef2dfc28af23ac12e544226570787ea6d2ad6a20aadc8b177356c15e287f`
 
-The failed predecessor `Z8R5Q7M4` is provenance only; it failed before extraction because MIMIC deidentified elderly DOB shifts overflowed pandas timedelta arithmetic. The corrected run uses safe Python date arithmetic.
+This extraction is not the final feature result because:
 
-## Step 5 — Structured-only predictive evaluation: active
+- the cohort may contain pediatric/NICU stays;
+- GCS verbal can encode ETT/tracheostomy as numeric 1.
+
+Its availability figures are retained as provenance.
+
+## Step 5 — Second review / v2.1 correction gate: active
 
 Read:
 
-- `docs/enhanced_structured_baseline_evaluation_protocol_v2.md`
+1. `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`
+2. `docs/enhanced_structured_baseline_mapping_addendum_v2_1.md`
+3. `docs/enhanced_structured_baseline_evaluation_addendum_v2_1.md`
 
-Current canonical job:
+Confirmed code-review corrections include:
+
+- adult age >=18 at ICU admission;
+- explicit NICU first-careunit exclusion;
+- ETT/tracheostomy-coded verbal GCS treated as missing;
+- case-only `event_time`;
+- corrected treatment-language regexes;
+- ventilation endpoint sensitivity arms;
+- meaningful all-clinical-missing diagnostics;
+- exact split-file hashes;
+- calibration-in-the-large separated from joint recalibration intercept.
+
+Draft v2.1 code is in:
+
+- `src/104_build_corrected_landmark12_v2_1_cohorts.py`
+- `src/105_build_enhanced_structured_baseline_v2_1.py`
+- `src/106_freeze_enhanced_structured_cv_splits_v2_1.py`
+- `src/107_evaluate_enhanced_structured_baseline_v2_1.py`
+
+No v2.1 execution has been requested yet.
+
+## Pre-v2.1 structured evaluation job
+
+The previously submitted job:
 
 - `E8R7Q5M3 — Evaluate Enhanced Structured V2`
-- exact commit: `0f72c995d240900e15d65dd7b6e3c4f7048453ea`
-- status at last documentation update: **running**
 
-This is the first corrected v2 predictive-performance gate.
+belongs to the pre-v2.1 cohort/feature lineage.
 
-It will establish:
+**Do not read, freeze, or promote its performance artifact as the manuscript-facing structured result.**
 
-- linear structured performance;
-- nonlinear structured performance;
-- calibration and decision curves;
-- repeated split/training variability;
-- paired bootstrap uncertainty.
+It may be retained later as provenance if useful, but it cannot resolve the adult/NICU or GCS-verbal issues because those are upstream of model fitting.
 
-Semantic and lexical v2 analyses remain locked until this result is frozen.
+## Step 6 — Freeze exact v2.1 patient-grouped splits: future
 
-## Step 6 — Corrected semantic + lexical evaluation: not yet run
+The split-freeze step must:
 
-Planned requirements:
+- generate the five repeated five-fold patient-grouped assignments once;
+- save row-level assignments locally;
+- report only aggregate counts and SHA-256 hashes;
+- refuse to overwrite a non-identical existing split file.
 
-- reuse the exact patient-grouped v2 split assignments from Step 5;
-- rerun semantic inference on the corrected v2 note corpus;
-- use stored max/min chunk aggregation consistently;
-- compare against both linear and nonlinear structured baselines;
-- include note context without `dbsource`;
-- include TF-IDF lexical control.
+Downstream structured, semantic, and lexical models must load these exact hashes.
 
-No v1 semantic performance should be inserted into this step.
+## Step 7 — Fresh v2.1 structured evaluation: future
 
-## Step 7 — Fixed-note treatment-language sensitivity: not yet run
+The structured evaluator will use:
 
-The note identity, timestamp, category, and availability remain fixed.
+- the corrected adult v2.1 cohort;
+- corrected 34-feature core physiology;
+- regularized logistic regression;
+- fixed histogram-gradient-boosting comparator;
+- pre-frozen patient-grouped splits;
+- 1,000 paired patient-cluster bootstrap replicates.
 
-Only prespecified direct treatment/outcome-language spans are removed from the selected note text.
+It will report separately:
 
-This sensitivity is mandatory, especially for RRT.
+- calibration-in-the-large;
+- joint recalibration intercept;
+- calibration slope.
 
-## Step 8 — Clinician construct validation: not yet run
+The bootstrap remains conditional on fixed repeated cross-fitted predictions and does not include full refit variance.
+
+## Step 8 — Corrected semantic + lexical evaluation: not yet run
+
+Requirements:
+
+- rerun semantic inference on the v2.1 selected-note corpus;
+- use stored max/min chunk aggregation;
+- use the exact frozen v2.1 split hashes;
+- compare against both linear and nonlinear core structured models;
+- include TF-IDF lexical control;
+- keep note context free of `dbsource`.
+
+No pre-v2.1 performance should be substituted.
+
+## Step 9 — Mandatory sensitivity layer: not yet run
+
+Read `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`.
+
+Required sensitivity domains:
+
+- ventilation endpoint breadth;
+- fixed-note treatment-language stripping with corrected regexes;
+- CHARTEVENTS storetime availability;
+- 1-hour and 2-hour laboratory-result lag;
+- note-storetime/fallback timing;
+- secondary treatment/support structured comparator.
+
+## Step 10 — Clinician construct validation: not yet run
 
 Required before manuscript lock:
 
 - blinded note sample;
 - multiple clinical raters;
-- explicit definitions of the eight constructs;
+- explicit definitions for the eight semantic constructs;
 - inter-rater reliability;
-- model-vs-human agreement;
-- construct calibration/validity.
+- model-versus-human agreement/calibration.
 
-## Step 9 — Corrected external validation: not yet complete
+## Step 11 — Corrected external validation: not yet complete
 
 Read:
 
 - `docs/05_EXTERNAL_VALIDATION_STATUS.md`
 
-Affected v1 eICU and Zigong analyses require corrected v2 reruns.
+Affected eICU and Zigong v1 analyses require corrected reruns. NWICU should be aligned to the corrected structured lineage.
 
-## Step 10 — Manuscript claim lock: future
+## Step 12 — Manuscript claim lock: future
 
-The central claim should be frozen only after Steps 5–9 are interpretable.
+The central claim is frozen only after the corrected v2.1 primary and sensitivity analyses, construct validation, and external validation are interpretable.
 
-No additional model shopping should occur merely because a corrected v2 result is disappointing.
-
-
-## Post-review correction inserted before predictive-result lock
-
-A second code review occurred after the v2 cohort/features were built but before the structured-only result was opened.
-
-Read:
-
-- `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`
-
-This inserts a **v2.1 correction gate** between structured feature extraction and any manuscript-facing predictive result.
-
-The current `E8R7Q5M3` run belongs to the pre-v2.1 cohort/feature lineage and must not be promoted as the structured result.
-
-The revised order is:
-
-1. integrity audit;
-2. corrected v2 cohort;
-3. enhanced structured mapping/extraction;
-4. **post-review v2.1 adult + GCS correction**;
-5. fresh v2.1 structured evaluation with frozen split hashes;
-6. corrected semantic/TF-IDF evaluation;
-7. language/timing/treatment-context sensitivities;
-8. clinician construct validation;
-9. corrected external validation;
-10. manuscript claim lock.
+No model shopping should be introduced merely because corrected results are less favorable.
