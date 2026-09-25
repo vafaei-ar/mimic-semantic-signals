@@ -239,3 +239,17 @@ bash -n scripts/run_enhanced_structured_baseline_evaluation_v2_1.sh
 bash -n scripts/run_enhanced_structured_baseline_evaluation_v2_1_ventilation.sh
 bash -n scripts/run_enhanced_structured_baseline_evaluation_v2_1_rrt.sh
 bash -n scripts/run_enhanced_structured_baseline_evaluation_v2_1_death.sh
+
+.venv/bin/python -m py_compile src/108_quarantine_pre_registration_e8.py
+.venv/bin/python -m py_compile src/109_audit_preregistration_context_v2_1.py
+.venv/bin/python -m py_compile src/110_simulate_preregistration_power_v2_1.py
+.venv/bin/python -m py_compile src/111_benchmark_refit_bootstrap_v2_1.py
+.venv/bin/python -m py_compile src/preregistration_stats.py
+.venv/bin/python -m py_compile src/registration_gate.py
+PYTHONPATH=src .venv/bin/python -m unittest tests.test_v2_1_integrity -v
+bash -n scripts/require_osf_registration.sh
+bash -n scripts/run_quarantine_pre_registration_e8.sh
+bash -n scripts/run_v2_1_preregistration_synthetic_checks.sh
+bash -n scripts/run_preregistration_context_audit_v2_1.sh
+bash -n scripts/run_preregistration_power_v2_1.sh
+bash -n scripts/run_refit_bootstrap_benchmark_v2_1.sh
