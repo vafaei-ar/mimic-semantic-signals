@@ -154,11 +154,29 @@ def build_note_behavior(root: Path, stays: pd.DataFrame) -> tuple[pd.DataFrame, 
     return context_audit.build_note_behavior(root, stays)
 
 
+def normalize_fio2_percent(values: pd.Series) -> tuple[pd.Series, dict]:
+    x = pd.to_numeric(values, errors="coerce")
+    out = pd.Series(np.nan, index=x.index, dtype="float64")
+    fraction = x.gt(0) & x.le(1)
+    percent = x.ge(20) & x.le(100)
+    out.loc[fraction] = x.loc[fraction] * 100.0
+    out.loc[percent] = x.loc[percent]
+    diag = {
+        "numeric_rows": int(x.notna().sum()),
+        "fraction_scale_rows_converted": int(fraction.sum()),
+        "percent_scale_rows_retained": int(percent.sum()),
+        "invalid_or_out_of_range_rows_rejected": int(
+            (x.notna() & ~(fraction | percent)).sum()
+        ),
+    }
+    return out, diag
+
+
 def build_chartevent_context(
     root: Path,
     stays: pd.DataFrame,
     freeze: dict,
-) -> pd.DataFrame:
+) -> tuple[pd.DataFrame, dict]:
     resp = freeze["treatment"]["respiratory"]
     code = freeze["treatment"]["code_status"]
     all_ids = flatten_itemids(resp) | flatten_itemids(code)
@@ -237,7 +255,22 @@ def build_chartevent_context(
         latest = q.groupby("icustay_id")["valuenum"].last()
         out[feature_name] = latest
 
-    latest_numeric("treat_fio2_last_6h", resp["fio2"])
+    fio2_diag = {}
+    fio2_frames = []
+    for source in ("carevue", "metavision"):
+        ids = set(int(x) for x in resp["fio2"][source])
+        q = pre6[pre6["dbsource"].eq(source) & pre6["itemid"].isin(ids)].copy()
+        normalized, diag = normalize_fio2_percent(q["valuenum"])
+        q["fio2_percent"] = normalized
+        fio2_diag[source] = diag
+        fio2_frames.append(q)
+    fq = pd.concat(fio2_frames, ignore_index=True) if fio2_frames else pd.DataFrame()
+    if fq.empty:
+        out["treat_fio2_last_6h"] = np.nan
+    else:
+        fq = fq.dropna(subset=["fio2_percent"]).sort_values(["icustay_id", "charttime"])
+        out["treat_fio2_last_6h"] = fq.groupby("icustay_id")["fio2_percent"].last()
+
     latest_numeric("treat_oxygen_flow_last_6h", resp["oxygen_flow"])
 
     high_rx = str(resp["high_flow_regex"])
@@ -311,7 +344,12 @@ def build_chartevent_context(
             ids_true = set(q.loc[mask, "icustay_id"].astype(int))
             out.loc[out["dbsource"].eq(source) & out.index.isin(ids_true), col] = 1.0
 
-    return out.reset_index()
+    chart_report = {
+        "fio2_cleaning": fio2_diag,
+        "fio2_target_unit": "percent",
+        "fio2_valid_range_after_normalization": [20.0, 100.0],
+    }
+    return out.reset_index(), chart_report
 
 
 def build_inputevent_context(
@@ -479,10 +517,13 @@ def main() -> None:
 
     update_progress(current=2, total=5, phase="context_feature_materialization", message="Regenerating corrected note-behavior metadata", unit="stage")
     doc, doc_report = build_note_behavior(root, stays)
-    doc = doc.drop(columns=["doc_last_note_gap_hours"], errors="ignore")
+    doc = doc.drop(
+        columns=freeze["documentation_behavior"]["excluded_features"],
+        errors="ignore",
+    )
 
     update_progress(current=3, total=5, phase="context_feature_materialization", message="Extracting source-specific respiratory and code-status context", unit="stage")
-    chart = build_chartevent_context(root, stays, freeze)
+    chart, chart_report = build_chartevent_context(root, stays, freeze)
 
     update_progress(current=4, total=5, phase="context_feature_materialization", message="Extracting source-specific vasoactive and sedative context", unit="stage")
     inputs = build_inputevent_context(root, stays, freeze)
@@ -500,6 +541,7 @@ def main() -> None:
         "documentation_behavior_included_features": freeze["documentation_behavior"]["features"],
         "documentation_behavior_excluded_features": freeze["documentation_behavior"]["excluded_features"],
         "note_behavior_scan": doc_report,
+        "chartevent_cleaning": chart_report,
         "analyses": {},
     }
 
