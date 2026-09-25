@@ -28,6 +28,8 @@
     "local_submitted_zip_verified": true,
     "osf_hosted_files_download_verified": false,
     "osf_hosted_verification_reason": "Registration is pending approval and the public OSF registration/API/file endpoints are not yet readable from the execution environment.",
-    "unlock_requirement": "Do not unlock real-label execution until OSF status is approved and the three OSF-hosted files have been downloaded and SHA-256 verified against attached_files."
+    "unlock_requirement": "Do not unlock real-label execution until OSF status is approved, DOI is recorded, the three OSF-hosted files are downloaded and SHA-256 verified, and the verbatim submitted OSF form text is imported and verified.",
+    "registered_form_text_retrieved": false,
+    "osf_form_addendum_verbatim_verified": false
   }
 }
