@@ -103,6 +103,10 @@ def read_population(local_root: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
     return pop, unique
 
 
+def is_gcs_verbal_airway_value(value: object) -> bool:
+    return str(value or "").strip().lower() in GCS_VERBAL_AIRWAY_VALUES
+
+
 def numeric_zero_mask(s: pd.Series) -> pd.Series:
     return pd.to_numeric(s, errors="coerce").fillna(0).eq(0)
 
@@ -277,8 +281,9 @@ def scan_chartevents(root: Path, unique: pd.DataFrame) -> tuple[pd.DataFrame, di
                 name = gcs_map[itemid]
                 bounds = {"gcs_eye": (1, 4), "gcs_verbal": (1, 5), "gcs_motor": (1, 6)}
                 lo, hi = bounds[name]
-                raw_value = str(getattr(row, "value", "") or "").strip().lower()
-                airway_coded = name == "gcs_verbal" and raw_value in GCS_VERBAL_AIRWAY_VALUES
+                airway_coded = name == "gcs_verbal" and is_gcs_verbal_airway_value(
+                    getattr(row, "value", "")
+                )
                 if airway_coded:
                     counters["gcs_verbal_airway_rows_excluded"] += 1
                 feature.append(name)
