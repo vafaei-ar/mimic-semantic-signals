@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "registration_id": "ahxn9",
+  "registration_url": "https://osf.io/ahxn9",
+  "registry": "OSF Registries",
+  "registration_template": "Secondary Data Preregistration",
+  "associated_project_url": "https://osf.io/wmyb2",
+  "registered_at": "2026-09-25T15:53:00-04:00",
+  "timezone": "America/New_York",
+  "status": "pending_approval",
+  "approved_at": null,
+  "doi": null,
+  "license": "CC-BY-4.0",
+  "cited_repository_commit": "873897e6c934cea3d558b6518ac1e399f9f75387",
+  "registration_manifest_sha256": "22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d",
+  "attached_files": {
+    "OSF_v2_1_SAP.pdf": {
+      "sha256": "6532a5a72cd2ac6c3096c2a4d858c3f7106da9d4f7f2f1cbfd724a3384a415bc"
+    },
+    "OSF_v2_1_Technical_Appendix.pdf": {
+      "sha256": "f67c156e3041b7cd2fcbd56f337346d20869e950d0605cb034e174f16ea96668"
+    },
+    "v2_1_registration_manifest.json": {
+      "sha256": "22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d"
+    }
+  },
+  "verification": {
+    "local_submitted_zip_verified": true,
+    "osf_hosted_files_download_verified": false,
+    "osf_hosted_verification_reason": "Registration is pending approval and the public OSF registration/API/file endpoints are not yet readable from the execution environment.",
+    "unlock_requirement": "Do not unlock real-label execution until OSF status is approved and the three OSF-hosted files have been downloaded and SHA-256 verified against attached_files."
+  }
+}
