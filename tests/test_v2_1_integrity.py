@@ -93,6 +93,22 @@ class V21IntegrityTests(unittest.TestCase):
             data = require_osf_registration(td)
             self.assertEqual(data["registration_id"], "abcd1")
 
+    def test_fixed_note_corpus_result_contract(self):
+        path = ROOT / "config" / "v2_1_fixed_note_corpus_result_contract.json"
+        contract = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(contract["canonical_job"], "R8Q6M4N2")
+        self.assertEqual(
+            contract["artifact_sha256"],
+            "608cf993ba080afd54e2157a94d506d9406966795f91d78be2550960c600db5c",
+        )
+        self.assertEqual(contract["primary_corpus"], "stripped")
+        for name, info in contract["analyses"].items():
+            self.assertEqual(
+                info["direct_language_flagged_notes"],
+                info["notes_changed_by_stripping"],
+                msg=name,
+            )
+
     def test_context_feature_result_contract(self):
         path = ROOT / "config" / "v2_1_context_feature_result_contract.json"
         contract = json.loads(path.read_text(encoding="utf-8"))
