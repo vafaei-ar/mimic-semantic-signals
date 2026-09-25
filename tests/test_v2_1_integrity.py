@@ -32,6 +32,7 @@ cohort = load_numbered("cohort_v21", "104_build_corrected_landmark12_v2_1_cohort
 features = load_numbered("features_v21", "105_build_enhanced_structured_baseline_v2_1.py")
 context_builder = load_numbered("context_builder_v21", "114_build_preregistration_context_features_v2_1.py")
 corpus_builder = load_numbered("corpus_builder_v21", "115_build_fixed_note_corpora_v2_1.py")
+bootstrap_benchmark = load_numbered("bootstrap_benchmark_v21", "111_benchmark_refit_bootstrap_v2_1.py")
 
 
 class V21IntegrityTests(unittest.TestCase):
@@ -366,6 +367,25 @@ class V21IntegrityTests(unittest.TestCase):
             if len(te):
                 self.assertTrue(np.all(folds[te] == fold))
             self.assertTrue(set(subject[tr]).isdisjoint(set(subject[te])))
+
+    def test_synthetic_null_calibration_for_centered_pvalue(self):
+        result = bootstrap_benchmark.synthetic_null_calibration(
+            trials=2000,
+            bootstrap_replicates=500,
+            seed=20260925,
+        )
+        self.assertGreater(result["mean_pvalue"], 0.45)
+        self.assertLess(result["mean_pvalue"], 0.55)
+        self.assertGreater(result["rejection_rate_alpha_0_05"], 0.03)
+        self.assertLess(result["rejection_rate_alpha_0_05"], 0.07)
+        self.assertGreater(
+            result["rejection_rate_holm_first_0_05_over_3"],
+            0.005,
+        )
+        self.assertLess(
+            result["rejection_rate_holm_first_0_05_over_3"],
+            0.03,
+        )
 
     def test_one_sided_bootstrap_pvalue(self):
         observed = 0.02
