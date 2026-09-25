@@ -24,7 +24,7 @@
     "diffusiongemma": {
       "model_id": "google/diffusiongemma-26B-A4B-it",
       "model_revision_prefix_from_submitted_form": "f7f5b7f5",
-      "model_revision_exact": null,
+      "model_revision_exact": "f7f5b7f5fa82ffc52addd066915886d497f5517b",
       "backend": "native_transformers_bf16",
       "forbidden_model_ids": [
         "nvidia/diffusiongemma-26B-A4B-it-NVFP4"
@@ -37,7 +37,7 @@
   },
   "semantic_schema": {
     "sha256_prefix_from_submitted_form": "72763082",
-    "sha256_exact": null,
+    "sha256_exact": "72763082c314a4542817ccfcd42d2b10d9446fc8e84c3391a2140790b2483623",
     "require_exact_sha256_before_inference": true
   },
   "chunk_aggregation": {
