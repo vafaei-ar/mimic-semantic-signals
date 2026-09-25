@@ -21,6 +21,8 @@ on:
       - "config/v2_1_cv_split_result_contract.json"
       - "config/v2_1_preregistration_power_result_contract.json"
       - "config/v2_1_refit_bootstrap_inference_freeze.json"
+      - "config/v2_1_primary_inference_freeze.json"
+      - "config/v2_1_refit_runtime_result_contract.json"
       - "config/v2_1_semantic_model_roster.json"
       - "scripts/run_build_preregistration_context_features_v2_1.sh"
       - "config/v2_1_context_feature_freeze.json"
