@@ -29,10 +29,17 @@ def sha256_file(path: Path) -> str:
 
 
 def note_identity_hash(index: pd.DataFrame) -> str:
+    """Reproduce the frozen G8/R8 note-identity serialization across pandas versions."""
     cols = ["case_id", "icustay_id", "has_note", "note_time", "category"]
     x = index[cols].copy()
-    for c in cols:
-        x[c] = x[c].astype("object").where(x[c].notna(), "").map(str)
+    for col in cols:
+        s = x[col]
+        if pd.api.types.is_datetime64_any_dtype(s):
+            # The frozen G8 hash used pandas datetime stringification, where missing
+            # datetimes serialize as "NaT" rather than an empty string.
+            x[col] = s.map(lambda v: "NaT" if pd.isna(v) else str(v))
+        else:
+            x[col] = s.map(lambda v: "" if pd.isna(v) else str(v))
     payload = "\n".join(
         "|".join(row)
         for row in x.sort_values("case_id").itertuples(index=False, name=None)
