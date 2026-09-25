@@ -21,11 +21,11 @@ Detailed frozen protocols and result documents under `docs/` remain authoritativ
 
 ## Current stage
 
-The corrected v2.1 confirmatory design is now **ready for human review and external OSF registration**. Real-label v2.1 predictive performance remains deliberately locked.
+The corrected v2.1 confirmatory design is under a **temporary preregistration hold** while a synthetic HGB threading/runtime re-audit and a corrected fixed-note corpus re-freeze are completed. Real-label v2.1 predictive performance remains deliberately locked.
 
 The final OSF review candidate is commit `c21b8db2f214e95b8f5b6e46e0e79e23426a9035`. Validation job `Z7M4Q8R2` completed successfully using synthetic/static checks only; it read no real clinical data and computed no real outcome performance.
 
-The repository fails closed until a valid `docs/registration/osf_registration.json` is present. The immediate next step is human review and OSF submission, not another predictive analysis job.
+The repository fails closed until a valid `docs/registration/osf_registration.json` is present. The immediate next steps are preregistration-safe only: resolve the synthetic runtime/inference issue, re-freeze the corrected stripped-note corpus, then perform human review and OSF submission. No real-label predictive analysis should run before registration.
 
 See [07 — Preregistration readiness checkpoint](docs/07_PREREGISTRATION_READINESS_2026-09-25.md) and [08 — Lancet Digital Health roadmap](docs/08_LANCET_DIGITAL_HEALTH_ROADMAP_2026-09-25.md).
 
