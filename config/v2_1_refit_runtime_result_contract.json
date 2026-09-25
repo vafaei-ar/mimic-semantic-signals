@@ -1,20 +1,18 @@
 {
   "schema_version": 1,
-  "status": "frozen_preregistration_runtime_only",
-  "canonical_job": "Y5R7M2Q8",
-  "validation_job": "X4R7M2Q8",
-  "project_commit": "4d39e8400722f8611a4d04a528125c29251a91e6",
-  "artifact_path": "outputs/multitask_benchmark/refit_bootstrap_benchmark_v2_1_ventilation.json",
-  "artifact_sha256": "7a2e2aadf5b26f8abe49b71f1e77a4a61d5cb9cd79568c56370121a309d422fe",
+  "status": "frozen_preregistration_runtime_only_superseding_y5",
+  "canonical_job": "B6R9M4Q2",
+  "superseded_job": "Y5R7M2Q8",
+  "project_commit": "5fa621b8f622bf50f9455871282296b7504bbc2c",
+  "artifact_path": "outputs/integrity/v2_1_hgb_thread_runtime_audit.json",
+  "artifact_sha256": "d0bf546a0f40584970e8ec2d8e17d62056e48fd74abd970df69149c010d51f51",
   "real_predictors_used": false,
   "real_outcome_labels_used": false,
-  "ventilation_exact_refit_seconds": 5470.322735227644,
-  "ventilation_projected_500_refit_hours_serial": 759.7670465593951,
-  "null_calibration": {
-    "trials": 2000,
-    "bootstrap_replicates_per_trial": 500,
-    "rejection_rate_alpha_0_05": 0.052,
-    "rejection_rate_alpha_0_05_over_3": 0.0155
-  },
-  "inference_consequence": "500-replicate exact refit plan superseded before OSF registration; operative rule is config/v2_1_primary_inference_freeze.json"
+  "default_one_fold_status": "timeout_after_90_seconds",
+  "explicit_thread_count": 4,
+  "explicit_four_thread_one_fold_seconds": 2.177760399878025,
+  "ventilation_exact_refit_seconds": 11.20727626234293,
+  "ventilation_projected_500_refit_hours_serial": 1.5565661475476291,
+  "os_cpu_count_exposed": 112,
+  "interpretation": "Y5R7M2Q8 is superseded as an OpenMP/BLAS oversubscription artifact. The 500-replicate refit-bootstrap interval is feasible with explicit thread limits and is restored in config/v2_1_primary_inference_freeze.json."
 }
