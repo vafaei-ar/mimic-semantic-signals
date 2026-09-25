@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
+source scripts/set_hgb_thread_env_v2_1.sh
 
 PYTHONPATH=src .venv/bin/python src/111_benchmark_refit_bootstrap_v2_1.py \
   --analysis-populations "config/v2_1_analysis_population_contract.json" \
