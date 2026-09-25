@@ -1,12 +1,21 @@
 {
   "schema_version": 1,
-  "status": "under_preregistration_runtime_review",
+  "status": "frozen_before_v2_1_predictive_performance",
   "amendment_basis": {
     "real_v2_1_predictive_performance_seen": false,
-    "runtime_benchmark_job": "Y5R7M2Q8",
-    "runtime_benchmark_artifact_sha256": "7a2e2aadf5b26f8abe49b71f1e77a4a61d5cb9cd79568c56370121a309d422fe",
-    "ventilation_seconds_per_exact_refit_replicate": 5470.322735227644,
-    "ventilation_projected_500_refit_hours_serial": 759.7670465593951,
+    "erroneous_runtime_benchmark_job": "Y5R7M2Q8",
+    "erroneous_runtime_seconds_per_ventilation_replicate": 5470.322735227644,
+    "runtime_reaudit_job": "B6R9M4Q2",
+    "runtime_reaudit_artifact_sha256": "d0bf546a0f40584970e8ec2d8e17d62056e48fd74abd970df69149c010d51f51",
+    "explicit_thread_configuration": {
+      "OMP_NUM_THREADS": 4,
+      "OPENBLAS_NUM_THREADS": 4,
+      "MKL_NUM_THREADS": 4,
+      "NUMEXPR_NUM_THREADS": 4
+    },
+    "ventilation_seconds_per_exact_refit_replicate": 11.20727626234293,
+    "ventilation_projected_500_refit_hours_serial": 1.5565661475476291,
+    "explanation": "The workstation exposed 112 CPUs to OpenMP despite the RunRelay task requesting 4 cores. Library-default execution timed out in a 90-second one-fold audit, while explicit 4-thread execution completed the same two-fit fold in 2.18 seconds and a full exact five-fold replicate in 11.21 seconds. Y5R7M2Q8 is therefore superseded as an environment/thread-oversubscription artifact.",
     "power_planning_job": "V9R6M4N2",
     "power_planning_artifact_sha256": "2dcc4c23fc222f5db6aa123cfd2b33e96278ce46ae4e478adacaefb9f89ee08a"
   },
@@ -14,13 +23,21 @@
   "primary_partition_repeat": 1,
   "primary_partition_seed": 20260924,
   "primary_uncertainty": {
-    "method": "patient-cluster bootstrap of paired repeat-1 out-of-fold predictions without model refitting",
-    "bootstrap_replicates": 5000,
+    "method": "patient-cluster refit bootstrap of the full repeat-1 cross-fitting procedure",
+    "bootstrap_replicates": 500,
     "bootstrap_unit": "source_patient",
-    "sampling_rule": "sample source patients with replacement; include all ICU rows from sampled patients with patient multiplicity in both model prediction vectors",
-    "child_seed_rule": "numpy.random.SeedSequence(20260924).spawn(5000)",
+    "sampling_rule": "sample source patients with replacement; duplicate all ICU rows by patient multiplicity; retain each patient's frozen repeat-1 fold assignment; refit both comparator and augmented models in all five folds for every replicate",
+    "heldout_multiplicity": "retain patient bootstrap multiplicity in held-out AUROC calculation",
+    "child_seed_rule": "numpy.random.SeedSequence(20260924).spawn(500)",
     "interval": "two-sided 95% percentile interval for delta_AUROC",
-    "interpretation": "conditional on the frozen fitted cross-validated prediction functions and repeat-1 partition; quantifies patient-sampling variability of observed discrimination, not full training-sample refit variance"
+    "interpretation": "includes patient-sampling and model-refit variability conditional on the frozen repeat-1 fold partition; fold-partition uncertainty is assessed separately with repeats 2-5"
+  },
+  "execution_thread_contract": {
+    "OMP_NUM_THREADS": 4,
+    "OPENBLAS_NUM_THREADS": 4,
+    "MKL_NUM_THREADS": 4,
+    "NUMEXPR_NUM_THREADS": 4,
+    "reason": "prevent OpenMP/BLAS oversubscription on the workstation where os.cpu_count and CPU affinity expose 112 CPUs despite a 4-core RunRelay resource request"
   },
   "split_stability": {
     "repeats": [
@@ -34,13 +51,10 @@
   },
   "formal_hypothesis_testing": false,
   "multiplicity": "No confirmatory p-values or binary significance decisions. Ventilation, RRT, and MetaVision ICU death are three prespecified co-primary estimands reported separately. No Holm testing is applied.",
-  "claim_rule": "Do not label an outcome positive/negative by a p-value or CI crossing zero. Report effect estimate, primary conditional interval, and split-stability estimates; interpret magnitude and uncertainty.",
-  "secondary_uncertainty": "Secondary metrics and sensitivity analyses use compatible patient-cluster fixed-prediction bootstrap intervals where feasible; they do not create additional confirmatory claims.",
-  "supersedes": "config/v2_1_refit_bootstrap_inference_freeze.json",
-  "runtime_reaudit": {
-    "trigger": "Independent reproduction reported the same script-111 HGB workload at roughly 12 seconds per full replicate rather than 5470 seconds.",
-    "job": "B6R9M4Q2",
-    "rule": "Do not register or execute real-label performance until this synthetic-only audit is terminal and the final uncertainty procedure is re-frozen.",
-    "real_v2_1_predictive_performance_seen": false
-  }
+  "claim_rule": "Do not label an outcome positive/negative by a p-value or CI crossing zero. Report effect estimate, refit-bootstrap interval, and split-stability estimates; interpret magnitude and uncertainty.",
+  "secondary_uncertainty": "Secondary metrics and sensitivity analyses use compatible patient-cluster bootstrap intervals where feasible and do not create additional confirmatory claims.",
+  "supersedes": [
+    "config/v2_1_refit_bootstrap_inference_freeze.json",
+    "the fixed-prediction uncertainty version of config/v2_1_primary_inference_freeze.json committed before runtime re-audit B6R9M4Q2"
+  ]
 }
