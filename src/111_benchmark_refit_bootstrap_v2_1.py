@@ -50,8 +50,6 @@ def fit_delta(x, semantics, y, subjects, folds, seed, bootstrap: bool):
     from sklearn.ensemble import HistGradientBoostingClassifier
     from sklearn.metrics import roc_auc_score
 
-    pred_base = np.full(len(y), np.nan)
-    pred_aug = np.full(len(y), np.nan)
     rng = np.random.default_rng(seed)
 
     if bootstrap:
@@ -64,6 +62,10 @@ def fit_delta(x, semantics, y, subjects, folds, seed, bootstrap: bool):
             )
             for fold in sorted(np.unique(folds))
         }
+
+    eval_y = []
+    eval_base = []
+    eval_aug = []
 
     for fold, (tr, te) in split_indices.items():
         if len(te) == 0 or y[tr].sum() == 0 or y[tr].sum() == len(tr):
@@ -89,33 +91,45 @@ def fit_delta(x, semantics, y, subjects, folds, seed, bootstrap: bool):
         base.fit(x[tr], y[tr])
         aug.fit(np.column_stack([x[tr], semantics[tr]]), y[tr])
 
-        # Bootstrap test rows may be duplicated. Aggregate predictions back to
-        # original row identities using the mean; duplicated copies are identical.
         pb = base.predict_proba(x[te])[:, 1]
         pa = aug.predict_proba(np.column_stack([x[te], semantics[te]]))[:, 1]
-        for idx, b, a in zip(te, pb, pa):
-            pred_base[idx] = b
-            pred_aug[idx] = a
 
-    ok = np.isfinite(pred_base) & np.isfinite(pred_aug)
-    if y[ok].sum() == 0 or y[ok].sum() == ok.sum():
+        # In a patient-cluster bootstrap, duplicated held-out patients must
+        # contribute with their bootstrap multiplicity to the evaluation
+        # distribution.  te therefore remains duplicated here rather than
+        # being collapsed back to unique original rows.
+        eval_y.append(y[te])
+        eval_base.append(pb)
+        eval_aug.append(pa)
+
+    if not eval_y:
+        raise RuntimeError("Synthetic benchmark produced no held-out predictions")
+
+    yy = np.concatenate(eval_y)
+    pb = np.concatenate(eval_base)
+    pa = np.concatenate(eval_aug)
+    if yy.sum() == 0 or yy.sum() == len(yy):
         raise RuntimeError("Synthetic benchmark produced degenerate held-out labels")
-    return float(roc_auc_score(y[ok], pred_aug[ok]) - roc_auc_score(y[ok], pred_base[ok]))
+
+    return float(roc_auc_score(yy, pa) - roc_auc_score(yy, pb))
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Synthetic-only runtime/null benchmark for patient-cluster refit bootstrap.")
-    ap.add_argument("--cohort-manifest", required=True)
+    ap.add_argument("--analysis-populations", required=True)
     ap.add_argument("--output", required=True)
     ap.add_argument("--runtime-replicates", type=int, default=1)
     ap.add_argument("--null-replicates", type=int, default=20)
     args = ap.parse_args()
 
-    manifest = json.loads(Path(args.cohort_manifest).read_text(encoding="utf-8"))
+    population_path = Path(args.analysis_populations).expanduser().resolve()
+    population_contract = json.loads(population_path.read_text(encoding="utf-8"))
     report = {
         "analysis": "v2.1 synthetic patient-cluster refit-bootstrap benchmark",
         "real_outcome_labels_used": False,
         "real_predictors_used": False,
+        "analysis_population_contract": str(population_path),
+        "death_population": "MetaVision-only confirmatory ICU-death population",
         "bootstrap_patient_representation": "explicit duplicated patient rows within fixed frozen fold",
         "fixed_fold_limitation": (
             "Covers patient-sampling and model-refit variance conditional on the primary fold assignment; "
@@ -129,7 +143,7 @@ def main() -> None:
     }
 
     for oi, outcome in enumerate(OUTCOMES, start=1):
-        info = manifest["outcomes"][outcome]
+        info = population_contract["confirmatory_outcomes"][outcome]
         n = int(info["rows"])
         prevalence = float(info["prevalence"])
         note_coverage = float(info["note_coverage"])
