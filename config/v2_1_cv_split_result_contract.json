@@ -4,15 +4,30 @@
   "canonical_job": "T9R6M4N2",
   "project_commit": "2d74f4d6c327dc1ec7698db98c3d67258e033bb0",
   "artifact_sha256": "b0bac28207ca07dec3539512eda856d2ead09ab8f7f704cfe8a4d6d800e27484",
-  "repeat_seeds": [
-    20260924,
-    20260925,
-    20260926,
-    20260927,
-    20260928
+  "repeats": [
+    {
+      "repeat": 1,
+      "seed": 20260924
+    },
+    {
+      "repeat": 2,
+      "seed": 20260925
+    },
+    {
+      "repeat": 3,
+      "seed": 20260926
+    },
+    {
+      "repeat": 4,
+      "seed": 20260927
+    },
+    {
+      "repeat": 5,
+      "seed": 20260928
+    }
   ],
   "folds_per_repeat": 5,
-  "primary_repeat": 1,
+  "group": "source_patient",
   "analyses": {
     "invasive_ventilation": {
       "source": "metavision",
