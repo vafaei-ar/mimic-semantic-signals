@@ -91,6 +91,22 @@ class V21IntegrityTests(unittest.TestCase):
             data = require_osf_registration(td)
             self.assertEqual(data["registration_id"], "abcd1")
 
+    def test_language_stripping_freeze_matches_cohort_patterns(self):
+        path = ROOT / "config" / "v2_1_language_stripping_freeze.json"
+        freeze = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(freeze["primary_corpus"], "stripped")
+        self.assertEqual(freeze["replacement"], " ")
+        self.assertEqual(freeze["post_replacement_normalization"], "none")
+        for outcome, patterns in cohort.LANGUAGE_PATTERNS.items():
+            self.assertEqual(freeze["patterns"][outcome], patterns)
+
+    def test_fixed_note_runner_uses_frozen_contracts(self):
+        text = (
+            ROOT / "scripts" / "run_build_fixed_note_corpora_v2_1.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("config/v2_1_analysis_population_contract.json", text)
+        self.assertIn("config/v2_1_language_stripping_freeze.json", text)
+
     def test_context_feature_freeze_excludes_vent_endpoint_items(self):
         path = ROOT / "config" / "v2_1_context_feature_freeze.json"
         freeze = json.loads(path.read_text(encoding="utf-8"))
