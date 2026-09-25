@@ -115,7 +115,7 @@ Laya, DiffusionGemma, state-dominant constructs, TF-IDF, full-note text, ventila
 
 ## N. Negative control
 
-The preferred negative control is patient-shuffled semantics. Within note-available rows, semantic vectors are reassigned between patients within prespecified strata defined without semantic outcomes. The exact random seed and strata implementation will be frozen before this secondary analysis runs. The purpose is to test whether any apparent increment requires correspondence between a patient's own note and semantic scores.
+The negative control is patient-shuffled semantics. For each outcome/source analysis, note-available patients are assigned to deciles of the repeat-1 out-of-fold rich-comparator predicted risk. The entire eight-score semantic vector is permuted between patients within each decile with fixed seed 20260929. No-note rows remain no-note rows with semantic NaNs. The shuffled augmented model is fit with the same frozen folds, preprocessing, and HGB specification. This preserves note availability and approximate comparator risk while breaking correspondence between a patient's own note and semantic scores.
 
 ## O. Construct validation
 
