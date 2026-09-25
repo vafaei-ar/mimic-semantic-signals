@@ -39,14 +39,36 @@ def make_synthetic(n: int, prevalence: float, note_coverage: float, seed: int, p
     no_note = rng.random(n) > note_coverage
     semantics[no_note, :] = np.nan
 
-    # One row per synthetic patient for the runtime benchmark is conservative
-    # for fold isolation and avoids inventing a patient-stay distribution.
+    # One row per synthetic patient isolates model-refit runtime without
+    # inventing a patient-to-stay distribution. The number of model rows is
+    # the frozen confirmatory cohort size.
     subjects = np.arange(n, dtype=int)
-    folds = rng.integers(1, 6, size=n)
+
+    # Balanced deterministic fold assignment is sufficient for a runtime-only
+    # synthetic benchmark and avoids rare-event fold degeneracy.
+    folds = np.tile(np.arange(1, 6, dtype=int), int(np.ceil(n / 5)))[:n]
+    rng.shuffle(folds)
     return x, semantics, y, subjects, folds
 
 
-def fit_delta(x, semantics, y, subjects, folds, seed, bootstrap: bool):
+def write_checkpoint(path: Path, report: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    tmp.replace(path)
+
+
+def fit_delta(
+    x,
+    semantics,
+    y,
+    subjects,
+    folds,
+    seed,
+    *,
+    bootstrap: bool,
+    fold_callback=None,
+):
     from sklearn.ensemble import HistGradientBoostingClassifier
     from sklearn.metrics import roc_auc_score
 
@@ -70,6 +92,8 @@ def fit_delta(x, semantics, y, subjects, folds, seed, bootstrap: bool):
     for fold, (tr, te) in split_indices.items():
         if len(te) == 0 or y[tr].sum() == 0 or y[tr].sum() == len(tr):
             continue
+
+        t0 = time.perf_counter()
         base = HistGradientBoostingClassifier(
             learning_rate=0.05,
             max_iter=300,
@@ -77,7 +101,7 @@ def fit_delta(x, semantics, y, subjects, folds, seed, bootstrap: bool):
             min_samples_leaf=50,
             l2_regularization=1.0,
             early_stopping=False,
-            random_state=seed + int(fold),
+            random_state=20260924,
         )
         aug = HistGradientBoostingClassifier(
             learning_rate=0.05,
@@ -86,7 +110,7 @@ def fit_delta(x, semantics, y, subjects, folds, seed, bootstrap: bool):
             min_samples_leaf=50,
             l2_regularization=1.0,
             early_stopping=False,
-            random_state=seed + int(fold),
+            random_state=20260924,
         )
         base.fit(x[tr], y[tr])
         aug.fit(np.column_stack([x[tr], semantics[tr]]), y[tr])
@@ -94,13 +118,21 @@ def fit_delta(x, semantics, y, subjects, folds, seed, bootstrap: bool):
         pb = base.predict_proba(x[te])[:, 1]
         pa = aug.predict_proba(np.column_stack([x[te], semantics[te]]))[:, 1]
 
-        # In a patient-cluster bootstrap, duplicated held-out patients must
-        # contribute with their bootstrap multiplicity to the evaluation
-        # distribution.  te therefore remains duplicated here rather than
-        # being collapsed back to unique original rows.
+        # In a patient-cluster bootstrap, duplicated held-out patients remain
+        # duplicated in the evaluation distribution according to their
+        # bootstrap multiplicity.
         eval_y.append(y[te])
         eval_base.append(pb)
         eval_aug.append(pa)
+
+        elapsed = float(time.perf_counter() - t0)
+        if fold_callback is not None:
+            fold_callback(
+                int(fold),
+                elapsed,
+                int(len(tr)),
+                int(len(te)),
+            )
 
     if not eval_y:
         raise RuntimeError("Synthetic benchmark produced no held-out predictions")
@@ -114,104 +146,183 @@ def fit_delta(x, semantics, y, subjects, folds, seed, bootstrap: bool):
     return float(roc_auc_score(yy, pa) - roc_auc_score(yy, pb))
 
 
+def synthetic_null_calibration(
+    *,
+    trials: int,
+    bootstrap_replicates: int,
+    seed: int,
+) -> dict:
+    """Cheap statistical check of the registered one-sided centered-bootstrap rule.
+
+    Under a Gaussian synthetic null, draw an observed statistic T~N(0,1).
+    Conditional bootstrap statistics are T_b = T + E_b, E_b~N(0,1).
+    The centered-bootstrap p-value should therefore be approximately uniform
+    under the null. This checks the p-value rule without thousands of HGB fits.
+    """
+    if trials <= 0 or bootstrap_replicates <= 0:
+        raise ValueError("trials and bootstrap_replicates must be positive")
+
+    rng = np.random.default_rng(seed)
+    pvals = np.empty(trials, dtype=float)
+    for i in range(trials):
+        observed = float(rng.normal())
+        bootstrap = observed + rng.normal(size=bootstrap_replicates)
+        pvals[i] = one_sided_centered_bootstrap_pvalue(observed, bootstrap)
+
+    return {
+        "trials": int(trials),
+        "bootstrap_replicates_per_trial": int(bootstrap_replicates),
+        "mean_pvalue": float(pvals.mean()),
+        "median_pvalue": float(np.median(pvals)),
+        "rejection_rate_alpha_0_05": float(np.mean(pvals <= 0.05)),
+        "rejection_rate_holm_first_0_05_over_3": float(
+            np.mean(pvals <= (0.05 / 3.0))
+        ),
+        "minimum_observed_pvalue": float(pvals.min()),
+        "maximum_observed_pvalue": float(pvals.max()),
+    }
+
+
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Synthetic-only runtime/null benchmark for patient-cluster refit bootstrap.")
+    ap = argparse.ArgumentParser(
+        description=(
+            "Synthetic-only exact-runtime benchmark for one patient-cluster "
+            "refit-bootstrap replicate plus cheap null calibration of the "
+            "one-sided centered-bootstrap p-value."
+        )
+    )
     ap.add_argument("--analysis-populations", required=True)
+    ap.add_argument("--outcome", choices=OUTCOMES, required=True)
     ap.add_argument("--output", required=True)
     ap.add_argument("--runtime-replicates", type=int, default=1)
-    ap.add_argument("--null-replicates", type=int, default=20)
+    ap.add_argument("--null-trials", type=int, default=2000)
+    ap.add_argument("--null-bootstrap-replicates", type=int, default=500)
     args = ap.parse_args()
 
     population_path = Path(args.analysis_populations).expanduser().resolve()
     population_contract = json.loads(population_path.read_text(encoding="utf-8"))
+    output = Path(args.output).expanduser().resolve()
+
+    outcome = args.outcome
+    info = population_contract["confirmatory_outcomes"][outcome]
+    n = int(info["rows"])
+    prevalence = float(info["prevalence"])
+    note_coverage = float(info["note_coverage"])
+
     report = {
-        "analysis": "v2.1 synthetic patient-cluster refit-bootstrap benchmark",
+        "analysis": "v2.1 synthetic exact-runtime patient-cluster refit-bootstrap benchmark",
+        "status": "started",
+        "outcome": outcome,
         "real_outcome_labels_used": False,
         "real_predictors_used": False,
         "analysis_population_contract": str(population_path),
-        "death_population": "MetaVision-only confirmatory ICU-death population",
-        "bootstrap_patient_representation": "explicit duplicated patient rows within fixed frozen fold",
+        "synthetic_rows": n,
+        "synthetic_prevalence_target": prevalence,
+        "synthetic_note_coverage": note_coverage,
+        "primary_hgb_specification": {
+            "learning_rate": 0.05,
+            "max_iter": 300,
+            "max_leaf_nodes": 15,
+            "min_samples_leaf": 50,
+            "l2_regularization": 1.0,
+            "early_stopping": False,
+            "random_state": 20260924,
+        },
+        "bootstrap_patient_representation": (
+            "explicit duplicated patient rows within fixed five-fold assignment"
+        ),
         "fixed_fold_limitation": (
-            "Covers patient-sampling and model-refit variance conditional on the primary fold assignment; "
-            "does not include variance from choosing a different fold partition. Repeats 2-5 are stability checks."
+            "Covers patient-sampling and model-refit variance conditional on the "
+            "primary fold assignment; repeats 2-5 are separate split-stability checks."
         ),
         "pvalue_rule": (
-            "one-sided null-centered bootstrap p=(1 + count((delta_b-delta_obs)>=delta_obs))/(B+1) "
-            "for H0 delta<=0"
+            "one-sided null-centered bootstrap p=(1 + "
+            "count((delta_b-delta_obs)>=delta_obs))/(B+1) for H0 delta<=0"
         ),
-        "outcomes": {},
+        "runtime_replicates_requested": int(args.runtime_replicates),
+        "runtime_replicates_completed": 0,
+        "runtime_replicates": [],
+        "null_calibration": None,
+        "w9_supersession_reason": (
+            "W9R6M4N2 combined exact full-size runtime benchmarking with eight "
+            "model-refit null replicates per outcome and timed out before an artifact. "
+            "This benchmark isolates the exact runtime measurement from cheap statistical "
+            "null calibration."
+        ),
     }
+    write_checkpoint(output, report)
 
-    for oi, outcome in enumerate(OUTCOMES, start=1):
-        info = population_contract["confirmatory_outcomes"][outcome]
-        n = int(info["rows"])
-        prevalence = float(info["prevalence"])
-        note_coverage = float(info["note_coverage"])
+    x, s, y, subjects, folds = make_synthetic(
+        n=n,
+        prevalence=prevalence,
+        note_coverage=note_coverage,
+        seed=20260924 + OUTCOMES.index(outcome) + 1,
+    )
 
-        update_progress(
-            current=oi,
-            total=len(OUTCOMES),
-            phase="synthetic_refit_bootstrap_benchmark",
-            message=f"{outcome}: benchmarking explicit-duplication refit bootstrap on synthetic data",
-            unit="outcome",
+    for b in range(args.runtime_replicates):
+        fold_timings = []
+
+        def on_fold(fold, seconds, train_rows, test_rows):
+            fold_timings.append(
+                {
+                    "fold": fold,
+                    "seconds": seconds,
+                    "train_rows_with_bootstrap_multiplicity": train_rows,
+                    "test_rows_with_bootstrap_multiplicity": test_rows,
+                }
+            )
+            report["active_runtime_replicate"] = {
+                "replicate": b + 1,
+                "completed_folds": len(fold_timings),
+                "fold_timings": fold_timings,
+            }
+            write_checkpoint(output, report)
+            update_progress(
+                current=len(fold_timings),
+                total=5,
+                phase="synthetic_refit_runtime",
+                message=f"{outcome}: runtime replicate {b + 1}, fold {fold} complete",
+                unit="fold",
+            )
+
+        t0 = time.perf_counter()
+        delta = fit_delta(
+            x,
+            s,
+            y,
+            subjects,
+            folds,
+            seed=8000 + OUTCOMES.index(outcome) * 100 + b,
+            bootstrap=True,
+            fold_callback=on_fold,
         )
-
-        x, s, y, subjects, folds = make_synthetic(
-            n=n,
-            prevalence=prevalence,
-            note_coverage=note_coverage,
-            seed=20260924 + oi,
+        elapsed = float(time.perf_counter() - t0)
+        report["runtime_replicates"].append(
+            {
+                "replicate": b + 1,
+                "seconds": elapsed,
+                "synthetic_delta_auroc": delta,
+                "fold_timings": fold_timings,
+            }
         )
-        observed = fit_delta(x, s, y, subjects, folds, 7000 + oi, bootstrap=False)
-
-        times = []
-        deltas = []
-        for b in range(args.runtime_replicates):
-            t0 = time.perf_counter()
-            d = fit_delta(x, s, y, subjects, folds, 8000 + oi * 100 + b, bootstrap=True)
-            times.append(time.perf_counter() - t0)
-            deltas.append(d)
-
-        # Null-behavior check on a smaller independent synthetic dataset. The 8
-        # added semantic features are pure noise by construction.
-        small_n = min(5000, n)
-        xn, sn, yn, subn, foldn = make_synthetic(
-            n=small_n,
-            prevalence=max(prevalence, 0.02),
-            note_coverage=note_coverage,
-            seed=9000 + oi,
-            p=40,
+        report["runtime_replicates_completed"] = b + 1
+        report.pop("active_runtime_replicate", None)
+        median_sec = float(
+            np.median([r["seconds"] for r in report["runtime_replicates"]])
         )
-        null_obs = fit_delta(xn, sn, yn, subn, foldn, 10000 + oi, bootstrap=False)
-        null_boot = [
-            fit_delta(xn, sn, yn, subn, foldn, 11000 + oi * 1000 + b, bootstrap=True)
-            for b in range(args.null_replicates)
-        ]
-        null_p = one_sided_centered_bootstrap_pvalue(null_obs, null_boot)
+        report["median_seconds_per_exact_refit_bootstrap_replicate"] = median_sec
+        report["projected_500_replicate_hours_serial"] = float(
+            median_sec * 500 / 3600.0
+        )
+        write_checkpoint(output, report)
 
-        median_sec = float(np.median(times))
-        report["outcomes"][outcome] = {
-            "synthetic_rows": n,
-            "synthetic_prevalence_target": prevalence,
-            "synthetic_note_coverage": note_coverage,
-            "runtime_replicates": int(args.runtime_replicates),
-            "runtime_seconds": [float(x) for x in times],
-            "median_seconds_per_refit_bootstrap_replicate": median_sec,
-            "projected_500_replicate_hours_serial": float(median_sec * 500 / 3600.0),
-            "observed_synthetic_noise_delta_auroc": observed,
-            "runtime_bootstrap_deltas": deltas,
-            "null_check": {
-                "rows": small_n,
-                "replicates": int(args.null_replicates),
-                "observed_delta_auroc": null_obs,
-                "bootstrap_delta_auroc": [float(x) for x in null_boot],
-                "one_sided_null_centered_pvalue": null_p,
-            },
-        }
-
-    out = Path(args.output)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    report["null_calibration"] = synthetic_null_calibration(
+        trials=args.null_trials,
+        bootstrap_replicates=args.null_bootstrap_replicates,
+        seed=20260925 + OUTCOMES.index(outcome),
+    )
+    report["status"] = "completed"
+    write_checkpoint(output, report)
     print(json.dumps(report, indent=2))
 
 
