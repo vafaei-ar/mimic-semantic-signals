@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
+source scripts/set_hgb_thread_env_v2_1.sh
 
 bash scripts/require_osf_registration.sh
 
