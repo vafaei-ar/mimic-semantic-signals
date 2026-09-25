@@ -436,3 +436,16 @@ Correction before registration:
 - do not use model-refit null simulations to determine runtime feasibility.
 
 The scientific bootstrap definition is unchanged. The refit-bootstrap replicate count remains unfrozen until the revised exact-runtime benchmark is complete.
+
+
+## Refit-bootstrap runtime benchmark lineage
+
+The initial combined synthetic benchmark `W9R6M4N2` timed out after 14,401.6 seconds without producing an artifact. It combined exact full-size refitting with repeated model-refit null simulations and was operationally unsuitable for estimating the requested 500-refit procedure.
+
+A narrower outcome-specific benchmark was then validated at commit `4d39e8400722f8611a4d04a528125c29251a91e6`.
+
+The first dispatch attempt, `Y5K8R2M7`, never executed project code. Its one-time RunRelay dispatch redemption returned HTTP 409, so it is a control-plane workflow failure with no artifact.
+
+The successful replacement, `Y5R7M2Q8`, ran the same benchmark task and exact project commit. One full-size five-fold ventilation refit-bootstrap replicate required 5,470.3 seconds, implying approximately 759.8 serial hours for 500 ventilation replicates. The cheap null calibration of the proposed one-sided bootstrap calculation behaved as expected.
+
+Because no v2.1 predictive performance had been examined, this runtime result triggered a documented pre-registration inference amendment. The 500-refit plan is retained as superseded provenance; the operative inference contract is `config/v2_1_primary_inference_freeze.json`.
