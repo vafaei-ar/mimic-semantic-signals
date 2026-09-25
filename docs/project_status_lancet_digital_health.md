@@ -20,14 +20,17 @@ Updated: 2026-09-24
 
 The v1 manuscript-facing results are under an integrity hold after a code review and aggregate audit confirmed multiple cohort/implementation issues.
 
-The primary manuscript lineage has been rebuilt as corrected v2:
+The primary manuscript lineage has entered a post-review **v2.1 correction gate**:
 
-- corrected source-compatible 12-hour landmark cohorts: complete;
-- corrected note hygiene/selection: complete;
-- enhanced 34-feature structured baseline mapping/extraction: complete;
-- structured-only repeated patient-grouped evaluation: **running** at the latest update;
-- corrected semantic/TF-IDF analysis: not yet opened;
-- clinician construct validation: still required;
-- affected eICU/Zigong external analyses: require corrected reruns.
+- v2 source-compatible cohort and note-selection corrections remain valid;
+- adult/NICU eligibility must be added;
+- ETT/tracheostomy-coded verbal GCS must be treated as missing rather than numeric 1;
+- exact CV split files/hashes and corrected calibration terminology are being added;
+- the pre-v2.1 structured evaluation job `E8R7Q5M3` must not be promoted as the manuscript-facing result;
+- corrected semantic/TF-IDF analysis remains locked;
+- clinician construct validation is still required;
+- affected eICU/Zigong external analyses still require corrected reruns.
+
+See `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`.
 
 Do not use this compatibility file as the detailed scientific status. Read `docs/02_CURRENT_SCIENTIFIC_STATUS.md`.
