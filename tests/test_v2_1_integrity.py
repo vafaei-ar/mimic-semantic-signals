@@ -91,6 +91,19 @@ class V21IntegrityTests(unittest.TestCase):
             data = require_osf_registration(td)
             self.assertEqual(data["registration_id"], "abcd1")
 
+    def test_preregistration_runners_use_analysis_population_lock(self):
+        for rel in [
+            "scripts/run_freeze_enhanced_structured_cv_splits_v2_1.sh",
+            "scripts/run_preregistration_power_v2_1.sh",
+            "scripts/run_refit_bootstrap_benchmark_v2_1.sh",
+        ]:
+            text = (ROOT / rel).read_text(encoding="utf-8")
+            self.assertIn(
+                "config/v2_1_analysis_population_contract.json",
+                text,
+                msg=rel,
+            )
+
     def test_structured_runner_passes_expected_counts(self):
         runner = (ROOT / "scripts" / "run_enhanced_structured_baseline_v2_1.sh").read_text(
             encoding="utf-8"
