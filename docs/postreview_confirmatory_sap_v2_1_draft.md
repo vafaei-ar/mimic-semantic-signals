@@ -47,7 +47,7 @@ AUROC_{rich\ comparator}.
 
 The primary point estimate uses the first frozen five-fold patient-grouped partition (seed 20260924). Four additional frozen partitions assess split stability.
 
-Each outcome has the one-sided hypothesis (H_0:\Delta AUROC\le0) versus (H_1:\Delta AUROC>0). The three p-values form one family and are adjusted by Holm at family-wise alpha 0.05.
+Each outcome has the one-sided hypothesis (H_0:\Delta AUROC\le0) versus (H_1:\Delta AUROC>0). The three p-values form one family and are adjusted by Holm at family-wise alpha 0.05. An outcome supports a confirmatory positive-increment claim only when its observed \(\Delta AUROC\) is positive and its Holm-adjusted one-sided refit-bootstrap p-value is below 0.05. The refit-bootstrap 95% percentile interval is the single reported primary interval for effect magnitude; it is not substituted for the multiplicity-adjusted decision rule.
 
 ## Primary uncertainty analysis
 
