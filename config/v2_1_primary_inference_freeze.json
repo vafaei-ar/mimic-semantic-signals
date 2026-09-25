@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "frozen_before_v2_1_predictive_performance",
+  "status": "under_preregistration_runtime_review",
   "amendment_basis": {
     "real_v2_1_predictive_performance_seen": false,
     "runtime_benchmark_job": "Y5R7M2Q8",
@@ -36,5 +36,11 @@
   "multiplicity": "No confirmatory p-values or binary significance decisions. Ventilation, RRT, and MetaVision ICU death are three prespecified co-primary estimands reported separately. No Holm testing is applied.",
   "claim_rule": "Do not label an outcome positive/negative by a p-value or CI crossing zero. Report effect estimate, primary conditional interval, and split-stability estimates; interpret magnitude and uncertainty.",
   "secondary_uncertainty": "Secondary metrics and sensitivity analyses use compatible patient-cluster fixed-prediction bootstrap intervals where feasible; they do not create additional confirmatory claims.",
-  "supersedes": "config/v2_1_refit_bootstrap_inference_freeze.json"
+  "supersedes": "config/v2_1_refit_bootstrap_inference_freeze.json",
+  "runtime_reaudit": {
+    "trigger": "Independent reproduction reported the same script-111 HGB workload at roughly 12 seconds per full replicate rather than 5470 seconds.",
+    "job": "B6R9M4Q2",
+    "rule": "Do not register or execute real-label performance until this synthetic-only audit is terminal and the final uncertainty procedure is re-frozen.",
+    "real_v2_1_predictive_performance_seen": false
+  }
 }
