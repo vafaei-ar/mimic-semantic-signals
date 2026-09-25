@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "status": "preregistration_analysis_population_lock",
+  "source_strategy_job": "X9R4Q2M6",
+  "source_strategy_artifact_sha256": "02c180e471a0b25dbe7a5ba43d56a3c4ad9b8770212d82d598122b13e6c50081",
+  "confirmatory_outcomes": {
+    "invasive_ventilation": {
+      "source": "metavision",
+      "rows": 11116,
+      "unique_patients": 8982,
+      "cases": 279,
+      "controls": 10837,
+      "note_available_rows": 4499
+    },
+    "renal_replacement_therapy": {
+      "source": "metavision",
+      "rows": 19395,
+      "unique_patients": 15080,
+      "cases": 314,
+      "controls": 19081,
+      "note_available_rows": 7709
+    },
+    "icu_death": {
+      "source": "metavision",
+      "rows": 19811,
+      "unique_patients": 15312,
+      "cases": 214,
+      "controls": 19597,
+      "note_available_rows": 7889
+    }
+  },
+  "prespecified_replications": {
+    "icu_death_carevue": {
+      "source": "carevue",
+      "rows": 25632,
+      "unique_patients": 19736,
+      "cases": 306,
+      "controls": 25326,
+      "note_available_rows": 23272
+    }
+  },
+  "death_all_source_provenance": {
+    "rows": 45571,
+    "cases": 521,
+    "controls": 45050,
+    "source_labeled_rows": 45443,
+    "rows_not_in_carevue_or_metavision_frame": 128
+  }
+}
