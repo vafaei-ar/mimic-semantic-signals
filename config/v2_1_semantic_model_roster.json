@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_v2_1_text_inference",
+  "primary_semantic_model": "open_jev",
+  "semantic_sensitivity_model": "laya",
+  "robustness_external_model": "diffusiongemma",
+  "lexical_reference": "tfidf",
+  "supervised_encoder_role": "supplementary_only",
+  "vasopressor_role": "historical_supplementary_unless_rebuilt_v2_1",
+  "primary_constructs": [
+    "overall_clinician_concern",
+    "worsening_trajectory",
+    "respiratory_concern",
+    "hemodynamic_concern",
+    "poor_treatment_response",
+    "escalation_considered",
+    "diagnostic_uncertainty",
+    "reassuring_stability"
+  ],
+  "state_dominant_constructs": [
+    "overall_clinician_concern",
+    "worsening_trajectory",
+    "respiratory_concern",
+    "hemodynamic_concern",
+    "diagnostic_uncertainty",
+    "reassuring_stability"
+  ],
+  "excluded_from_state_dominant": [
+    "poor_treatment_response",
+    "escalation_considered"
+  ],
+  "primary_corpus": "stripped",
+  "no_note_handling": {
+    "has_note_predictor": true,
+    "semantic_scores_when_no_note": "NaN",
+    "require_all_eight_when_has_note": true,
+    "explicit_has_note_interactions": false,
+    "hgb_semantic_imputation": "none_native_missing"
+  },
+  "tfidf": {
+    "corpus": "stripped",
+    "ngram_range": [
+      1,
+      2
+    ],
+    "lowercase": true,
+    "strip_accents": "unicode",
+    "min_df": 5,
+    "max_df": 0.98,
+    "max_features": 10000,
+    "sublinear_tf": true,
+    "fit_scope": "training_fold_only"
+  }
+}
