@@ -16,6 +16,7 @@ PYTHONPATH=src .venv/bin/python -m unittest tests.test_v2_1_integrity -v
   src/112_audit_death_source_strategy_v2_1.py \
   src/113_audit_treatment_context_availability_v2_1.py \
   src/114_build_preregistration_context_features_v2_1.py \
+  src/115_build_fixed_note_corpora_v2_1.py \
   src/preregistration_stats.py \
   src/registration_gate.py
 
@@ -27,6 +28,7 @@ bash -n scripts/run_refit_bootstrap_benchmark_v2_1.sh
 bash -n scripts/run_death_source_strategy_audit_v2_1.sh
 bash -n scripts/run_treatment_context_availability_audit_v2_1.sh
 bash -n scripts/run_build_preregistration_context_features_v2_1.sh
+bash -n scripts/run_build_fixed_note_corpora_v2_1.sh
 
 mkdir -p outputs/integrity
 PYTHONPATH=src .venv/bin/python - <<'PY'
