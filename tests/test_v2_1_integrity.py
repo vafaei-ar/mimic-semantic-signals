@@ -122,6 +122,20 @@ class V21IntegrityTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             features.assert_expected_counts("synthetic", d, bad)
 
+    def test_analysis_population_contract(self):
+        path = ROOT / "config" / "v2_1_analysis_population_contract.json"
+        contract = json.loads(path.read_text(encoding="utf-8"))
+        primary = contract["confirmatory_outcomes"]
+        self.assertEqual(primary["invasive_ventilation"]["source"], "metavision")
+        self.assertEqual(primary["renal_replacement_therapy"]["source"], "metavision")
+        self.assertEqual(primary["icu_death"]["source"], "metavision")
+        self.assertEqual(primary["icu_death"]["rows"], 19811)
+        self.assertEqual(primary["icu_death"]["cases"], 214)
+        self.assertEqual(primary["icu_death"]["controls"], 19597)
+        carevue = contract["prespecified_replications"]["icu_death_carevue"]
+        self.assertEqual(carevue["source"], "carevue")
+        self.assertEqual(carevue["cases"], 306)
+
     def test_expected_count_contract(self):
         path = ROOT / "config" / "corrected_landmark12_v2_1_expected_counts.json"
         contract = json.loads(path.read_text(encoding="utf-8"))
