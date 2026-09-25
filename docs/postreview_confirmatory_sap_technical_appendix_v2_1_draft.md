@@ -1,6 +1,6 @@
 # Technical appendix to the v2.1 post-review confirmatory SAP
 
-**Draft status:** the scientific design is frozen; the refit-bootstrap replicate count remains pending the synthetic-only W9R6M4N2 runtime benchmark.
+**Draft status:** the scientific design is frozen; the refit-bootstrap replicate count remains pending the revised outcome-specific synthetic exact-runtime benchmark after W9R6M4N2 timed out.
 
 ## A. Analysis populations
 
@@ -130,3 +130,6 @@ The external analyses do not alter the internal confirmatory model or thresholds
 ## Q. Deviations and audit trail
 
 Any implementation defect discovered after registration is logged with date, affected analysis, reason, and correction. If discovered before the affected result is opened, the corrected analysis supersedes the defective implementation. If the affected result has already been seen, both versions are retained in the audit trail and reported with the reason for supersession. A computational change that alters the scientific estimand requires an amended protocol rather than an undocumented implementation substitution.
+
+
+The initial combined benchmark `W9R6M4N2` timed out before emitting an artifact because it combined full-size runtime fitting with repeated model-refit null simulations. It is not used to set the replicate count. The revised benchmark isolates one exact full-size refit replicate per outcome and evaluates p-value null behavior separately with cheap synthetic statistics.
