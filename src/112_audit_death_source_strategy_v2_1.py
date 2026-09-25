@@ -28,13 +28,25 @@ def source_proxy_auc(
     *,
     add_missing_indicators: bool,
 ) -> float:
+    """Fast linear source-system diagnostic.
+
+    This is intentionally not the clinical prediction learner. The question is
+    only whether source system is readily recoverable from a feature block.
+    A regularized logistic model is sufficient for that diagnostic and avoids
+    spending hours fitting nonlinear source classifiers.
+    """
     from sklearn.compose import ColumnTransformer
-    from sklearn.ensemble import HistGradientBoostingClassifier
     from sklearn.impute import SimpleImputer
+    from sklearn.linear_model import LogisticRegression
     from sklearn.metrics import roc_auc_score
     from sklearn.model_selection import StratifiedGroupKFold
     from sklearn.pipeline import Pipeline
-    from sklearn.preprocessing import OneHotEncoder
+    from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+    numeric_cols = [c for c in numeric_cols if df[c].notna().any()]
+    cat_cols = [c for c in cat_cols if df[c].notna().any()]
+    if not numeric_cols and not cat_cols:
+        raise ValueError("at least one non-empty feature is required")
 
     x = df[numeric_cols + cat_cols].copy()
     y = df["source_target"].astype(int).to_numpy()
@@ -45,7 +57,18 @@ def source_proxy_auc(
         transformers.append(
             (
                 "num",
-                SimpleImputer(strategy="median", add_indicator=add_missing_indicators),
+                Pipeline(
+                    [
+                        (
+                            "impute",
+                            SimpleImputer(
+                                strategy="median",
+                                add_indicator=add_missing_indicators,
+                            ),
+                        ),
+                        ("scale", StandardScaler()),
+                    ]
+                ),
                 numeric_cols,
             )
         )
@@ -56,32 +79,38 @@ def source_proxy_auc(
                 Pipeline(
                     [
                         ("impute", SimpleImputer(strategy="most_frequent")),
-                        ("onehot", OneHotEncoder(handle_unknown="ignore", sparse_output=False)),
+                        (
+                            "onehot",
+                            OneHotEncoder(
+                                handle_unknown="ignore",
+                                sparse_output=False,
+                            ),
+                        ),
                     ]
                 ),
                 cat_cols,
             )
         )
-    if not transformers:
-        raise ValueError("at least one feature is required")
 
     pred = np.full(len(df), np.nan, dtype=float)
     cv = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=20260924)
     for tr, te in cv.split(x, y, groups=groups):
         pre = ColumnTransformer(transformers, remainder="drop")
-        xtr = pre.fit_transform(x.iloc[tr])
-        xte = pre.transform(x.iloc[te])
-        model = HistGradientBoostingClassifier(
-            learning_rate=0.05,
-            max_iter=200,
-            max_leaf_nodes=15,
-            min_samples_leaf=50,
-            l2_regularization=1.0,
-            early_stopping=False,
-            random_state=20260924,
+        model = Pipeline(
+            [
+                ("preprocess", pre),
+                (
+                    "model",
+                    LogisticRegression(
+                        solver="lbfgs",
+                        max_iter=300,
+                        random_state=20260924,
+                    ),
+                ),
+            ]
         )
-        model.fit(xtr, y[tr])
-        pred[te] = model.predict_proba(xte)[:, 1]
+        model.fit(x.iloc[tr], y[tr])
+        pred[te] = model.predict_proba(x.iloc[te])[:, 1]
 
     if np.isnan(pred).any():
         raise RuntimeError("source-proxy decomposition produced missing predictions")
@@ -161,7 +190,9 @@ def main() -> None:
 
     doc_numeric = [
         c for c in death.columns
-        if c.startswith("doc_") and pd.api.types.is_numeric_dtype(death[c])
+        if c.startswith("doc_")
+        and pd.api.types.is_numeric_dtype(death[c])
+        and death[c].notna().any()
     ]
     note_context_numeric = ["has_note", "note_age_at_landmark_hours"]
 
@@ -212,6 +243,7 @@ def main() -> None:
     update_progress(current=4, total=4, phase="source_decomposition", message="Writing aggregate source-system design audit", unit="stage")
     report = {
         "analysis": "v2.1 ICU-death CareVue/MetaVision source-proxy decomposition",
+        "source_proxy_model": "5-fold patient-grouped regularized logistic regression; diagnostic only",
         "outcome_performance_computed": False,
         "outcome_labels_used_only_for_descriptive_source_counts": True,
         "source_specific_cohort_counts": desc,
