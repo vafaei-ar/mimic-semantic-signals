@@ -26,6 +26,24 @@ monitoring:
   tmux_default: false
 
 tasks:
+
+  audit_hgb_thread_runtime_v2_1:
+    description: Audit synthetic-only HistGradientBoosting runtime under library-default versus explicit thread limits and run one full exact synthetic refit-bootstrap replicate under the fastest explicit setting; no real clinical data or outcome performance.
+    command:
+      - bash
+      - scripts/run_hgb_thread_runtime_audit_v2_1.sh
+    approval: automatic
+    timeout_minutes: 20
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/integrity/v2_1_hgb_thread_runtime_audit.json
+
   evaluate_population_landmark12_semantic_extension:
     description: Evaluate the frozen full-population 12-hour semantic extension with structured, note-context, Open-Jev, Laya, TF-IDF, and lexical-plus-semantic models using the same patient-grouped folds and paired patient-cluster bootstrap comparisons; share aggregate metrics only.
     command:
