@@ -1,3 +1,13 @@
+# Supersession note — 2026-09-25
+
+The Y5R7M2Q8 runtime conclusion in this document is **superseded before OSF registration**.
+
+Synthetic-only audit B6R9M4Q2 demonstrated severe library-default thread oversubscription on the workstation: 112 CPUs were exposed to OpenMP despite a 4-core RunRelay request. One two-fit fold exceeded 90 seconds under library defaults but required 2.18 seconds with explicit four-thread limits. A full exact five-fold replicate required 11.21 seconds, projecting 1.56 serial hours for 500 ventilation replicates.
+
+The 500-replicate patient-cluster refit-bootstrap interval is therefore restored in `config/v2_1_primary_inference_freeze.json`, with no p-values and no Holm testing. Y5 remains preserved as provenance of the environment artifact.
+
+---
+
 # Exact refit-bootstrap runtime benchmark freeze v2.1
 
 Updated: 2026-09-25
