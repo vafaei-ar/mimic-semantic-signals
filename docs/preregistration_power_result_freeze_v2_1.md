@@ -35,7 +35,7 @@ Inputs:
 - one-sided normal approximation using Hanley-McNeil AUC variance;
 - alpha 0.05 and the Holm first-step threshold 0.05/3 = 0.0167.
 
-The decisive v2.1 interval remains the planned patient-cluster **refit bootstrap**, conditional on the frozen primary fold assignment.
+The power grid was frozen before the later synthetic runtime benchmark. After that benchmark showed the 500-replicate exact refit bootstrap was operationally infeasible, the primary inference was amended before OSF registration to estimation-first conditional patient-cluster bootstrap uncertainty plus explicit repeat-to-repeat refit/split stability. The power grid itself is unchanged.
 
 ## Full-cohort 80% detectable delta-AUROC
 
@@ -68,4 +68,4 @@ The planning grid makes two points explicit before results:
 1. Small effects in the range of the previously observed v1 ventilation/death increments may not be confirmatorily detectable after Holm correction, depending on paired-score correlation.
 2. A null or non-significant result must not be interpreted as evidence of zero semantic increment when the confidence interval remains compatible with clinically relevant small effects.
 
-The SAP should report point estimates and decisive refit-bootstrap intervals, not reduce interpretation to a binary significance label.
+The SAP should report point estimates, the frozen primary conditional patient-cluster intervals, and split/refit stability across repeats, without reducing interpretation to a binary significance label.
