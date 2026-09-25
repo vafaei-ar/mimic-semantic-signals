@@ -24,6 +24,8 @@ Airway-coded verbal GCS values such as 1.0 ET/Trach and No Response-ETT are trea
 
 The respiratory lookback is six hours. FiO2 is normalized to percent: values in (0,1] are multiplied by 100, values in [20,100] are retained, and other numeric values are set to missing. Oxygen flow is the latest source-compatible value in the six-hour window. High-flow oxygen and NIV are binary source-compatible indicators.
 
+In the ventilation cohort, FiO2 is expected to be sparse because pre-landmark FiO2 is largely charted after respiratory support is already established. Its preregistration availability is approximately 9.9%, compared with roughly 44% for RRT and death. Ventilation treatment context therefore does not rely on FiO2 alone; oxygen device, oxygen flow, high-flow, and NIV indicators carry the main prespecified respiratory-support information, and FiO2 missingness is preserved.
+
 For MetaVision, vasoactive and sedative/analgesic variables represent mapped non-cancelled infusions active at the landmark. For the CareVue death replication they represent mapped exposure during the prior six hours because duration is not represented equivalently. Agent counts are the numbers of distinct mapped agents.
 
 Code status enters the ICU-death comparator only. The last source-specific value at or before the landmark is taken from CareVue item 128 or MetaVision item 223758 and encoded as availability plus non-full-code indicator variables.
@@ -40,7 +42,7 @@ This is a prespecified documentation-behavior comparator motivated by prior work
 
 The prospective note is selected before any language handling. Outcome-specific stripping is case-insensitive and replaces each frozen direct-language match with one ASCII space. It does not otherwise normalize the text. The corpus build verified, for every source-specific analysis, that the number of notes changed by stripping exactly matched the frozen direct-language flag.
 
-The primary corpus hashes are recorded in config/v2_1_fixed_note_corpus_result_contract.json.
+The primary corpus hashes are recorded in config/v2_1_fixed_note_corpus_result_contract.json. Because the preregistration review identified two residual stripping gaps, the corpus must be re-materialized before registration using the corrected frozen vocabulary: standalone `vent` for ventilation, and contextual `HD` plus `ultrafiltration` expressions for RRT. The note identities remain fixed; only the text transformation and resulting corpus hashes will change.
 
 ## G. Semantic representations
 
@@ -49,6 +51,8 @@ The eight constructs are overall clinician concern, worsening trajectory, respir
 Open-Jev is primary. Laya is a semantic-method sensitivity. DiffusionGemma is a robustness and external-transport representation. The model roles are frozen in config/v2_1_semantic_model_roster.json.
 
 Patients without an eligible note have all eight semantic values missing. Note-available rows must have all eight scores. No explicit interaction between semantic scores and has_note is added.
+
+For HistGradientBoosting models, missing semantic values remain NaN and are handled natively. For any logistic model that includes semantic scores, each semantic dimension is imputed with the median calculated from finite values in that training fold only, and the same training-fold median is applied to the held-out fold. The prespecified has_note indicator remains in the comparator, so no-note rows are distinguishable from observed-note rows. A note-available row with an incomplete eight-score vector is treated as an inference failure and causes the analysis to stop rather than being silently imputed. The frozen rule is recorded in config/v2_1_semantic_missingness_freeze.json.
 
 ## H. Lexical reference
 
