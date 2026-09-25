@@ -11,6 +11,7 @@ on:
       - "src/registration_gate.py"
       - "tests/test_v2_1_integrity.py"
       - "config/corrected_landmark12_v2_1_expected_counts.json"
+      - "config/v2_1_analysis_population_contract.json"
       - ".github/workflows/v2_1_integrity_tests.yml"
   pull_request:
     paths:
