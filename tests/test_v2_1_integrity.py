@@ -92,6 +92,24 @@ class V21IntegrityTests(unittest.TestCase):
             data = require_osf_registration(td)
             self.assertEqual(data["registration_id"], "abcd1")
 
+    def test_context_feature_result_contract(self):
+        path = ROOT / "config" / "v2_1_context_feature_result_contract.json"
+        contract = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(contract["canonical_job"], "G8R6Q4M2")
+        self.assertEqual(
+            contract["artifact_sha256"],
+            "04cd6ab090518ad570909e57705d1331ceefeb632327666c9c4fa238588eabbf",
+        )
+        primary = contract["analyses"]
+        self.assertEqual(primary["invasive_ventilation"]["rows"], 11116)
+        self.assertEqual(primary["renal_replacement_therapy"]["rows"], 19395)
+        self.assertEqual(primary["icu_death"]["rows"], 19811)
+        self.assertEqual(primary["icu_death_carevue"]["rows"], 25632)
+        self.assertEqual(
+            primary["icu_death"]["note_identity_sha256"],
+            "9d604176b53dac81f8a5e2d08e26dedcbea1f9e604baf200565d50a2e89b97dd",
+        )
+
     def test_language_stripping_freeze_matches_cohort_patterns(self):
         path = ROOT / "config" / "v2_1_language_stripping_freeze.json"
         freeze = json.loads(path.read_text(encoding="utf-8"))
@@ -107,6 +125,7 @@ class V21IntegrityTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("config/v2_1_analysis_population_contract.json", text)
         self.assertIn("config/v2_1_language_stripping_freeze.json", text)
+        self.assertIn("config/v2_1_context_feature_result_contract.json", text)
 
     def test_context_feature_freeze_excludes_vent_endpoint_items(self):
         path = ROOT / "config" / "v2_1_context_feature_freeze.json"
