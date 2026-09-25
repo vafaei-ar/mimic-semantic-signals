@@ -1,135 +1,114 @@
 # Technical appendix to the v2.1 post-review confirmatory SAP
 
-**Draft status:** the scientific design is frozen before OSF registration. The original 500-replicate exact refit-bootstrap plan is retained as superseded provenance after a synthetic exact-runtime benchmark established that it was operationally infeasible before any v2.1 predictive performance was examined.
+This appendix records the implementation details fixed before OSF registration. The original 500-replicate exact refit-bootstrap plan remains in the repository as superseded provenance. No v2.1 predictive performance was examined before that change.
 
 ## A. Analysis populations
 
-The three confirmatory cohorts are source-homogeneous MetaVision populations. Ventilation and RRT were already restricted to MetaVision because their endpoints are MetaVision-observable. ICU death was initially built across both MIMIC-III source systems, but source-system audits showed that CareVue versus MetaVision could be recovered from documentation behavior with AUROC 0.9527 and from the current full comparator with AUROC 0.9796 using patient-grouped logistic diagnostics. Confirmatory death was therefore restricted to MetaVision before any v2.1 mortality performance was examined. CareVue death is analyzed separately as replication/sensitivity.
+The confirmatory cohorts are source-homogeneous MetaVision populations. Ventilation and RRT are MetaVision-only because their endpoints are MetaVision-observable. ICU death was initially built across both MIMIC-III source systems, but CareVue versus MetaVision could be recovered from documentation behavior with AUROC 0.9527 and from the full comparator with AUROC 0.9796 in patient-grouped label-free source diagnostics. Confirmatory death was therefore restricted to MetaVision. CareVue death is retained as a separate replication analysis.
 
-Adult eligibility is determined before the deidentification age cap. NICU first-careunit stays and patients younger than 18 years are excluded. Downstream jobs assert frozen row, patient, case, control, and note-availability counts.
+Adult eligibility is determined before the deidentification age cap. Patients younger than 18 years and NICU first-careunit stays are excluded. Downstream analyses assert the frozen row, patient, case, control, and note-availability counts.
 
 ## B. Outcomes
 
-The landmark is 12 hours after ICU admission and the prediction horizon is the following 12 hours. Outcome definitions follow the frozen corrected v2.1 cohort protocol. The primary ventilation endpoint is the high-specificity MetaVision intubation procedure item 224385, with broader respiratory-support evidence used for pre-landmark disqualification/control eligibility. The corrected explicit-intubation sensitivity is empirically identical to the primary cohort. A broad respiratory-support endpoint is retained as the meaningful ventilation sensitivity.
+The landmark is 12 hours after ICU admission and the prediction horizon is the next 12 hours. The primary ventilation endpoint is MetaVision intubation procedure item 224385. Broader respiratory-support evidence is used for pre-landmark disqualification and control eligibility. The corrected explicit-intubation sensitivity is empirically identical to the primary cohort; the broader respiratory-support endpoint is the meaningful ventilation sensitivity.
 
-RRT and death definitions follow the corrected v2.1 protocol. Controls have no populated future event time.
+RRT and ICU-death definitions follow the corrected v2.1 cohort protocol. Control rows have no populated future event time.
 
 ## C. Structured physiology
 
-The core structured block has 34 features: age, sex; latest and six-hour change in heart rate, systolic blood pressure, diastolic blood pressure, mean arterial pressure, respiratory rate, SpO2, and temperature; GCS eye, verbal, and motor; lactate, creatinine, BUN, WBC, hemoglobin, platelets, sodium, potassium, bicarbonate, chloride, glucose, bilirubin, INR, pH; and six-hour net urine output.
+The core structured comparator contains 34 features: age and sex; latest and six-hour change in heart rate, systolic pressure, diastolic pressure, mean arterial pressure, respiratory rate, SpO2, and temperature; GCS eye, verbal, and motor; lactate, creatinine, BUN, WBC, hemoglobin, platelets, sodium, potassium, bicarbonate, chloride, glucose, bilirubin, INR, pH; and six-hour net urine output.
 
-Airway-coded GCS verbal values such as `1.0 ET/Trach` and `No Response-ETT` are missing, not verbal score 1. The corrected extraction excluded 32,942 such rows.
+Airway-coded verbal GCS values such as 1.0 ET/Trach and No Response-ETT are treated as missing, not verbal score 1. The corrected extraction excluded 32,942 such rows.
 
-## D. Treatment/support context
+## D. Treatment and support context
 
-The respiratory lookback is six hours. FiO2 is normalized to percent: values in (0,1] are multiplied by 100, values in [20,100] are retained, and all other numeric values are missing. Oxygen flow is the latest source-compatible value in the six-hour window. High-flow and NIV are binary source-compatible indicators.
+The respiratory lookback is six hours. FiO2 is normalized to percent: values in (0,1] are multiplied by 100, values in [20,100] are retained, and other numeric values are set to missing. Oxygen flow is the latest source-compatible value in the six-hour window. High-flow oxygen and NIV are binary source-compatible indicators.
 
-For MetaVision, vasoactive and sedative/analgesic variables represent mapped non-cancelled infusions active at the landmark. For CareVue death replication they represent mapped recent six-hour exposure because duration is not represented equivalently. Agent counts are numbers of distinct mapped agents.
+For MetaVision, vasoactive and sedative/analgesic variables represent mapped non-cancelled infusions active at the landmark. For the CareVue death replication they represent mapped exposure during the prior six hours because duration is not represented equivalently. Agent counts are the numbers of distinct mapped agents.
 
-The death comparator also contains the last pre-landmark code-status state, represented by availability and non-full-code indicator variables. Code status is not included for ventilation or RRT.
+Code status enters the ICU-death comparator only. The last source-specific value at or before the landmark is taken from CareVue item 128 or MetaVision item 223758 and encoded as availability plus non-full-code indicator variables.
 
-## E. Documentation behavior and note context
+## E. Documentation behavior and ordinary note context
 
-Documentation-behavior variables are based on eligible bedside-note metadata in the 12 hours before the landmark. They include note count, total characters, latest-note characters, number of collapsed note-category groups, and note counts by nursing, physician, respiratory, and other categories.
+Documentation behavior is based only on eligible bedside-note metadata from the 12 hours before the landmark. The variables are note count, total characters, latest-note characters, number of collapsed note-category groups, and note counts in nursing, physician, respiratory, and other groups.
 
-Selected-note age is kept only in ordinary note context, not duplicated in the documentation-behavior block. The candidate inter-note-gap variable was dropped before performance because its first implementation was all-missing and it was unnecessary for the frozen primary block.
+Selected-note age appears only in ordinary note context, together with has_note and the selected note's collapsed category. The inter-note-gap candidate was dropped before performance because its first implementation was all-missing and was not needed for the frozen primary block.
 
-The analysis does not describe this block as an exact CONCERN implementation. It is a prespecified note-documentation-behavior comparator intended to distinguish content from the process of documentation.
+This is a prespecified documentation-behavior comparator motivated by prior work on charting behavior; it is not described as an exact implementation of CONCERN.
 
-## F. Text preprocessing
+## F. Fixed-note text preprocessing
 
-The selected prospective note is fixed before any language handling. Stripping is outcome-specific, case-insensitive, replaces each frozen direct-language match with one ASCII space, and performs no additional normalization. The corpus build verified that the number of notes changed by stripping exactly matched the previously frozen direct-language flag in each source-specific analysis.
+The prospective note is selected before any language handling. Outcome-specific stripping is case-insensitive and replaces each frozen direct-language match with one ASCII space. It does not otherwise normalize the text. The corpus build verified, for every source-specific analysis, that the number of notes changed by stripping exactly matched the frozen direct-language flag.
 
-The primary corpus hashes are frozen in `config/v2_1_fixed_note_corpus_result_contract.json`.
+The primary corpus hashes are recorded in config/v2_1_fixed_note_corpus_result_contract.json.
 
 ## G. Semantic representations
 
-The eight constructs are:
+The eight constructs are overall clinician concern, worsening trajectory, respiratory concern, hemodynamic concern, poor treatment response, escalation considered, diagnostic uncertainty, and reassuring stability.
 
-1. overall clinician concern;
-2. worsening trajectory;
-3. respiratory concern;
-4. hemodynamic concern;
-5. poor treatment response;
-6. escalation considered;
-7. diagnostic uncertainty;
-8. reassuring stability.
+Open-Jev is primary. Laya is a semantic-method sensitivity. DiffusionGemma is a robustness and external-transport representation. The model roles are frozen in config/v2_1_semantic_model_roster.json.
 
-Open-Jev is primary. Laya is a prespecified semantic-method sensitivity. DiffusionGemma is a robustness and external-transport representation. These roles are fixed in `config/v2_1_semantic_model_roster.json`.
-
-For patients without an eligible note, all eight semantic features are NaN. For note-available rows, all eight must be present. No explicit interaction between a semantic score and `has_note` is added.
+Patients without an eligible note have all eight semantic values missing. Note-available rows must have all eight scores. No explicit interaction between semantic scores and has_note is added.
 
 ## H. Lexical reference
 
-The stripped-text TF-IDF reference uses training-fold fitting only, lowercase text, Unicode accent stripping, word unigrams and bigrams, min_df 5, max_df 0.98, at most 10,000 features, and sublinear term frequency. The full-note lexical analysis is a secondary sensitivity.
+The stripped-text TF-IDF reference is fitted within each training fold. It uses lowercase text, Unicode accent stripping, word unigrams and bigrams, min_df=5, max_df=0.98, at most 10,000 features, and sublinear term frequency. The unstripped lexical analysis is secondary.
 
 ## I. Cross-validation
 
-The split assignment is frozen before performance. All ICU rows from the same source patient remain within the same fold. Five deterministic repeats use seeds 20260924 through 20260928. The first repeat is the primary partition. Repeats 2–5 are not averaged into the decisive inferential bootstrap; they show sensitivity to fold assignment.
+Patient-grouped split assignments are frozen. All ICU rows from one source patient remain in one fold. Five repeats use seeds 20260924 through 20260928. Repeat 1 is the primary partition; repeats 2 through 5 assess refit and fold-assignment stability.
 
-Frozen primary split hashes are:
+Frozen split hashes are:
 
-- ventilation: `30d6d4e591bfe3ff0dc736d8619dcead94f1c3880b160dbfed7efbffce727b35`;
-- RRT: `1a2b8e23045ac79429bcb65b6ff3c382226be1fbab5a9460f2d8c1ca49bb5ee0`;
-- MetaVision death: `444a0dac02358d1d4eafe83b96d3804df30134de00e4b54509beb7bbbe411658`;
-- CareVue death replication: `490c70902518a9620a9f3c0808f2275f56652e423e8820c78a8fa4d7dca30a2f`.
+- ventilation: 30d6d4e591bfe3ff0dc736d8619dcead94f1c3880b160dbfed7efbffce727b35;
+- RRT: 1a2b8e23045ac79429bcb65b6ff3c382226be1fbab5a9460f2d8c1ca49bb5ee0;
+- MetaVision death: 444a0dac02358d1d4eafe83b96d3804df30134de00e4b54509beb7bbbe411658;
+- CareVue death replication: 490c70902518a9620a9f3c0808f2275f56652e423e8820c78a8fa4d7dca30a2f.
 
 ## J. Model specification
 
-The nonlinear learner is scikit-learn HistGradientBoostingClassifier with:
+The nonlinear learner is scikit-learn HistGradientBoostingClassifier with learning_rate=0.05, max_iter=300, max_leaf_nodes=15, min_samples_leaf=50, l2_regularization=1.0, and early_stopping=False. No outcome-specific hyperparameter search is permitted.
 
-- learning_rate 0.05;
-- max_iter 300;
-- max_leaf_nodes 15;
-- min_samples_leaf 50;
-- l2_regularization 1.0;
-- early_stopping false.
+Comparator and augmented models use the same preprocessing and learner settings. The primary comparison differs only by addition of the eight Open-Jev inputs.
 
-No outcome-specific hyperparameter search is permitted.
-
-Comparator and augmented models use the same preprocessing and learner settings. The only difference in the primary comparison is the eight Open-Jev inputs.
-
-## K. Primary inference
+## K. Primary estimation and uncertainty
 
 For each outcome, the primary estimate is repeat-1 out-of-fold delta-AUROC.
 
-The primary uncertainty interval uses `5000` patient-cluster bootstrap replicates of the paired repeat-1 out-of-fold predictions **without model refitting**. Source patients are sampled with replacement; all ICU rows from a sampled patient enter with that patient's bootstrap multiplicity in both prediction vectors. Each replicate recomputes the paired delta-AUROC. Child seeds are generated by `numpy.random.SeedSequence(20260924).spawn(5000)`.
+The primary uncertainty interval uses 5,000 patient-cluster bootstrap replicates of the paired repeat-1 out-of-fold predictions without model refitting. Source patients are sampled with replacement; all ICU rows from each sampled patient enter both prediction vectors with patient multiplicity. Child seeds are generated with numpy.random.SeedSequence(20260924).spawn(5000). The interval is the two-sided 95% percentile interval.
 
-The primary interval is the two-sided 95% percentile interval from this distribution. It is explicitly conditional on the frozen fitted repeat-1 cross-validated prediction functions and therefore does not represent full independent-cohort model-refit uncertainty.
+This interval is conditional on the frozen repeat-1 cross-fitted prediction functions. It does not estimate the full variance that would arise from model retraining in an independently sampled cohort.
 
-Repeats 2–5 provide the prespecified model-refit/fold-partition stability analysis. Both rich and augmented models are refit under each frozen partition, and all five repeat-specific delta-AUROC estimates plus the range across repeats are reported.
+Repeats 2 through 5 provide the prespecified refit/fold-partition stability analysis. Both models are refit under each frozen partition. All five repeat-specific delta-AUROC estimates and the range across repeats are reported.
 
-No confirmatory p-values are calculated. Ventilation, RRT, and MetaVision ICU death are three prespecified co-primary estimands rather than a family of binary tests; no Holm adjustment is applied. Interval crossing of zero is not used as a binary claim rule.
+No confirmatory p-values are calculated, no Holm adjustment is applied, and interval crossing of zero is not used as a binary claim rule.
 
-## L. Secondary performance measures
+## L. Why the exact refit bootstrap was superseded
 
-ΔAUPRC is the key secondary discrimination contrast. Brier score, log loss, calibration-in-the-large, calibration slope, expected calibration error, and decision-curve summaries are secondary. Calibration and utility claims are made only in prevalence-preserving populations and not in matched historical cohorts.
+The initial combined synthetic benchmark W9R6M4N2 timed out after 14,401.6 seconds before producing an artifact. The redesigned benchmark was validated by X4R7M2Q8 and completed as Y5R7M2Q8.
 
-## M. Conditional analyses and multiplicity
+One exact full-size ventilation refit-bootstrap replicate required 5,470.3 seconds. A 500-replicate ventilation refit bootstrap would therefore require about 759.8 serial hours under the frozen HGB specification. The same synthetic benchmark showed appropriate null behavior for the planned one-sided bootstrap calculation, but the full refit procedure was operationally infeasible. Because no v2.1 predictive performance had been examined, the inference plan was amended before registration.
 
-Note-available-only analyses change the target population and are labeled conditional/descriptive. They cannot replace or redefine the full-cohort co-primary estimands.
+The operative inference rule is config/v2_1_primary_inference_freeze.json. The original plan remains in config/v2_1_refit_bootstrap_inference_freeze.json with superseded status.
 
-Laya, DiffusionGemma, state-dominant constructs, TF-IDF, full-note text, ventilation endpoint sensitivity, timing sensitivity, CareVue death replication, and negative controls are prespecified secondary or sensitivity analyses. Their results are reported with effect estimates and uncertainty but do not create additional primary claims.
+## M. Secondary measures and analyses
 
-## N. Negative control
+Delta-AUPRC is the key secondary discrimination contrast. Brier score, log loss, calibration-in-the-large, calibration slope, expected calibration error, and decision-curve summaries are secondary.
 
-The negative control is patient-shuffled semantics. For each outcome/source analysis, note-available patients are assigned to deciles of the repeat-1 out-of-fold rich-comparator predicted risk. The entire eight-score semantic vector is permuted between patients within each decile with fixed seed 20260929. No-note rows remain no-note rows with semantic NaNs. The shuffled augmented model is fit with the same frozen folds, preprocessing, and HGB specification. This preserves note availability and approximate comparator risk while breaking correspondence between a patient's own note and semantic scores.
+Note-available-only analyses change the target population and are descriptive. Laya, DiffusionGemma, state-dominant constructs, TF-IDF, the unstripped note, ventilation endpoint sensitivity, timing sensitivity, CareVue death replication, and negative controls are secondary or sensitivity analyses and do not redefine the primary estimands.
 
-## O. Construct validation
+## N. Patient-shuffled semantic negative control
 
-Clinician raters remain blinded to model scores and prediction errors. Raters score the eight constructs and provide a 12-hour deterioration probability. The construct-validation analysis reports inter-rater reliability, same-construct agreement across methods, cross-construct discrimination, and model-human association. Controlled edits can test negation, concern insertion/removal, and copy-forward duplication. Prompt repeatability is evaluated by a frozen small set of wording variants rather than by outcome-driven prompt selection.
+Within each outcome/source analysis, note-available patients are assigned to deciles of repeat-1 out-of-fold rich-comparator predicted risk. Complete eight-score semantic vectors are permuted between patients within each decile using seed 20260929. No-note rows remain unchanged. The shuffled augmented model uses the same frozen folds, preprocessing, and HGB settings.
+
+## O. Clinician construct validation
+
+Clinician raters remain blinded to model scores and prediction errors. Raters score the eight constructs and provide a 12-hour deterioration probability. The analysis reports inter-rater reliability, same-construct agreement across methods, cross-construct discrimination, and model-human association. Direct MIMIC note access will comply with applicable PhysioNet credential/DUA requirements, and annotation will begin only after a Penn State IRB determination.
 
 ## P. External narrative validation
 
-The translated Zigong arm will use one locally executable Chinese-to-English model and fixed decoding parameters selected without outcome labels. Translation quality is assessed before labels are joined. Open-Jev, Laya, and TF-IDF then receive the same translated text. DiffusionGemma is evaluated separately on native Chinese under its frozen direct-Chinese eligibility rules.
+The translated Zigong arm will use one locally executable Chinese-to-English model with fixed decoding settings selected without outcome labels. Translation quality is assessed before labels are joined. Open-Jev, Laya, and TF-IDF then receive the same translated text. DiffusionGemma is evaluated separately on native Chinese under its frozen direct-Chinese eligibility rules.
 
-The external analyses do not alter the internal confirmatory model or thresholds.
+## Q. Deviations
 
-## Q. Deviations and audit trail
-
-Any implementation defect discovered after registration is logged with date, affected analysis, reason, and correction. If discovered before the affected result is opened, the corrected analysis supersedes the defective implementation. If the affected result has already been seen, both versions are retained in the audit trail and reported with the reason for supersession. A computational change that alters the scientific estimand requires an amended protocol rather than an undocumented implementation substitution.
-
-
-The initial combined benchmark `W9R6M4N2` timed out after 14,401.6 seconds without an artifact. The redesigned synthetic benchmark `Y5R7M2Q8`, validated by `X4R7M2Q8`, measured one exact full-size ventilation refit-bootstrap replicate at 5,470.3 seconds, projecting 759.8 serial hours for 500 ventilation replicates alone.
-
-Because no v2.1 predictive performance had been examined, this benchmark triggered a documented pre-registration amendment rather than a post-result computational shortcut. The original refit plan remains as superseded provenance; the operative rule is `config/v2_1_primary_inference_freeze.json`.
+Any implementation or data-integrity defect found after registration is logged with its date, affected analysis, reason, and correction. If the affected result has already been seen, both versions remain in the audit trail. Any change that alters the scientific estimand requires an amended protocol.
