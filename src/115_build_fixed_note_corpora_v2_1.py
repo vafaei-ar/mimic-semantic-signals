@@ -271,20 +271,15 @@ def main() -> None:
                 chars_before += len(text)
                 chars_after += len(stripped)
 
-        if notes_changed != direct_expected:
-            raise RuntimeError(
-                f"{name}: stripping equivalence check failed: "
-                f"notes_changed={notes_changed}, direct_language_flagged={direct_expected}"
-            )
-
         report["analyses"][name] = {
             "outcome": outcome,
             "source": source,
             "eligible_rows": int(len(idx)),
             "note_available_rows": int(len(selected)),
             "note_identity_sha256": current_note_identity,
-            "direct_language_flagged_notes": direct_expected,
-            "notes_changed_by_stripping": int(notes_changed),
+            "pre_review_direct_language_flagged_notes": direct_expected,
+            "notes_changed_by_corrected_stripping": int(notes_changed),
+            "additional_notes_changed_vs_pre_review_flag": int(notes_changed - direct_expected),
             "total_regex_matches": int(total_matches),
             "characters_before": int(chars_before),
             "characters_after": int(chars_after),
@@ -298,7 +293,7 @@ def main() -> None:
     report["guardrails"] = [
         "Note identity and eligibility were frozen before text transformation and matched the G8 context-feature result contract.",
         "The stripped corpus changes text only; note timing/category/has_note are unchanged.",
-        "The number of changed notes exactly matches the cohort direct-language flag for each source-specific analysis.",
+        "The corrected stripping count is frozen independently of the pre-review direct-language flag because the preregistration review deliberately broadened the vocabulary.",
         "No semantic model, TF-IDF model, or clinical prediction model was run.",
         "Row-level note text remains local; the declared artifact contains only aggregate hashes and counts.",
     ]
