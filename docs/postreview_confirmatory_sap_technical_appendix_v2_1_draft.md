@@ -79,21 +79,21 @@ Comparator and augmented models use the same preprocessing and learner settings.
 
 For each outcome, the primary estimate is repeat-1 out-of-fold delta-AUROC.
 
-The primary uncertainty interval uses 5,000 patient-cluster bootstrap replicates of the paired repeat-1 out-of-fold predictions without model refitting. Source patients are sampled with replacement; all ICU rows from each sampled patient enter both prediction vectors with patient multiplicity. Child seeds are generated with numpy.random.SeedSequence(20260924).spawn(5000). The interval is the two-sided 95% percentile interval.
+The primary uncertainty interval uses 500 patient-cluster refit-bootstrap replicates of the complete repeat-1 cross-fitting procedure. Source patients are sampled with replacement. All ICU rows from a sampled patient enter with that patient's bootstrap multiplicity, the frozen repeat-1 fold assignment is retained, and both comparator and augmented HGB models are refit in every fold for every replicate. The reported interval is the two-sided 95% percentile interval of the 500 delta-AUROC replicates.
 
-This interval is conditional on the frozen repeat-1 cross-fitted prediction functions. It does not estimate the full variance that would arise from model retraining in an independently sampled cohort.
-
-Repeats 2 through 5 provide the prespecified refit/fold-partition stability analysis. Both models are refit under each frozen partition. All five repeat-specific delta-AUROC estimates and the range across repeats are reported.
+This interval includes patient-sampling and model-refit variability conditional on the frozen repeat-1 fold partition. Repeats 2 through 5 separately assess refit and fold-partition stability.
 
 No confirmatory p-values are calculated, no Holm adjustment is applied, and interval crossing of zero is not used as a binary claim rule.
 
-## L. Why the exact refit bootstrap was superseded
+The execution contract fixes OMP_NUM_THREADS=4, OPENBLAS_NUM_THREADS=4, MKL_NUM_THREADS=4, and NUMEXPR_NUM_THREADS=4 for HGB workloads.
 
-The initial combined synthetic benchmark W9R6M4N2 timed out after 14,401.6 seconds before producing an artifact. The redesigned benchmark was validated by X4R7M2Q8 and completed as Y5R7M2Q8.
+## L. Runtime benchmark correction
 
-One exact full-size ventilation refit-bootstrap replicate required 5,470.3 seconds. A 500-replicate ventilation refit bootstrap would therefore require about 759.8 serial hours under the frozen HGB specification. The same synthetic benchmark showed appropriate null behavior for the planned one-sided bootstrap calculation, but the full refit procedure was operationally infeasible. Because no v2.1 predictive performance had been examined, the inference plan was amended before registration.
+The prior Y5R7M2Q8 synthetic benchmark reported 5,470.3 seconds for one exact ventilation replicate and was used to replace the refit-bootstrap interval with a fixed-prediction interval. That inference amendment is superseded before registration.
 
-The operative inference rule is config/v2_1_primary_inference_freeze.json. The original plan remains in config/v2_1_refit_bootstrap_inference_freeze.json with superseded status.
+Synthetic-only audit B6R9M4Q2 showed that the workstation exposes 112 CPUs to OpenMP despite a 4-core RunRelay resource request. Library-default execution failed to complete one two-fit fold within 90 seconds. Explicit one-thread execution completed that fold in 3.56 seconds, explicit four-thread execution in 2.18 seconds, and the full exact five-fold replicate in 11.21 seconds. The earlier runtime was therefore an oversubscription artifact rather than evidence that refit bootstrapping is infeasible.
+
+At the corrected ventilation runtime, 500 serial replicates project to about 1.56 hours. The original 500-replicate refit-bootstrap concept is restored, while the later estimation-first framing is retained in the sense that no confirmatory p-values or Holm testing are used.
 
 ## M. Secondary measures and analyses
 
