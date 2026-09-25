@@ -40,6 +40,17 @@ def note_identity_hash(index: pd.DataFrame) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
+def prepare_index_for_frozen_context_hash(idx: pd.DataFrame) -> pd.DataFrame:
+    out = idx.copy()
+    for col in ["subject_id", "hadm_id", "icustay_id", "label"]:
+        if col in out.columns:
+            out[col] = pd.to_numeric(out[col], errors="raise").astype("int64")
+    if "landmark_time" in out.columns:
+        out["landmark_time"] = pd.to_datetime(out["landmark_time"], errors="raise")
+    out["note_time"] = pd.to_datetime(out["note_time"], errors="coerce")
+    return out
+
+
 def verify_note_identity_and_normalize_has_note(
     idx: pd.DataFrame,
     expected_hash: str,
@@ -161,6 +172,7 @@ def main() -> None:
         idx = pd.read_csv(index_path, low_memory=False)
         idx["dbsource"] = idx["dbsource"].fillna("unknown").astype(str).str.strip().str.lower()
         idx = idx[idx["dbsource"].eq(source)].copy()
+        idx = prepare_index_for_frozen_context_hash(idx)
 
         # Hash the frozen population-index representation exactly as materialized
         # by the G8 context builder. Converting 0/1 to False/True before hashing
