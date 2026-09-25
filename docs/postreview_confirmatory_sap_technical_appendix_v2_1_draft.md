@@ -101,7 +101,7 @@ The refit-bootstrap replicate count is `{{REFIT_BOOTSTRAP_REPLICATES}}`. The one
 p = \frac{1 + \#\{(\Delta_b-\Delta_{obs}) \ge \Delta_{obs}\}}{B+1}.
 ]
 
-The three p-values are adjusted by Holm. The same refit-bootstrap distribution supplies the single reported primary uncertainty interval; no fixed-prediction bootstrap interval is used for confirmatory inference.
+The three p-values are adjusted by Holm. A confirmatory positive-increment claim for an outcome requires both an observed positive \(\Delta AUROC\) and a Holm-adjusted one-sided refit-bootstrap p-value below 0.05. The same refit-bootstrap distribution supplies the single reported two-sided 95% percentile interval for effect magnitude; that interval is not used as an unadjusted substitute for the Holm decision rule. No fixed-prediction bootstrap interval is used for confirmatory inference.
 
 ## L. Secondary performance measures
 
