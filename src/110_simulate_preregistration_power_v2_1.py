@@ -61,35 +61,35 @@ def find_mde(a0: float, n_pos: int, n_neg: int, rho: float, alpha: float, target
     return float(hi)
 
 
-def counts_from_manifest(info: dict) -> dict:
+def counts_from_contract(info: dict) -> dict:
     n_pos = int(info["cases"])
     n_neg = int(info["controls"])
-    case_cov = float(info.get("case_note_coverage") or 0.0)
-    control_cov = float(info.get("control_note_coverage") or 0.0)
     return {
         "full_cohort": {"cases": n_pos, "controls": n_neg},
         "note_available_conditional": {
-            "cases": int(round(n_pos * case_cov)),
-            "controls": int(round(n_neg * control_cov)),
+            "cases": int(info["case_note_rows"]),
+            "controls": int(info["control_note_rows"]),
         },
     }
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Planning MDE grid for v2.1 paired delta-AUROC analyses using frozen cohort counts only.")
-    ap.add_argument("--cohort-manifest", required=True)
+    ap.add_argument("--analysis-populations", required=True)
     ap.add_argument("--output", required=True)
     args = ap.parse_args()
 
-    manifest_path = Path(args.cohort_manifest).expanduser().resolve()
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    outcomes = manifest["outcomes"]
+    population_path = Path(args.analysis_populations).expanduser().resolve()
+    population_contract = json.loads(population_path.read_text(encoding="utf-8"))
+    outcomes = population_contract["confirmatory_outcomes"]
 
     report = {
         "analysis": "v2.1 preregistration detectable-effect planning grid",
         "real_outcome_predictions_used": False,
         "real_outcome_labels_read": False,
-        "inputs_used": "aggregate frozen cohort counts, prevalence, and note coverage only",
+        "inputs_used": "frozen confirmatory analysis-population counts and exact note-available case/control counts only",
+        "analysis_population_contract": str(population_path),
+        "death_population": "MetaVision-only confirmatory ICU-death population frozen before performance",
         "baseline_auroc_assumptions": {
             "source": "known v1 population structured AUROCs; used only as planning anchors, not v2.1 estimates",
             **V1_BASELINE_AUROC,
@@ -106,7 +106,7 @@ def main() -> None:
 
     for outcome, base_auc in V1_BASELINE_AUROC.items():
         info = outcomes[outcome]
-        count_sets = counts_from_manifest(info)
+        count_sets = counts_from_contract(info)
         outcome_report = {"planning_baseline_auroc": base_auc, "samples": {}}
         for sample_name, counts in count_sets.items():
             n_pos = counts["cases"]
