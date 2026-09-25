@@ -19,7 +19,8 @@ PYTHONPATH=src .venv/bin/python -m unittest tests.test_v2_1_integrity -v
   src/115_build_fixed_note_corpora_v2_1.py \
   src/116_audit_hgb_thread_runtime_v2_1.py \
   src/preregistration_stats.py \
-  src/registration_gate.py
+  src/registration_gate.py \
+  src/v2_1_registered_inference_contract.py
 
 bash -n scripts/require_osf_registration.sh
 bash -n scripts/run_quarantine_pre_registration_e8.sh
@@ -54,9 +55,9 @@ out.write_text(json.dumps({
         "113_audit_treatment_context_availability_v2_1.py",
         "114_build_preregistration_context_features_v2_1.py",
         "115_build_fixed_note_corpora_v2_1.py",
-        "116_audit_hgb_thread_runtime_v2_1.py"
+        "116_audit_hgb_thread_runtime_v2_1.py",\n        "v2_1_registered_inference_contract.py"
     ],
-    "registration_gate_expected_state": "locked_until_docs/registration/osf_registration.json_exists"
+    "registration_gate_expected_state": "locked_until_osf_approved_doi_hash_verified_and_verbatim_form_imported"
 }, indent=2) + "\n", encoding="utf-8")
 print(out.read_text())
 PY
