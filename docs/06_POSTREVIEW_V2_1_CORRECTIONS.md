@@ -256,3 +256,41 @@ This is a **label-free source-system confounding diagnostic**, not mortality pre
 Therefore the pooled all-source ICU-death comparator is **not frozen for registration**. CV split freezing for ICU death is deferred until a source-system strategy is chosen without inspecting mortality performance.
 
 The next allowed step is a preregistration-only decomposition of source recoverability by structured, note-context, and documentation-behavior blocks, together with descriptive CareVue/MetaVision cohort counts. The source strategy must then be locked before any death predictive evaluation.
+
+
+## Preregistration audit execution failures and corrections
+
+Two execution failures occurred during preregistration-only design audits. Neither produced clinical outcome performance.
+
+### T7M4Q9R3 — death source-strategy audit
+
+- status: failed;
+- exit code: 124;
+- stop reason: timeout;
+- runtime: 7201 seconds;
+- artifact: none;
+- terminal phase: source-system decomposition.
+
+Cause: the initial decomposition used eight separate 5-fold nonlinear HGB source classifiers. The source-proxy question is diagnostic rather than a clinical prediction task, and this implementation was unnecessarily expensive.
+
+Correction before any death performance:
+- use 5-fold patient-grouped regularized logistic regression for source-system diagnostics;
+- exclude all-empty candidate columns from source classifiers;
+- report block-level progress;
+- preserve the same source-recoverability purpose and the 0.80 diagnostic threshold.
+
+The failed run also exposed that `doc_last_note_gap_hours` was entirely missing because of an index-alignment defect. That candidate is not frozen. Its calculation has been corrected prospectively; the all-missing R3 version is excluded from current source diagnostics.
+
+### V4N8Q2R6 — treatment-context validation
+
+- status: workflow_failed;
+- artifact: none;
+- no project task executed.
+
+Cause: its one-time automatic dispatch authorization returned HTTP 409 after the job had waited behind the long-running T7 audit. This was a control-plane dispatch failure rather than a project-code failure.
+
+A fresh validation on the corrected project commit is required before the treatment-context availability audit runs.
+
+### Validation coverage correction
+
+The preregistration validation runner initially compiled source files only through `src/111`. Therefore S6M3Q8R2 validated the pre-existing suite but did not actually compile the newly added `src/112` source-strategy audit. The named validation runner has now been corrected to compile and shell-check both `src/112` and `src/113` and their runners.
