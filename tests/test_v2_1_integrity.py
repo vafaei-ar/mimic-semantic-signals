@@ -111,6 +111,33 @@ class V21IntegrityTests(unittest.TestCase):
             "9d604176b53dac81f8a5e2d08e26dedcbea1f9e604baf200565d50a2e89b97dd",
         )
 
+    def test_corpus_hash_preparation_matches_context_representation(self):
+        raw = pd.DataFrame(
+            {
+                "case_id": ["a", "b"],
+                "subject_id": ["1", "2"],
+                "hadm_id": ["11", "22"],
+                "icustay_id": ["111", "222"],
+                "label": ["0", "1"],
+                "landmark_time": ["2026-01-01T12:00:00", "2026-01-02T12:00:00"],
+                "note_time": ["", "2026-01-02T10:30:00.000000"],
+                "has_note": [0, 1],
+                "category": ["", "Nursing"],
+            }
+        )
+        prepared = corpus_builder.prepare_index_for_frozen_context_hash(raw)
+        expected = corpus_builder.note_identity_hash(prepared)
+        self.assertNotEqual(corpus_builder.note_identity_hash(raw), expected)
+        normalized, observed = (
+            corpus_builder.verify_note_identity_and_normalize_has_note(
+                prepared,
+                expected,
+                "synthetic",
+            )
+        )
+        self.assertEqual(observed, expected)
+        self.assertEqual(normalized["has_note"].tolist(), [False, True])
+
     def test_frozen_note_hash_checked_before_has_note_bool_conversion(self):
         df = pd.DataFrame(
             {
