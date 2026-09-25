@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "freeze": "docs/corrected_landmark12_v2_1_cohort_result_freeze.md",
+  "canonical_job": "K7Q3M8R4",
+  "project_commit": "0a5b59023c9cb96950be6ec2e71e26fbec4378da",
+  "artifact_path": "outputs/multitask_benchmark/population_landmark12_cohort_manifest_v2_1.json",
+  "artifact_sha256": "662afa8b5535d44037e2e7dc07cc02f32a2356caef7369294591db7996b67b19",
+  "adult_eligibility": {
+    "rows_before": 61522,
+    "missing_age_excluded": 0,
+    "age_lt_18_excluded": 8193,
+    "nicu_first_careunit_excluded": 8093,
+    "rows_after": 53329,
+    "unique_patients_after": 38510
+  },
+  "outcomes": {
+    "invasive_ventilation": {
+      "rows": 11116,
+      "unique_patients": 8982,
+      "cases": 279,
+      "controls": 10837,
+      "note_available_rows": 4499
+    },
+    "renal_replacement_therapy": {
+      "rows": 19395,
+      "unique_patients": 15080,
+      "cases": 314,
+      "controls": 19081,
+      "note_available_rows": 7709
+    },
+    "icu_death": {
+      "rows": 45571,
+      "unique_patients": 33807,
+      "cases": 521,
+      "controls": 45050,
+      "note_available_rows": 31271
+    }
+  },
+  "sensitivity_outcomes": {
+    "invasive_ventilation_explicit_evidence": {
+      "rows": 11116,
+      "unique_patients": 8982,
+      "cases": 279,
+      "controls": 10837,
+      "note_available_rows": 4499
+    },
+    "invasive_ventilation_any_support": {
+      "rows": 11380,
+      "unique_patients": 9174,
+      "cases": 543,
+      "controls": 10837,
+      "note_available_rows": 4590
+    }
+  }
+}
