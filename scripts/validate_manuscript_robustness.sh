@@ -235,3 +235,7 @@ bash -n scripts/run_corrected_landmark12_v2_1_cohort_build.sh
 bash -n scripts/run_enhanced_structured_baseline_v2_1.sh
 bash -n scripts/run_freeze_enhanced_structured_cv_splits_v2_1.sh
 bash -n scripts/run_enhanced_structured_baseline_evaluation_v2_1.sh
+
+bash -n scripts/run_enhanced_structured_baseline_evaluation_v2_1_ventilation.sh
+bash -n scripts/run_enhanced_structured_baseline_evaluation_v2_1_rrt.sh
+bash -n scripts/run_enhanced_structured_baseline_evaluation_v2_1_death.sh
