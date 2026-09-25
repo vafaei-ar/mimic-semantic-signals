@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_v2_1_text_inference",
+  "canonical_job": "R8Q6M4N2",
+  "project_commit": "0bbd69ad8d83df84ed90ad9772323b6bfc8b9b2f",
+  "artifact_path": "outputs/multitask_benchmark/fixed_note_corpora_v2_1.json",
+  "artifact_sha256": "608cf993ba080afd54e2157a94d506d9406966795f91d78be2550960c600db5c",
+  "primary_corpus": "stripped",
+  "secondary_corpus": "full_unstripped",
+  "analyses": {
+    "invasive_ventilation": {
+      "source": "metavision",
+      "eligible_rows": 11116,
+      "note_available_rows": 4499,
+      "note_identity_sha256": "4a5f75dc9fd16fd0e3394c97d47d99d842230cc301ab01e4794ca969bd7271f3",
+      "direct_language_flagged_notes": 618,
+      "notes_changed_by_stripping": 618,
+      "total_regex_matches": 849,
+      "full_sha256": "ae47daa2a80e93960db4e68f65424b16a938cfb460da3727fda1668f446002f7",
+      "stripped_sha256": "63278b2cd6da2d1a5b576b51df645e46c2860c8fa090409fd17a3b5365a29f4a"
+    },
+    "renal_replacement_therapy": {
+      "source": "metavision",
+      "eligible_rows": 19395,
+      "note_available_rows": 7709,
+      "note_identity_sha256": "750f84b5f887928c90592137e5b0c7bb035530ce446a3542b3def0f9d5eab858",
+      "direct_language_flagged_notes": 347,
+      "notes_changed_by_stripping": 347,
+      "total_regex_matches": 670,
+      "full_sha256": "5128d0f26ef52f4ea2dc20f1f2d6ae84b581e4d7063ccd2360b016238a68329c",
+      "stripped_sha256": "5113938d11a04df39c2189fc91f7e71b487c5dec6c6f3119f192028e3329ee5f"
+    },
+    "icu_death": {
+      "source": "metavision",
+      "eligible_rows": 19811,
+      "note_available_rows": 7889,
+      "note_identity_sha256": "9d604176b53dac81f8a5e2d08e26dedcbea1f9e604baf200565d50a2e89b97dd",
+      "direct_language_flagged_notes": 797,
+      "notes_changed_by_stripping": 797,
+      "total_regex_matches": 2092,
+      "full_sha256": "1ebb6c0a92a0c257f1e6d8d8f145f7b82c8c786aedff92a8b7478b4581823760",
+      "stripped_sha256": "8e60221c0c5db1074c0f14f5bd39b78252d0e5388bec8c3ca90b992c5a1a4aba"
+    },
+    "icu_death_carevue": {
+      "source": "carevue",
+      "eligible_rows": 25632,
+      "note_available_rows": 23272,
+      "note_identity_sha256": "bc1c29e740b418cb0a5ad477e4de6be16ec9ce8d031fe8b6c2b1db2cce11bfc1",
+      "direct_language_flagged_notes": 1159,
+      "notes_changed_by_stripping": 1159,
+      "total_regex_matches": 2333,
+      "full_sha256": "b98d6bed822bcfe4d1dce00557d5962f5199b9fb0741357891735b7b5bbc1c6f",
+      "stripped_sha256": "b322015403eb2717919b153036e0f8ce97d872ecd67c9265632e485b3ff1c6e9"
+    }
+  }
+}
