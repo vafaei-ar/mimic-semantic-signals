@@ -107,7 +107,7 @@ For the three-outcome confirmatory family:
 - RRT primary population: frozen MetaVision cohort;
 - ICU-death primary population: MetaVision subset defined here.
 
-Holm multiplicity control will apply to these three outcome-level primary semantic comparisons.
+This statement is superseded by the later estimation-first inference amendment. No confirmatory p-values or Holm multiplicity testing are planned. The three outcome-level primary semantic contrasts are reported as separate prespecified co-primary estimands with effect estimates and uncertainty intervals.
 
 CareVue death is a prespecified replication/sensitivity and is not an additional member of the three-test confirmatory family.
 
