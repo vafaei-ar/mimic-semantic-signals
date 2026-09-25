@@ -1656,3 +1656,88 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/enhanced_structured_baseline_evaluation_v2_1_death.json
+
+  validate_v2_1_preregistration:
+    description: Run synthetic and static preregistration integrity checks only; no real clinical data or real-label performance.
+    command:
+      - bash
+      - scripts/run_v2_1_preregistration_synthetic_checks.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/integrity/v2_1_preregistration_synthetic_checks.json
+
+  quarantine_pre_registration_e8:
+    description: Move any partial local E8R7Q5M3 prediction/split outputs into a local quarantine directory without deleting or reading their performance content; share only an aggregate movement report.
+    command:
+      - bash
+      - scripts/run_quarantine_pre_registration_e8.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/integrity/e8_pre_registration_quarantine.json
+
+  audit_preregistration_context_v2_1:
+    description: Build label-free note-documentation metadata, audit treatment/support/code-status dictionary candidates, freeze note-identity hashes, and quantify CareVue/MetaVision source recoverability without using outcome performance.
+    command:
+      - bash
+      - scripts/run_preregistration_context_audit_v2_1.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/preregistration_context_audit_v2_1.json
+
+  simulate_preregistration_power_v2_1:
+    description: Compute a label-free planning grid for detectable paired delta-AUROC using frozen v2.1 aggregate cohort counts and explicitly disclosed v1 AUROC assumptions.
+    command:
+      - bash
+      - scripts/run_preregistration_power_v2_1.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/multitask_benchmark/preregistration_power_v2_1.json
+
+  benchmark_refit_bootstrap_v2_1:
+    description: Benchmark the planned explicit patient-cluster row-duplication refit bootstrap and one-sided null-centered test using synthetic data only; no real predictors or outcome labels.
+    command:
+      - bash
+      - scripts/run_refit_bootstrap_benchmark_v2_1.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/refit_bootstrap_benchmark_v2_1.json
