@@ -91,6 +91,25 @@ class V21IntegrityTests(unittest.TestCase):
             data = require_osf_registration(td)
             self.assertEqual(data["registration_id"], "abcd1")
 
+    def test_expected_count_contract(self):
+        path = ROOT / "config" / "corrected_landmark12_v2_1_expected_counts.json"
+        contract = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(contract["canonical_job"], "K7Q3M8R4")
+        self.assertEqual(
+            contract["artifact_sha256"],
+            "662afa8b5535d44037e2e7dc07cc02f32a2356caef7369294591db7996b67b19",
+        )
+        primary = contract["outcomes"]
+        self.assertEqual(primary["invasive_ventilation"]["rows"], 11116)
+        self.assertEqual(primary["invasive_ventilation"]["cases"], 279)
+        self.assertEqual(primary["renal_replacement_therapy"]["cases"], 314)
+        self.assertEqual(primary["icu_death"]["cases"], 521)
+        explicit = contract["sensitivity_outcomes"]["invasive_ventilation_explicit_evidence"]
+        self.assertEqual(
+            explicit["controls"],
+            primary["invasive_ventilation"]["controls"],
+        )
+
     def test_patient_bootstrap_keeps_fixed_fold(self):
         subject = np.array([1, 1, 2, 3, 3, 4, 5, 5])
         folds = np.array([1, 1, 2, 1, 1, 2, 1, 1])
