@@ -1,22 +1,22 @@
 # Post-review confirmatory statistical analysis plan for v2.1
 
-**Draft status:** the scientific design is frozen before OSF registration. The original 500-replicate exact refit-bootstrap plan was superseded before any v2.1 predictive performance was examined after a synthetic exact-runtime benchmark showed it was not operationally feasible. The primary analysis is now estimation-first, with a frozen patient-cluster bootstrap of paired out-of-fold predictions and separate cross-validation repeat stability.
+## Study status and objective
 
-## Purpose and study status
+This registration covers the remaining post-review v2.1 analyses. It is not an inception-stage preregistration: earlier MIMIC-III results were already available, and those results are disclosed below. No v2.1 predictive performance has been examined.
 
-This is a prospectively registered **post-review confirmatory analysis plan**, not an inception-stage preregistration. Earlier MIMIC-III analyses were already available when v2.1 was designed. The confirmatory question is whether semantic information measured from prospective ICU notes improves 12-hour deterioration discrimination after accounting for structured physiology, treatment/support state, and documentation behavior.
+The confirmatory question is whether semantic information extracted from prospective ICU notes adds short-horizon deterioration discrimination beyond structured physiology, treatment and support state, and documentation behavior. The outcomes are invasive ventilation, renal-replacement therapy (RRT), and ICU death within 12 hours after a 12-hour ICU landmark.
 
-The three confirmatory outcomes are invasive ventilation, renal-replacement therapy (RRT), and ICU death. All confirmatory analyses use MetaVision stays. CareVue ICU death is a separate replication/sensitivity analysis because label-free audits showed strong CareVue/MetaVision differences in documentation behavior and structured missingness.
+All three confirmatory analyses use MetaVision stays. CareVue ICU death is analyzed separately because a label-free source audit showed that CareVue and MetaVision remain readily distinguishable from documentation behavior and structured missingness.
 
 ## Information known before registration
 
-The team had seen v1 results. In the earlier prevalence-preserving population analysis, the Open-Jev increment over structured physiology plus note context was +0.00338 AUROC for ventilation, -0.00075 for RRT, and +0.01332 for ICU death. The corresponding Laya increments were -0.00469, -0.00033, and +0.00720. Open-Jev added +0.00537 AUROC after TF-IDF for ICU death. Documentation context itself had a large association with ventilation risk: AUROC increased from 0.7071 with the structured model to 0.8596 after note context was added. A separate matched zero-shot benchmark also showed larger ventilation and death increments for DiffusionGemma than for Open-Jev.
+The team had already seen v1 results. In the earlier prevalence-preserving population analysis, the Open-Jev increment over structured physiology plus note context was +0.00338 AUROC for ventilation, -0.00075 for RRT, and +0.01332 for ICU death. Laya increments were -0.00469, -0.00033, and +0.00720. Open-Jev added +0.00537 AUROC after TF-IDF for ICU death. Documentation context itself produced a large ventilation increment, from AUROC 0.7071 with the structured model to 0.8596 after note context was added. A separate matched zero-shot benchmark showed larger ventilation and death increments for DiffusionGemma than for Open-Jev.
 
-These observations preceded several v2.1 choices, including use of stripped text as the primary corpus and stronger treatment/documentation comparators. Open-Jev is nevertheless the primary semantic instrument because it directly measures the eight predefined typed clinical constructs on a common interpretable scale, not because it produced the largest earlier increment.
+These observations preceded several v2.1 choices, including use of stripped text as the primary corpus and addition of treatment and documentation comparators. Open-Jev is the primary semantic instrument because it measures the eight predefined clinical constructs on one interpretable scale, not because it had the largest earlier predictive increment.
 
-## Populations, text, and comparator
+## Frozen populations and inputs
 
-The frozen confirmatory populations are:
+The confirmatory populations are:
 
 | Outcome | Rows | Cases | Controls | Patients | Eligible notes |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -24,72 +24,60 @@ The frozen confirmatory populations are:
 | RRT | 19,395 | 314 | 19,081 | 15,080 | 7,709 |
 | ICU death, MetaVision | 19,811 | 214 | 19,597 | 15,312 | 7,889 |
 
-CareVue ICU death contains 25,632 rows and 306 cases.
+CareVue ICU death contains 25,632 rows and 306 cases and is retained as a separate replication analysis.
 
-For every row, note identity, note time, note category, and note availability are fixed before text processing. The primary corpus removes prespecified direct endpoint/treatment expressions from the selected note and performs no other normalization. The full prospective note is a secondary sensitivity. The primary TF-IDF reference uses the same stripped corpus.
+For each row, note identity, note time, note category, and note availability are fixed before text processing. The primary corpus removes prespecified direct endpoint or treatment expressions from that fixed note and applies no other text normalization. The unstripped prospective note is a secondary sensitivity. The primary TF-IDF analysis uses the same stripped corpus.
 
-The richest comparator contains the frozen 34-feature physiology/laboratory/urine block; pre-landmark respiratory, vasoactive, sedative, and death-only code-status context; note-documentation metadata over the prior 12 hours; and ordinary note context (availability, selected-note age, and collapsed category). No source-system variable or endpoint-defining invasive-ventilation variable is included.
+The rich comparator contains the frozen 34-feature physiology, laboratory, and urine block; pre-landmark respiratory, vasoactive, and sedative context; death-only code status; note-documentation metadata from the prior 12 hours; and ordinary note context (availability, selected-note age, and collapsed category). It contains neither a source-system indicator nor endpoint-defining invasive-ventilation variables.
 
-The primary learner is HistGradientBoostingClassifier with learning rate 0.05, 300 iterations, at most 15 leaf nodes, minimum 50 samples per leaf, L2 regularization 1.0, and early stopping disabled. Hyperparameters are not tuned on v2.1 results. For patients without an eligible note, the eight semantic inputs remain NaN and `has_note` remains in the comparator. For note-available rows, all eight scores are required.
+The primary learner is scikit-learn HistGradientBoostingClassifier with learning rate 0.05, 300 iterations, at most 15 leaf nodes, minimum 50 samples per leaf, L2 regularization 1.0, and early stopping disabled. These settings are fixed across outcomes. Patients without an eligible note retain has_note=0 and have all eight semantic inputs set to missing. Note-available rows must have all eight semantic scores. No explicit semantic-by-has_note interaction is added.
 
-## Primary comparison and interpretation
+## Primary semantic comparison
 
-Open-Jev on the stripped note is the primary semantic instrument. The augmented model is identical to the rich comparator except for addition of the eight Open-Jev scores.
+Open-Jev applied to the stripped note is the primary semantic representation. The augmented model is identical to the rich comparator except for addition of the eight Open-Jev scores.
 
-For each outcome,
+For each outcome, the primary estimand is:
 
-[
-\Delta AUROC =
-AUROC_{rich\ comparator + Open\text{-}Jev}
--
-AUROC_{rich\ comparator}.
-]
+Delta AUROC = AUROC(rich comparator + Open-Jev) - AUROC(rich comparator).
 
-The primary point estimate uses the first frozen five-fold patient-grouped partition (seed 20260924). Four additional frozen partitions assess split and refit stability.
+The point estimate uses the first frozen five-fold patient-grouped partition (seed 20260924). Four additional frozen partitions, using seeds 20260925 through 20260928, assess sensitivity to refitting and fold assignment.
 
-The three outcomes are prespecified co-primary **estimands**, not three binary hypothesis tests. No confirmatory p-values are calculated and no Holm decision rule is applied. The paper reports each outcome-specific effect estimate, its frozen primary uncertainty interval, and the estimates from repeats 2–5. An outcome is not labeled a confirmatory “win” or “loss” according to whether an interval crosses zero.
+The three outcomes are reported as separate prespecified co-primary estimands. We will not calculate confirmatory p-values, apply Holm testing, or classify an outcome as a success or failure according to whether an interval crosses zero.
 
-## Primary uncertainty analysis
+## Uncertainty and stability
 
-The primary uncertainty interval is a 5,000-replicate patient-cluster bootstrap of the **paired repeat-1 out-of-fold predictions without model refitting**. Source patients are sampled with replacement; every ICU row from a sampled patient is retained with that patient’s bootstrap multiplicity in both the rich-comparator and augmented prediction vectors. Each replicate recomputes the paired delta-AUROC from those resampled predictions.
+The primary interval is a 5,000-replicate patient-cluster bootstrap of the paired repeat-1 out-of-fold predictions without model refitting. Source patients are sampled with replacement, and all ICU rows from each sampled patient enter both prediction vectors with that patient's bootstrap multiplicity. Each replicate recomputes delta-AUROC. Child seeds are generated with numpy.random.SeedSequence(20260924).spawn(5000), and the reported interval is the two-sided 95% percentile interval.
 
-Bootstrap patient samples use deterministic child seeds generated by `numpy.random.SeedSequence(20260924).spawn(5000)`. The reported primary interval is the two-sided 95% percentile interval from this distribution.
+This is a conditional resampling interval around the frozen repeat-1 cross-fitted prediction functions. It captures patient-sampling variability in the observed discrimination contrast but not the full uncertainty that would arise if the models were retrained in a newly sampled cohort.
 
-This interval is explicitly conditional on the frozen repeat-1 cross-fitted prediction functions. It quantifies patient-sampling variability of the observed discrimination contrast; it does not claim to include the full variance that would arise from retraining the models on an independently sampled cohort.
+Refit sensitivity is reported separately. The rich and augmented models are refit under repeats 2 through 5, and all five repeat-specific delta-AUROC estimates plus their range are shown.
 
-Model-refit and fold-partition sensitivity are therefore reported separately. Repeats 2–5 refit both models under four additional frozen patient-grouped partitions, and the four additional delta-AUROC estimates plus their range are reported alongside the primary estimate. This separation is deliberate: the synthetic exact-runtime benchmark showed that a 500-replicate exact refit bootstrap would require about 760 serial hours for ventilation alone with the frozen HGB specification.
+This separation was chosen before any v2.1 performance was examined. A synthetic benchmark using the frozen HGB specification required 5,470 seconds for one full-size ventilation patient-cluster refit replicate, implying about 760 serial hours for 500 ventilation replicates alone. The earlier 500-refit plan is retained in the repository as superseded provenance.
 
-## Power and interpretation
+## Precision planning
 
-Power planning used only frozen counts, exact note-available counts, and previously known v1 structured AUROCs as planning anchors. At Holm's first-step alpha and assumed paired-prediction correlation 0.90, the approximate 80% detectable full-cohort increments are 0.0233 for ventilation, 0.0113 for RRT, and 0.0241 for ICU death. The note-available-only values are 0.0334, 0.0170, and 0.0385.
+Before performance analysis, we calculated an approximate delta-AUROC detectable-effect grid from frozen case/control counts, exact note-available counts, and previously known v1 structured AUROCs. The grid used paired-score correlations of 0.80, 0.90, and 0.95. It was originally also tabulated at a conservative alpha of 0.0167 while the plan still contemplated three formal tests. That alpha is no longer part of the operative inference procedure; the grid is retained only as a planning and interpretation aid.
 
-The power grid is retained as a planning and interpretation aid, not as a test-design calculation. Ventilation and MetaVision death are poorly powered for small increments in the range previously seen in v1 under many plausible paired-score correlations. The confirmatory report is therefore estimation-first: small or interval-overlapping effects are described by magnitude and uncertainty rather than as evidence of absence. Note-available-only analyses are secondary and descriptive.
+At correlation 0.90, the approximate 80% detectable full-cohort increments under that conservative grid were 0.0233 for ventilation, 0.0113 for RRT, and 0.0241 for MetaVision death. The corresponding note-available-only values were 0.0334, 0.0170, and 0.0385. Ventilation and MetaVision death therefore have limited precision for increments in the range previously seen in v1. Small estimates will be reported with their uncertainty rather than interpreted as evidence of no effect.
 
-## Secondary analyses
+## Prespecified secondary analyses
 
-Prespecified secondary analyses include ΔAUPRC, Brier score, log loss, calibration and decision curves; Laya; DiffusionGemma; stripped-text TF-IDF; the six-construct state-dominant Open-Jev subset; full-note text; the broad respiratory-support ventilation endpoint; timing sensitivities; and CareVue death replication. These secondary analyses do not create additional co-primary estimands and are not used to redefine the primary outcome-specific estimates.
+Secondary discrimination measures include delta-AUPRC. Brier score, log loss, calibration-in-the-large, calibration slope, expected calibration error, and decision-curve summaries are also secondary.
 
-The high-dimensional lexical comparison uses a separate fixed sparse-logistic analysis family because 10,000-dimensional TF-IDF is not passed to HistGradientBoostingClassifier. Within each training fold, the same encoded rich comparator is evaluated with sparse logistic regression as comparator-only, comparator + Open-Jev, comparator + TF-IDF, and comparator + TF-IDF + Open-Jev. Direct semantic-versus-lexical conclusions are drawn within this common logistic family. The primary HGB Open-Jev comparison remains unchanged.
+Laya is a semantic-method sensitivity. DiffusionGemma is a robustness and external-transport representation. The six-construct state-dominant Open-Jev subset excludes poor treatment response and escalation considered but is not described as treatment-free. Additional prespecified analyses include the unstripped corpus, broad respiratory-support ventilation endpoint, timing sensitivities, CareVue death replication, and patient-shuffled semantic negative control.
 
-The state-dominant subset excludes poor treatment response and escalation considered. It is not described as treatment-free because respiratory and hemodynamic concern can still refer to support needs.
+The TF-IDF comparison uses a separate sparse-logistic family because the 10,000-dimensional lexical representation is not passed to HGB. Within each training fold, the same encoded rich comparator is evaluated as comparator-only, comparator + Open-Jev, comparator + TF-IDF, and comparator + TF-IDF + Open-Jev. Semantic-versus-lexical comparisons are made within that common logistic family. The primary HGB comparison is unchanged.
 
-The patient-shuffled semantic negative control uses repeat-1 out-of-fold rich-comparator risk deciles. Within each outcome/source analysis, complete eight-score vectors are permuted among note-available patients within decile using seed 20260929; no-note rows remain unchanged.
+The patient-shuffled semantic negative control permutes complete eight-score vectors among note-available patients within deciles of repeat-1 rich-comparator out-of-fold risk, using seed 20260929. No-note rows remain no-note rows.
 
 ## Construct and external validation
 
-Clinician construct validation is separate from the primary predictive estimation analysis. Blinded raters will score the eight constructs and estimate 12-hour deterioration probability. Inter-rater reliability, same-construct agreement across methods, cross-construct discrimination, and model-human association will be reported.
+Clinician construct validation is separate from the primary predictive analysis. Blinded raters will score the eight constructs and provide a 12-hour deterioration probability. The analysis will report inter-rater reliability, same-construct agreement across methods, cross-construct discrimination, and model-human association. Direct access to MIMIC notes by raters will proceed only under the applicable PhysioNet credential/DUA requirements and after a Penn State IRB determination for the annotation activity.
 
-Zigong will have two prespecified external arms. A local Chinese-to-English translation pipeline will be frozen without access to Zigong outcome labels; Open-Jev, Laya, and English TF-IDF will then receive the same translated text. Native-Chinese DiffusionGemma remains a separate transport analysis. Translation model choice and decoding parameters will be locked in a separate label-free protocol before outcomes are analyzed.
+Zigong will have two prespecified external arms. A local Chinese-to-English translation pipeline will be frozen without access to Zigong outcome labels; Open-Jev, Laya, and English TF-IDF will then receive the same translated text. Native-Chinese DiffusionGemma remains a separate transport analysis. Translation model and decoding settings will be fixed before labels are joined.
 
 ## Deviations and paper scope
 
-If an implementation defect or data-integrity problem is found after registration, the affected analysis will stop and the date, reason, and correction will be documented before the corrected result is inspected. If the original result has already been seen, both versions will remain in the audit trail and the supersession will be reported.
+If an implementation or data-integrity problem is found after registration, the affected analysis will stop. The date, reason, and correction will be logged before the corrected result is inspected. If the affected result has already been seen, both versions will remain in the audit trail and the supersession will be reported. A change that alters the scientific estimand requires an amended protocol.
 
-The first paper requires the internal v2.1 confirmatory analysis, clinician construct validation, and Zigong narrative validation. Penn State narrative data, eICU/NWICU structured transport, a full equity analysis, semantic trajectories, the historical vasopressor analysis, and a rebuilt supervised encoder are not required for initial submission.
-
-
-The initial combined benchmark `W9R6M4N2` timed out after 14,401.6 seconds before emitting an artifact because it combined full-size runtime fitting with repeated model-refit null simulations. The redesigned benchmark was validated by `X4R7M2Q8` and completed as `Y5R7M2Q8`.
-
-One exact full-size synthetic ventilation refit-bootstrap replicate required 5,470.3 seconds. That corresponds to about 759.8 serial hours for 500 ventilation replicates alone. Because this benchmark used no real predictors or outcome labels, it provided a legitimate pre-registration basis to amend the infeasible refit-bootstrap plan without outcome-driven adaptation.
-
-The previous 500-refit specification remains in `config/v2_1_refit_bootstrap_inference_freeze.json` with status `superseded_before_registration`. The operative inference rule is `config/v2_1_primary_inference_freeze.json`.
+The minimum first paper consists of the internal v2.1 confirmatory analysis, clinician construct validation, and Zigong narrative validation. Penn State narrative data, eICU/NWICU structured transport, a full equity analysis, semantic trajectories, the historical vasopressor analysis, and a rebuilt supervised encoder are outside the minimum submission set.
