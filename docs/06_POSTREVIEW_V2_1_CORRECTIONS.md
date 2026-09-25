@@ -336,3 +336,29 @@ Correction before performance:
 - a regression test verifies that the code-status mapping resolves exactly to item IDs 128 and 223758 despite the nonnumeric outcome-scope metadata.
 
 Because the implementation changed, the corrected context materialization must be a new execution rather than a retry of C9.
+
+
+## E9R6Q4M2 context feature materialization correction
+
+The corrected context feature build `E9R6Q4M2` completed successfully and produced only aggregate diagnostics, but inspection of those diagnostics identified a preregistration data-cleaning issue before the context layer was frozen for modeling.
+
+Observed raw/latest FiO2 ranges included:
+
+- MetaVision RRT: maximum 401;
+- MetaVision ICU death: maximum 401;
+- CareVue death: mixed fraction-scale and percent-scale values.
+
+These are incompatible with a single raw numeric FiO2 scale.
+
+No predictive performance had been run.
+
+The context feature definition was therefore corrected prospectively:
+
+- values in `(0, 1]` are interpreted as fractions and multiplied by 100;
+- values in `[20, 100]` are interpreted as percent and retained;
+- all other numeric FiO2 values are treated as missing;
+- the target unit is percent.
+
+The E9 row-level context hashes are therefore **provisional and superseded**. A new context materialization is required after validation.
+
+The same review also showed that `doc_hours_since_last_note` is exactly the selected-note age already included in ordinary note context under the same note eligibility/timing rule. It was removed from the documentation-behavior block to avoid duplicating the same predictor under two names.
