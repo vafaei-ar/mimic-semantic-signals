@@ -316,3 +316,23 @@ See:
 - `config/v2_1_analysis_population_contract.json`.
 
 The pooled all-source death cohort remains provenance only and is not used for the confirmatory death comparison.
+
+
+## C9R5Q3M7 context-feature materialization failure
+
+The first frozen context-feature materialization attempt `C9R5Q3M7` failed before writing any artifact or row-level context file.
+
+- status: failed;
+- exit code: 1;
+- runtime: 59.989 seconds;
+- terminal phase: source-specific respiratory/code-status extraction;
+- artifact: none.
+
+Cause: the helper collecting item IDs recursively traversed the context-freeze metadata field `outcome_scope: ["icu_death"]` and attempted to parse the string `icu_death` as an integer.
+
+Correction before performance:
+
+- item-ID collection now accepts integer-valued list members only and ignores descriptive metadata;
+- a regression test verifies that the code-status mapping resolves exactly to item IDs 128 and 223758 despite the nonnumeric outcome-scope metadata.
+
+Because the implementation changed, the corrected context materialization must be a new execution rather than a retry of C9.
