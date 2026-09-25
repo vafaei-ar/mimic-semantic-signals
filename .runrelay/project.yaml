@@ -1813,3 +1813,57 @@ tasks:
       wait_minutes: 20
     artifacts:
       - outputs/multitask_benchmark/fixed_note_corpora_v2_1.json
+
+
+  benchmark_refit_bootstrap_v2_1_ventilation:
+    description: Benchmark one exact full-size synthetic patient-cluster HGB refit-bootstrap replicate for ventilation plus cheap statistical null calibration; no real predictors or labels.
+    command:
+      - bash
+      - scripts/run_refit_bootstrap_benchmark_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/refit_bootstrap_benchmark_v2_1_ventilation.json
+
+
+  benchmark_refit_bootstrap_v2_1_rrt:
+    description: Benchmark one exact full-size synthetic patient-cluster HGB refit-bootstrap replicate for RRT plus cheap statistical null calibration; no real predictors or labels.
+    command:
+      - bash
+      - scripts/run_refit_bootstrap_benchmark_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/refit_bootstrap_benchmark_v2_1_rrt.json
+
+
+  benchmark_refit_bootstrap_v2_1_death:
+    description: Benchmark one exact full-size synthetic patient-cluster HGB refit-bootstrap replicate for MetaVision death plus cheap statistical null calibration; no real predictors or labels.
+    command:
+      - bash
+      - scripts/run_refit_bootstrap_benchmark_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/refit_bootstrap_benchmark_v2_1_death.json
