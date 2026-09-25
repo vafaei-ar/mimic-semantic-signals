@@ -92,7 +92,7 @@ Secondary analyses include ΔAUPRC, Brier score, log loss, calibration, and deci
 
 The state-dominant subset retains overall clinician concern, worsening trajectory, respiratory concern, hemodynamic concern, diagnostic uncertainty, and reassuring stability. It excludes poor treatment response and escalation considered. It is not described as treatment-free because the respiratory and hemodynamic constructs can still refer to support needs.
 
-A patient-shuffled semantic negative control will be reported as a secondary sanity check. Semantic vectors will be permuted among note-available patients within prespecified risk strata so that generic score distributions and note availability are preserved while patient-note correspondence is broken.
+A patient-shuffled semantic negative control will be reported as a secondary sanity check. Within each outcome and source-specific analysis, note-available patients will be assigned to deciles of the repeat-1 out-of-fold rich-comparator predicted risk. The complete eight-score semantic vector will then be permuted between patients within each decile using fixed seed 20260929; no-note rows remain unchanged with semantic NaNs. The shuffled augmented model will use the same frozen folds and learner. This preserves note availability and approximate structured/context risk while breaking correspondence between a patient's own note and semantic scores.
 
 ## Construct and external validation
 
