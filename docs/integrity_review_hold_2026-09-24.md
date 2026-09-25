@@ -60,7 +60,7 @@ The original files remain unchanged for provenance.
 
 ## Corrective status
 
-The corrected v2 program has already completed:
+The corrected v2 program completed the first rebuild:
 
 - source-compatible cohort rebuild;
 - corrected note normalization;
@@ -69,7 +69,9 @@ The corrected v2 program has already completed:
 - enhanced 34-feature structured mapping;
 - local structured feature extraction.
 
-The active gate at the latest update is the structured-only v2 predictive evaluation.
+A second code review then identified an adult/NICU eligibility gap and ETT-coded GCS-verbal bug upstream of model fitting. The active manuscript gate is therefore the post-review **v2.1 correction**, not the pre-v2.1 structured result.
+
+See `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`.
 
 See:
 
