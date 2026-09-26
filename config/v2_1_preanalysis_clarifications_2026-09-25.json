@@ -30,7 +30,15 @@
     "interval_rule": "left_closed_right_open_except_final_includes_one",
     "empty_bins": "zero_contribution",
     "weighting": "bin_n_over_total",
-    "discrepancy": "absolute_observed_event_rate_minus_mean_predicted_probability"
+    "discrepancy": "absolute_observed_event_rate_minus_mean_predicted_probability",
+    "secondary_quantile_summary": {
+      "bins": 10,
+      "scheme": "equal_frequency_quantile_bins",
+      "duplicate_edge_rule": "drop duplicate edges if predicted risks are tied",
+      "weighting": "bin_n_over_total",
+      "discrepancy": "absolute_observed_event_rate_minus_mean_predicted_probability",
+      "role": "secondary descriptive calibration summary; does not replace calibration-in-the-large or calibration slope and is not used for claims or decisions"
+    }
   },
   "decision_curve": {
     "thresholds": [
