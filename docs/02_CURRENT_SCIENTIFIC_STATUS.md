@@ -141,12 +141,13 @@ The most important remaining scientific gates are:
 3. run corrected semantic and lexical comparisons using identical frozen v2.1 split hashes;
 4. quantify whether any semantic increment survives the nonlinear structured comparator;
 5. perform blinded clinician construct validation with multiple raters;
-6. run a controlled synthetic construct-validity/stress-test analysis without confusing it with clinical external validation;
-7. correct/repeat affected eICU and Zigong external analyses;
-8. obtain a second external narrative cohort if feasible;
-9. quantify the practical value of compression: dimensionality, stability, compute, interpretability, and transport.
+6. prioritize the registered controlled-edit robustness analyses on real MIMIC notes and blinded clinician construct validation;
+7. use OPUS, if pursued, only as a supplementary synthetic stress test outside the critical path;
+8. correct/repeat affected eICU and Zigong external analyses;
+9. obtain a second external narrative cohort if feasible;
+10. quantify the practical value of compression: dimensionality, stability, compute, interpretability, and transport.
 
-The candidate synthetic construct-validity resource is documented in `docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md`. No OPUS-based Medical JEV result exists yet.
+The OPUS resource is documented in `docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md`. It is supplementary because the source genre is synthetic doctor-patient dialogue rather than ICU bedside notes, and long conversations exceed the registered Open-Jev coverage window. No OPUS-based Medical JEV result exists yet.
 
 If corrected semantic effects become small or disappear against the nonlinear structured baseline, the paper should pivot toward **interpretable semantic compression of lexical signal** rather than “information beyond physiology.”
 
