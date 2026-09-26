@@ -1,6 +1,6 @@
 # 02 — Current scientific status
 
-Updated: 2026-09-24
+Updated: 2026-09-26
 
 ## Current scientific question
 
@@ -86,20 +86,20 @@ The exact mapping and extraction freeze are:
 
 ## Active analysis
 
-The current manuscript-facing gate is the **post-review v2.1 correction**, documented in:
+The corrected v2.1 design has now been submitted to OSF Registries as registration `ahxn9`. The repository records the registration as pending approval, and real-label predictive execution remains locked.
 
-- `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`
+The current hard gate requires:
 
-The already-running `E8R7Q5M3` structured evaluation was launched before the adult/NICU and GCS-verbal issues were identified. Its performance artifact should remain unopened/unpromoted for manuscript use.
+1. OSF approval and DOI recording;
+2. OSF-hosted registration-file SHA-256 verification;
+3. verbatim import and verification of the submitted OSF form text;
+4. exact-commit synthetic/static validation.
 
-The next valid structured result must come from:
+Post-submission validation job `V4N8Q2R7` passed on commit `296e082e8ee9b01211fa50b1be2f026edcb31bdf`, with no real clinical data read and no real outcome performance computed.
 
-1. adult/NICU-excluded v2.1 cohort;
-2. ETT-safe GCS verbal extraction;
-3. separately frozen patient-grouped split files with SHA-256;
-4. fresh linear/nonlinear structured evaluation with corrected calibration reporting.
+Once the gate closes, structured-only analyses run first, one outcome at a time, under the frozen four-thread contract. Semantic and lexical analyses remain downstream of that ordered execution.
 
-No semantic, TF-IDF, note-context, or treatment-context performance should be opened before that sequence is complete.
+While approval is pending, the project may develop independent public/synthetic validation protocols that do not use MIMIC outcome performance or modify the registered v2.1 design.
 
 ## What the older v1 results still tell us
 
@@ -136,13 +136,17 @@ The project is not yet ready for submission.
 
 The most important remaining scientific gates are:
 
-1. finish and freeze the corrected adult v2.1 structured baseline;
-2. rerun corrected semantic and lexical comparisons using identical frozen v2.1 split hashes;
-3. quantify whether any semantic increment survives the nonlinear structured comparator;
-4. perform blinded clinician construct validation with multiple raters;
-5. correct/repeat affected eICU and Zigong external analyses;
-6. obtain a second external narrative cohort if feasible;
-7. quantify the practical value of compression: dimensionality, stability, compute, interpretability, and transport.
+1. close the OSF approval/DOI/hash/form-text gate and validate the exact post-approval commit;
+2. run and freeze the corrected v2.1 structured-only analyses;
+3. run corrected semantic and lexical comparisons using identical frozen v2.1 split hashes;
+4. quantify whether any semantic increment survives the nonlinear structured comparator;
+5. perform blinded clinician construct validation with multiple raters;
+6. run a controlled synthetic construct-validity/stress-test analysis without confusing it with clinical external validation;
+7. correct/repeat affected eICU and Zigong external analyses;
+8. obtain a second external narrative cohort if feasible;
+9. quantify the practical value of compression: dimensionality, stability, compute, interpretability, and transport.
+
+The candidate synthetic construct-validity resource is documented in `docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md`. No OPUS-based Medical JEV result exists yet.
 
 If corrected semantic effects become small or disappear against the nonlinear structured baseline, the paper should pivot toward **interpretable semantic compression of lexical signal** rather than “information beyond physiology.”
 
