@@ -117,6 +117,21 @@ def calibration_metrics(y, p):
         np.sum((tab["n"] / len(tmp)) * np.abs(tab["observed"] - tab["mean_pred"]))
     )
 
+    # Secondary pre-analysis clarification: equal-frequency ECE for rare outcomes.
+    qtmp = pd.DataFrame({"y": y, "p": p})
+    try:
+        qtmp["bin"] = pd.qcut(qtmp["p"], q=10, duplicates="drop", labels=False)
+    except ValueError:
+        qtmp["bin"] = 0
+    qtab = (
+        qtmp.groupby("bin", observed=True)
+        .agg(n=("y", "size"), mean_pred=("p", "mean"), observed=("y", "mean"))
+        .reset_index(drop=True)
+    )
+    ece_quantile = float(
+        np.sum((qtab["n"] / len(qtmp)) * np.abs(qtab["observed"] - qtab["mean_pred"]))
+    )
+
     return {
         "brier": float(brier_score_loss(y, p)),
         "log_loss": float(
@@ -126,6 +141,7 @@ def calibration_metrics(y, p):
         "joint_recalibration_intercept": joint_intercept,
         "calibration_slope": slope,
         "ece_10_equal_width_bins": ece,
+        "ece_10_quantile_bins": ece_quantile,
         "calibration_bins": [
             {
                 "n": int(r.n),
@@ -133,6 +149,14 @@ def calibration_metrics(y, p):
                 "observed": float(r.observed),
             }
             for r in tab.itertuples(index=False)
+        ],
+        "calibration_quantile_bins": [
+            {
+                "n": int(r.n),
+                "mean_pred": float(r.mean_pred),
+                "observed": float(r.observed),
+            }
+            for r in qtab.itertuples(index=False)
         ],
     }
 
