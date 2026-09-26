@@ -115,10 +115,11 @@ The ordered plan is:
 5. Run semantic and TF-IDF analyses on the identical frozen splits and fixed-note corpora.
 6. Run the prespecified endpoint, treatment-language, timing, and treatment-context sensitivities.
 7. Perform blinded multi-rater clinician construct validation of the eight semantic constructs.
-8. Run the separate OPUS synthetic construct-validity/stress-test workstream after freezing its own public-data protocol.
-9. Correct and repeat affected external clinical validation analyses, and add a second external narrative cohort if feasible.
-10. Quantify the practical value of compression: dimensionality, compute, stability, interpretability, and transport.
-11. Lock the manuscript claim only after these results are known.
+8. Prioritize the registered controlled-edit robustness analyses on real MIMIC notes and blinded clinician construct validation.
+9. If useful after the primary path is complete, run a small OPUS synthetic stress test as supplementary evidence only.
+10. Correct and repeat affected external clinical validation analyses, and add a second external narrative cohort if feasible.
+11. Quantify the practical value of compression: dimensionality, compute, stability, interpretability, and transport.
+12. Lock the manuscript claim only after these results are known.
 
 ### New complementary synthetic construct-validity workstream
 
