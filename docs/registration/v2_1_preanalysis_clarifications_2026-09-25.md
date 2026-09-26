@@ -26,6 +26,17 @@ For dense continuous rich-comparator variables and semantic scores, training-fol
 
 Expected calibration error (ECE) uses 10 equal-width probability bins spanning [0,1]. Bins are left-closed and right-open except the final bin, which includes 1. Empty bins contribute zero. ECE is the sample-size-weighted mean absolute difference between observed event frequency and mean predicted probability across non-empty bins.
 
+Because the outcome prevalences are low, equal-width ECE can collapse most predictions into the first risk bin and become close to calibration-in-the-large. Before any v2.1 result was opened, we therefore added a **secondary descriptive quantile-bin ECE** using 10 equal-frequency bins. Duplicate quantile edges caused by tied predictions are dropped. This does not replace the previously frozen equal-width ECE, calibration-in-the-large, or calibration slope, and it is not used as a testing, success, or model-selection rule.
+
+## Registered implementation pins beyond the minimum OSF wording
+
+Two execution pins are more specific than the submitted form but do not change the registered model families:
+
+- Laya checkpoint revision: `f9ab0b228f0fc0f14d873dbc99038f135c2da1b2`;
+- DiffusionGemma backend: native Transformers inference in bfloat16 (`native_transformers_bf16`).
+
+These are reproducibility clarifications. They do not authorize model substitution. The registered DiffusionGemma model/revision remains fixed, and the NVIDIA NVFP4 variant remains prohibited.
+
 ## Decision-curve thresholds
 
 Decision-curve analysis uses the fixed risk thresholds:
