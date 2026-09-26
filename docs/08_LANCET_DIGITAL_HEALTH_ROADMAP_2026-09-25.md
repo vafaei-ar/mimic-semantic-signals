@@ -1,23 +1,30 @@
 # Lancet Digital Health roadmap — current checkpoint
 
-Updated: 2026-09-25
+Updated: 2026-09-26
 
 ## Current position
 
-The project has moved from exploratory v1 analyses through an integrity review and a full v2/v2.1 redesign. The current confirmatory analysis is **ready for human review and external OSF registration**, but no v2.1 real-label predictive performance has been opened.
+The project has moved from exploratory v1 analyses through integrity review, v2/v2.1 redesign, and external OSF submission. No v2.1 real-label predictive performance has been opened.
 
-Canonical review-candidate commit:
+OSF submission:
 
-- `c21b8db2f214e95b8f5b6e46e0e79e23426a9035`
+- registration: `ahxn9`, Secondary Data Preregistration;
+- submitted: 2026-09-25 15:53 America/New_York;
+- cited repository commit: `873897e6c934cea3d558b6518ac1e399f9f75387`;
+- manifest SHA-256: `22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d`;
+- current repository status: pending approval;
+- DOI: pending/not yet recorded.
 
-Final preregistration validation:
+Post-submission synthetic/static lock validation:
 
-- `Z7M4Q8R2 — Validate OSF Review Candidate`
+- `V4N8Q2R7 — Validate Post-OSF Locks`;
+- exact commit `296e082e8ee9b01211fa50b1be2f026edcb31bdf`;
 - completed, exit 0;
-- synthetic/static checks passed;
 - no real clinical data read;
 - no real outcome performance computed;
-- registration gate remains locked until `docs/registration/osf_registration.json` records a valid OSF registration.
+- artifact SHA-256 `4860c207938e332eab8385ab3084d7cc5fe34f957e9db40a857920ef7d680ae6`.
+
+The repository remains fail-closed until OSF approval, DOI recording, OSF-hosted attachment hash verification, verbatim submitted-form import/verification, and exact-commit validation.
 
 The detailed readiness record is `docs/07_PREREGISTRATION_READINESS_2026-09-25.md`.
 
@@ -70,13 +77,14 @@ CareVue ICU death is retained as a separate prespecified replication/sensitivity
 
 Before any corrected performance was opened, we audited source-system recoverability, treatment/documentation context, fixed-note identity, power/precision, and inference feasibility.
 
-The planned full refit bootstrap was computationally unrealistic: one exact full-size ventilation five-fold HGB refit replicate required about 91 minutes. We therefore amended the inference plan before registration.
+An initial runtime benchmark made the full refit bootstrap appear computationally unrealistic, but a preregistration-safe audit identified OpenMP/BLAS thread oversubscription as the cause. With the explicit four-thread contract, an exact five-fold synthetic refit replicate completed in about 11.21 seconds and the refit-bootstrap plan was restored before registration.
 
-The operative confirmatory plan now uses:
+The operative registered confirmatory plan uses:
 
 - repeat-1 out-of-fold delta-AUROC as the primary estimand;
-- 5,000 patient-cluster bootstrap replicates of paired frozen repeat-1 predictions for the conditional interval;
-- repeats 2-5 as refit/fold-partition stability analyses;
+- 500 patient-cluster **refit-bootstrap** replicates of the full repeat-1 five-fold cross-fitting procedure;
+- repeats 2-5 as separate refit/fold-partition stability analyses;
+- a fixed four-thread HGB/OpenMP/BLAS execution contract;
 - no confirmatory p-values;
 - no Holm testing;
 - no binary success/failure rule based only on whether an interval crosses zero.
@@ -96,20 +104,29 @@ The strongest conclusions currently supported by the whole project, without prom
 
 ## Lancet Digital Health path
 
-The immediate next step is **not a real-label prediction job**. The preregistration-safe runtime and corpus corrections must close first.
+The immediate next step is **not a real-label prediction job**. The OSF approval and verification gate must close first.
 
 The ordered plan is:
 
-1. Human-review the OSF-facing SAP and technical appendix.
-2. Submit the disclosed post-review prospective analysis plan to OSF.
-3. Commit the valid OSF registration record and re-run the preregistration validation.
-4. Execute the frozen v2.1 structured baseline and context comparators.
+1. Wait for OSF registration `ahxn9` approval and record its DOI.
+2. Re-download the three OSF-hosted registration files and verify their SHA-256 values.
+3. Import and verify the submitted OSF form text verbatim, then validate the exact resulting commit.
+4. Execute the frozen v2.1 structured-only analyses one outcome at a time under the four-thread contract.
 5. Run semantic and TF-IDF analyses on the identical frozen splits and fixed-note corpora.
 6. Run the prespecified endpoint, treatment-language, timing, and treatment-context sensitivities.
 7. Perform blinded multi-rater clinician construct validation of the eight semantic constructs.
-8. Correct and repeat the affected external validation analyses, and add a second external narrative cohort if feasible.
-9. Quantify the practical value of compression: dimensionality, compute, stability, interpretability, and transport.
-10. Lock the manuscript claim only after these results are known.
+8. Run the separate OPUS synthetic construct-validity/stress-test workstream after freezing its own public-data protocol.
+9. Correct and repeat affected external clinical validation analyses, and add a second external narrative cohort if feasible.
+10. Quantify the practical value of compression: dimensionality, compute, stability, interpretability, and transport.
+11. Lock the manuscript claim only after these results are known.
+
+### New complementary synthetic construct-validity workstream
+
+The public synthetic OPUS doctor-patient conversation dataset is being considered as a controlled stress-test corpus for the frozen eight semantic constructs. Its role is to test discriminant validity and directional response to prespecified clinical-state perturbations.
+
+This workstream is **not** part of the registered v2.1 MIMIC confirmatory analysis, is **not** external clinical validation, and has generated no Medical JEV results yet. It must not be used for fine-tuning the frozen instruments in this validation role.
+
+See `docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md`.
 
 ## Decision rule for the paper narrative
 
