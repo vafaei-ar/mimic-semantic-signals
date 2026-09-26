@@ -4,9 +4,39 @@ Updated: 2026-09-25
 
 ## Status
 
-**Preregistration-ready candidate. Final synthetic/static repository validation completed successfully; the remaining gates are human review of the OSF-facing prose and external OSF submission. Real-label v2.1 predictive performance remains locked.**
+**OSF submitted; approval gate remains closed. Real-label v2.1 predictive performance remains locked.**
+
+The post-review analysis plan was submitted to OSF Registries as Secondary Data Preregistration `ahxn9` on 2026-09-25 15:53 America/New_York, associated with OSF project `wmyb2`.
+
+Registration record:
+
+- URL: `https://osf.io/ahxn9`;
+- cited repository commit: `873897e6c934cea3d558b6518ac1e399f9f75387`;
+- registration manifest SHA-256: `22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d`;
+- license: CC-BY 4.0;
+- current repository status: pending approval;
+- DOI: not yet recorded.
 
 No v2.1 clinical outcome performance, semantic inference, or TF-IDF performance has been opened.
+
+### Post-submission lock validation
+
+After submission, the repository added fail-closed approval/hash/form-text checks and froze the remaining pre-analysis implementation clarifications without inspecting v2.1 outcome performance.
+
+Canonical post-submission validation:
+
+- job: `V4N8Q2R7 — Validate Post-OSF Locks`;
+- exact validated project commit: `296e082e8ee9b01211fa50b1be2f026edcb31bdf`;
+- task: `validate_v2_1_preregistration`;
+- status: completed;
+- exit code: 0;
+- runtime: 4.435 seconds;
+- declared artifact: `outputs/integrity/v2_1_preregistration_synthetic_checks.json`;
+- artifact SHA-256: `4860c207938e332eab8385ab3084d7cc5fe34f957e9db40a857920ef7d680ae6`;
+- real clinical data read: false;
+- real outcome performance computed: false.
+
+The validated gate state is `locked_until_osf_approved_doi_hash_verified_and_verbatim_form_imported`.
 
 ## Final preregistration validation
 
@@ -200,22 +230,24 @@ The registration is explicitly a **prospective registration of the remaining pos
 
 ## Hard stop
 
-Real-label evaluators still fail closed unless:
+Real-label evaluators fail closed until all of the following are true:
 
-`docs/registration/osf_registration.json`
+- OSF registration status is approved;
+- a DOI is recorded;
+- the three OSF-hosted registration attachments have been downloaded and their SHA-256 values verified;
+- the submitted OSF form text has been imported verbatim and verified in the repository;
+- the exact post-approval commit passes synthetic/static validation.
 
-exists with:
+The submitted-package hashes are recorded in `docs/registration/osf_registration.json`. OSF-hosted byte verification remains a separate required gate.
 
-- `status: registered`;
-- a valid OSF registration ID;
-- a registration timestamp.
-
-The external OSF submission is public/consequential and is not performed automatically.
 
 ## Remaining actions before predictive execution
 
-1. Human-review the main SAP and technical appendix, including prose and metadata.
-2. Submit the post-review analysis plan to OSF.
-3. Add the actual registration record at `docs/registration/osf_registration.json`.
-4. Validate the exact post-registration commit.
-5. Only then begin real-label structured, semantic, and lexical analyses.
+1. Wait for OSF registration `ahxn9` to become approved.
+2. Record the DOI.
+3. Download the three OSF-hosted attachments and verify their SHA-256 values against the submitted-package record.
+4. Import and verify the submitted OSF form text verbatim, including the binding form-only specifications.
+5. Commit those post-approval records and validate that exact commit.
+6. Only then begin the structured-only real-label runs, one outcome at a time, under the four-thread execution contract.
+
+A separate OPUS synthetic construct-validity workstream may be designed while waiting because it uses public synthetic data and does not modify the registered v2.1 confirmatory analysis. See `docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md`.
