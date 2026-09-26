@@ -16,18 +16,21 @@ Read these reports in order:
 6. [06 — Post-review v2.1 correction gate](docs/06_POSTREVIEW_V2_1_CORRECTIONS.md)
 7. [07 — Preregistration readiness checkpoint](docs/07_PREREGISTRATION_READINESS_2026-09-25.md)
 8. [08 — Lancet Digital Health roadmap](docs/08_LANCET_DIGITAL_HEALTH_ROADMAP_2026-09-25.md)
+9. [09 — OPUS synthetic construct-validity plan](docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md)
 
 Detailed frozen protocols and result documents under `docs/` remain authoritative for exact cohort definitions, item IDs, model settings, artifact hashes, and prespecified interpretation rules.
 
 ## Current stage
 
-The corrected v2.1 confirmatory design is under a **temporary preregistration hold** while a synthetic HGB threading/runtime re-audit and a corrected fixed-note corpus re-freeze are completed. Real-label v2.1 predictive performance remains deliberately locked.
+The post-review v2.1 analysis plan was submitted to OSF Registries as Secondary Data Preregistration `ahxn9` on 2026-09-25 15:53 America/New_York. The registration cites repository commit `873897e6c934cea3d558b6518ac1e399f9f75387` and manifest SHA-256 `22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d`.
 
-The final OSF review candidate is commit `c21b8db2f214e95b8f5b6e46e0e79e23426a9035`. Validation job `Z7M4Q8R2` completed successfully using synthetic/static checks only; it read no real clinical data and computed no real outcome performance.
+The registration is currently recorded as **pending approval**. Real-label v2.1 predictive performance remains deliberately locked. The gate now requires OSF approval, DOI recording, OSF-hosted attachment hash verification, and verbatim import/verification of the submitted OSF form text.
 
-The repository fails closed until a valid `docs/registration/osf_registration.json` is present. The immediate next steps are preregistration-safe only: resolve the synthetic runtime/inference issue, re-freeze the corrected stripped-note corpus, then perform human review and OSF submission. No real-label predictive analysis should run before registration.
+Post-submission synthetic/static validation job `V4N8Q2R7 — Validate Post-OSF Locks` completed successfully on commit `296e082e8ee9b01211fa50b1be2f026edcb31bdf`. It read no real clinical data and computed no real outcome performance. Its declared integrity artifact SHA-256 is `4860c207938e332eab8385ab3084d7cc5fe34f957e9db40a857920ef7d680ae6`.
 
-See [07 — Preregistration readiness checkpoint](docs/07_PREREGISTRATION_READINESS_2026-09-25.md) and [08 — Lancet Digital Health roadmap](docs/08_LANCET_DIGITAL_HEALTH_ROADMAP_2026-09-25.md).
+While the OSF approval gate remains closed, a separate public-data workstream is being planned for synthetic construct-validity testing using the OPUS doctor-patient conversation dataset. This is explicitly outside the registered v2.1 confirmatory analysis and has produced no Medical JEV results yet.
+
+See [07 — Preregistration readiness checkpoint](docs/07_PREREGISTRATION_READINESS_2026-09-25.md), [08 — Lancet Digital Health roadmap](docs/08_LANCET_DIGITAL_HEALTH_ROADMAP_2026-09-25.md), and [09 — OPUS synthetic construct-validity plan](docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md).
 
 ## Scientific framing
 
