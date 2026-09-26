@@ -140,6 +140,14 @@ class V21IntegrityTests(unittest.TestCase):
         self.assertEqual(freeze["h5_sparse_logistic"]["max_iter"], 5000)
         self.assertEqual(freeze["ece"]["bins"], 10)
         self.assertEqual(freeze["ece"]["scheme"], "equal_width_probability")
+        self.assertEqual(
+            freeze["ece"]["secondary_quantile_summary"]["scheme"],
+            "equal_frequency_quantile_bins",
+        )
+        self.assertEqual(
+            freeze["ece"]["secondary_quantile_summary"]["bins"],
+            10,
+        )
         self.assertEqual(freeze["decision_curve"]["thresholds"], [0.0025, 0.005, 0.0075, 0.01, 0.015, 0.02, 0.03, 0.05])
         self.assertEqual(freeze["bootstrap_failure_rule"]["maximum_degenerate_replacement_fraction"], 0.05)
 
