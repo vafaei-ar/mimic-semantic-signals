@@ -24,7 +24,7 @@ Detailed frozen protocols and result documents under `docs/` remain authoritativ
 
 The post-review v2.1 analysis plan was submitted to OSF Registries as Secondary Data Preregistration `ahxn9` on 2026-09-25 15:53 America/New_York. The registration cites repository commit `873897e6c934cea3d558b6518ac1e399f9f75387` and manifest SHA-256 `22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d`.
 
-The registration is currently recorded as **pending approval**. Real-label v2.1 predictive performance remains deliberately locked. The gate now requires OSF approval, DOI recording, OSF-hosted attachment hash verification, and verbatim import/verification of the submitted OSF form text.
+The registration is currently recorded as **approved/public**. Real-label v2.1 predictive performance remains deliberately locked. The gate now requires OSF approval, DOI recording, OSF-hosted attachment hash verification, and verbatim import/verification of the submitted OSF form text.
 
 Post-submission synthetic/static validation job `V4N8Q2R7 — Validate Post-OSF Locks` completed successfully on commit `296e082e8ee9b01211fa50b1be2f026edcb31bdf`. It read no real clinical data and computed no real outcome performance. Its declared integrity artifact SHA-256 is `4860c207938e332eab8385ab3084d7cc5fe34f957e9db40a857920ef7d680ae6`.
 
