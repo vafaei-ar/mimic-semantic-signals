@@ -34,12 +34,14 @@
     "local_submitted_zip_verified": true,
     "osf_hosted_files_download_verified": true,
     "osf_hosted_verification_reason": null,
-    "unlock_requirement": "Do not unlock real-label execution until the submitted OSF form text is imported verbatim and verified, then the exact resulting commit passes synthetic/static validation.",
-    "registered_form_text_retrieved": false,
-    "osf_form_addendum_verbatim_verified": false,
+    "unlock_requirement": "Documentary OSF gates are satisfied. Real-label execution remains locked until the exact resulting commit passes the synthetic/static preregistration validator.",
+    "registered_form_text_retrieved": true,
+    "osf_form_addendum_verbatim_verified": true,
     "osf_hosted_verification_date": "2026-09-28",
     "osf_hosted_verification_method": "Investigator downloaded all three files from the frozen OSF registration ahxn9 and uploaded them for direct SHA-256 verification.",
-    "osf_hosted_pdf_hash_note": "The two OSF-hosted PDFs differ byte-for-byte from the earlier local package copies. The frozen OSF copies are authoritative for the registration record. The manifest is byte-identical. Earlier local hashes are preserved under prior_local_package_sha256."
+    "osf_hosted_pdf_hash_note": "The two OSF-hosted PDFs differ byte-for-byte from the earlier local package copies. The frozen OSF copies are authoritative for the registration record. The manifest is byte-identical. Earlier local hashes are preserved under prior_local_package_sha256.",
+    "registered_form_source": "Frozen OSF registration ahxn9 overview exported by the investigator as a 13-page PDF on 2026-09-28.",
+    "osf_form_addendum_path": "docs/registration/osf_form_addendum_v2_1.md"
   },
   "approval_observed_at": "2026-09-28T14:15:00-04:00"
 }
