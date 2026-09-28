@@ -86,14 +86,12 @@ The exact mapping and extraction freeze are:
 
 ## Active analysis
 
-The corrected v2.1 design has now been submitted to OSF Registries as registration `ahxn9`. The repository records the registration as pending approval, and real-label predictive execution remains locked.
+The corrected v2.1 design has now been submitted to OSF Registries as registration `ahxn9`. The repository records the registration as approved/public, and real-label predictive execution remains locked.
 
 The current hard gate requires:
 
-1. OSF approval and DOI recording;
-2. OSF-hosted registration-file SHA-256 verification;
-3. verbatim import and verification of the submitted OSF form text;
-4. exact-commit synthetic/static validation.
+1. verbatim import and verification of the submitted OSF form text;
+2. exact-commit synthetic/static validation.
 
 Post-submission validation job `V4N8Q2R7` passed on commit `296e082e8ee9b01211fa50b1be2f026edcb31bdf`, with no real clinical data read and no real outcome performance computed.
 
@@ -136,7 +134,7 @@ The project is not yet ready for submission.
 
 The most important remaining scientific gates are:
 
-1. close the OSF approval/DOI/hash/form-text gate and validate the exact post-approval commit;
+1. complete the remaining verbatim-form import/verification gate and validate the exact post-approval commit;
 2. run and freeze the corrected v2.1 structured-only analyses;
 3. run corrected semantic and lexical comparisons using identical frozen v2.1 split hashes;
 4. quantify whether any semantic increment survives the nonlinear structured comparator;
