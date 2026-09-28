@@ -60,3 +60,20 @@ Correction:
 - all outcome wrappers pass the analysis-population contract explicitly.
 
 This correction implements the registered source strategy and does not change the prespecified estimand, model, features, splits, or inference plan.
+
+
+## Open-Jev inference preflight provenance-check bug
+
+RunRelay job `H8V4M2R7 — Infer Ventilation Open-Jev v2.1` failed before semantic inference and produced no artifact.
+
+A no-data environment audit (`K6R3V8M2`) showed that the registered Open-Jev snapshot, semantic-schema hash, and installed typed-decisions package were present. The installed package's `direct_url.json` recorded the exact registered typed-decisions VCS commit `10d7834d3b99041f890db4615fb38ef95ced50cc`.
+
+The failure was caused by the provenance checker walking upward from the installed package until it found a parent `.git` directory. Because the virtual environment is inside the Medical JEV repository, the checker incorrectly read the Medical JEV project commit as if it were the typed-decisions commit.
+
+Correction:
+
+- use the installed package's PEP 610 `direct_url.json` VCS `commit_id` as the authoritative typed-decisions provenance record;
+- do not infer package provenance from an arbitrary parent `.git` directory;
+- rerun static validation and the no-data environment preflight before retrying semantic inference.
+
+This is an execution-checker bug only. No v2.1 semantic score or outcome result was generated or viewed from the failed inference job.
