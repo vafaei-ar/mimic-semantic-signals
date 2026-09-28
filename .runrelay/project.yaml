@@ -1885,3 +1885,20 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/refit_bootstrap_benchmark_v2_1_death.json
+
+  evaluate_rich_comparator_v2_1_ventilation:
+    description: Evaluate the registered v2.1 rich comparator for invasive ventilation only using the frozen patient-grouped splits and four-thread HGB execution; no semantic or lexical predictors and no inferential bootstrap.
+    command:
+      - bash
+      - scripts/run_rich_comparator_evaluation_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/rich_comparator_evaluation_v2_1_ventilation.json
