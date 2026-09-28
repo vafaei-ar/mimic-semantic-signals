@@ -7,29 +7,39 @@
   "associated_project_url": "https://osf.io/wmyb2",
   "registered_at": "2026-09-25T15:53:00-04:00",
   "timezone": "America/New_York",
-  "status": "pending_approval",
+  "status": "approved",
   "approved_at": null,
-  "doi": null,
+  "doi": "10.17605/OSF.IO/AHXN9",
   "license": "CC-BY-4.0",
   "cited_repository_commit": "873897e6c934cea3d558b6518ac1e399f9f75387",
   "registration_manifest_sha256": "22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d",
   "attached_files": {
     "OSF_v2_1_SAP.pdf": {
-      "sha256": "6532a5a72cd2ac6c3096c2a4d858c3f7106da9d4f7f2f1cbfd724a3384a415bc"
+      "sha256": "cf770e9cfe821ecc5250587fc29d6be404ffe3ecbf5324a0390e4061e25f4db4",
+      "source": "downloaded by the investigator from frozen registration https://osf.io/ahxn9 and uploaded for verification",
+      "prior_local_package_sha256": "6532a5a72cd2ac6c3096c2a4d858c3f7106da9d4f7f2f1cbfd724a3384a415bc"
     },
     "OSF_v2_1_Technical_Appendix.pdf": {
-      "sha256": "f67c156e3041b7cd2fcbd56f337346d20869e950d0605cb034e174f16ea96668"
+      "sha256": "ebfa97ca32ae0c653bb075457acf7c3ea95eebe69ec1b5af3f6313de07aad6dd",
+      "source": "downloaded by the investigator from frozen registration https://osf.io/ahxn9 and uploaded for verification",
+      "prior_local_package_sha256": "f67c156e3041b7cd2fcbd56f337346d20869e950d0605cb034e174f16ea96668"
     },
     "v2_1_registration_manifest.json": {
-      "sha256": "22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d"
+      "sha256": "22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d",
+      "source": "downloaded by the investigator from frozen registration https://osf.io/ahxn9 and uploaded for verification",
+      "prior_local_package_sha256": "22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d"
     }
   },
   "verification": {
     "local_submitted_zip_verified": true,
-    "osf_hosted_files_download_verified": false,
-    "osf_hosted_verification_reason": "Registration is pending approval and the public OSF registration/API/file endpoints are not yet readable from the execution environment.",
-    "unlock_requirement": "Do not unlock real-label execution until OSF status is approved, DOI is recorded, the three OSF-hosted files are downloaded and SHA-256 verified, and the verbatim submitted OSF form text is imported and verified.",
+    "osf_hosted_files_download_verified": true,
+    "osf_hosted_verification_reason": null,
+    "unlock_requirement": "Do not unlock real-label execution until the submitted OSF form text is imported verbatim and verified, then the exact resulting commit passes synthetic/static validation.",
     "registered_form_text_retrieved": false,
-    "osf_form_addendum_verbatim_verified": false
-  }
+    "osf_form_addendum_verbatim_verified": false,
+    "osf_hosted_verification_date": "2026-09-28",
+    "osf_hosted_verification_method": "Investigator downloaded all three files from the frozen OSF registration ahxn9 and uploaded them for direct SHA-256 verification.",
+    "osf_hosted_pdf_hash_note": "The two OSF-hosted PDFs differ byte-for-byte from the earlier local package copies. The frozen OSF copies are authoritative for the registration record. The manifest is byte-identical. Earlier local hashes are preserved under prior_local_package_sha256."
+  },
+  "approval_observed_at": "2026-09-28T14:15:00-04:00"
 }
