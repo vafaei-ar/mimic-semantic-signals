@@ -87,39 +87,29 @@ def context_safe_question_packs(model, state: str, names: list[str], questions: 
 
 
 def resolve_typed_decisions_commit() -> str:
-    import typed_decisions
-
-    module_path = Path(typed_decisions.__file__).resolve()
-    for parent in [module_path.parent, *module_path.parents]:
-        if (parent / ".git").exists():
-            proc = subprocess.run(
-                ["git", "-C", str(parent), "rev-parse", "HEAD"],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-            commit = proc.stdout.strip()
-            if commit:
-                return commit
-
+    # For an installed VCS package, direct_url.json is the authoritative
+    # provenance record. Do not walk parent directories looking for .git:
+    # the virtual environment may live inside the Medical JEV repository,
+    # which would falsely return the project commit.
     for dist_name in ("typed-decisions", "typed_decisions"):
         try:
             dist = importlib.metadata.distribution(dist_name)
         except importlib.metadata.PackageNotFoundError:
             continue
         direct = dist.read_text("direct_url.json")
-        if not direct:
-            continue
-        try:
-            data = json.loads(direct)
-        except json.JSONDecodeError:
-            continue
-        commit = ((data.get("vcs_info") or {}).get("commit_id"))
-        if commit:
-            return str(commit)
+        if direct:
+            try:
+                data = json.loads(direct)
+            except json.JSONDecodeError:
+                data = {}
+            commit = ((data.get("vcs_info") or {}).get("commit_id"))
+            if commit:
+                return str(commit)
 
-    raise RuntimeError("Cannot verify typed-decisions git commit; refusing registered inference.")
-
+    raise RuntimeError(
+        "Cannot verify typed-decisions VCS commit from installed package metadata; "
+        "refusing registered inference."
+    )
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Run registered v2.1 Open-Jev inference on one frozen local note corpus.")
