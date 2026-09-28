@@ -127,7 +127,10 @@ class V21IntegrityTests(unittest.TestCase):
         self.assertEqual(freeze["instruments"]["diffusiongemma"]["model_revision_exact"], "f7f5b7f5fa82ffc52addd066915886d497f5517b")
         self.assertIn("nvidia/diffusiongemma-26B-A4B-it-NVFP4", freeze["instruments"]["diffusiongemma"]["forbidden_model_ids"])
         self.assertEqual(freeze["semantic_schema"]["sha256_exact"], "72763082c314a4542817ccfcd42d2b10d9446fc8e84c3391a2140790b2483623")
-        self.assertIsNone(freeze["submitted_form_text_pending_verbatim_import"]["directional_hypotheses"]["H4"])
+        self.assertTrue(freeze["submitted_form_text_pending_verbatim_import"]["directional_hypotheses"]["H4"])
+        self.assertTrue(freeze["submitted_form_text_pending_verbatim_import"]["directional_hypotheses"]["H5"])
+        self.assertTrue(freeze["submitted_form_text_pending_verbatim_import"]["directional_hypotheses"]["H9"])
+        self.assertTrue(freeze["submitted_form_text_pending_verbatim_import"]["exploratory_analysis_list"])
 
     def test_preanalysis_clarifications(self):
         freeze = json.loads(
