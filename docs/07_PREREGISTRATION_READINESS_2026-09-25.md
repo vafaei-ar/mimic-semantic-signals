@@ -14,8 +14,8 @@ Registration record:
 - cited repository commit: `873897e6c934cea3d558b6518ac1e399f9f75387`;
 - registration manifest SHA-256: `22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d`;
 - license: CC-BY 4.0;
-- current repository status: pending approval;
-- DOI: not yet recorded.
+- current repository status: approved/public;
+- DOI: `10.17605/OSF.IO/AHXN9`.
 
 No v2.1 clinical outcome performance, semantic inference, or TF-IDF performance has been opened.
 
@@ -243,10 +243,9 @@ The submitted-package hashes are recorded in `docs/registration/osf_registration
 
 ## Remaining actions before predictive execution
 
-1. Wait for OSF registration `ahxn9` to become approved.
-2. Record the DOI.
-3. Download the three OSF-hosted attachments and verify their SHA-256 values against the submitted-package record.
-4. Import and verify the submitted OSF form text verbatim, including the binding form-only specifications.
+1. OSF registration `ahxn9` is approved/public and DOI `10.17605/OSF.IO/AHXN9` is recorded.
+2. The three frozen-registration attachments have been downloaded and SHA-256 verified; see `docs/registration/osf_attachment_verification_2026-09-28.md`.
+3. Import and verify the submitted OSF form text verbatim, including the binding form-only specifications.
 5. Commit those post-approval records and validate that exact commit.
 6. Only then begin the structured-only real-label runs, one outcome at a time, under the four-thread execution contract.
 
