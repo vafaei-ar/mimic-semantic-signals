@@ -74,7 +74,9 @@ def inspect_typed_decisions() -> dict:
                     pass
             break
 
-        observed = out["git_commit"] or out["direct_url_vcs_commit"]
+        # direct_url.json is authoritative for the installed VCS package.
+        # A parent .git directory can belong to the Medical JEV project itself.
+        observed = out["direct_url_vcs_commit"]
         out["registered_commit_match"] = observed == REGISTERED_TYPED
     except Exception as exc:
         out["error"] = f"{type(exc).__name__}: {exc}"
