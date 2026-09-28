@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "status": "frozen_from_submitted_osf_form_with_exact_text_fields_pending_verbatim_import",
+  "status": "frozen_from_approved_osf_registration_with_verbatim_form_imported",
   "registration_id": "ahxn9",
-  "binding_rule": "These settings are binding for v2.1. Exact values that are not recoverable from the pending OSF registration remain fail-closed until the verbatim submitted form is retrieved.",
+  "binding_rule": "These settings are binding for v2.1 and are recovered from the approved OSF registration ahxn9 plus pre-analysis reproducibility clarifications that do not contradict it.",
   "instruments": {
     "open_jev": {
       "model_id": "com-kotobalabs/open-jev-deberta-v3-large",
@@ -105,12 +105,12 @@
   },
   "submitted_form_text_pending_verbatim_import": {
     "directional_hypotheses": {
-      "H4": null,
-      "H5": null,
-      "H9": null
+      "H4": "The state-dominant six-construct subset retains a positive but smaller increment than the full eight-score set. A substantially smaller increment would indicate that much of the signal reflects documented management intent rather than patient state.",
+      "H5": "TF-IDF adds at least as much discrimination as the eight semantic scores, and the semantic scores add little once TF-IDF is included. This hypothesis concerns the trade-off between compact interpretable scores and high-dimensional lexical text; it is not a claim that the semantic scores are superior.",
+      "H9": "External discrimination in Zigong is above chance but lower than internal discrimination."
     },
-    "exploratory_analysis_list": null,
-    "reason": "The pending OSF registration is not yet publicly readable and the user's summary did not include the verbatim wording. These fields must not be reconstructed.",
+    "exploratory_analysis_list": "The following are exploratory and will be reported under a separate heading: semantic increments among stays in the lower 80% of comparator-predicted risk, with alert-rate summaries (events detected, positive predictive value, number evaluated per additional event); subgroup calibration and semantic-score distributions by recorded ethnicity, insurance and language; note-category (author-type) differences; changes in semantic scores across successive pre-landmark notes; comparison of CareVue and MetaVision results as a documentation-system shift. Any other analysis not listed in this registration will also be labelled exploratory.",
+    "source": "docs/registration/osf_form_addendum_v2_1.md",
     "require_verbatim_import_before_real_label_inference": true
   }
 }
