@@ -42,3 +42,21 @@ Before any further real-label outcome analysis:
 5. preserve the registered 500-replicate paired refit bootstrap for the later comparator-versus-semantic H1-H3 analysis.
 
 The previously frozen scientific plan remains unchanged.
+
+
+## Follow-up implementation failure during ICU-death comparator setup
+
+RunRelay job `C7V2M9R5 — Run Death Rich Comparator` failed with exit code 1 before producing any declared artifact.
+
+Code review identified the cause before retry: the shared 34-feature ICU-death structured file contains the all-source death cohort, whereas the registered confirmatory death analysis is MetaVision-only. The new rich-comparator evaluator had not yet applied the frozen `config/v2_1_analysis_population_contract.json` source restriction before merging the MetaVision context file.
+
+No ICU-death performance artifact was produced or viewed from this failed job.
+
+Correction:
+
+- the evaluator now loads the frozen analysis-population contract;
+- it filters each outcome to the registered source before fitting;
+- it asserts registered rows, patients, cases and controls after filtering;
+- all outcome wrappers pass the analysis-population contract explicitly.
+
+This correction implements the registered source strategy and does not change the prespecified estimand, model, features, splits, or inference plan.
