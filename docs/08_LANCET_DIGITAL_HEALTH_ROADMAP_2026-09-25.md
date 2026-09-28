@@ -12,8 +12,8 @@ OSF submission:
 - submitted: 2026-09-25 15:53 America/New_York;
 - cited repository commit: `873897e6c934cea3d558b6518ac1e399f9f75387`;
 - manifest SHA-256: `22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d`;
-- current repository status: pending approval;
-- DOI: pending/not yet recorded.
+- current repository status: approved/public;
+- DOI: 10.17605/OSF.IO/AHXN9.
 
 Post-submission synthetic/static lock validation:
 
@@ -108,8 +108,8 @@ The immediate next step is **not a real-label prediction job**. The OSF approval
 
 The ordered plan is:
 
-1. Wait for OSF registration `ahxn9` approval and record its DOI.
-2. Re-download the three OSF-hosted registration files and verify their SHA-256 values.
+1. OSF registration `ahxn9` is approved/public; DOI `10.17605/OSF.IO/AHXN9` is recorded.
+2. The three frozen-registration files have been downloaded and SHA-256 verified.
 3. Import and verify the submitted OSF form text verbatim, then validate the exact resulting commit.
 4. Execute the frozen v2.1 structured-only analyses one outcome at a time under the four-thread contract.
 5. Run semantic and TF-IDF analyses on the identical frozen splits and fixed-note corpora.
