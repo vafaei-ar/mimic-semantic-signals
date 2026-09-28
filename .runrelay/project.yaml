@@ -1954,3 +1954,20 @@ tasks:
       wait_minutes: 60
     artifacts:
       - outputs/multitask_benchmark/openjev_registered_v2_1_ventilation.json
+
+  audit_registered_openjev_environment_v2_1:
+    description: Audit the local registered Open-Jev v2.1 execution environment without reading clinical data, including exact model revision cache, typed-decisions provenance, semantic-schema hash, and Open-Jev import readiness; share only safe aggregate diagnostics.
+    command:
+      - bash
+      - scripts/run_registered_openjev_environment_preflight_v2_1.sh
+    approval: automatic
+    timeout_minutes: 20
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/integrity/v2_1_registered_openjev_environment_preflight.json
