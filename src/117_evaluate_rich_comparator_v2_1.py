@@ -244,6 +244,7 @@ def main() -> None:
     ap.add_argument("--base", required=True)
     ap.add_argument("--split-manifest", required=True)
     ap.add_argument("--context-freeze", required=True)
+    ap.add_argument("--analysis-populations", required=True)
     ap.add_argument("--output", required=True)
     ap.add_argument("--outcome", choices=OUTCOMES, required=True)
     args = ap.parse_args()
@@ -255,7 +256,11 @@ def main() -> None:
     split_manifest = json.loads(split_manifest_path.read_text(encoding="utf-8"))
     context_freeze_path = Path(args.context_freeze).expanduser().resolve()
     context_freeze = json.loads(context_freeze_path.read_text(encoding="utf-8"))
+    population_contract_path = Path(args.analysis_populations).expanduser().resolve()
+    population_contract = json.loads(population_contract_path.read_text(encoding="utf-8"))
     outcome = args.outcome
+    outcome_contract = population_contract["confirmatory_outcomes"][outcome]
+    source = str(outcome_contract["source"]).strip().lower()
 
     structured_path = base / outcome / "enhanced_structured_features_v2_1_local.csv"
     context_name = (
@@ -265,6 +270,28 @@ def main() -> None:
 
     structured = pd.read_csv(structured_path, low_memory=False)
     context = pd.read_csv(context_path, low_memory=False)
+
+    # Enforce the registered source-specific analysis population before any fitting.
+    index_path = base / outcome / "population_index_local.csv"
+    idx = pd.read_csv(index_path, usecols=["case_id", "dbsource"], low_memory=False)
+    idx["case_id"] = idx["case_id"].astype(str)
+    idx["dbsource"] = idx["dbsource"].fillna("unknown").astype(str).str.strip().str.lower()
+    structured["case_id"] = structured["case_id"].astype(str)
+    structured = structured.merge(idx, on="case_id", how="left", validate="one_to_one")
+    structured = structured[structured["dbsource"].eq(source)].drop(columns=["dbsource"]).reset_index(drop=True)
+
+    observed = {
+        "rows": int(len(structured)),
+        "unique_patients": int(structured["subject_id"].nunique()),
+        "cases": int(structured["label"].astype(int).sum()),
+        "controls": int(len(structured) - structured["label"].astype(int).sum()),
+    }
+    for key, value in observed.items():
+        if int(outcome_contract[key]) != int(value):
+            raise RuntimeError(
+                f"{outcome}/{source}: registered population mismatch for {key}: "
+                f"observed {value}, expected {outcome_contract[key]}"
+            )
 
     required = {"case_id", "subject_id", "icustay_id", "label"}
     missing = required - set(structured.columns)
@@ -346,6 +373,8 @@ def main() -> None:
         "status": "completed",
         "outcome": outcome,
         "registration_id": "ahxn9",
+        "registered_source": source,
+        "analysis_population_contract_sha256": sha256_file(population_contract_path),
         "registered_comparator_only": True,
         "semantic_or_lexical_features_used": False,
         "inferential_role": (
