@@ -220,7 +220,8 @@ def main():
         raise RuntimeError(f"Semantic/note availability mismatch: missing={missing}, extra={extra}")
 
     sem = sem.set_index("case_id").reindex(merged["case_id"].astype(str))
-    sem_matrix = sem.loc[:, SEMANTIC_NAMES].astype(float)
+    sem_matrix = sem.loc[:, SEMANTIC_NAMES].astype(float).reset_index(drop=True)
+    has_note = has_note.reset_index(drop=True)
     if sem_matrix.loc[has_note.eq(1)].isna().any().any():
         raise RuntimeError("Note-available row has incomplete semantic scores")
     if sem_matrix.loc[has_note.eq(0)].notna().any().any():
