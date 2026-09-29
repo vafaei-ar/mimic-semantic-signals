@@ -2022,3 +2022,37 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h2_openjev_v2_1_rrt.json
+  infer_openjev_registered_v2_1_death:
+    description: Run the exact registered Open-Jev instrument fully offline on the frozen stripped-note MetaVision ICU-death corpus; verify exact model revision, typed-decisions commit, semantic schema, chunking and aggregation before inference; row-level scores remain local and only aggregate diagnostics are shared.
+    command:
+      - bash
+      - scripts/run_openjev_registered_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 16
+      gpu_count: 1
+      min_vram_gb: 12
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/openjev_registered_v2_1_death.json
+
+  evaluate_h3_openjev_v2_1_death:
+    description: Run the registered v2.1 H3 MetaVision ICU-death analysis comparing the rich comparator with rich comparator plus eight stripped-note Open-Jev scores across five frozen patient-grouped partitions and a 500-valid-replicate patient-cluster refit bootstrap on repeat 1; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h3_openjev_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 300
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h3_openjev_v2_1_death.json
