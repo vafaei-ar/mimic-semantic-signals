@@ -80,8 +80,10 @@ bash -n scripts/run_rich_comparator_evaluation_v2_1_rrt.sh
 bash -n scripts/run_rich_comparator_evaluation_v2_1_death.sh
 bash -n scripts/run_openjev_registered_v2_1_ventilation.sh
 bash -n scripts/run_openjev_registered_v2_1_rrt.sh
+bash -n scripts/run_openjev_registered_v2_1_death.sh
 bash -n scripts/run_registered_openjev_environment_preflight_v2_1.sh
 bash -n scripts/run_h1_openjev_v2_1_ventilation.sh
 bash -n scripts/run_h2_openjev_v2_1_rrt.sh
+bash -n scripts/run_h3_openjev_v2_1_death.sh
 
 bash -n scripts/set_hgb_thread_env_v2_1.sh
