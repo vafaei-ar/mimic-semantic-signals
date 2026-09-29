@@ -77,3 +77,19 @@ Correction:
 - rerun static validation and the no-data environment preflight before retrying semantic inference.
 
 This is an execution-checker bug only. No v2.1 semantic score or outcome result was generated or viewed from the failed inference job.
+
+
+## H1 ventilation evaluator index-alignment failure
+
+RunRelay job `R5V8M2K4 — Run H1 Ventilation Open-Jev` failed with exit code 1 after approximately 4.5 seconds and produced no declared artifact.
+
+Static review identified an index-alignment bug in the new H1 evaluator. After the 4,499 note-available Open-Jev rows were reindexed onto the 11,116-row registered ventilation cohort, the semantic matrix retained `case_id` strings as its DataFrame index while the `has_note` mask retained the default integer row index. Applying the boolean mask would therefore fail before any model fitting or H1 estimate.
+
+Correction:
+
+- reset the aligned semantic matrix to the cohort row index immediately after reindexing;
+- reset the `has_note` mask to the same row index;
+- retain the existing exact case-id set equality check and complete-score checks before fitting;
+- rerun synthetic/static validation before retrying H1.
+
+No H1 point estimate, bootstrap replicate, or semantic incremental-value result was produced or viewed from `R5V8M2K4`. The registered estimand, model, features, splits, and inference procedure are unchanged.
