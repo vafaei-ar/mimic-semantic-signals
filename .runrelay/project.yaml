@@ -2121,3 +2121,36 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h5_lexical_v2_1_ventilation.json
+  evaluate_h5_lexical_v2_1_rrt:
+    description: Run the registered v2.1 H5 RRT lexical comparison in the common L2-logistic family across five frozen patient-grouped partitions; compare comparator, comparator plus Open-Jev, comparator plus TF-IDF, and comparator plus TF-IDF plus Open-Jev; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h5_lexical_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h5_lexical_v2_1_rrt.json
+
+  evaluate_h5_lexical_v2_1_death:
+    description: Run the registered v2.1 H5 MetaVision ICU-death lexical comparison in the common L2-logistic family across five frozen patient-grouped partitions; compare comparator, comparator plus Open-Jev, comparator plus TF-IDF, and comparator plus TF-IDF plus Open-Jev; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h5_lexical_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h5_lexical_v2_1_death.json
