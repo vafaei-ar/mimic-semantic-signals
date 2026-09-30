@@ -2072,3 +2072,36 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h4_six_construct_v2_1_ventilation.json
+  evaluate_h4_six_construct_v2_1_rrt:
+    description: Run the registered v2.1 H4 RRT six-construct analysis comparing the rich comparator with rich comparator plus the six state-dominant stripped-note Open-Jev scores across five frozen patient-grouped partitions and a 500-valid-replicate patient-cluster refit bootstrap on repeat 1; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h4_six_construct_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 300
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h4_six_construct_v2_1_rrt.json
+
+  evaluate_h4_six_construct_v2_1_death:
+    description: Run the registered v2.1 H4 MetaVision ICU-death six-construct analysis comparing the rich comparator with rich comparator plus the six state-dominant stripped-note Open-Jev scores across five frozen patient-grouped partitions and a 500-valid-replicate patient-cluster refit bootstrap on repeat 1; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h4_six_construct_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 300
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h4_six_construct_v2_1_death.json
