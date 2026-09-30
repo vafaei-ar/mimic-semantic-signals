@@ -97,3 +97,9 @@ bash -n scripts/set_hgb_thread_env_v2_1.sh
 .venv/bin/python -m py_compile src/127_evaluate_h6_unstripped_ventilation_v2_1.py
 bash -n scripts/run_h6_unstripped_openjev_inference_v2_1_ventilation.sh
 bash -n scripts/run_h6_unstripped_openjev_eval_v2_1_ventilation.sh
+.venv/bin/python -m py_compile src/128_evaluate_h6_unstripped_rrt_v2_1.py
+.venv/bin/python -m py_compile src/129_evaluate_h6_unstripped_death_v2_1.py
+bash -n scripts/run_h6_unstripped_openjev_inference_v2_1_rrt.sh
+bash -n scripts/run_h6_unstripped_openjev_eval_v2_1_rrt.sh
+bash -n scripts/run_h6_unstripped_openjev_inference_v2_1_death.sh
+bash -n scripts/run_h6_unstripped_openjev_eval_v2_1_death.sh
