@@ -88,6 +88,8 @@ bash -n scripts/run_h3_openjev_v2_1_death.sh
 bash -n scripts/run_h4_six_construct_v2_1_ventilation.sh
 bash -n scripts/run_h4_six_construct_v2_1_death.sh
 bash -n scripts/run_h5_lexical_v2_1_ventilation.sh
+bash -n scripts/run_h5_lexical_v2_1_death.sh
+bash -n scripts/run_h5_lexical_v2_1_rrt.sh
 bash -n scripts/run_h4_six_construct_v2_1_rrt.sh
 
 bash -n scripts/set_hgb_thread_env_v2_1.sh
