@@ -2187,3 +2187,70 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h6_unstripped_openjev_v2_1_ventilation.json
+  infer_h6_unstripped_openjev_v2_1_rrt:
+    description: Run registered Open-Jev on the frozen full unstripped RRT notes for H6; row-level scores remain local and only aggregate inference summary is shared.
+    command:
+      - bash
+      - scripts/run_h6_unstripped_openjev_inference_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 1
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/openjev_registered_v2_1_unstripped_rrt.json
+
+  evaluate_h6_unstripped_openjev_v2_1_rrt:
+    description: Evaluate the registered H6 unstripped-note RRT sensitivity using the primary rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_unstripped_openjev_eval_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 300
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_unstripped_openjev_v2_1_rrt.json
+
+  infer_h6_unstripped_openjev_v2_1_death:
+    description: Run registered Open-Jev on the frozen full unstripped MetaVision ICU-death notes for H6; row-level scores remain local and only aggregate inference summary is shared.
+    command:
+      - bash
+      - scripts/run_h6_unstripped_openjev_inference_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 1
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/openjev_registered_v2_1_unstripped_death.json
+
+  evaluate_h6_unstripped_openjev_v2_1_death:
+    description: Evaluate the registered H6 unstripped-note MetaVision ICU-death sensitivity using the primary rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_unstripped_openjev_eval_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 300
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_unstripped_openjev_v2_1_death.json
