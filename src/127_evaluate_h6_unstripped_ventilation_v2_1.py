@@ -150,7 +150,7 @@ def percentile_ci(values):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Registered v2.1 H6 unstripped-note sensitivity ventilation rich comparator + stripped Open-Jev evaluation.")
+    ap = argparse.ArgumentParser(description="Registered v2.1 H6 unstripped-note sensitivity ventilation rich comparator + unstripped Open-Jev evaluation.")
     ap.add_argument("--base", required=True)
     ap.add_argument("--split-manifest", required=True)
     ap.add_argument("--context-freeze", required=True)
@@ -339,7 +339,7 @@ def main():
             "delta_ci95_percentile": percentile_ci(dca_boot[t]),
         }
 
-    pred_path = base / OUTCOME / "h1_openjev_predictions_v2_1_local.csv"
+    pred_path = base / OUTCOME / "h6_unstripped_openjev_predictions_v2_1_local.csv"
     local_pred = merged[["case_id", "subject_id", "icustay_id", "label"]].copy()
     for ri, (pb, pa) in enumerate(repeat_predictions, start=1):
         local_pred[f"comparator_repeat_{ri}"] = pb
@@ -348,7 +348,7 @@ def main():
 
     split_deltas = [float(r["delta"]["auroc"]) for r in repeat_results]
     report = {
-        "analysis": "Registered v2.1 H6 unstripped-note sensitivity ventilation rich comparator + stripped Open-Jev",
+        "analysis": "Registered v2.1 H6 unstripped-note sensitivity ventilation rich comparator + unstripped Open-Jev",
         "status": "completed",
         "registration_id": "ahxn9",
         "doi": "10.17605/OSF.IO/AHXN9",
@@ -369,7 +369,7 @@ def main():
             "early_stopping": False,
             "random_state": 20260924,
         },
-        "primary_estimand": "repeat-1 OOF delta_AUROC = AUROC(rich comparator + stripped Open-Jev) - AUROC(rich comparator)",
+        "primary_estimand": "repeat-1 OOF delta_AUROC = AUROC(rich comparator + unstripped Open-Jev) - AUROC(rich comparator)",
         "primary_repeat": repeat_results[0],
         "split_stability": {
             "repeat_delta_auroc": split_deltas,
@@ -408,7 +408,7 @@ def main():
         "local_prediction_file": str(pred_path),
         "guardrails": [
             "Uses only the registered MetaVision ventilation population.",
-            "Uses the frozen rich comparator feature block plus the eight stripped-note Open-Jev scores.",
+            "Uses the frozen rich comparator feature block plus the eight full unstripped-note Open-Jev scores.",
             "Rows without notes remain in the cohort with missing semantic values handled natively by HGB.",
             "Note-available rows must have all eight semantic scores or the analysis halts.",
             "Primary uncertainty is 500 valid patient-cluster refit-bootstrap replicates of the full repeat-1 cross-fitting procedure.",
