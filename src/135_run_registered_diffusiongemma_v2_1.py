@@ -52,7 +52,9 @@ def revision_candidates(model_dir: Path) -> set[str]:
                 text = path.read_text(encoding="utf-8", errors="ignore")
             except Exception:
                 continue
-            out.update(re.findall(r"\b[0-9a-f]{40}\b", text))
+            lines = [line.strip() for line in text.splitlines() if line.strip()]
+            if lines and re.fullmatch(r"[0-9a-f]{40}", lines[0]):
+                out.add(lines[0])
     return out
 
 
