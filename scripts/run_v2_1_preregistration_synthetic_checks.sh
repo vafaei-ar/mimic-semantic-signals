@@ -103,3 +103,14 @@ bash -n scripts/run_h6_unstripped_openjev_inference_v2_1_rrt.sh
 bash -n scripts/run_h6_unstripped_openjev_eval_v2_1_rrt.sh
 bash -n scripts/run_h6_unstripped_openjev_inference_v2_1_death.sh
 bash -n scripts/run_h6_unstripped_openjev_eval_v2_1_death.sh
+.venv/bin/python -m py_compile src/130_audit_registered_laya_environment_v2_1.py
+.venv/bin/python -m py_compile src/131_evaluate_h6_laya_ventilation_v2_1.py
+.venv/bin/python -m py_compile src/132_evaluate_h6_laya_rrt_v2_1.py
+.venv/bin/python -m py_compile src/133_evaluate_h6_laya_death_v2_1.py
+bash -n scripts/run_registered_laya_environment_preflight_v2_1.sh
+bash -n scripts/run_h6_laya_inference_v2_1_ventilation.sh
+bash -n scripts/run_h6_laya_inference_v2_1_rrt.sh
+bash -n scripts/run_h6_laya_inference_v2_1_death.sh
+bash -n scripts/run_h6_laya_eval_v2_1_ventilation.sh
+bash -n scripts/run_h6_laya_eval_v2_1_rrt.sh
+bash -n scripts/run_h6_laya_eval_v2_1_death.sh
