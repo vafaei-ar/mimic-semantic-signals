@@ -139,7 +139,7 @@ Ventilation evaluation job B7Q2M9RK completed:
 - 95% refit-bootstrap interval -0.02030 to +0.01445;
 - 500/500 valid bootstrap replicates, zero replacements.
 
-Current job D4M8Q2VN is running DiffusionGemma inference on the frozen 7,709-note RRT corpus. No RRT DiffusionGemma outcome result should be inferred until its evaluation artifact is terminal and read.
+RRT inference job D4M8Q2VN completed 7,709/7,709 notes with zero failures, zero label access, and zero max-chunk truncations. Aggregate artifact SHA-256: 763056a90bbf2e5b59e86268bba624d50826689dfb2e5eb0beec3033f74f7182. Current job F7K3Q9MV is running the registered RRT evaluation. No RRT DiffusionGemma outcome result should be inferred until its evaluation artifact is terminal and read.
 
 Read docs/results/v2_1_h6_diffusiongemma_results.md.
 

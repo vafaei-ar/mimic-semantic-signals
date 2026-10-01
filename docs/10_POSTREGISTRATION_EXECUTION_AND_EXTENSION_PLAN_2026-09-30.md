@@ -13,7 +13,8 @@ Completed registered work:
 - H5 common-logistic lexical comparisons for all three outcomes;
 - H6 unstripped-note Open-Jev sensitivity for all three outcomes;
 - H6 Laya alternative-instrument sensitivity for all three outcomes;
-- H6 DiffusionGemma invasive-ventilation inference/evaluation.
+- H6 DiffusionGemma invasive-ventilation inference/evaluation;
+- H6 DiffusionGemma RRT inference, 7,709/7,709 notes with zero failures and zero label access.
 
 DiffusionGemma ventilation result:
 
@@ -25,9 +26,9 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- D4M8Q2VN - infer_h6_diffusiongemma_v2_1_rrt
+- F7K3Q9MV - evaluate_h6_diffusiongemma_v2_1_rrt
 - exact scientific commit: 097bf046a1c7eceb50d71d75e82e79f3993acb00
-- fully offline, frozen stripped-note RRT corpus, aggregate diagnostics only.
+- frozen rich-comparator HGB procedure with 500 patient-cluster refit-bootstrap replicates; aggregate result only.
 
 Documentation-only commits made while this job runs do not alter its exact-commit execution.
 
@@ -35,8 +36,8 @@ Documentation-only commits made while this job runs do not alter its exact-commi
 
 ### A1. Complete H6 DiffusionGemma
 
-1. Finish RRT inference.
-2. If inference is clean, run RRT evaluation using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates.
+1. RRT inference is complete and clean.
+2. Finish the running RRT evaluation using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates.
 3. Run MetaVision ICU-death DiffusionGemma inference.
 4. If inference is clean, run MetaVision ICU-death evaluation.
 5. Freeze the three-outcome DiffusionGemma H6 result document.
@@ -178,4 +179,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Wait for D4M8Q2VN to become terminal and inspect its canonical declared artifact. If clean, run the registered DiffusionGemma RRT evaluation. Then continue sequentially to the MetaVision ICU-death DiffusionGemma arm before moving to the remaining H6 sensitivities.
+Wait for F7K3Q9MV to become terminal and inspect its canonical declared aggregate artifact. If clean, freeze the RRT DiffusionGemma result and continue sequentially to MetaVision ICU-death DiffusionGemma inference/evaluation before moving to the remaining H6 sensitivities.

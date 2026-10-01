@@ -42,11 +42,12 @@ Completed:
 - H5 common-logistic lexical comparisons;
 - H6 unstripped-note Open-Jev sensitivity for all three outcomes;
 - H6 Laya alternative-instrument sensitivity for all three outcomes;
-- H6 DiffusionGemma invasive-ventilation inference and evaluation.
+- H6 DiffusionGemma invasive-ventilation inference/evaluation;
+- H6 DiffusionGemma RRT inference, 7,709/7,709 notes with zero failures and zero label access.
 
 Current execution:
 
-- D4M8Q2VN - H6 DiffusionGemma RRT inference on the frozen stripped-note RRT corpus.
+- F7K3Q9MV - H6 DiffusionGemma RRT evaluation using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates.
 
 The active job is pinned to project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00. Later documentation-only commits do not alter that execution.
 

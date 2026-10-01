@@ -49,11 +49,16 @@ Evaluation artifact SHA-256: 126be5aa7b0af9302e39485dabdd64c291fab60c6b9abfccbf1
 
 ## RRT
 
-Current job D4M8Q2VN is running label-free DiffusionGemma inference on the frozen 7,709-note RRT corpus.
+Inference job D4M8Q2VN completed:
 
-No RRT DiffusionGemma outcome-performance result is available yet. Do not infer one from inference progress.
+- expected notes: 7,709;
+- successful notes: 7,709;
+- failures: 0;
+- outcome labels read or used during inference: no;
+- max-chunk truncations: 0;
+- declared aggregate artifact SHA-256: 763056a90bbf2e5b59e86268bba624d50826689dfb2e5eb0beec3033f74f7182.
 
-If inference completes cleanly, the next registered step is evaluate_h6_diffusiongemma_v2_1_rrt using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates.
+Evaluation job F7K3Q9MV is running using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates. No RRT DiffusionGemma outcome-performance result is available until that job is terminal and its declared aggregate artifact is read.
 
 ## MetaVision ICU death
 
@@ -72,6 +77,7 @@ This is a registered H6 sensitivity result. It does not replace the stripped-not
 - environment audit: 8GN4R7T9, project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00;
 - ventilation inference: 9HN4R7T9, artifact SHA-256 2dc2e741695c2d567952f34d987d047713d36f9903ba2090ad26e963fcf9e236;
 - ventilation evaluation: B7Q2M9RK, artifact SHA-256 126be5aa7b0af9302e39485dabdd64c291fab60c6b9abfccbf1dae553a464431;
-- RRT inference: D4M8Q2VN, running at this documentation checkpoint.
+- RRT inference: D4M8Q2VN, artifact SHA-256 763056a90bbf2e5b59e86268bba624d50826689dfb2e5eb0beec3033f74f7182;
+- RRT evaluation: F7K3Q9MV, running at this documentation checkpoint.
 
 Update this document only from canonical RunRelay artifacts after each terminal registered job.

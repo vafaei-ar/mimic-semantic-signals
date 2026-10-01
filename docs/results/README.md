@@ -18,7 +18,7 @@ This directory contains aggregate manuscript-facing result summaries. Row-level 
 
 ## Current live registered job
 
-D4M8Q2VN is running DiffusionGemma inference on the frozen stripped-note RRT corpus at project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00.
+D4M8Q2VN completed DiffusionGemma inference on all 7,709 frozen RRT notes with zero failures and zero label access. F7K3Q9MV is now running the registered RRT evaluation at project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00.
 
 The currently running job is not changed by documentation-only commits.
 

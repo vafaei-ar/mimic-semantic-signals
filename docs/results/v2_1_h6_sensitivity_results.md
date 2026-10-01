@@ -70,7 +70,7 @@ Ventilation evaluation job B7Q2M9RK:
 - five frozen-partition delta-AUROCs -0.00811, -0.00892, -0.00108, -0.00478, +0.00423;
 - 500/500 valid bootstrap replicates, zero replacements.
 
-Current job D4M8Q2VN is running label-free DiffusionGemma inference on the frozen 7,709-note RRT corpus. No RRT outcome estimate is yet available.
+RRT inference job D4M8Q2VN completed 7,709/7,709 frozen notes with zero failures, zero label access, and zero max-chunk truncations. Aggregate artifact SHA-256: 763056a90bbf2e5b59e86268bba624d50826689dfb2e5eb0beec3033f74f7182. RRT evaluation job F7K3Q9MV is running. No RRT outcome estimate is available until that evaluation is terminal and its declared artifact is read.
 
 Read docs/results/v2_1_h6_diffusiongemma_results.md.
 
@@ -86,4 +86,4 @@ H6 is intentionally a sensitivity family. These estimates should be carried forw
 
 ## Next registered H6 step
 
-Finish D4M8Q2VN. If its aggregate inference artifact is clean, run the registered DiffusionGemma RRT evaluation. Then complete the MetaVision ICU-death DiffusionGemma arm before endpoint, timing, note-availability, and CareVue sensitivities.
+Finish F7K3Q9MV and inspect its canonical aggregate evaluation artifact. If clean, freeze the RRT DiffusionGemma result, then complete the MetaVision ICU-death DiffusionGemma arm before endpoint, timing, note-availability, and CareVue sensitivities.
