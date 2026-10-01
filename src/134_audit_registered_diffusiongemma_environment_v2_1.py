@@ -51,8 +51,9 @@ def local_revision_candidates(model_dir: Path) -> list[str]:
                 text = path.read_text(encoding="utf-8", errors="ignore")
             except Exception:
                 continue
-            for value in re.findall(r"\b[0-9a-f]{40}\b", text):
-                found.add(value)
+            lines = [line.strip() for line in text.splitlines() if line.strip()]
+            if lines and re.fullmatch(r"[0-9a-f]{40}", lines[0]):
+                found.add(lines[0])
 
     for path in model_dir.rglob("*"):
         try:
