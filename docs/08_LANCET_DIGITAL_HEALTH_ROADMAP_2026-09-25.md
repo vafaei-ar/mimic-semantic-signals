@@ -1,6 +1,8 @@
 # Lancet Digital Health roadmap — current checkpoint
 
-Updated: 2026-09-26
+Updated: 2026-09-30
+
+> **Forward execution update:** the preregistration gate described below has now closed and registered real-label analyses H1-H5 have been completed. H6 is in progress. For the authoritative remaining execution order and post-registration extensions, including local Nimble 9B and Tev1 4B comparisons, use `docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md`. The historical preregistration rationale below is retained for provenance.
 
 ## Current position
 
