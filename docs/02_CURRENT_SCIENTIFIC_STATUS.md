@@ -125,7 +125,7 @@ The central manuscript claim remains unlocked until the registered H6-H9 sequenc
 6. Run H9 corrected Zigong external validation.
 7. Freeze an authoritative H1-H9 result/provenance index.
 
-Post-registration exploratory Nimble 9B and Tev1 4B work begins only after the registered critical path is frozen.
+Post-registration exploratory decision-model work begins only after the registered critical path is frozen. The frozen exploratory roster is Clef-Flash 9B, Clef 27B, Nimble 9B, and Tev1 4B. Clef-Flash is the first technical/preflight target, followed by Clef 27B if local hardware feasibility is clean, then Nimble and Tev1. All remain outside registered H6 and require a label-free local integration/score-quality gate before any outcome evaluation. See docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md.
 
 ## Hosted Jev governance
 

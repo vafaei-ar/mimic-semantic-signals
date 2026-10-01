@@ -103,27 +103,32 @@ No registered definition should change in response to observed performance. Any 
 
 ## Track B - post-registration exploratory decision-model extension
 
-This track is not part of OSF registration ahxn9 and begins only after the registered critical path is frozen.
+This track is not part of OSF registration ahxn9 and begins only after the registered critical path is frozen. The detailed frozen exploratory plan is docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md.
 
-### Nimble 9B and Tev1 4B
+### Planned local instrument roster and order
 
-Add two local Jev-style decision instruments through Ollama:
+1. Clef-Flash 9B - first technical/preflight target because it is the smaller Cloudflare Jev/SystemOne-compatible model.
+2. Clef 27B - full-capacity Cloudflare comparison if local hardware feasibility is clean. Do not silently quantize; any quantized variant must be frozen and labeled as a separate exploratory instrument before labels.
+3. Nimble 9B - local Jev-style decision instrument through Ollama.
+4. Tev1 4B - local Jev-style decision instrument through Ollama.
 
-- Nimble 9B;
-- Tev1 4B.
+Clef and Clef-Flash are Apache-2.0 local models that expose a Jev/SystemOne-compatible typed-question interface. Their inclusion is scientifically useful because they provide an independently developed decision architecture while preserving the same eight-construct typed-question concept.
 
-Before clinical inference, freeze:
+Before any outcome evaluation, every exploratory model must have a label-free frozen integration record covering:
 
-- Ollama version;
-- exact model tag and immutable digest;
-- the eight-construct question/response schema;
-- deterministic chunking and cross-chunk aggregation;
+- exact model repository/tag and immutable revision or digest;
+- license and local model files;
+- runtime/library versions and hardware topology;
+- exact eight-construct schema hash;
+- local-only execution and safe aggregate reporting;
+- deterministic context/chunk/truncation policy;
+- deterministic cross-chunk aggregation when chunking is used;
 - failure/retry behavior;
-- local-only inference and safe aggregate reporting.
+- completion rate, score resolution, construct distributions, and cross-instrument agreement diagnostics.
 
-First run label-free completion, score-resolution, chunk-coverage, and cross-instrument agreement diagnostics. Then estimate clinical increments using the frozen cohorts, splits, and rich comparator.
+Clef/Clef-Flash accept substantially longer native context than the registered compact instruments. Any native long-context arm or context-matched sensitivity must be specified and frozen before clinical labels are used; context length may not be chosen after observing outcome performance.
 
-Compare descriptively with Open-Jev, Laya, DiffusionGemma, and TF-IDF. Do not insert these exploratory models into registered H6.
+After the label-free gate, estimate exploratory clinical increments using the same frozen stripped-note cohorts, patient-grouped splits, rich structured comparator, and downstream estimation framework used for the registered analyses. Compare descriptively with Open-Jev, Laya, DiffusionGemma, and TF-IDF. Do not insert Clef, Clef-Flash, Nimble, or Tev1 into registered H6.
 
 ### Hosted Jev governance gate
 
@@ -155,7 +160,7 @@ After the registered analyses are frozen, quantify the representation tradeoff a
 Then:
 
 1. generate registered H1-H9 manuscript tables/figures from aggregate artifacts;
-2. place Nimble, Tev1, any future hosted-Jev work, and OPUS in a clearly separate exploratory section;
+2. place Clef, Clef-Flash, Nimble, Tev1, any future hosted-Jev work, and OPUS in a clearly separate exploratory section;
 3. audit every manuscript number back to exact code/job/artifact provenance;
 4. choose the final claim from the corrected evidence rather than the original hypothesis;
 5. prepare the journal submission package.

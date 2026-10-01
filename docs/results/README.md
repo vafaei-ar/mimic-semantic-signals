@@ -28,4 +28,4 @@ Use canonical RunRelay aggregate artifacts and exact provenance for every numeri
 
 H6 alternative instruments are sensitivities. Do not use point-estimate differences to select a preferred instrument post hoc.
 
-The authoritative forward sequence is docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md.
+The authoritative registered forward sequence is docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md. The separate post-registration exploratory decision-model plan is docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md.

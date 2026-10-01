@@ -18,6 +18,7 @@ Read these reports in order:
 8. [08 - Lancet Digital Health roadmap](docs/08_LANCET_DIGITAL_HEALTH_ROADMAP_2026-09-25.md)
 9. [09 - OPUS synthetic construct-validity plan](docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md)
 10. [10 - Post-registration execution and extension plan](docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md)
+11. [11 - Exploratory decision-model extension plan](docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md)
 
 Current aggregate result documents are indexed in [docs/results/README.md](docs/results/README.md).
 
@@ -45,7 +46,7 @@ Current registered execution:
 
 The running scientific job remains pinned to project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00. Documentation-only commits made while it runs do not change that execution.
 
-The authoritative remaining order is in [10 - Post-registration execution and extension plan](docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md).
+The authoritative registered execution order is in [10 - Post-registration execution and extension plan](docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md). The detailed post-registration decision-model extension, including Clef-Flash 9B, Clef 27B, Nimble 9B, and Tev1 4B, is frozen separately in [11 - Exploratory decision-model extension plan](docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md).
 
 ## Current result direction
 
@@ -76,7 +77,7 @@ RunRelay jobs declare only safe aggregate artifacts for sharing.
 
 ## Repository organization
 
-- docs/01_*.md through docs/10_*.md: navigation, status, historical checkpoints, and forward plan.
+- docs/01_*.md through docs/11_*.md: navigation, status, historical checkpoints, registered forward plan, and exploratory extension plan.
 - docs/results/: aggregate manuscript-facing registered result summaries.
 - docs/*protocol*.md: frozen prespecified analysis protocols.
 - docs/*freeze*.md: frozen cohort, mapping, audit, and result documents.

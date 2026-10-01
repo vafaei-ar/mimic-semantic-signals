@@ -26,7 +26,7 @@ The final OSF-form import/verification gate passed before real-label analyses op
 - H6 Laya alternative-instrument sensitivity complete.
 - H6 DiffusionGemma ventilation analysis complete.
 
-The current registered execution is DiffusionGemma RRT inference, job D4M8Q2VN.
+The current registered execution is the DiffusionGemma RRT evaluation, job F7K3Q9MV, after clean completion of label-free RRT inference on 7,709/7,709 notes.
 
 ## What the corrected results are saying
 
@@ -76,9 +76,13 @@ A second independent narrative cohort remains desirable but is not a substitute 
 
 ## Post-registration exploratory work
 
-After the registered critical path is frozen, local Nimble 9B and Tev1 4B Jev-style decision-model comparisons can be run through Ollama using the frozen eight-construct schema and the same downstream cohorts/splits.
+After the registered critical path is frozen, run a separate local decision-model extension using the frozen eight-construct schema and the same downstream cohorts/splits. The planned roster is Clef-Flash 9B, Clef 27B, Nimble 9B, and Tev1 4B. Clef-Flash is first for technical feasibility, followed by Clef 27B if the local hardware preflight is clean, then Nimble and Tev1. Clef/Clef-Flash use a Jev/SystemOne-compatible typed-question interface and are treated as independent post-registration semantic instruments, not as evidence that one vendor/model family is intrinsically superior.
 
 Hosted Jev remains post-registration exploratory. The vendor enabled ZDR on 2026-10-01 and stated that only operational telemetry is retained, but institutional/data-use permission for transmitting restricted MIMIC notes remains a separate unresolved gate.
+
+Before any of these exploratory models sees outcome labels, freeze exact model revision/digest, runtime stack, eight-construct schema hash, local-only execution, context/chunk policy, aggregation, and failure behavior, then run label-free completion/score-resolution/construct-agreement diagnostics. Because Clef supports substantially longer native context, any long-context arm must be prespecified before labels and treated as a separate context sensitivity rather than chosen after performance is known.
+
+Detailed exploratory rules are in docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md.
 
 OPUS remains a supplementary synthetic construct-validity stress test and does not replace clinical external validation.
 

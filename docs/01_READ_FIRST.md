@@ -15,7 +15,8 @@ This repository contains both the current corrected v2.1 manuscript-facing analy
 7. docs/07_PREREGISTRATION_READINESS_2026-09-25.md - historical preregistration checkpoint.
 8. docs/08_LANCET_DIGITAL_HEALTH_ROADMAP_2026-09-25.md - current manuscript roadmap.
 9. docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md - supplementary synthetic plan.
-10. docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md - authoritative forward execution order.
+10. docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md - authoritative registered forward execution order.
+11. docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md - detailed post-registration exploratory decision-model plan.
 
 Current aggregate result summaries are indexed in docs/results/README.md.
 
@@ -25,7 +26,7 @@ The numbered reports are the navigation and synthesis layer.
 
 For exact cohort definitions, item IDs, model settings, seeds, bootstrap rules, artifact hashes, and prespecified interpretation rules, detailed frozen protocol/result documents remain authoritative.
 
-Documents 06 and 07 intentionally preserve the state of the project at the correction and preregistration gates. They should not be rewritten to look like live status reports. When they conflict with later status, use the newest applicable frozen protocol/result plus docs/02, docs/03, and docs/10.
+Documents 06 and 07 intentionally preserve the state of the project at the correction and preregistration gates. They should not be rewritten to look like live status reports. When they conflict with later status, use the newest applicable frozen protocol/result plus docs/02, docs/03, and docs/10. For post-registration exploratory decision-model work, use docs/11.
 
 ## Current manuscript rule
 
