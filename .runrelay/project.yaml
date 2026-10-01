@@ -2254,3 +2254,121 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h6_unstripped_openjev_v2_1_death.json
+  audit_registered_laya_environment_v2_1:
+    description: Audit the registered Laya v2.1 local environment without reading clinical data, including package version, pinned local checkpoint manifest, and semantic-schema hash.
+    command:
+      - bash
+      - scripts/run_registered_laya_environment_preflight_v2_1.sh
+    approval: automatic
+    timeout_minutes: 20
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/integrity/v2_1_registered_laya_environment_preflight.json
+
+  infer_h6_laya_v2_1_ventilation:
+    description: Run the registered Laya instrument fully offline on the frozen stripped-note ventilation corpus for H6; row-level scores remain local and only aggregate inference diagnostics are shared.
+    command:
+      - bash
+      - scripts/run_h6_laya_inference_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 16
+      gpu_count: 1
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/laya_registered_v2_1_ventilation.json
+
+  evaluate_h6_laya_v2_1_ventilation:
+    description: Evaluate the registered H6 ventilation alternative-instrument sensitivity using eight stripped-note Laya scores, the rich comparator, five frozen partitions, and 500 patient-cluster refit-bootstrap replicates.
+    command:
+      - bash
+      - scripts/run_h6_laya_eval_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 300
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_laya_v2_1_ventilation.json
+
+  infer_h6_laya_v2_1_rrt:
+    description: Run the registered Laya instrument fully offline on the frozen stripped-note RRT corpus for H6; row-level scores remain local and only aggregate inference diagnostics are shared.
+    command:
+      - bash
+      - scripts/run_h6_laya_inference_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 16
+      gpu_count: 1
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/laya_registered_v2_1_rrt.json
+
+  evaluate_h6_laya_v2_1_rrt:
+    description: Evaluate the registered H6 RRT alternative-instrument sensitivity using eight stripped-note Laya scores, the rich comparator, five frozen partitions, and 500 patient-cluster refit-bootstrap replicates.
+    command:
+      - bash
+      - scripts/run_h6_laya_eval_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 300
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_laya_v2_1_rrt.json
+
+  infer_h6_laya_v2_1_death:
+    description: Run the registered Laya instrument fully offline on the frozen stripped-note MetaVision ICU-death corpus for H6; row-level scores remain local and only aggregate inference diagnostics are shared.
+    command:
+      - bash
+      - scripts/run_h6_laya_inference_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 16
+      gpu_count: 1
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/laya_registered_v2_1_death.json
+
+  evaluate_h6_laya_v2_1_death:
+    description: Evaluate the registered H6 MetaVision ICU-death alternative-instrument sensitivity using eight stripped-note Laya scores, the rich comparator, five frozen partitions, and 500 patient-cluster refit-bootstrap replicates.
+    command:
+      - bash
+      - scripts/run_h6_laya_eval_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 300
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_laya_v2_1_death.json
