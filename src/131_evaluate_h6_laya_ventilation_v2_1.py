@@ -339,7 +339,7 @@ def main():
             "delta_ci95_percentile": percentile_ci(dca_boot[t]),
         }
 
-    pred_path = base / OUTCOME / "h1_laya_predictions_v2_1_local.csv"
+    pred_path = base / OUTCOME / "h6_laya_predictions_v2_1_local.csv"
     local_pred = merged[["case_id", "subject_id", "icustay_id", "label"]].copy()
     for ri, (pb, pa) in enumerate(repeat_predictions, start=1):
         local_pred[f"comparator_repeat_{ri}"] = pb
