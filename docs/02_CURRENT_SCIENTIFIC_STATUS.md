@@ -1,6 +1,6 @@
 # 02 — Current scientific status
 
-Updated: 2026-09-26
+Updated: 2026-09-30
 
 ## Current scientific question
 
@@ -86,18 +86,21 @@ The exact mapping and extraction freeze are:
 
 ## Active analysis
 
-The corrected v2.1 design has now been submitted to OSF Registries as registration `ahxn9`. The repository records the registration as approved/public, and real-label predictive execution remains locked.
+The OSF preregistration gate is closed and registered v2.1 real-label analyses are underway.
 
-The current hard gate requires:
+Current checkpoint:
 
-1. verbatim import and verification of the submitted OSF form text;
-2. exact-commit synthetic/static validation.
+- H1-H3 primary stripped-note Open-Jev analyses are complete for invasive ventilation, RRT, and MetaVision ICU death.
+- H4 six-construct analyses are complete for all three outcomes.
+- H5 common-logistic lexical comparisons are complete for all three outcomes.
+- H6 unstripped-note sensitivity is complete for ventilation and RRT.
+- MetaVision ICU-death H6 unstripped-note evaluation job `T4N7R9V2` is the current running step.
 
-Post-submission validation job `V4N8Q2R7` passed on commit `296e082e8ee9b01211fa50b1be2f026edcb31bdf`, with no real clinical data read and no real outcome performance computed.
+The remaining registered sequence is: finish H6 unstripped death; complete H6 alternative-instrument, endpoint, timing, and CareVue sensitivities; then H7 patient-shuffled negative control, H8 blinded clinician construct validation, and H9 corrected Zigong external validation.
 
-Once the gate closes, structured-only analyses run first, one outcome at a time, under the frozen four-thread contract. Semantic and lexical analyses remain downstream of that ordered execution.
+Post-registration exploratory work is explicitly separated from the registered sequence. The approved forward plan adds local Ollama-based Nimble 9B and Tev1 4B decision-model comparisons after the registered critical path. Hosted Jev remains outside the current restricted-data execution path pending governance clarification.
 
-While approval is pending, the project may develop independent public/synthetic validation protocols that do not use MIMIC outcome performance or modify the registered v2.1 design.
+See `docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md` for the authoritative forward execution order.
 
 ## What the older v1 results still tell us
 
