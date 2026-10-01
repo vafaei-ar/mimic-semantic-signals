@@ -1,113 +1,98 @@
-# 05 — External validation status
+# 05 - External validation status
 
-Updated: 2026-09-24
+Updated: 2026-10-01
 
-This report distinguishes **available external datasets**, **historical v1 external results**, and **what must be corrected before manuscript use**.
+This report distinguishes available external datasets, historical v1 external results, and the corrected manuscript-facing transport path.
 
 ## Current status summary
 
 | Dataset | Narrative available | Current role | Manuscript status |
-| --- | --- | --- | --- |
-| eICU | no comparable bedside narrative | structured transport | v1 affected by lab-window bug; rerun required |
-| NWICU | no comparable bedside narrative | structured transport | v1 provenance; should be aligned to corrected v2 baseline |
-| Zigong | Chinese nursing narratives | external narrative transport | v1 affected by leakage-regex bug; rebuild required |
-| MIMIC-BR | no comparable narrative | structured cross-country validation | pending/contributor access |
-| HiRID | no comparable narrative | high-frequency structured validation | pending/contributor access |
-| SICdb | no comparable narrative | European structured validation | pending/contributor access |
-| AmsterdamUMCdb | no comparable narrative progress notes | structured validation | separate access path |
+|---|---|---|---|
+| Zigong | Chinese nursing narratives | registered external narrative transport | corrected cohort/protocol frozen; H9 pending |
+| eICU | no comparable bedside narrative | structured transport | v1 affected by lab-window bug; corrected rerun required if used |
+| NWICU | no comparable bedside narrative | structured transport | v1 provenance; align to corrected structured lineage if used |
+| MIMIC-BR | no comparable narrative | possible structured cross-country validation | pending/access dependent |
+| HiRID | no comparable narrative | possible structured validation | pending/access dependent |
+| SICdb | no comparable narrative | possible European structured validation | pending/access dependent |
+| AmsterdamUMCdb | no comparable progress-note narrative | possible structured validation | separate access path |
+
+## Corrected Zigong route
+
+The old v1 Zigong narrative result is not manuscript-ready because the original leakage regex was defective.
+
+A corrected 12-hour design was tested and found infeasible because the Zigong nursing narrative cadence is approximately daily. The frozen external design therefore uses a 24-hour ventilation horizon and within-nursing-table relative chronology.
+
+Frozen Zigong cohort:
+
+- 85 cases;
+- 255 controls;
+- 340 total notes;
+- 85 matched sets;
+- 1:3 case-control sampling;
+- patient unique across all 340 notes;
+- zero blank predictor notes;
+- zero direct ventilation leakage-term hits after screening;
+- case predictor narrative approximately 24 hours before the ventilation event.
+
+Read docs/zigong_ventilation_external_protocol_v1.md.
+
+## Bilingual semantic applicability gate
+
+Before any Zigong outcome performance was inspected, Open-Jev, Laya, and DiffusionGemma were tested on a synthetic label-free English/Chinese semantic-consistency gate.
+
+Only DiffusionGemma met the frozen direct-Chinese eligibility rule. Its English-Chinese Spearman correlation was 0.962, median absolute score difference was 0, and all 8 target contrasts met the strong-direction criterion.
+
+Open-Jev and Laya did not pass the frozen direct-Chinese gate and are excluded from direct-Chinese Zigong outcome scoring.
+
+Passing this gate establishes only minimum language/semantic applicability. It does not establish external clinical validity.
+
+Read:
+
+- docs/zigong_bilingual_semantic_gate_v1.md
+- docs/zigong_direct_chinese_model_eligibility_freeze.md
+
+## Frozen H9 transport analysis
+
+The corrected Zigong external narrative transport uses DiffusionGemma only.
+
+The transported predictor is fit on the full frozen MIMIC invasive-ventilation cohort using the eight DiffusionGemma semantic scores only. The fitted preprocessing and logistic-regression coefficients are then applied unchanged to Zigong.
+
+No Zigong:
+
+- model refit;
+- recalibration;
+- threshold selection;
+- coefficient modification;
+- post hoc translation;
+- prompt adaptation.
+
+Primary metric: Zigong AUROC.
+
+Secondary metrics: AUPRC and descriptive Brier score, with 2,000 matched-set bootstrap replicates for intervals.
+
+Because the Zigong analytic cohort has artificial 25% prevalence, AUPRC is conditional on the sampled cohort and Brier score is not population calibration.
+
+Read docs/zigong_diffusiongemma_external_transport_protocol_v1.md.
 
 ## eICU
 
-The integrity audit showed that the v1 eICU implementation clipped laboratory lookback at ICU-relative hour zero.
+The v1 eICU implementation clipped laboratory lookback at ICU-relative hour zero, excluding 37,330 of 92,616 relevant rows that were inside the intended pre-anchor window. The old eICU transport estimate therefore cannot be used as final manuscript evidence.
 
-Among selected snapshots:
-
-- 92,616 relevant laboratory rows were inside the intended 24-hour pre-anchor window;
-- 37,330 had negative ICU-relative offsets;
-- those 37,330 rows were excluded solely by the lower-bound clip;
-- this is 40.3% of the intended relevant lab rows.
-
-Therefore the old eICU transport estimate cannot be used as final manuscript evidence.
-
-A corrected external structured pipeline should:
-
-- include the full intended pre-anchor laboratory window;
-- use the corrected v2 structured feature definitions where cross-dataset mapping permits;
-- freeze any dataset-specific mapping before examining transported performance.
+A corrected structured rerun, if retained for the paper, must use the full intended lookback and a mapping frozen before transported performance is opened.
 
 ## NWICU
 
-The specific eICU zero-hour clipping bug does not establish that NWICU is wrong.
+The eICU clipping bug does not establish that NWICU is wrong. However, the old NWICU result belongs to the v1 structured feature lineage and should be treated as provenance until aligned with the corrected v2.1 feature/model definition.
 
-However, the old NWICU result belongs to the v1 structured feature lineage and should be treated as provenance until it is aligned with the corrected v2 feature/model definition.
+## Additional external datasets
 
-## Zigong
+MIMIC-BR, HiRID, SICdb, and AmsterdamUMCdb may provide useful structured transport evidence if access and mapping permit, but they do not replace an independent narrative transport test because they lack comparable bedside narrative documentation.
 
-The v1 Zigong narrative result is not manuscript-ready.
-
-The integrity audit found:
-
-- the current regex did not match literal `ETT`;
-- broad `气管` matching removed some `支气管`/bronchus contexts;
-- generic `拔除` removed thousands of rows without another specific airway/ventilation term.
-
-The previous DiffusionGemma transport AUROC is therefore historical provenance only.
-
-A corrected Zigong rerun must:
-
-- freeze a narrower leakage filter;
-- preserve the corrected cohort before opening model performance;
-- keep the bilingual/direct-Chinese eligibility gate separate from outcome performance;
-- clearly acknowledge the 24-hour Zigong horizon versus the 12-hour MIMIC v2 horizon if that mismatch remains.
-
-## Planned structured external datasets
-
-### MIMIC-BR
-
-Role:
-
-- cross-country structured validation;
-- endpoint/physiology transport.
-
-Current state: planned/pending access or contributor approval.
-
-### HiRID
-
-Role:
-
-- high-frequency physiology validation;
-- useful for circulatory/organ-support endpoints.
-
-Current state: planned/pending access or contributor approval.
-
-### SICdb
-
-Role:
-
-- European ICU structured validation.
-
-Current state: planned/pending access or contributor approval.
-
-### AmsterdamUMCdb
-
-Role:
-
-- additional European structured validation.
-
-Current state: separate access path; released free-text-style tables are not equivalent to bedside narrative progress notes.
-
-## External narrative evidence needed
-
-Even after correcting Zigong, the project would still benefit substantially from a second independent narrative cohort.
-
-Structured datasets can strengthen transport/calibration claims, but they cannot establish narrative semantic transport if they lack comparable clinician-authored notes.
+A second external narrative cohort would strengthen the paper if a suitable dataset and governance route become available.
 
 ## Next external-analysis order
 
-1. finish corrected MIMIC v2 primary analysis;
-2. freeze corrected eICU/NWICU structured mappings;
-3. rerun structured transport;
-4. freeze corrected Zigong leakage/cohort protocol;
-5. rerun Zigong narrative transport;
-6. add MIMIC-BR/HiRID/SICdb as access permits;
-7. seek another external narrative dataset.
+1. complete the registered MIMIC H6-H8 path;
+2. run registered H9 corrected Zigong transport exactly as frozen;
+3. freeze the external result regardless of performance;
+4. add corrected structured transport or a second narrative cohort only as clearly labeled additional validation.

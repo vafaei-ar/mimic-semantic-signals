@@ -1,180 +1,169 @@
-# 02 — Current scientific status
+# 02 - Current scientific status
 
-Updated: 2026-09-30
+Updated: 2026-10-01
 
-## Current scientific question
+## Scientific question
 
 The study asks whether prospectively available ICU narrative documentation contains reusable information about near-term deterioration that is not fully represented by structured physiology, and whether a small set of clinically interpretable semantic scores can provide useful low-dimensional compression of that narrative information.
 
-The project is **not** a model leaderboard. Open-Jev, Laya, and DiffusionGemma are measurement instruments. The scientific objects are the narrative signal, its incremental value, its interpretability, and its transport.
+The project is not a model leaderboard. Open-Jev, Laya, and DiffusionGemma are semantic measurement instruments. The scientific objects are incremental narrative signal, semantic compression, interpretability, stability, and transport.
 
-## Why the analysis was rebuilt
+## Corrected v2.1 design
 
-An external code review identified several issues in the original v1 lineage. The aggregate integrity audit confirmed the major concerns:
+The corrected registered analysis uses:
 
-- ventilation outcome observability was strongly tied to MIMIC source system;
-- `dbsource` could therefore act as an endpoint-observability proxy;
-- outcome-language filtering changed which note was selected or whether a note existed;
-- Physician and Respiratory note categories were excluded because MIMIC-III stores them with trailing spaces;
-- numeric `ISERROR=1.0` rows were missed by the string filter;
-- several Open-Jev/Laya evaluators averaged chunk scores even though inference stored max/min aggregation;
-- 40.3% of intended eICU pre-anchor lab rows were removed by a zero-hour clipping implementation;
-- the Zigong leakage regex was over-broad and its ETT boundary was broken.
+- source-compatible primary populations;
+- adult eligibility and NICU exclusion;
+- corrected airway-coded GCS verbal handling;
+- fixed 12-hour ICU landmark and 12-hour primary prediction horizon;
+- normalized note categories and error flags;
+- note identity frozen before language stripping;
+- a rich 34-feature structured physiology/laboratory/urine comparator plus frozen context;
+- exact patient-grouped repeated CV partitions;
+- fixed note corpora;
+- 500-valid-replicate patient-cluster refit bootstrap as primary uncertainty;
+- no confirmatory p-values, Holm testing, or binary interval-crossing decision rule.
 
-The authoritative audit is `docs/external_review_integrity_audit_result_freeze_v1.md`.
+Confirmatory populations:
 
-All affected v1 results remain preserved for provenance but are not final manuscript evidence.
+| Outcome | Source | N | Cases |
+|---|---|---:|---:|
+| Invasive ventilation | MetaVision | 11,116 | 279 |
+| RRT | MetaVision | 19,395 | 314 |
+| ICU death | MetaVision | 19,811 | 214 |
 
-## Corrected v2 cohort — pre-v2.1 result, now superseded for manuscript use
+CareVue ICU death is a separate prespecified replication/sensitivity and is not pooled with MetaVision.
 
-The v2 analysis used a fixed 12-hour ICU landmark and a 12-hour prediction horizon. After the second review, these counts are retained as provenance but are **not the final manuscript cohort**, because the source-independent ICU-death branch did not explicitly restrict to adults/NICU-excluded stays.
+## Registered primary Open-Jev results, H1-H3
 
-| Outcome | Source rule | Rows | Cases | Prevalence | Note coverage |
-| --- | --- | ---: | ---: | ---: | ---: |
-| Invasive ventilation | MetaVision only | 11,126 | 280 | 2.517% | 40.47% |
-| RRT | MetaVision only | 19,414 | 314 | 1.617% | 39.75% |
-| ICU death | all sources | 49,546 | 537 | 1.084% | 70.91% |
+| Outcome | Comparator AUROC | + Open-Jev AUROC | Delta AUROC | 95% refit-bootstrap interval |
+|---|---:|---:|---:|---:|
+| Invasive ventilation | 0.72468 | 0.72463 | -0.00005 | -0.02173 to +0.01910 |
+| RRT | 0.97394 | 0.97315 | -0.00079 | -0.00323 to +0.00275 |
+| ICU death, MetaVision | 0.93338 | 0.93126 | -0.00212 | -0.00802 to +0.00531 |
 
-Key v2 corrections:
+All three primary analyses completed 500/500 valid refit-bootstrap replicates with zero replacements.
 
-- ventilation and RRT use source-compatible MetaVision risk sets;
-- `dbsource` is not a predictor;
-- note categories are whitespace-normalized;
-- note error flags are parsed numerically;
-- the predictor note is selected **before** any treatment-language sensitivity;
-- note availability therefore no longer depends on deleting outcome-language notes;
-- matched case-control sampling is no longer the primary multi-outcome design.
+Current interpretation: the registered Open-Jev point estimates do not show a clear incremental discrimination gain beyond the rich structured comparator.
 
-## Direct treatment/outcome language — v2 prevalence estimates are provisional
+See docs/results/v2_1_primary_openjev_results.md.
 
-The predictor-note selection correction remains valid: the note is selected prospectively before any text deletion. However, the v2 direct-language regexes themselves were found to over- and under-match, so the percentages below are provenance only until the corrected v2.1 regex is applied.
+## H4 and H5
 
-Among note-available rows, direct outcome-language prevalence in cases is approximately:
+H4 six-construct analyses are complete for all three outcomes. See docs/results/v2_1_h4_six_construct_results.md.
 
-- ventilation: 27.4%;
-- RRT: 81.8%;
-- ICU death: 39.2%.
+H5 uses a common L2-penalized logistic family for comparator, comparator + Open-Jev, comparator + TF-IDF, and comparator + TF-IDF + Open-Jev.
 
-This is real prospective information, but it can make intervention prediction tautological. Therefore manuscript-facing narrative results must include a **fixed-note language-stripped sensitivity** in which the same note identity/time/category is retained and only prespecified language spans are removed.
+| Outcome | Open-Jev increment | TF-IDF increment | Open-Jev after TF-IDF |
+|---|---:|---:|---:|
+| Invasive ventilation | -0.00826 | +0.00564 | -0.00673 |
+| RRT | -0.00194 | +0.00219 | -0.00153 |
+| ICU death, MetaVision | -0.00631 | +0.00123 | -0.00580 |
 
-For RRT especially, unstripped text performance cannot be interpreted as latent semantic deterioration signal.
+Within this deliberately common model family, TF-IDF has the larger primary-partition increment in all three outcomes, and adding Open-Jev after TF-IDF lowers AUROC in all three primary analyses.
 
-## Stronger structured baseline — mapping retained, extraction requires v2.1 correction
+See docs/results/v2_1_h5_lexical_results.md.
 
-The v1 11-feature physiology baseline was too thin for the final incremental-value claim.
+## H6 sensitivity status
 
-The corrected v2 structured comparator now contains 34 frozen raw features:
+### Unstripped-note Open-Jev
 
-- age and sex;
-- latest and 6-hour change for HR, SBP, DBP, MAP, respiratory rate, SpO2, and temperature;
-- GCS eye, verbal, and motor components;
-- lactate, creatinine, BUN, WBC, hemoglobin, platelets, sodium, potassium, bicarbonate, chloride, glucose, total bilirubin, INR, and blood pH;
-- 6-hour net urine output.
+| Outcome | Delta AUROC | 95% refit-bootstrap interval |
+|---|---:|---:|
+| Invasive ventilation | -0.01043 | -0.02177 to +0.01773 |
+| RRT | -0.00034 | -0.00308 to +0.00310 |
+| ICU death, MetaVision | +0.00108 | -0.00911 to +0.00602 |
 
-The pre-v2.1 feature extraction completed technically, but two issues prevent it from being the manuscript-facing feature result: pediatric/NICU stays can enter the death cohort, and ETT/tracheostomy-coded verbal GCS can be treated as numeric 1. The following availability figures are therefore provisional:
+Using the full unstripped note does not reveal a consistent positive increment that was hidden by language stripping.
 
-| Outcome | Numeric missing fraction | All-numeric-missing rows |
-| --- | ---: | ---: |
-| Ventilation | 9.10% | 0 |
-| RRT | 7.82% | 0 |
-| ICU death | 14.47% | 0 |
+### Laya alternative instrument
 
-The exact mapping and extraction freeze are:
+| Outcome | Delta AUROC | 95% refit-bootstrap interval |
+|---|---:|---:|
+| Invasive ventilation | +0.01031 | -0.01595 to +0.02519 |
+| RRT | -0.00079 | -0.00278 to +0.00302 |
+| ICU death, MetaVision | +0.00141 | -0.00660 to +0.00728 |
 
-- `docs/enhanced_structured_baseline_mapping_freeze_v2.md`
-- `docs/enhanced_structured_baseline_feature_result_freeze_v2.md`
+The ventilation Laya point estimate is positive but uncertain and not stable enough to redefine the primary result. RRT and death remain near zero.
 
-## Active analysis
+### DiffusionGemma alternative instrument
 
-The OSF preregistration gate is closed and registered v2.1 real-label analyses are underway.
+Invasive-ventilation inference completed 4,499/4,499 frozen notes with zero failures and without reading outcome labels.
 
-Current checkpoint:
+Ventilation evaluation:
 
-- H1-H3 primary stripped-note Open-Jev analyses are complete for invasive ventilation, RRT, and MetaVision ICU death.
-- H4 six-construct analyses are complete for all three outcomes.
-- H5 common-logistic lexical comparisons are complete for all three outcomes.
-- H6 unstripped-note sensitivity is complete for ventilation and RRT.
-- MetaVision ICU-death H6 unstripped-note evaluation job `T4N7R9V2` is the current running step.
+- comparator AUROC: 0.72468;
+- comparator + DiffusionGemma AUROC: 0.71657;
+- delta AUROC: -0.00811;
+- 95% patient-cluster refit-bootstrap interval: -0.02030 to +0.01445;
+- five frozen-partition delta-AUROCs: -0.00811, -0.00892, -0.00108, -0.00478, +0.00423;
+- 500/500 valid bootstrap replicates, zero replacements.
 
-The remaining registered sequence is: finish H6 unstripped death; complete H6 alternative-instrument, endpoint, timing, and CareVue sensitivities; then H7 patient-shuffled negative control, H8 blinded clinician construct validation, and H9 corrected Zigong external validation.
+Current DiffusionGemma RRT inference job D4M8Q2VN is running fully offline on the frozen 7,709-note RRT corpus. No RRT outcome result is yet available from this arm.
 
-Post-registration exploratory work is explicitly separated from the registered sequence. The approved forward plan adds local Ollama-based Nimble 9B and Tev1 4B decision-model comparisons after the registered critical path. Hosted Jev remains outside the current restricted-data execution path pending governance clarification.
+See docs/results/v2_1_h6_diffusiongemma_results.md and docs/results/v2_1_h6_sensitivity_results.md.
 
-See `docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md` for the authoritative forward execution order.
+## What the corrected evidence currently supports
 
-## What the older v1 results still tell us
+The strongest current interpretation is:
 
-The v1 program remains scientifically useful as **exploratory provenance**:
+1. The compact Open-Jev representation has little or no incremental AUROC beyond the rich structured comparator in the registered primary analyses.
+2. High-dimensional lexical TF-IDF retains small positive increments in the common logistic comparison, while Open-Jev increments are negative there.
+3. H6 unstripped-note results do not suggest that language stripping erased a major positive semantic effect.
+4. Laya and DiffusionGemma show instrument-specific variation, but completed H6 estimates do not yet establish a consistently positive semantic increment.
+5. The scientific value of semantic compression may therefore depend more on interpretability, dimensionality, human construct validity, stability, runtime, and transport than on predictive gain alone.
 
-- narrative text clearly contains prospective information for some deterioration outcomes;
-- outcome dependence is substantial;
-- TF-IDF often outperforms the eight compact semantic scores;
-- the eight semantic constructs are better motivated as interpretable compression than as uniquely predictive information;
-- RRT is a useful example of an outcome where structured physiology can dominate;
-- external transport is imperfect.
+The central manuscript claim remains unlocked until the registered H6-H9 sequence is complete.
 
-However, the numerical v1 increments should not be carried forward as manuscript headline estimates.
+## Current registered execution order
 
-## Current manuscript claim status
+1. Complete DiffusionGemma RRT inference/evaluation.
+2. Complete DiffusionGemma MetaVision ICU-death inference/evaluation.
+3. Run remaining H6 ventilation endpoint, prospective-timing, note-availability, and CareVue death sensitivities.
+4. Run H7 comparator-risk-decile patient-shuffled negative control.
+5. Run H8 blinded clinician construct validation.
+6. Run H9 corrected Zigong external validation.
+7. Freeze an authoritative H1-H9 result/provenance index.
 
-The central claim is **not yet locked**.
+Post-registration exploratory Nimble 9B and Tev1 4B work begins only after the registered critical path is frozen.
 
-A defensible candidate, if it survives the corrected v2 analyses, is:
+## Hosted Jev governance
 
-> Low-dimensional clinically interpretable semantic measurements recover an outcome-dependent share of prospective narrative information beyond strong structured physiology, with a tradeoff between compression/interpretability and the higher predictive capacity of high-dimensional lexical text.
+On 2026-10-01 the vendor enabled Zero Data Retention for the organization and stated that only operational telemetry is retained under ZDR.
 
-That claim must still survive:
+This resolves the vendor-side retention clarification. It does not itself establish that credentialed MIMIC note text may be transmitted to the hosted service under institutional, Penn State, PhysioNet, or other applicable data-use rules.
 
-1. corrected structured-only evaluation;
-2. corrected semantic and TF-IDF evaluation on the same fixed patient-grouped splits;
-3. fixed-note treatment-language sensitivity;
-4. clinician construct validation;
-5. corrected external validation.
+Therefore hosted Jev remains outside the current restricted-data execution path. If a hosted comparison later becomes permissible, it will be post-registration exploratory, with the exact hosted configuration frozen first and the integration validated on nonrestricted material.
 
-## Lancet Digital Health readiness
+## External validation
 
-The project is not yet ready for submission.
+The corrected Zigong route is frozen as a 24-hour external narrative transport analysis because the source nursing-note cadence made the 12-hour design infeasible. The frozen cohort contains 85 cases, 255 controls, 340 patient-unique notes, and 85 matched sets, with zero blank predictor notes and zero direct ventilation leakage hits.
 
-The most important remaining scientific gates are:
+A label-free bilingual semantic gate made DiffusionGemma the only model eligible for direct Chinese outcome scoring. The final transport model is trained on the full frozen MIMIC ventilation cohort and applied unchanged to Zigong with no Zigong refit or recalibration.
 
-1. complete the remaining verbatim-form import/verification gate and validate the exact post-approval commit;
-2. run and freeze the corrected v2.1 structured-only analyses;
-3. run corrected semantic and lexical comparisons using identical frozen v2.1 split hashes;
-4. quantify whether any semantic increment survives the nonlinear structured comparator;
-5. perform blinded clinician construct validation with multiple raters;
-6. prioritize the registered controlled-edit robustness analyses on real MIMIC notes and blinded clinician construct validation;
-7. use OPUS, if pursued, only as a supplementary synthetic stress test outside the critical path;
-8. correct/repeat affected eICU and Zigong external analyses;
-9. obtain a second external narrative cohort if feasible;
-10. quantify the practical value of compression: dimensionality, stability, compute, interpretability, and transport.
+See docs/05_EXTERNAL_VALIDATION_STATUS.md.
 
-The OPUS resource is documented in `docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md`. It is supplementary because the source genre is synthetic doctor-patient dialogue rather than ICU bedside notes, and long conversations exceed the registered Open-Jev coverage window. No OPUS-based Medical JEV result exists yet.
+## Manuscript framing
 
-If corrected semantic effects become small or disappear against the nonlinear structured baseline, the paper should pivot toward **interpretable semantic compression of lexical signal** rather than “information beyond physiology.”
+A plausible final story, if the remaining evidence is consistent, is not that semantic scores uniquely outperform physiology or raw text. A stronger framing may be that interpretable low-dimensional semantic compression captures clinically meaningful aspects of narrative information but can lose predictive efficiency relative to high-dimensional lexical representation and may add little discrimination once a strong nonlinear structured comparator is present.
+
+This framing still requires:
+
+- H8 human construct validity;
+- H9 corrected external transport;
+- completion of all registered H6 sensitivities;
+- practical compression/runtime/stability analysis;
+- exact provenance audit of every manuscript number.
 
 ## Claim guardrails
 
 Do not claim that:
 
-- JEV/Open-Jev/Laya outperform raw text generally;
+- JEV/Open-Jev/Laya/DiffusionGemma outperform raw text generally;
 - the eight constructs contain information unavailable to lexical models;
 - v1 matched-cohort or context-model estimates are current primary evidence;
 - external transport is strong or deployment-ready;
 - note-availability/context effects are causal;
-- the supervised encoder is a semantic-preserving JEV model.
+- one H6 instrument is superior based on post hoc point-estimate selection.
 
-Use `docs/03_V2_ANALYSIS_LINEAGE.md` for the exact current provenance chain.
-
-
-## Second-review v2.1 correction gate
-
-A second independent code review found two additional primary corrections before the structured result can be opened:
-
-- the current ICU-death cohort does not restrict to adults/NICU-excluded stays;
-- GCS verbal currently treats ETT/tracheostomy-coded verbal responses as numeric 1.
-
-It also confirmed a ventilation endpoint asymmetry, treatment-language regex ambiguity, split-freeze weaknesses, and important treatment/timing sensitivity needs.
-
-These are now frozen in `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`.
-
-Therefore `E8R7Q5M3` is no longer the manuscript-facing structured gate. Its output, if terminal, should remain unopened/unpromoted until the v2.1 cohort and feature corrections are complete and a fresh structured evaluation is run.
+Use docs/03_V2_ANALYSIS_LINEAGE.md for provenance and docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md for the authoritative forward plan.

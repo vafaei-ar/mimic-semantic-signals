@@ -1,59 +1,63 @@
-# 01 — Read this first
+# 01 - Read this first
 
-Updated: 2026-09-24
+Updated: 2026-10-01
 
-This repository contains both the **current corrected v2 analysis** and a substantial **v1 provenance archive**. The v1 files are intentionally retained because they document how the study evolved, but several v1 headline results are no longer manuscript-ready after an external integrity review.
+This repository contains both the current corrected v2.1 manuscript-facing analysis and a substantial v1 provenance archive. The v1 files are intentionally retained because they document how the study evolved, but affected v1 numerical results are not final manuscript evidence.
 
 ## Recommended reading order
 
-Read these numbered reports first:
+1. docs/01_READ_FIRST.md - navigation and document-status rules.
+2. docs/02_CURRENT_SCIENTIFIC_STATUS.md - current scientific state and latest registered results.
+3. docs/03_V2_ANALYSIS_LINEAGE.md - ordered corrected provenance from integrity audit through the current registered execution.
+4. docs/04_V1_PROVENANCE_AND_HOLD.md - historical v1 evidence and why it is not manuscript-final.
+5. docs/05_EXTERNAL_VALIDATION_STATUS.md - current external-validation status, including the corrected Zigong route.
+6. docs/06_POSTREVIEW_V2_1_CORRECTIONS.md - historical second-review correction gate.
+7. docs/07_PREREGISTRATION_READINESS_2026-09-25.md - historical preregistration checkpoint.
+8. docs/08_LANCET_DIGITAL_HEALTH_ROADMAP_2026-09-25.md - current manuscript roadmap.
+9. docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md - supplementary synthetic plan.
+10. docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md - authoritative forward execution order.
 
-1. **`docs/01_READ_FIRST.md`** — navigation and document-status rules.
-2. **`docs/02_CURRENT_SCIENTIFIC_STATUS.md`** — the current scientific state, corrected cohorts, what is known, what is on hold, and the next manuscript gates.
-3. **`docs/03_V2_ANALYSIS_LINEAGE.md`** — ordered v2 provenance from integrity audit through the currently running structured evaluation.
-4. **`docs/04_V1_PROVENANCE_AND_HOLD.md`** — what the older v1 analyses showed, which parts remain useful as exploratory provenance, and why they cannot be used as final manuscript evidence.
-5. **`docs/05_EXTERNAL_VALIDATION_STATUS.md`** — current status of eICU, NWICU, Zigong, and planned external datasets.
-6. **`docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`** — the second-review corrections that now gate all manuscript-facing predictive results.
-
-After the numbered reports, read the detailed protocol/result-freeze documents linked from `03_V2_ANALYSIS_LINEAGE.md`.
+Current aggregate result summaries are indexed in docs/results/README.md.
 
 ## Which documents are authoritative?
 
-The numbered reports are the **navigation and synthesis layer**.
+The numbered reports are the navigation and synthesis layer.
 
-For exact cohort definitions, item IDs, model settings, seeds, bootstrap rules, artifact hashes, and prespecified interpretation rules, the detailed frozen protocol/result documents remain authoritative.
+For exact cohort definitions, item IDs, model settings, seeds, bootstrap rules, artifact hashes, and prespecified interpretation rules, detailed frozen protocol/result documents remain authoritative.
 
-If a numbered synthesis and a detailed frozen document appear to conflict, use the **newest applicable v2 freeze/protocol** and treat the older text as superseded provenance.
+Documents 06 and 07 intentionally preserve the state of the project at the correction and preregistration gates. They should not be rewritten to look like live status reports. When they conflict with later status, use the newest applicable frozen protocol/result plus docs/02, docs/03, and docs/10.
 
 ## Current manuscript rule
 
-The project is under a **v1 integrity hold**.
+The v1 integrity hold remains in force for affected historical numerical estimates.
 
-Do **not** use the older matched-cohort, population-context, eICU-v1, or Zigong-v1 estimates as final manuscript headline results.
-
-The current manuscript-facing lineage begins with the completed integrity audit and corrected v2 cohort.
+The manuscript-facing lineage is the corrected v2.1 registered analysis. OSF registration ahxn9 is approved/public with DOI 10.17605/OSF.IO/AHXN9.
 
 ## Current live gate
 
-The manuscript-facing gate is now the **v2.1 correction**, not the pre-v2.1 performance run.
+Completed:
 
-The already-running `E8R7Q5M3` job was launched before the second review. Its result should remain unopened/unpromoted for manuscript use.
+- H1-H3 primary stripped-note Open-Jev analyses;
+- H4 six-construct analyses;
+- H5 common-logistic lexical comparisons;
+- H6 unstripped-note Open-Jev sensitivity for all three outcomes;
+- H6 Laya alternative-instrument sensitivity for all three outcomes;
+- H6 DiffusionGemma invasive-ventilation inference and evaluation.
 
-Before any structured result is frozen, the analysis must rebuild the adult v2.1 cohort, correct GCS-verbal airway handling, freeze exact split hashes, and rerun the structured evaluation.
+Current execution:
 
-## Naming convention going forward
+- D4M8Q2VN - H6 DiffusionGemma RRT inference on the frozen stripped-note RRT corpus.
 
-New high-level reports use numbered filenames so that GitHub directory listings communicate reading order.
+The active job is pinned to project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00. Later documentation-only commits do not alter that execution.
 
-Detailed protocols and result freezes keep descriptive filenames because they are referenced by code, jobs, historical commits, and other freeze documents. They should not be renamed merely for aesthetics.
+After the DiffusionGemma RRT arm, the registered sequence continues with DiffusionGemma MetaVision ICU death, remaining H6 endpoint/timing/CareVue sensitivities, H7 shuffled negative control, H8 blinded clinician construct validation, and H9 corrected Zigong external validation.
 
+## Current interpretation guardrail
 
-## Post-review v2.1 gate
+The corrected primary Open-Jev estimates are near zero after the rich structured comparator. H5 shows small positive TF-IDF increments and negative Open-Jev increments within the same logistic family. H6 alternative-instrument results so far do not justify selecting a preferred semantic instrument post hoc.
 
-A second code review identified two primary corrections that must be made before any structured-only result is opened: adult/NICU eligibility and GCS-verbal ETT handling. Additional endpoint, language, timing, split-freeze, and treatment-context sensitivities are also prespecified.
+Do not lock the manuscript claim until H6-H9 are complete.
 
-Read next:
+## Naming convention
 
-- `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`
-
-The current `E8R7Q5M3` output is not manuscript-facing and should not be read/frozen before the v2.1 correction is completed.
+High-level reports use numbered filenames so directory listings communicate reading order. Detailed protocols and freeze documents keep descriptive filenames because they are referenced by code, jobs, historical commits, and other frozen documents.

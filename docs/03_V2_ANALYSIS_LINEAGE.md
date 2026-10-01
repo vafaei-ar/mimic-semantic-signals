@@ -1,246 +1,162 @@
-# 03 — Corrected v2/v2.1 analysis lineage
+# 03 - Corrected v2/v2.1 analysis lineage
 
-Updated: 2026-09-24
+Updated: 2026-10-01
 
-This is the ordered provenance map for the current manuscript-facing analysis.
+This is the ordered provenance map for the current manuscript-facing analysis. Detailed frozen protocol/result files remain authoritative for exact definitions, settings, counts, seeds, hashes, and interpretation rules.
 
-Detailed frozen protocol/result files remain authoritative for exact definitions, settings, counts, seeds, hashes, and interpretation rules. This report tells you what to read, in what order, and which branches are superseded.
+## Status map
 
-## Visual lineage
+| Stage | Status | Key output |
+|---|---|---|
+| External code review and integrity audit | Complete | v1 numerical results placed under integrity hold |
+| Corrected v2/v2.1 cohort and feature rebuild | Complete | source-compatible adult cohorts, GCS correction, fixed notes |
+| Exact patient-grouped CV and context freezes | Complete | frozen downstream analysis inputs |
+| OSF preregistration ahxn9 | Complete/public | DOI 10.17605/OSF.IO/AHXN9 |
+| Final OSF form import and exact-commit validation | Complete | final registration gate passed |
+| H1-H3 primary Open-Jev | Complete | registered primary estimates frozen |
+| H4 six-construct | Complete | all three outcomes frozen |
+| H5 lexical comparison | Complete | all three outcomes frozen |
+| H6 unstripped Open-Jev | Complete | all three outcomes frozen |
+| H6 Laya | Complete | all three outcomes frozen |
+| H6 DiffusionGemma | In progress | ventilation complete; RRT inference running |
+| Remaining H6 sensitivities | Pending | endpoint, timing, note-availability, CareVue |
+| H7 shuffled negative control | Pending | registered |
+| H8 clinician construct validation | Pending | registered |
+| H9 corrected Zigong transport | Pending | registered/frozen protocol |
+| Manuscript claim lock | Pending | after H1-H9 freeze |
 
-```mermaid
-flowchart TD
-    A[External code review] --> B[Integrity audit]
-    B --> C[Corrected v2 cohort]
-    C --> D[Enhanced structured discovery]
-    D --> E[Exact 34-feature mapping]
-    E --> F[Pre-v2.1 feature extraction]
-    F --> G[Second code review]
-    G --> H[v2.1 adult/NICU + GCS correction]
-    H --> I[Freeze exact patient-grouped CV split hashes]
-    I --> J[Fresh v2.1 structured evaluation]
-    J --> K[Corrected semantic + TF-IDF evaluation]
-    K --> L[Language/timing/treatment-context sensitivities]
-    L --> M[Clinician construct validation]
-    M --> N[Corrected external validation]
-    N --> O[Manuscript claim lock]
+## 1. Integrity audit and v1 hold
 
-    B:::done
-    C:::done
-    D:::done
-    E:::done
-    F:::provisional
-    G:::done
-    H:::active
-    I:::future
-    J:::future
-    K:::future
-    L:::future
-    M:::future
-    N:::future
-    O:::future
+The external review and aggregate integrity audit identified source-system endpoint observability, note-selection artifacts, note-category whitespace and error-flag problems, inconsistent semantic chunk aggregation, an eICU laboratory-window bug, and a Zigong leakage-regex defect.
 
-    classDef done fill:#e8f5e9,stroke:#2e7d32,color:#111;
-    classDef provisional fill:#fff3e0,stroke:#ef6c00,color:#111;
-    classDef active fill:#fff8e1,stroke:#f9a825,color:#111;
-    classDef future fill:#f5f5f5,stroke:#757575,color:#111;
-```
-
-## Step 1 — Integrity audit: completed
+Affected v1 numerical results are retained as provenance only.
 
 Read:
 
-1. `docs/external_review_integrity_audit_protocol_v1.md`
-2. `docs/external_review_integrity_audit_result_freeze_v1.md`
-3. `docs/integrity_review_hold_2026-09-24.md`
+- docs/external_review_integrity_audit_result_freeze_v1.md
+- docs/04_V1_PROVENANCE_AND_HOLD.md
 
-Canonical audit job:
+## 2. Corrected v2.1 analysis base
 
-- `N7Q8V4R5`
-- artifact SHA-256: `c7c91a33f9ab41ed1efa87dc9efc09ade8a9624efe50ce88db89e82b5932e0a8`
+The v2.1 lineage rebuilt the manuscript-facing estimand before reopening performance:
 
-This established why the v1 manuscript-facing estimates are provenance only.
+- MetaVision-compatible ventilation and RRT risk sets;
+- adult/NICU eligibility;
+- corrected airway-coded GCS verbal handling;
+- normalized note categories and numeric error flags;
+- note selection before language stripping;
+- no dbsource predictor;
+- frozen rich structured comparator and context;
+- exact patient-grouped repeated CV partitions;
+- frozen note corpora;
+- prespecified endpoint, timing, language, and CareVue sensitivities.
 
-## Step 2 — Corrected v2 cohort: completed, then superseded by v2.1 eligibility correction
+Confirmatory populations are 11,116/279 ventilation, 19,395/314 RRT, and 19,811/214 MetaVision ICU-death rows/cases.
 
-Read:
+## 3. Registration gate
 
-1. `docs/corrected_landmark12_v2_protocol.md`
-2. `docs/corrected_landmark12_v2_cohort_result_freeze.md`
+OSF registration:
 
-Canonical v2 cohort job:
+- ID: ahxn9
+- DOI: 10.17605/OSF.IO/AHXN9
+- cited repository commit: 873897e6c934cea3d558b6518ac1e399f9f75387
+- manifest SHA-256: 22ac9f815309d81ebf03d279087848e33f8c0a16b563efe8af114a196194fc7d
 
-- `Q8R3V7M4`
-- artifact SHA-256: `e1113d0a280389c61ea5b6d326ca81bb3e128854aba3d085837baa2e8d180e12`
+The final imported OSF-form gate later passed at exact project commit e22b17938101b504fee6579e2a8b52b5d780e760 without reading clinical performance.
 
-v2 successfully corrected:
+After that point the registered real-label analysis opened.
 
-- ventilation/RRT source compatibility;
-- note-category normalization;
-- numeric error-flag handling;
-- note selection before language sensitivity;
-- removal of `dbsource` as a predictor;
-- the matched-cohort control-pool problem.
+## 4. Registered H1-H3 primary Open-Jev
 
-The second review then found that the all-source ICU-death branch had no adult/NICU restriction. Therefore the v2 cohort counts remain provenance until rebuilt as v2.1.
+All three outcomes are complete with 500-valid-replicate patient-cluster refit bootstrap.
 
-## Step 3 — Enhanced structured discovery/mapping: completed
+Primary delta-AUROC estimates:
 
-Read:
+- ventilation: -0.00005, 95% interval -0.02173 to +0.01910;
+- RRT: -0.00079, 95% interval -0.00323 to +0.00275;
+- MetaVision ICU death: -0.00212, 95% interval -0.00802 to +0.00531.
 
-1. `docs/enhanced_structured_baseline_discovery_protocol_v2.md`
-2. `docs/enhanced_structured_baseline_discovery_lineage_note.md`
-3. `docs/enhanced_structured_baseline_mapping_freeze_v2.md`
+Read docs/results/v2_1_primary_openjev_results.md.
 
-Final corrected discovery audit:
+## 5. H4 and H5
 
-- `X8R4Q7M3`
-- artifact SHA-256: `acb466d70fe1ef6af9ef7a58ae784a2810d5206aee0cf218329beb40e5d99a7b`
+H4 six-construct analyses are complete for all three outcomes.
 
-The core 34-feature mapping remains the base mapping.
-
-## Step 4 — Pre-v2.1 structured feature extraction: technically completed, not manuscript-final
-
-Read:
-
-- `docs/enhanced_structured_baseline_feature_result_freeze_v2.md`
-
-Canonical extraction:
-
-- `C8R6Q9M5`
-- artifact SHA-256: `7c40ef2dfc28af23ac12e544226570787ea6d2ad6a20aadc8b177356c15e287f`
-
-This extraction is not the final feature result because:
-
-- the cohort may contain pediatric/NICU stays;
-- GCS verbal can encode ETT/tracheostomy as numeric 1.
-
-Its availability figures are retained as provenance.
-
-## Step 5 — Second review / v2.1 correction gate: active
+H5 common-logistic representation comparisons are complete. Primary-partition TF-IDF increments are +0.00564 for ventilation, +0.00219 for RRT, and +0.00123 for MetaVision ICU death. Open-Jev increments are negative in all three, and Open-Jev after TF-IDF is also negative in all three primary analyses.
 
 Read:
 
-1. `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`
-2. `docs/enhanced_structured_baseline_mapping_addendum_v2_1.md`
-3. `docs/enhanced_structured_baseline_evaluation_addendum_v2_1.md`
+- docs/results/v2_1_h4_six_construct_results.md
+- docs/results/v2_1_h5_lexical_results.md
 
-Confirmed code-review corrections include:
+## 6. H6 unstripped-note sensitivity
 
-- adult age >=18 at ICU admission;
-- explicit NICU first-careunit exclusion;
-- ETT/tracheostomy-coded verbal GCS treated as missing;
-- case-only `event_time`;
-- corrected treatment-language regexes;
-- ventilation endpoint sensitivity arms;
-- meaningful all-clinical-missing diagnostics;
-- exact split-file hashes;
-- calibration-in-the-large separated from joint recalibration intercept.
+Complete for all three outcomes.
 
-Draft v2.1 code is in:
+Delta-AUROC estimates:
 
-- `src/104_build_corrected_landmark12_v2_1_cohorts.py`
-- `src/105_build_enhanced_structured_baseline_v2_1.py`
-- `src/106_freeze_enhanced_structured_cv_splits_v2_1.py`
-- `src/107_evaluate_enhanced_structured_baseline_v2_1.py`
+- ventilation: -0.01043;
+- RRT: -0.00034;
+- MetaVision ICU death: +0.00108.
 
-No v2.1 execution has been requested yet.
+No outcome shows a consistent positive increment that was hidden by language stripping.
 
-## Pre-v2.1 structured evaluation job
+Read docs/results/v2_1_h6_unstripped_results.md.
 
-The previously submitted job:
+## 7. H6 Laya alternative instrument
 
-- `E8R7Q5M3 — Evaluate Enhanced Structured V2`
-- exact commit: `0f72c995d240900e15d65dd7b6e3c4f7048453ea`
-- canonical status: **failed**
-- exit code: 124
-- stop reason: 240-minute timeout
-- terminal progress: 1,026 / 3,075 work units (33.37%)
-- terminal phase: RRT repeat 1, fold 1
-- declared artifacts: none
+Complete for all three outcomes.
 
-The execution log contains no scientific/model traceback; only scikit-learn deprecation warnings before RunRelay terminated the process at the task timeout. The run had completed the full ventilation stage, including 1,000 bootstrap iterations, but the aggregate output file is written only after all outcomes, so no performance artifact was published.
+Delta-AUROC estimates:
 
-This belongs to the pre-v2.1 cohort/feature lineage and will **not** be retried.
+- ventilation: +0.01031, 95% interval -0.01595 to +0.02519;
+- RRT: -0.00079, 95% interval -0.00278 to +0.00302;
+- MetaVision ICU death: +0.00141, 95% interval -0.00660 to +0.00728.
 
-It cannot resolve the adult/NICU or GCS-verbal issues because those are upstream of model fitting.
+Read docs/results/v2_1_h6_laya_results.md.
 
-## Step 6 — Freeze exact v2.1 patient-grouped splits: future
+## 8. H6 DiffusionGemma alternative instrument
 
-The split-freeze step must:
+Environment validation and exact local model-revision preflight are complete at project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00.
 
-- generate the five repeated five-fold patient-grouped assignments once;
-- save row-level assignments locally;
-- report only aggregate counts and SHA-256 hashes;
-- refuse to overwrite a non-identical existing split file.
+Frozen inference configuration:
 
-Downstream structured, semantic, and lexical models must load these exact hashes.
+- google/diffusiongemma-26B-A4B-it;
+- local model revision f7f5b7f5fa82ffc52addd066915886d497f5517b;
+- fully offline;
+- 977-token chunks;
+- 97-token overlap;
+- maximum 8 chunks;
+- maximum across seven concern constructs and minimum for reassuring stability.
 
-## Step 7 — Fresh v2.1 structured evaluation: future
+Ventilation inference job 9HN4R7T9 completed 4,499/4,499 notes with zero failures and no label access.
 
-The structured evaluator will use:
+Ventilation evaluation job B7Q2M9RK completed:
 
-- the corrected adult v2.1 cohort;
-- corrected 34-feature core physiology;
-- regularized logistic regression;
-- fixed histogram-gradient-boosting comparator;
-- pre-frozen patient-grouped splits;
-- 1,000 paired patient-cluster bootstrap replicates.
+- comparator AUROC 0.72468;
+- augmented AUROC 0.71657;
+- delta AUROC -0.00811;
+- 95% refit-bootstrap interval -0.02030 to +0.01445;
+- 500/500 valid bootstrap replicates, zero replacements.
 
-It will report separately:
+Current job D4M8Q2VN is running DiffusionGemma inference on the frozen 7,709-note RRT corpus. No RRT DiffusionGemma outcome result should be inferred until its evaluation artifact is terminal and read.
 
-- calibration-in-the-large;
-- joint recalibration intercept;
-- calibration slope.
+Read docs/results/v2_1_h6_diffusiongemma_results.md.
 
-The bootstrap remains conditional on fixed repeated cross-fitted predictions and does not include full refit variance.
+## 9. Remaining registered H6-H9
 
-## Step 8 — Corrected semantic + lexical evaluation: not yet run
+After the DiffusionGemma three-outcome arm:
 
-Requirements:
+1. complete registered H6 endpoint, prospective-timing, note-availability, and CareVue death sensitivities;
+2. run H7 patient-shuffled negative control within comparator-risk strata;
+3. run H8 blinded multi-rater clinician construct validation;
+4. run H9 corrected Zigong external narrative transport;
+5. freeze one H1-H9 provenance/result index.
 
-- rerun semantic inference on the v2.1 selected-note corpus;
-- use stored max/min chunk aggregation;
-- use the exact frozen v2.1 split hashes;
-- compare against both linear and nonlinear core structured models;
-- include TF-IDF lexical control;
-- keep note context free of `dbsource`.
+No registered definition should be changed in response to observed performance. Any implementation departure must be documented as a deviation.
 
-No pre-v2.1 performance should be substituted.
+## 10. Manuscript claim lock
 
-## Step 9 — Mandatory sensitivity layer: not yet run
+The manuscript claim remains open.
 
-Read `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`.
-
-Required sensitivity domains:
-
-- ventilation endpoint breadth;
-- fixed-note treatment-language stripping with corrected regexes;
-- CHARTEVENTS storetime availability;
-- 1-hour and 2-hour laboratory-result lag;
-- note-storetime/fallback timing;
-- secondary treatment/support structured comparator.
-
-## Step 10 — Clinician construct validation: not yet run
-
-Required before manuscript lock:
-
-- blinded note sample;
-- multiple clinical raters;
-- explicit definitions for the eight semantic constructs;
-- inter-rater reliability;
-- model-versus-human agreement/calibration.
-
-## Step 11 — Corrected external validation: not yet complete
-
-Read:
-
-- `docs/05_EXTERNAL_VALIDATION_STATUS.md`
-
-Affected eICU and Zigong v1 analyses require corrected reruns. NWICU should be aligned to the corrected structured lineage.
-
-## Step 12 — Manuscript claim lock: future
-
-The central claim is frozen only after the corrected v2.1 primary and sensitivity analyses, construct validation, and external validation are interpretable.
-
-No model shopping should be introduced merely because corrected results are less favorable.
+The corrected evidence increasingly favors a question about the value and limits of interpretable semantic compression rather than a claim of unique incremental predictive information beyond strong structured physiology. That interpretation remains provisional until H6-H9 and the final provenance audit are complete.

@@ -1,36 +1,25 @@
-# Project status and Lancet Digital Health roadmap — compatibility pointer
+# Project status and Lancet Digital Health roadmap - compatibility pointer
 
-Updated: 2026-09-24
+Updated: 2026-10-01
 
-> **This path is retained for backward compatibility with earlier commits and links.**
->
-> The current status report is now:
->
-> - `docs/02_CURRENT_SCIENTIFIC_STATUS.md`
->
-> The ordered analysis provenance is:
->
-> - `docs/03_V2_ANALYSIS_LINEAGE.md`
->
-> The v1 integrity/provenance summary is:
->
-> - `docs/04_V1_PROVENANCE_AND_HOLD.md`
+This path is retained for backward compatibility with earlier commits and links.
+
+Use these current documents:
+
+- docs/02_CURRENT_SCIENTIFIC_STATUS.md - latest scientific status and registered results;
+- docs/03_V2_ANALYSIS_LINEAGE.md - corrected provenance and current execution;
+- docs/08_LANCET_DIGITAL_HEALTH_ROADMAP_2026-09-25.md - current manuscript roadmap;
+- docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md - authoritative forward execution order;
+- docs/results/README.md - aggregate result-document index.
 
 ## Current state in brief
 
-The v1 manuscript-facing results are under an integrity hold after a code review and aggregate audit confirmed multiple cohort/implementation issues.
+OSF registration ahxn9 is approved/public with DOI 10.17605/OSF.IO/AHXN9.
 
-The primary manuscript lineage has entered a post-review **v2.1 correction gate**:
+H1-H5 are complete. H6 unstripped-note Open-Jev and Laya alternative-instrument analyses are complete for all three outcomes. DiffusionGemma ventilation is complete and DiffusionGemma RRT inference is the current registered execution.
 
-- v2 source-compatible cohort and note-selection corrections remain valid;
-- adult/NICU eligibility must be added;
-- ETT/tracheostomy-coded verbal GCS must be treated as missing rather than numeric 1;
-- exact CV split files/hashes and corrected calibration terminology are being added;
-- the pre-v2.1 structured evaluation job `E8R7Q5M3` must not be promoted as the manuscript-facing result;
-- corrected semantic/TF-IDF analysis remains locked;
-- clinician construct validation is still required;
-- affected eICU/Zigong external analyses still require corrected reruns.
+The corrected evidence so far shows near-zero primary Open-Jev incremental AUROC beyond the rich structured comparator, small positive TF-IDF increments in the common logistic H5 comparison, and no consistent positive H6 semantic-instrument increment yet.
 
-See `docs/06_POSTREVIEW_V2_1_CORRECTIONS.md`.
+The final manuscript claim remains unlocked pending the rest of H6, H7, H8 clinician validation, H9 corrected Zigong transport, and the final provenance audit.
 
-Do not use this compatibility file as the detailed scientific status. Read `docs/02_CURRENT_SCIENTIFIC_STATUS.md`.
+Do not use this compatibility file as the detailed scientific status.
