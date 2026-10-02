@@ -2562,3 +2562,71 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h6_broad_openjev_v2_1_ventilation.json
+
+  prepare_h6_chartevents_storetime_v2_1:
+    description: Rebuild the registered v2.1 structured comparator under the prespecified CHARTEVENTS storetime availability rule for all three primary outcomes, reporting aggregate availability loss without predictive performance.
+    command:
+      - bash
+      - scripts/run_h6_chartevents_storetime_prepare_v2_1.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 64
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_chartevents_storetime_preparation_v2_1.json
+
+  evaluate_h6_chartevents_storetime_v2_1_ventilation:
+    description: Evaluate the registered H6 ventilation CHARTEVENTS storetime sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_chartevents_storetime_eval_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_chartevents_storetime_v2_1_ventilation.json
+
+  evaluate_h6_chartevents_storetime_v2_1_rrt:
+    description: Evaluate the registered H6 RRT CHARTEVENTS storetime sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_chartevents_storetime_eval_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_chartevents_storetime_v2_1_rrt.json
+
+  evaluate_h6_chartevents_storetime_v2_1_death:
+    description: Evaluate the registered H6 MetaVision ICU-death CHARTEVENTS storetime sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_chartevents_storetime_eval_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_chartevents_storetime_v2_1_death.json
