@@ -17,6 +17,7 @@ H6 is a registered non-directional sensitivity family. Results are reported desc
 | DiffusionGemma | Invasive ventilation | -0.00811 | -0.02030 to +0.01445 |
 | DiffusionGemma | RRT | -0.00083 | -0.00283 to +0.00244 |
 | DiffusionGemma | ICU death, MetaVision | +0.00499 | -0.00654 to +0.00652 |
+| Broad respiratory-support endpoint + Open-Jev | Invasive ventilation | -0.00643 | -0.01879 to +0.01046 |
 
 All completed H6 evaluations shown above used 500 valid patient-cluster refit-bootstrap replicates with zero replacements.
 
@@ -90,4 +91,6 @@ H6 is intentionally a sensitivity family. These estimates should be carried forw
 
 ## Next registered H6 step
 
-The three-outcome DiffusionGemma arm is complete. The explicit-intubation ventilation sensitivity is empirically identical to the primary H1 cohort and does not require a separate predictive rerun. The broad respiratory-support endpoint audit R8V4N2M7 froze 11,380 rows, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. Preparation job T2X6P4N8 completed cleanly and froze the downstream structured/context/split/stripped-note inputs. Label-free Open-Jev inference V3X7P5N9 completed 4,590/4,590 notes with zero failures and zero label access; aggregate artifact SHA-256 dae6af7fa6980954662a323cff18e9edde18fb885ac65143bb073bbab99d951a. Current job W4Y8P6N2 is running the paired endpoint evaluation with the registered HGB procedure and 500 valid patient-cluster refit-bootstrap replicates.
+The three-outcome DiffusionGemma arm is complete. The explicit-intubation ventilation sensitivity is empirically identical to primary H1 and does not require a separate predictive rerun. The broad respiratory-support endpoint arm is also complete: W4Y8P6N2 reported comparator AUROC 0.70385, augmented AUROC 0.69741, delta AUROC -0.00643, 95% refit-bootstrap interval -0.01879 to +0.01046, primary delta AUPRC -0.00296, five frozen-partition delta-AUROCs -0.00643, +0.00160, -0.01098, -0.00698, and -0.00634, and 500/500 valid bootstrap replicates with zero replacements. Artifact SHA-256: 824114f7217a3a5af6806ce6b4e413e4ec070edd865f21ee2bb60e68c3c2ea80.
+
+Current job Y6Z3R8M4 is preparing the registered CHARTEVENTS storetime sensitivity before any timing-matched predictive result is opened.
