@@ -2630,3 +2630,122 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h6_chartevents_storetime_v2_1_death.json
+
+  prepare_h6_lab_lag_v2_1:
+    description: Rebuild the registered v2.1 structured comparator under prespecified 1-hour and 2-hour laboratory result-availability lags for all three primary outcomes, reporting aggregate availability loss without predictive performance.
+    command:
+      - bash
+      - scripts/run_h6_lab_lag_prepare_v2_1.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 64
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_lab_lag_preparation_v2_1.json
+
+  evaluate_h6_lab_lag_1h_v2_1_ventilation:
+    description: Evaluate the registered H6 invasive-ventilation 1-hour laboratory-lag sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_lab_lag_1h_eval_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_lab_lag_1h_v2_1_ventilation.json
+
+  evaluate_h6_lab_lag_1h_v2_1_rrt:
+    description: Evaluate the registered H6 RRT 1-hour laboratory-lag sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_lab_lag_1h_eval_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_lab_lag_1h_v2_1_rrt.json
+
+  evaluate_h6_lab_lag_1h_v2_1_death:
+    description: Evaluate the registered H6 MetaVision ICU-death 1-hour laboratory-lag sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_lab_lag_1h_eval_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_lab_lag_1h_v2_1_death.json
+
+  evaluate_h6_lab_lag_2h_v2_1_ventilation:
+    description: Evaluate the registered H6 invasive-ventilation 2-hour laboratory-lag sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_lab_lag_2h_eval_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_lab_lag_2h_v2_1_ventilation.json
+
+  evaluate_h6_lab_lag_2h_v2_1_rrt:
+    description: Evaluate the registered H6 RRT 2-hour laboratory-lag sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_lab_lag_2h_eval_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_lab_lag_2h_v2_1_rrt.json
+
+  evaluate_h6_lab_lag_2h_v2_1_death:
+    description: Evaluate the registered H6 MetaVision ICU-death 2-hour laboratory-lag sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_lab_lag_2h_eval_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_lab_lag_2h_v2_1_death.json
