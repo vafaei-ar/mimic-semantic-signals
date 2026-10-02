@@ -30,7 +30,7 @@ A8C5R2M9 completed the RRT storetime evaluation: comparator AUROC 0.97401, augme
 
 B9D6R3M2 completed the MetaVision ICU-death storetime evaluation: comparator AUROC 0.93367, augmented AUROC 0.93160, delta AUROC -0.00207, 95% refit-bootstrap interval -0.00923 to +0.00689, with 500/500 valid bootstrap replicates and zero replacements. Artifact SHA-256: 9b826a21bb6e382b6024870b7080eaf2a0d21c9f899010a8486a6d0c20a644ee.
 
-The three-outcome CHARTEVENTS storetime sensitivity is complete. D3G8V5N2 is now preparing the registered 1-hour and 2-hour laboratory-result lag sensitivities at validated project commit 6ce148b494b308ba766e086e2264ba97e679b5e4. This preparation reports aggregate availability loss and opens no predictive performance.
+The three-outcome CHARTEVENTS storetime sensitivity is complete. Initial lab-lag preparation D3G8V5N2 failed during aggregate feature-change comparison because the code referenced base lab names rather than the structured `*_last` columns; no predictive performance was opened and no artifact was shared. E4H9W6P3 validated the correction and a dedicated feature-name assertion at commit 1ec1ed7d7b6117463b0ec5627eee918ff7ea22af. F5J2X7N4 is now rerunning the registered 1-hour and 2-hour laboratory-result lag preparation at that corrected commit.
 
 The currently running job is not changed by documentation-only commits.
 
