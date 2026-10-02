@@ -2494,3 +2494,20 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h6_diffusiongemma_v2_1_death.json
+
+  audit_h6_broad_ventilation_inputs_v2_1:
+    description: Audit the frozen registered H6 ventilation endpoint-sensitivity cohorts, verify the explicit-intubation arm is empirically identical to primary, and freeze broad respiratory-support aggregate counts without fitting predictive models.
+    command:
+      - bash
+      - scripts/run_h6_broad_ventilation_input_audit_v2_1.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/multitask_benchmark/h6_broad_ventilation_input_audit_v2_1.json

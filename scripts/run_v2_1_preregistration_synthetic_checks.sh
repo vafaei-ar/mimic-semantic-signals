@@ -63,7 +63,7 @@ out.write_text(json.dumps({
         "117_evaluate_rich_comparator_v2_1.py",
         "118_run_registered_openjev_v2_1.py",
         "119_audit_registered_openjev_environment_v2_1.py",
-        "120_evaluate_h1_ventilation_openjev_v2_1.py",
+        "120_evaluate_h1_ventilation_openjev_v2_1.py",\n        "139_audit_h6_broad_ventilation_inputs_v2_1.py",
         "v2_1_registered_inference_contract.py"
     ],
     "registration_gate_expected_state": "locked_until_osf_approved_doi_hash_verified_and_verbatim_form_imported"
@@ -118,11 +118,11 @@ bash -n scripts/run_h6_laya_eval_v2_1_death.sh
 .venv/bin/python -m py_compile src/135_run_registered_diffusiongemma_v2_1.py
 .venv/bin/python -m py_compile src/136_evaluate_h6_diffusiongemma_ventilation_v2_1.py
 .venv/bin/python -m py_compile src/137_evaluate_h6_diffusiongemma_rrt_v2_1.py
-.venv/bin/python -m py_compile src/138_evaluate_h6_diffusiongemma_death_v2_1.py
+.venv/bin/python -m py_compile src/138_evaluate_h6_diffusiongemma_death_v2_1.py\n.venv/bin/python -m py_compile src/139_audit_h6_broad_ventilation_inputs_v2_1.py
 bash -n scripts/run_registered_diffusiongemma_environment_preflight_v2_1.sh
 bash -n scripts/run_h6_diffusiongemma_inference_v2_1_ventilation.sh
 bash -n scripts/run_h6_diffusiongemma_inference_v2_1_rrt.sh
 bash -n scripts/run_h6_diffusiongemma_inference_v2_1_death.sh
 bash -n scripts/run_h6_diffusiongemma_eval_v2_1_ventilation.sh
 bash -n scripts/run_h6_diffusiongemma_eval_v2_1_rrt.sh
-bash -n scripts/run_h6_diffusiongemma_eval_v2_1_death.sh
+bash -n scripts/run_h6_diffusiongemma_eval_v2_1_death.sh\nbash -n scripts/run_h6_broad_ventilation_input_audit_v2_1.sh
