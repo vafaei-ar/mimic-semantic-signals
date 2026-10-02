@@ -19,7 +19,7 @@ This is the ordered provenance map for the current manuscript-facing analysis. D
 | H6 unstripped Open-Jev | Complete | all three outcomes frozen |
 | H6 Laya | Complete | all three outcomes frozen |
 | H6 DiffusionGemma | Complete | all three outcomes frozen |
-| Remaining H6 sensitivities | In progress | broad endpoint input preparation running; timing/note-availability/CareVue pending |
+| Remaining H6 sensitivities | In progress | broad endpoint complete; CHARTEVENTS storetime preparation running; lab-lag/note-availability/CareVue pending |
 | H7 shuffled negative control | Pending | registered |
 | H8 clinician construct validation | Pending | registered |
 | H9 corrected Zigong transport | Pending | registered/frozen protocol |
@@ -151,7 +151,7 @@ Read docs/results/v2_1_h6_diffusiongemma_results.md.
 
 After the completed DiffusionGemma three-outcome arm:
 
-1. complete registered H6 endpoint, prospective-timing, note-availability, and CareVue death sensitivities. The explicit-intubation endpoint audit is identical to H1; the broad respiratory-support endpoint has 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows, with T2X6P4N8 preparing its frozen downstream inputs;
+1. complete registered H6 endpoint, prospective-timing, note-availability, and CareVue death sensitivities. The explicit-intubation endpoint audit is identical to H1. The broad respiratory-support endpoint is complete: delta AUROC -0.00643 with 95% interval -0.01879 to +0.01046. Current job Y6Z3R8M4 is preparing the CHARTEVENTS storetime sensitivity under the prespecified availability rule;
 2. run H7 patient-shuffled negative control within comparator-risk strata;
 3. run H8 blinded multi-rater clinician construct validation;
 4. run H9 corrected Zigong external narrative transport;
