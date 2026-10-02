@@ -18,6 +18,7 @@ H6 is a registered non-directional sensitivity family. Results are reported desc
 | DiffusionGemma | RRT | -0.00083 | -0.00283 to +0.00244 |
 | DiffusionGemma | ICU death, MetaVision | +0.00499 | -0.00654 to +0.00652 |
 | Broad respiratory-support endpoint + Open-Jev | Invasive ventilation | -0.00643 | -0.01879 to +0.01046 |
+| CHARTEVENTS storetime + Open-Jev | Invasive ventilation | +0.00668 | -0.02079 to +0.02286 |
 
 All completed H6 evaluations shown above used 500 valid patient-cluster refit-bootstrap replicates with zero replacements.
 
@@ -95,4 +96,6 @@ The three-outcome DiffusionGemma arm is complete. The explicit-intubation ventil
 
 CHARTEVENTS storetime preparation Y6Z3R8M4 completed without fitting predictive models. Of 2,588,698 in-window CHARTEVENTS rows, 127,617 (4.93%) lacked storetime, 187,322 (7.24%) were stored after the landmark, and 2,273,759 (87.83%) were retained. At least one CHARTEVENTS-derived feature changed versus primary in 56.18% of ventilation rows, 53.24% of RRT rows, and 45.33% of all-source ICU-death preparation rows. Preparation artifact SHA-256: 9cf9de723239481a0b42604482a0186885520c7dc56df6640ac08e80d9a12901.
 
-Current job Z7B4R9M5 is running the registered invasive-ventilation storetime evaluation. RRT and MetaVision ICU-death storetime evaluations remain unopened until the preceding outcome completes cleanly.
+Ventilation storetime evaluation Z7B4R9M5 completed with comparator AUROC 0.71690, augmented AUROC 0.72358, delta AUROC +0.00668, 95% refit-bootstrap interval -0.02079 to +0.02286, primary delta AUPRC -0.00605, five frozen-partition delta-AUROCs +0.00668, -0.01056, -0.00523, -0.00220, and +0.00336, and 500/500 valid bootstrap replicates with zero replacements. Artifact SHA-256: ee34846501989672c7a4e3fc2dcfb2536f0ed086fce7af9c4357b9f723bbcca4.
+
+Current job A8C5R2M9 is running the registered RRT storetime evaluation. MetaVision ICU-death storetime remains unopened until RRT completes cleanly.
