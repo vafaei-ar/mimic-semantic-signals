@@ -1,6 +1,6 @@
 # 03 - Corrected v2/v2.1 analysis lineage
 
-Updated: 2026-10-01
+Updated: 2026-10-02
 
 This is the ordered provenance map for the current manuscript-facing analysis. Detailed frozen protocol/result files remain authoritative for exact definitions, settings, counts, seeds, hashes, and interpretation rules.
 
@@ -18,8 +18,8 @@ This is the ordered provenance map for the current manuscript-facing analysis. D
 | H5 lexical comparison | Complete | all three outcomes frozen |
 | H6 unstripped Open-Jev | Complete | all three outcomes frozen |
 | H6 Laya | Complete | all three outcomes frozen |
-| H6 DiffusionGemma | In progress | ventilation complete; RRT inference running |
-| Remaining H6 sensitivities | Pending | endpoint, timing, note-availability, CareVue |
+| H6 DiffusionGemma | Complete | all three outcomes frozen |
+| Remaining H6 sensitivities | In progress | broad endpoint input preparation running; timing/note-availability/CareVue pending |
 | H7 shuffled negative control | Pending | registered |
 | H8 clinician construct validation | Pending | registered |
 | H9 corrected Zigong transport | Pending | registered/frozen protocol |
@@ -141,15 +141,17 @@ Ventilation evaluation job B7Q2M9RK completed:
 
 RRT inference job D4M8Q2VN completed 7,709/7,709 notes with zero failures, zero label access, and zero max-chunk truncations. Evaluation job F7K3Q9MV completed with comparator AUROC 0.97394, augmented AUROC 0.97310, delta AUROC -0.00083, 95% refit-bootstrap interval -0.00283 to +0.00244, and 500/500 valid bootstrap replicates with zero replacements. Evaluation artifact SHA-256: 179b0e6ea1ab6e4f60eeeb4027ae7c291eec51599597ce7dbcead318e884ef9a.
 
-Current job G8M4Q2VN is running the registered fully local MetaVision ICU-death DiffusionGemma inference. No death-arm outcome result should be inferred until its subsequent evaluation artifact is terminal and read.
+MetaVision ICU-death inference job G8M4Q2VN completed 7,889/7,889 notes with zero failures and no label access. Evaluation job H9Q4M2VK completed with comparator AUROC 0.93338, augmented AUROC 0.93837, delta AUROC +0.00499, 95% refit-bootstrap interval -0.00654 to +0.00652, and 500/500 valid bootstrap replicates with zero replacements. Evaluation artifact SHA-256: b12f961687c67c2ed25a689cd5f79d492b2db89010a8fc9c543cabbd19e0dc23.
+
+The full DiffusionGemma arm is complete. Its three delta-AUROC estimates are -0.00811 for ventilation, -0.00083 for RRT, and +0.00499 for MetaVision ICU death; all three registered uncertainty intervals span zero.
 
 Read docs/results/v2_1_h6_diffusiongemma_results.md.
 
 ## 9. Remaining registered H6-H9
 
-After the DiffusionGemma three-outcome arm:
+After the completed DiffusionGemma three-outcome arm:
 
-1. complete registered H6 endpoint, prospective-timing, note-availability, and CareVue death sensitivities;
+1. complete registered H6 endpoint, prospective-timing, note-availability, and CareVue death sensitivities. The explicit-intubation endpoint audit is identical to H1; the broad respiratory-support endpoint has 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows, with T2X6P4N8 preparing its frozen downstream inputs;
 2. run H7 patient-shuffled negative control within comparator-risk strata;
 3. run H8 blinded multi-rater clinician construct validation;
 4. run H9 corrected Zigong external narrative transport;
