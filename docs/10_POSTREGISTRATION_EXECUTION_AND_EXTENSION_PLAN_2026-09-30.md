@@ -27,9 +27,9 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- F5J2X7N4 - prepare_h6_lab_lag_v2_1
+- G6K3Y8P5 - evaluate_h6_lab_lag_1h_v2_1_ventilation
 - exact project commit: 1ec1ed7d7b6117463b0ec5627eee918ff7ea22af
-- corrected preparation after D3G8V5N2 failed on a lab structured-column naming mismatch; rebuilds the prespecified 1-hour and 2-hour laboratory result-availability lag comparators and reports aggregate availability loss before predictive evaluation.
+- evaluates the invasive-ventilation 1-hour laboratory-result lag sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates.
 
 The broad endpoint audit R8V4N2M7 froze 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. The explicit-intubation endpoint is empirically identical to H1 and requires no separate predictive rerun.
 
@@ -187,4 +187,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Wait for F5J2X7N4 to become terminal and inspect its canonical aggregate lab-lag preparation artifact. If clean, run the 1-hour laboratory-lag evaluations sequentially for ventilation, RRT, and MetaVision ICU death at the corrected validated commit, then repeat for the 2-hour arm. After both lag arms are frozen, continue to note availability and CareVue death.
+Wait for G6K3Y8P5 to become terminal and inspect its canonical aggregate 1-hour ventilation result. If clean, continue sequentially to 1-hour RRT and MetaVision ICU death at the same corrected validated commit, then repeat the three outcomes for the 2-hour arm. After both lag arms are frozen, continue to note availability and CareVue death.
