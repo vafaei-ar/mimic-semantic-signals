@@ -1,6 +1,6 @@
 # Lancet Digital Health roadmap - current checkpoint
 
-Updated: 2026-10-01
+Updated: 2026-10-02
 
 This file retains the original roadmap filename for continuity but now reflects the current post-registration state. The authoritative execution order is docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md.
 
@@ -24,9 +24,9 @@ The final OSF-form import/verification gate passed before real-label analyses op
 - H5 common-logistic lexical comparisons complete.
 - H6 unstripped-note Open-Jev sensitivity complete.
 - H6 Laya alternative-instrument sensitivity complete.
-- H6 DiffusionGemma ventilation analysis complete.
+- H6 DiffusionGemma three-outcome alternative-instrument arm complete.
 
-The DiffusionGemma RRT evaluation is complete: delta AUROC -0.00083, 95% refit-bootstrap interval -0.00283 to +0.00244. The current registered execution is MetaVision ICU-death DiffusionGemma inference, job G8M4Q2VN.
+DiffusionGemma delta-AUROCs are -0.00811 for ventilation (95% interval -0.02030 to +0.01445), -0.00083 for RRT (-0.00283 to +0.00244), and +0.00499 for MetaVision ICU death (-0.00654 to +0.00652). The current registered execution is broad respiratory-support ventilation endpoint input preparation, job T2X6P4N8.
 
 ## What the corrected results are saying
 
@@ -48,7 +48,8 @@ H6 does not currently rescue a simple positive semantic-increment story:
 - Laya ventilation has a +0.01031 point estimate but a wide interval spanning negative and positive values;
 - Laya RRT and death are near zero;
 - DiffusionGemma ventilation is -0.00811 with 95% interval -0.02030 to +0.01445;
-- DiffusionGemma RRT is -0.00083 with 95% interval -0.00283 to +0.00244.
+- DiffusionGemma RRT is -0.00083 with 95% interval -0.00283 to +0.00244;
+- DiffusionGemma MetaVision ICU death is +0.00499 with 95% interval -0.00654 to +0.00652.
 
 The paper should therefore follow the evidence rather than protect the original hypothesis.
 
@@ -62,8 +63,8 @@ That question remains open until H8 clinician validation and H9 transport are kn
 
 ## Remaining Lancet Digital Health path
 
-1. Finish the DiffusionGemma H6 arm for RRT and MetaVision ICU death.
-2. Complete all remaining registered H6 endpoint, timing, note-availability, and CareVue sensitivities.
+1. Complete the registered H6 broad respiratory-support endpoint sensitivity; explicit-intubation is already verified identical to H1.
+2. Complete the remaining H6 prospective-timing, note-availability, and CareVue death sensitivities.
 3. Run H7 shuffled negative control.
 4. Complete H8 blinded multi-rater clinician construct validation.
 5. Run H9 corrected Zigong DiffusionGemma transport.
