@@ -1,6 +1,6 @@
 # Registered v2.1 result documents
 
-Updated: 2026-10-01
+Updated: 2026-10-02
 
 This directory contains aggregate manuscript-facing result summaries. Row-level restricted data and patient-level predictions remain local.
 
@@ -20,7 +20,7 @@ This directory contains aggregate manuscript-facing result summaries. Row-level 
 
 The registered DiffusionGemma arm is complete for all three outcomes: ventilation delta AUROC -0.00811 (95% interval -0.02030 to +0.01445), RRT -0.00083 (-0.00283 to +0.00244), and MetaVision ICU death +0.00499 (-0.00654 to +0.00652).
 
-The current registered continuation is T2X6P4N8, which is preparing/fixing the broad respiratory-support ventilation endpoint sensitivity inputs at project commit a96f721f1fcf76195301575110c4e5023f7511f1. No broad-endpoint semantic or predictive performance is opened by that preparation task.
+T2X6P4N8 completed the broad respiratory-support endpoint input preparation at project commit a96f721f1fcf76195301575110c4e5023f7511f1. Its safe aggregate artifact freezes 34 structured features, the registered context block, five patient-grouped split repeats, and the 4,590-note stripped corpus without opening semantic or predictive performance. V3X7P5N9 is now running label-free Open-Jev inference on that frozen corpus.
 
 The currently running job is not changed by documentation-only commits.
 
