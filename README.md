@@ -40,13 +40,14 @@ Completed registered work:
 - H6 DiffusionGemma invasive-ventilation inference/evaluation;
 - H6 DiffusionGemma RRT inference/evaluation, with delta AUROC -0.00083 and 95% refit-bootstrap interval -0.00283 to +0.00244;
 - H6 DiffusionGemma MetaVision ICU-death inference/evaluation, with delta AUROC +0.00499 and 95% refit-bootstrap interval -0.00654 to +0.00652;
-- H6 ventilation endpoint audit: explicit-intubation is empirically identical to H1; broad respiratory support freezes 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows.
+- H6 ventilation endpoint audit: explicit-intubation is empirically identical to H1; broad respiratory support freezes 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows;
+- H6 broad respiratory-support endpoint evaluation: delta AUROC -0.00643 with 95% refit-bootstrap interval -0.01879 to +0.01046.
 
 Current registered execution:
 
-- W4Y8P6N2 - registered broad respiratory-support ventilation endpoint evaluation using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates.
+- Y6Z3R8M4 - prepare the registered CHARTEVENTS storetime sensitivity for all three primary outcomes, reporting aggregate availability loss before predictive evaluation.
 
-Broad-endpoint preparation T2X6P4N8 completed cleanly at project commit a96f721f1fcf76195301575110c4e5023f7511f1, freezing 34 structured features, the registered context block, five patient-grouped split repeats, and the 4,590-note stripped corpus. Label-free Open-Jev inference V3X7P5N9 then completed 4,590/4,590 notes with zero failures and zero label access; aggregate artifact SHA-256 dae6af7fa6980954662a323cff18e9edde18fb885ac65143bb073bbab99d951a. Current evaluation W4Y8P6N2 uses the same exact project commit.
+Broad-endpoint preparation T2X6P4N8 and label-free Open-Jev inference V3X7P5N9 completed cleanly at project commit a96f721f1fcf76195301575110c4e5023f7511f1. Evaluation W4Y8P6N2 completed with comparator AUROC 0.70385, augmented AUROC 0.69741, delta AUROC -0.00643, 95% refit-bootstrap interval -0.01879 to +0.01046, and 500/500 valid replicates with zero replacements. Current storetime preparation Y6Z3R8M4 is pinned to validated commit 27a061c25d88e56a155c93c83514a7a63b6cb298.
 
 The authoritative registered execution order is in [10 - Post-registration execution and extension plan](docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md). The detailed post-registration decision-model extension, including Clef-Flash 9B, Clef 27B, Nimble 9B, and Tev1 4B, is frozen separately in [11 - Exploratory decision-model extension plan](docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md).
 
