@@ -26,7 +26,7 @@ The final OSF-form import/verification gate passed before real-label analyses op
 - H6 Laya alternative-instrument sensitivity complete.
 - H6 DiffusionGemma three-outcome alternative-instrument arm complete.
 
-DiffusionGemma delta-AUROCs are -0.00811 for ventilation (95% interval -0.02030 to +0.01445), -0.00083 for RRT (-0.00283 to +0.00244), and +0.00499 for MetaVision ICU death (-0.00654 to +0.00652). The current registered execution is broad respiratory-support ventilation endpoint input preparation, job T2X6P4N8.
+DiffusionGemma delta-AUROCs are -0.00811 for ventilation (95% interval -0.02030 to +0.01445), -0.00083 for RRT (-0.00283 to +0.00244), and +0.00499 for MetaVision ICU death (-0.00654 to +0.00652). The broad respiratory-support endpoint is also complete: delta AUROC -0.00643, 95% interval -0.01879 to +0.01046. The current registered execution is CHARTEVENTS storetime sensitivity preparation, job Y6Z3R8M4.
 
 ## What the corrected results are saying
 
@@ -63,8 +63,8 @@ That question remains open until H8 clinician validation and H9 transport are kn
 
 ## Remaining Lancet Digital Health path
 
-1. Complete the registered H6 broad respiratory-support endpoint sensitivity; explicit-intubation is already verified identical to H1.
-2. Complete the remaining H6 prospective-timing, note-availability, and CareVue death sensitivities.
+1. Complete the CHARTEVENTS storetime sensitivity across ventilation, RRT, and MetaVision ICU death.
+2. Complete the remaining H6 1-hour and 2-hour laboratory-lag, note-availability, and CareVue death sensitivities.
 3. Run H7 shuffled negative control.
 4. Complete H8 blinded multi-rater clinician construct validation.
 5. Run H9 corrected Zigong DiffusionGemma transport.
