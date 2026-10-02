@@ -99,7 +99,7 @@ Ventilation evaluation:
 - five frozen-partition delta-AUROCs: -0.00811, -0.00892, -0.00108, -0.00478, +0.00423;
 - 500/500 valid bootstrap replicates, zero replacements.
 
-DiffusionGemma RRT inference job D4M8Q2VN completed 7,709/7,709 frozen notes with zero failures, zero outcome-label access, and zero max-chunk truncations. Its aggregate artifact SHA-256 is 763056a90bbf2e5b59e86268bba624d50826689dfb2e5eb0beec3033f74f7182. The registered RRT evaluation job F7K3Q9MV is now running. No RRT outcome-performance result is available until that evaluation is terminal and its declared artifact is read.
+DiffusionGemma RRT inference job D4M8Q2VN completed 7,709/7,709 frozen notes with zero failures, zero outcome-label access, and zero max-chunk truncations. Evaluation job F7K3Q9MV then completed: comparator AUROC 0.97394, comparator + DiffusionGemma AUROC 0.97310, delta AUROC -0.00083, 95% patient-cluster refit-bootstrap interval -0.00283 to +0.00244, primary delta AUPRC +0.01231, and 500/500 valid bootstrap replicates with zero replacements. The five frozen-partition delta-AUROCs were -0.00083, -0.00037, +0.00047, -0.00038, and +0.00324. Evaluation artifact SHA-256: 179b0e6ea1ab6e4f60eeeb4027ae7c291eec51599597ce7dbcead318e884ef9a.
 
 See docs/results/v2_1_h6_diffusiongemma_results.md and docs/results/v2_1_h6_sensitivity_results.md.
 
@@ -117,8 +117,8 @@ The central manuscript claim remains unlocked until the registered H6-H9 sequenc
 
 ## Current registered execution order
 
-1. Complete the running DiffusionGemma RRT evaluation.
-2. Complete DiffusionGemma MetaVision ICU-death inference/evaluation.
+1. Complete the running DiffusionGemma MetaVision ICU-death inference/evaluation.
+2. Freeze the full three-outcome DiffusionGemma H6 result.
 3. Run remaining H6 ventilation endpoint, prospective-timing, note-availability, and CareVue death sensitivities.
 4. Run H7 comparator-risk-decile patient-shuffled negative control.
 5. Run H8 blinded clinician construct validation.
