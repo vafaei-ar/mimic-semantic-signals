@@ -27,9 +27,9 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- V3X7P5N9 - infer_h6_broad_openjev_v2_1_ventilation
+- W4Y8P6N2 - evaluate_h6_broad_openjev_v2_1_ventilation
 - exact project commit: a96f721f1fcf76195301575110c4e5023f7511f1
-- fully offline Open-Jev inference on the frozen 4,590-note stripped broad respiratory-support corpus; row-level semantic scores remain local and only aggregate inference diagnostics are shared.
+- paired rich-comparator HGB evaluation on the frozen broad respiratory-support cohort with stripped-note Open-Jev and 500 patient-cluster refit-bootstrap replicates; aggregate result only.
 
 The broad endpoint audit R8V4N2M7 froze 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. The explicit-intubation endpoint is empirically identical to H1 and requires no separate predictive rerun.
 
@@ -50,7 +50,7 @@ All three evaluations completed 500/500 valid patient-cluster refit-bootstrap re
 Run the registered sensitivities without changing definitions in response to observed performance:
 
 - ventilation explicit-intubation endpoint: aggregate audit confirms it is empirically identical to primary H1, so no separate predictive rerun is needed;
-- ventilation broad respiratory-support endpoint: input preparation is complete and frozen; current active step is stripped-note Open-Jev inference, followed by the paired rich-comparator evaluation using the same H1 machinery;
+- ventilation broad respiratory-support endpoint: input preparation and label-free Open-Jev inference are complete; current active step is the paired rich-comparator evaluation using the same H1 machinery;
 - CHARTEVENTS storetime constraint;
 - 1-hour laboratory lag;
 - 2-hour laboratory lag;
@@ -185,4 +185,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Wait for V3X7P5N9 to become terminal and inspect its canonical aggregate inference artifact. If clean, run the paired HGB/500-refit-bootstrap broad-endpoint evaluation. After that endpoint result is frozen, continue to the prospective-timing/note-availability sensitivities and CareVue death.
+Wait for W4Y8P6N2 to become terminal and inspect its canonical aggregate evaluation artifact. If clean, freeze the broad respiratory-support endpoint result. Then continue to the prospective-timing/note-availability sensitivities and CareVue death.
