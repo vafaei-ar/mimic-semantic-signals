@@ -147,6 +147,17 @@ bash -n scripts/run_h6_laya_eval_v2_1_death.sh
 .venv/bin/python -m py_compile src/150_evaluate_h6_lab_lag_2h_ventilation_v2_1.py
 .venv/bin/python -m py_compile src/151_evaluate_h6_lab_lag_2h_rrt_v2_1.py
 .venv/bin/python -m py_compile src/152_evaluate_h6_lab_lag_2h_death_v2_1.py
+PYTHONPATH=src .venv/bin/python - <<'PY'
+import importlib.util
+from pathlib import Path
+p = Path("src/146_prepare_h6_lab_lag_v2_1.py")
+spec = importlib.util.spec_from_file_location("lablagprep", p)
+mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(mod)
+expected = tuple(f"{name}_last" for name in mod.base_mod.LAB_IDS)
+if tuple(mod.LAB_FEATURES) != expected:
+    raise SystemExit(f"LAB_FEATURES mismatch: {mod.LAB_FEATURES!r} != {expected!r}")
+PY
 bash -n scripts/run_registered_diffusiongemma_environment_preflight_v2_1.sh
 bash -n scripts/run_h6_diffusiongemma_inference_v2_1_ventilation.sh
 bash -n scripts/run_h6_diffusiongemma_inference_v2_1_rrt.sh
