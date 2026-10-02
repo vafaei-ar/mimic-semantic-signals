@@ -67,6 +67,10 @@ out.write_text(json.dumps({
         "139_audit_h6_broad_ventilation_inputs_v2_1.py",
         "140_prepare_h6_broad_ventilation_v2_1.py",
         "141_evaluate_h6_broad_ventilation_v2_1.py",
+        "142_prepare_h6_chartevents_storetime_v2_1.py",
+        "143_evaluate_h6_chartevents_storetime_ventilation_v2_1.py",
+        "144_evaluate_h6_chartevents_storetime_rrt_v2_1.py",
+        "145_evaluate_h6_chartevents_storetime_death_v2_1.py",
         "v2_1_registered_inference_contract.py"
     ],
     "registration_gate_expected_state": "locked_until_osf_approved_doi_hash_verified_and_verbatim_form_imported"
@@ -125,6 +129,10 @@ bash -n scripts/run_h6_laya_eval_v2_1_death.sh
 .venv/bin/python -m py_compile src/139_audit_h6_broad_ventilation_inputs_v2_1.py
 .venv/bin/python -m py_compile src/140_prepare_h6_broad_ventilation_v2_1.py
 .venv/bin/python -m py_compile src/141_evaluate_h6_broad_ventilation_v2_1.py
+.venv/bin/python -m py_compile src/142_prepare_h6_chartevents_storetime_v2_1.py
+.venv/bin/python -m py_compile src/143_evaluate_h6_chartevents_storetime_ventilation_v2_1.py
+.venv/bin/python -m py_compile src/144_evaluate_h6_chartevents_storetime_rrt_v2_1.py
+.venv/bin/python -m py_compile src/145_evaluate_h6_chartevents_storetime_death_v2_1.py
 bash -n scripts/run_registered_diffusiongemma_environment_preflight_v2_1.sh
 bash -n scripts/run_h6_diffusiongemma_inference_v2_1_ventilation.sh
 bash -n scripts/run_h6_diffusiongemma_inference_v2_1_rrt.sh
@@ -136,3 +144,7 @@ bash -n scripts/run_h6_broad_ventilation_input_audit_v2_1.sh
 bash -n scripts/run_h6_broad_ventilation_prepare_v2_1.sh
 bash -n scripts/run_h6_broad_openjev_inference_v2_1_ventilation.sh
 bash -n scripts/run_h6_broad_openjev_eval_v2_1_ventilation.sh
+bash -n scripts/run_h6_chartevents_storetime_prepare_v2_1.sh
+bash -n scripts/run_h6_chartevents_storetime_eval_v2_1_ventilation.sh
+bash -n scripts/run_h6_chartevents_storetime_eval_v2_1_rrt.sh
+bash -n scripts/run_h6_chartevents_storetime_eval_v2_1_death.sh
