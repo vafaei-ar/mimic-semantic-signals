@@ -38,11 +38,11 @@ Completed registered work:
 - H6 unstripped-note Open-Jev sensitivity for all three outcomes;
 - H6 Laya alternative-instrument sensitivity for all three outcomes;
 - H6 DiffusionGemma invasive-ventilation inference/evaluation;
-- H6 DiffusionGemma RRT inference, 7,709/7,709 notes with zero failures and zero label access.
+- H6 DiffusionGemma RRT inference/evaluation, with delta AUROC -0.00083 and 95% refit-bootstrap interval -0.00283 to +0.00244.
 
 Current registered execution:
 
-- F7K3Q9MV - H6 DiffusionGemma RRT evaluation using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates.
+- G8M4Q2VN - H6 DiffusionGemma MetaVision ICU-death inference, fully offline on the frozen stripped-note corpus.
 
 The running scientific job remains pinned to project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00. Documentation-only commits made while it runs do not change that execution.
 
