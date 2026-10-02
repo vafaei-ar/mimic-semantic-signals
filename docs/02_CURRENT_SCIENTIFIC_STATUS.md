@@ -1,6 +1,6 @@
 # 02 - Current scientific status
 
-Updated: 2026-10-01
+Updated: 2026-10-02
 
 ## Scientific question
 
@@ -101,7 +101,11 @@ Ventilation evaluation:
 
 DiffusionGemma RRT inference job D4M8Q2VN completed 7,709/7,709 frozen notes with zero failures, zero outcome-label access, and zero max-chunk truncations. Evaluation job F7K3Q9MV then completed: comparator AUROC 0.97394, comparator + DiffusionGemma AUROC 0.97310, delta AUROC -0.00083, 95% patient-cluster refit-bootstrap interval -0.00283 to +0.00244, primary delta AUPRC +0.01231, and 500/500 valid bootstrap replicates with zero replacements. The five frozen-partition delta-AUROCs were -0.00083, -0.00037, +0.00047, -0.00038, and +0.00324. Evaluation artifact SHA-256: 179b0e6ea1ab6e4f60eeeb4027ae7c291eec51599597ce7dbcead318e884ef9a.
 
-DiffusionGemma MetaVision ICU-death inference job G8M4Q2VN completed 7,889/7,889 frozen notes with zero failures, zero outcome-label access, and zero max-chunk truncations. The registered evaluation job H9Q4M2VK is now running.
+DiffusionGemma MetaVision ICU-death inference job G8M4Q2VN completed 7,889/7,889 frozen notes with zero failures, zero outcome-label access, and zero max-chunk truncations. Evaluation job H9Q4M2VK completed: comparator AUROC 0.93338, comparator + DiffusionGemma AUROC 0.93837, delta AUROC +0.00499, 95% patient-cluster refit-bootstrap interval -0.00654 to +0.00652, primary delta AUPRC +0.00882, and 500/500 valid bootstrap replicates with zero replacements. The five frozen-partition delta-AUROCs were +0.00499, +0.00613, +0.00188, -0.00066, and +0.00152. Evaluation artifact SHA-256: b12f961687c67c2ed25a689cd5f79d492b2db89010a8fc9c543cabbd19e0dc23.
+
+The completed DiffusionGemma three-outcome arm therefore does not establish a consistent positive incremental-AUROC effect: ventilation is negative, RRT is essentially null, and death has a small positive point estimate with uncertainty spanning both directions.
+
+For the registered ventilation endpoint sensitivity, aggregate audit R8V4N2M7 confirmed that the explicit-intubation arm is empirically identical to primary H1 and needs no separate predictive rerun. The broad respiratory-support arm contains 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. T2X6P4N8 is currently preparing/fixing its structured, context, patient-grouped split, and stripped-note inputs before any broad-endpoint performance is opened.
 
 See docs/results/v2_1_h6_diffusiongemma_results.md and docs/results/v2_1_h6_sensitivity_results.md.
 
@@ -119,9 +123,9 @@ The central manuscript claim remains unlocked until the registered H6-H9 sequenc
 
 ## Current registered execution order
 
-1. Complete the running DiffusionGemma MetaVision ICU-death evaluation.
-2. Freeze the full three-outcome DiffusionGemma H6 result.
-3. Run remaining H6 ventilation endpoint, prospective-timing, note-availability, and CareVue death sensitivities.
+1. Complete the running broad respiratory-support ventilation endpoint input preparation, then run label-free Open-Jev inference and the paired HGB/500-refit-bootstrap evaluation.
+2. Run remaining H6 prospective-timing/note-availability sensitivities.
+3. Run the separate CareVue ICU-death sensitivity.
 4. Run H7 comparator-risk-decile patient-shuffled negative control.
 5. Run H8 blinded clinician construct validation.
 6. Run H9 corrected Zigong external validation.
