@@ -58,17 +58,33 @@ Inference job D4M8Q2VN completed:
 - max-chunk truncations: 0;
 - declared aggregate artifact SHA-256: 763056a90bbf2e5b59e86268bba624d50826689dfb2e5eb0beec3033f74f7182.
 
-Evaluation job F7K3Q9MV is running using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates. No RRT DiffusionGemma outcome-performance result is available until that job is terminal and its declared aggregate artifact is read.
+Evaluation job F7K3Q9MV completed:
+
+| N | Cases | Notes scored | Comparator AUROC | + DiffusionGemma AUROC | Delta AUROC | 95% refit-bootstrap interval | Delta AUPRC |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 19,395 | 314 | 7,709 | 0.97394 | 0.97310 | -0.00083 | -0.00283 to +0.00244 | +0.01231 |
+
+Five frozen-partition delta-AUROC estimates:
+
+- -0.00083;
+- -0.00037;
+- +0.00047;
+- -0.00038;
+- +0.00324.
+
+The primary refit bootstrap completed 500/500 valid replicates with zero replacements.
+
+Evaluation artifact SHA-256: 179b0e6ea1ab6e4f60eeeb4027ae7c291eec51599597ce7dbcead318e884ef9a.
 
 ## MetaVision ICU death
 
-Pending after completion of the RRT arm.
+Inference job G8M4Q2VN is running fully offline on the frozen stripped-note MetaVision ICU-death corpus. Row-level scores remain local and only aggregate inference diagnostics are shared.
 
-The registered sequence is inference first, then evaluation only after a clean aggregate inference artifact.
+The registered sequence remains inference first, then evaluation only after a clean aggregate inference artifact.
 
 ## Interpretation
 
-The completed ventilation estimate does not show a clear positive incremental-discrimination gain from DiffusionGemma beyond the rich structured comparator. Its primary delta-AUROC is negative, and the registered uncertainty interval spans negative and positive values.
+The completed ventilation estimate does not show a clear positive incremental-discrimination gain from DiffusionGemma beyond the rich structured comparator. RRT is also essentially null: delta AUROC -0.00083 with a narrow interval spanning zero. Together, the completed DiffusionGemma outcomes do not currently support a consistent positive incremental-discrimination pattern.
 
 This is a registered H6 sensitivity result. It does not replace the stripped-note Open-Jev H1 primary result and should not be used to select a preferred semantic instrument post hoc.
 
@@ -78,6 +94,7 @@ This is a registered H6 sensitivity result. It does not replace the stripped-not
 - ventilation inference: 9HN4R7T9, artifact SHA-256 2dc2e741695c2d567952f34d987d047713d36f9903ba2090ad26e963fcf9e236;
 - ventilation evaluation: B7Q2M9RK, artifact SHA-256 126be5aa7b0af9302e39485dabdd64c291fab60c6b9abfccbf1dae553a464431;
 - RRT inference: D4M8Q2VN, artifact SHA-256 763056a90bbf2e5b59e86268bba624d50826689dfb2e5eb0beec3033f74f7182;
-- RRT evaluation: F7K3Q9MV, running at this documentation checkpoint.
+- RRT evaluation: F7K3Q9MV, artifact SHA-256 179b0e6ea1ab6e4f60eeeb4027ae7c291eec51599597ce7dbcead318e884ef9a;
+- MetaVision ICU-death inference: G8M4Q2VN, running at this documentation checkpoint.
 
 Update this document only from canonical RunRelay artifacts after each terminal registered job.
