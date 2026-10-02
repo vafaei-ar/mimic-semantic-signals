@@ -44,9 +44,9 @@ Completed registered work:
 
 Current registered execution:
 
-- T2X6P4N8 - prepare/freeze the registered H6 broad respiratory-support ventilation endpoint inputs without semantic or predictive performance.
+- V3X7P5N9 - label-free registered Open-Jev inference on the frozen 4,590-note broad respiratory-support ventilation sensitivity corpus.
 
-The current registered preparation job is pinned to project commit a96f721f1fcf76195301575110c4e5023f7511f1. It freezes the broad-endpoint structured/context/split/stripped-note inputs before any broad-endpoint semantic or predictive result is opened.
+Broad-endpoint preparation T2X6P4N8 completed cleanly at project commit a96f721f1fcf76195301575110c4e5023f7511f1, freezing 34 structured features, the registered context block, five patient-grouped split repeats, and the 4,590-note stripped corpus. Current inference job V3X7P5N9 uses that same exact commit and keeps row-level semantic scores local.
 
 The authoritative registered execution order is in [10 - Post-registration execution and extension plan](docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md). The detailed post-registration decision-model extension, including Clef-Flash 9B, Clef 27B, Nimble 9B, and Tev1 4B, is frozen separately in [11 - Exploratory decision-model extension plan](docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md).
 
