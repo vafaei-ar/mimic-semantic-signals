@@ -26,9 +26,9 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- G8M4Q2VN - infer_h6_diffusiongemma_v2_1_death
+- H9Q4M2VK - evaluate_h6_diffusiongemma_v2_1_death
 - exact scientific commit: 097bf046a1c7eceb50d71d75e82e79f3993acb00
-- fully offline, frozen stripped-note MetaVision ICU-death corpus; row-level scores remain local and only aggregate diagnostics are shared.
+- frozen rich-comparator HGB procedure with 500 patient-cluster refit-bootstrap replicates; aggregate result only.
 
 Documentation-only commits made while this job runs do not alter its exact-commit execution.
 
@@ -37,8 +37,8 @@ Documentation-only commits made while this job runs do not alter its exact-commi
 ### A1. Complete H6 DiffusionGemma
 
 1. RRT inference/evaluation is complete and clean.
-2. Finish the running MetaVision ICU-death DiffusionGemma inference.
-3. If inference is clean, run MetaVision ICU-death evaluation.
+2. MetaVision ICU-death DiffusionGemma inference is complete and clean.
+3. Finish the running MetaVision ICU-death evaluation.
 4. Freeze the three-outcome DiffusionGemma H6 result document.
 
 Do not select a preferred semantic instrument post hoc based on point estimates.
@@ -183,4 +183,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Wait for G8M4Q2VN to become terminal and inspect its canonical declared aggregate inference artifact. If clean, run the registered MetaVision ICU-death DiffusionGemma evaluation. After that, freeze the three-outcome DiffusionGemma arm before moving to the remaining H6 sensitivities.
+Wait for H9Q4M2VK to become terminal and inspect its canonical declared aggregate evaluation artifact. If clean, freeze the complete three-outcome DiffusionGemma arm before moving to the remaining H6 sensitivities.
