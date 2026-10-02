@@ -44,9 +44,9 @@ Completed registered work:
 
 Current registered execution:
 
-- V3X7P5N9 - label-free registered Open-Jev inference on the frozen 4,590-note broad respiratory-support ventilation sensitivity corpus.
+- W4Y8P6N2 - registered broad respiratory-support ventilation endpoint evaluation using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates.
 
-Broad-endpoint preparation T2X6P4N8 completed cleanly at project commit a96f721f1fcf76195301575110c4e5023f7511f1, freezing 34 structured features, the registered context block, five patient-grouped split repeats, and the 4,590-note stripped corpus. Current inference job V3X7P5N9 uses that same exact commit and keeps row-level semantic scores local.
+Broad-endpoint preparation T2X6P4N8 completed cleanly at project commit a96f721f1fcf76195301575110c4e5023f7511f1, freezing 34 structured features, the registered context block, five patient-grouped split repeats, and the 4,590-note stripped corpus. Label-free Open-Jev inference V3X7P5N9 then completed 4,590/4,590 notes with zero failures and zero label access; aggregate artifact SHA-256 dae6af7fa6980954662a323cff18e9edde18fb885ac65143bb073bbab99d951a. Current evaluation W4Y8P6N2 uses the same exact project commit.
 
 The authoritative registered execution order is in [10 - Post-registration execution and extension plan](docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md). The detailed post-registration decision-model extension, including Clef-Flash 9B, Clef 27B, Nimble 9B, and Tev1 4B, is frozen separately in [11 - Exploratory decision-model extension plan](docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md).
 
