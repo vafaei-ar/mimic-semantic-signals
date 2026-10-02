@@ -26,7 +26,7 @@ The final OSF-form import/verification gate passed before real-label analyses op
 - H6 Laya alternative-instrument sensitivity complete.
 - H6 DiffusionGemma ventilation analysis complete.
 
-The current registered execution is the DiffusionGemma RRT evaluation, job F7K3Q9MV, after clean completion of label-free RRT inference on 7,709/7,709 notes.
+The DiffusionGemma RRT evaluation is complete: delta AUROC -0.00083, 95% refit-bootstrap interval -0.00283 to +0.00244. The current registered execution is MetaVision ICU-death DiffusionGemma inference, job G8M4Q2VN.
 
 ## What the corrected results are saying
 
@@ -47,7 +47,8 @@ H6 does not currently rescue a simple positive semantic-increment story:
 - unstripped Open-Jev remains near zero or negative;
 - Laya ventilation has a +0.01031 point estimate but a wide interval spanning negative and positive values;
 - Laya RRT and death are near zero;
-- DiffusionGemma ventilation is -0.00811 with 95% interval -0.02030 to +0.01445.
+- DiffusionGemma ventilation is -0.00811 with 95% interval -0.02030 to +0.01445;
+- DiffusionGemma RRT is -0.00083 with 95% interval -0.00283 to +0.00244.
 
 The paper should therefore follow the evidence rather than protect the original hypothesis.
 
