@@ -20,7 +20,9 @@ This directory contains aggregate manuscript-facing result summaries. Row-level 
 
 The registered DiffusionGemma arm is complete for all three outcomes: ventilation delta AUROC -0.00811 (95% interval -0.02030 to +0.01445), RRT -0.00083 (-0.00283 to +0.00244), and MetaVision ICU death +0.00499 (-0.00654 to +0.00652).
 
-T2X6P4N8 completed the broad respiratory-support endpoint input preparation at project commit a96f721f1fcf76195301575110c4e5023f7511f1. V3X7P5N9 then completed label-free Open-Jev inference on all 4,590 frozen notes with zero failures and zero label access; aggregate inference artifact SHA-256 dae6af7fa6980954662a323cff18e9edde18fb885ac65143bb073bbab99d951a. W4Y8P6N2 is now running the paired broad-endpoint HGB evaluation with 500 patient-cluster refit-bootstrap replicates.
+The broad respiratory-support endpoint arm is complete. W4Y8P6N2 reported comparator AUROC 0.70385, augmented AUROC 0.69741, delta AUROC -0.00643, and 95% refit-bootstrap interval -0.01879 to +0.01046, with 500/500 valid bootstrap replicates and zero replacements. Artifact SHA-256: 824114f7217a3a5af6806ce6b4e413e4ec070edd865f21ee2bb60e68c3c2ea80.
+
+Y6Z3R8M4 is now preparing the registered CHARTEVENTS storetime sensitivity at validated project commit 27a061c25d88e56a155c93c83514a7a63b6cb298; this preparation reports aggregate availability loss and opens no predictive performance.
 
 The currently running job is not changed by documentation-only commits.
 
