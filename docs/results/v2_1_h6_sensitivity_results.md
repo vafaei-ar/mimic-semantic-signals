@@ -19,6 +19,7 @@ H6 is a registered non-directional sensitivity family. Results are reported desc
 | DiffusionGemma | ICU death, MetaVision | +0.00499 | -0.00654 to +0.00652 |
 | Broad respiratory-support endpoint + Open-Jev | Invasive ventilation | -0.00643 | -0.01879 to +0.01046 |
 | CHARTEVENTS storetime + Open-Jev | Invasive ventilation | +0.00668 | -0.02079 to +0.02286 |
+| CHARTEVENTS storetime + Open-Jev | RRT | +0.00053 | -0.00307 to +0.00261 |
 
 All completed H6 evaluations shown above used 500 valid patient-cluster refit-bootstrap replicates with zero replacements.
 
@@ -98,4 +99,6 @@ CHARTEVENTS storetime preparation Y6Z3R8M4 completed without fitting predictive 
 
 Ventilation storetime evaluation Z7B4R9M5 completed with comparator AUROC 0.71690, augmented AUROC 0.72358, delta AUROC +0.00668, 95% refit-bootstrap interval -0.02079 to +0.02286, primary delta AUPRC -0.00605, five frozen-partition delta-AUROCs +0.00668, -0.01056, -0.00523, -0.00220, and +0.00336, and 500/500 valid bootstrap replicates with zero replacements. Artifact SHA-256: ee34846501989672c7a4e3fc2dcfb2536f0ed086fce7af9c4357b9f723bbcca4.
 
-Current job A8C5R2M9 is running the registered RRT storetime evaluation. MetaVision ICU-death storetime remains unopened until RRT completes cleanly.
+RRT storetime evaluation A8C5R2M9 completed with comparator AUROC 0.97401, augmented AUROC 0.97453, delta AUROC +0.00053, 95% refit-bootstrap interval -0.00307 to +0.00261, primary delta AUPRC +0.00329, five frozen-partition delta-AUROCs +0.00053, -0.00002, +0.00137, +0.00009, and +0.00342, and 500/500 valid bootstrap replicates with zero replacements. Artifact SHA-256: 07b9dc303cdab37737274a7759fe6c098813d423b2b28b3ddbd8c0aa1510f839. One copied guardrail sentence says “ventilation population,” but the artifact outcome, cohort size, case count, semantic count, hashes, and executed task are correctly RRT.
+
+Current job B9D6R3M2 is running the registered MetaVision ICU-death storetime evaluation.
