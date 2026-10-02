@@ -17,7 +17,7 @@ Use these current documents:
 
 OSF registration ahxn9 is approved/public with DOI 10.17605/OSF.IO/AHXN9.
 
-H1-H5 are complete. H6 unstripped-note Open-Jev and Laya alternative-instrument analyses are complete for all three outcomes. DiffusionGemma ventilation is complete, DiffusionGemma RRT inference completed cleanly, and the DiffusionGemma RRT evaluation F7K3Q9MV is the current registered execution.
+H1-H5 are complete. H6 unstripped-note Open-Jev and Laya alternative-instrument analyses are complete for all three outcomes. DiffusionGemma ventilation and RRT inference/evaluation are complete. MetaVision ICU-death DiffusionGemma inference G8M4Q2VN is the current registered execution.
 
 The corrected evidence so far shows near-zero primary Open-Jev incremental AUROC beyond the rich structured comparator, small positive TF-IDF increments in the common logistic H5 comparison, and no consistent positive H6 semantic-instrument increment yet.
 
