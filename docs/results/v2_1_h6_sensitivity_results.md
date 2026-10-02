@@ -1,6 +1,6 @@
 # v2.1 registered H6 sensitivity results
 
-Updated: 2026-10-01
+Updated: 2026-10-02
 
 H6 is a registered non-directional sensitivity family. Results are reported descriptively and do not modify the frozen primary Open-Jev estimand or model specification.
 
@@ -90,4 +90,4 @@ H6 is intentionally a sensitivity family. These estimates should be carried forw
 
 ## Next registered H6 step
 
-The three-outcome DiffusionGemma arm is complete. The explicit-intubation ventilation sensitivity is empirically identical to the primary H1 cohort and does not require a separate predictive rerun. The broad respiratory-support endpoint audit R8V4N2M7 froze 11,380 rows, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. Input preparation job T2X6P4N8 is the current registered H6 continuation before label-free Open-Jev inference and paired evaluation of that broad endpoint.
+The three-outcome DiffusionGemma arm is complete. The explicit-intubation ventilation sensitivity is empirically identical to the primary H1 cohort and does not require a separate predictive rerun. The broad respiratory-support endpoint audit R8V4N2M7 froze 11,380 rows, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. Preparation job T2X6P4N8 completed cleanly and froze the downstream structured/context/split/stripped-note inputs. Current job V3X7P5N9 is running label-free Open-Jev inference on the frozen 4,590-note corpus; the paired endpoint evaluation remains unopened.
