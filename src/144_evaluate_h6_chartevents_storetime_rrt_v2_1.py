@@ -407,7 +407,7 @@ def main():
         },
         "local_prediction_file": str(pred_path),
         "guardrails": [
-            "Uses only the registered MetaVision ventilation population.",
+            "Uses only the registered MetaVision RRT population.",
             "Uses the frozen rich comparator feature block plus the eight stripped-note Open-Jev scores.",
             "Rows without notes remain in the cohort with missing semantic values handled natively by HGB.",
             "Note-available rows must have all eight semantic scores or the analysis halts.",
