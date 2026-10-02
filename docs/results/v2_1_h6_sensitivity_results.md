@@ -16,7 +16,7 @@ H6 is a registered non-directional sensitivity family. Results are reported desc
 | Laya | ICU death, MetaVision | +0.00141 | -0.00660 to +0.00728 |
 | DiffusionGemma | Invasive ventilation | -0.00811 | -0.02030 to +0.01445 |
 | DiffusionGemma | RRT | -0.00083 | -0.00283 to +0.00244 |
-| DiffusionGemma | ICU death, MetaVision | pending | pending |
+| DiffusionGemma | ICU death, MetaVision | +0.00499 | -0.00654 to +0.00652 |
 
 All completed H6 evaluations shown above used 500 valid patient-cluster refit-bootstrap replicates with zero replacements.
 
@@ -72,6 +72,8 @@ Ventilation evaluation job B7Q2M9RK:
 
 RRT inference job D4M8Q2VN completed 7,709/7,709 frozen notes with zero failures, zero label access, and zero max-chunk truncations. RRT evaluation job F7K3Q9MV completed with comparator AUROC 0.97394, augmented AUROC 0.97310, delta AUROC -0.00083, 95% refit-bootstrap interval -0.00283 to +0.00244, primary delta AUPRC +0.01231, five frozen-partition delta-AUROCs -0.00083, -0.00037, +0.00047, -0.00038, +0.00324, and 500/500 valid bootstrap replicates with zero replacements. Evaluation artifact SHA-256: 179b0e6ea1ab6e4f60eeeb4027ae7c291eec51599597ce7dbcead318e884ef9a.
 
+MetaVision ICU-death inference job G8M4Q2VN completed 7,889/7,889 notes with zero failures and no label access. Evaluation job H9Q4M2VK completed with comparator AUROC 0.93338, augmented AUROC 0.93837, delta AUROC +0.00499, 95% refit-bootstrap interval -0.00654 to +0.00652, primary delta AUPRC +0.00882, and 500/500 valid bootstrap replicates with zero replacements. Evaluation artifact SHA-256: b12f961687c67c2ed25a689cd5f79d492b2db89010a8fc9c543cabbd19e0dc23.
+
 Read docs/results/v2_1_h6_diffusiongemma_results.md.
 
 ## Current H6 interpretation
@@ -81,10 +83,11 @@ Completed H6 results do not establish a consistent positive semantic increment b
 - removing language stripping does not reveal a hidden positive effect;
 - Laya shows a positive ventilation point estimate but with substantial uncertainty;
 - DiffusionGemma ventilation is negative on the primary partition with an interval spanning negative and positive values;
-- DiffusionGemma RRT remains essentially null, with a narrow interval around zero.
+- DiffusionGemma RRT remains essentially null, with a narrow interval around zero;
+- DiffusionGemma MetaVision ICU death has a small positive point estimate, but its interval spans negative and positive values.
 
 H6 is intentionally a sensitivity family. These estimates should be carried forward together rather than converted into post hoc instrument selection.
 
 ## Next registered H6 step
 
-Finish G8M4Q2VN and inspect its canonical aggregate inference artifact. If clean, run the registered MetaVision ICU-death DiffusionGemma evaluation. Then freeze the three-outcome DiffusionGemma arm before endpoint, timing, note-availability, and CareVue sensitivities.
+The three-outcome DiffusionGemma arm is complete. The explicit-intubation ventilation sensitivity is empirically identical to the primary H1 cohort and does not require a separate predictive rerun. The broad respiratory-support endpoint audit R8V4N2M7 froze 11,380 rows, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. Input preparation job T2X6P4N8 is the current registered H6 continuation before label-free Open-Jev inference and paired evaluation of that broad endpoint.
