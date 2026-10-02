@@ -78,9 +78,16 @@ Evaluation artifact SHA-256: 179b0e6ea1ab6e4f60eeeb4027ae7c291eec51599597ce7dbce
 
 ## MetaVision ICU death
 
-Inference job G8M4Q2VN is running fully offline on the frozen stripped-note MetaVision ICU-death corpus. Row-level scores remain local and only aggregate inference diagnostics are shared.
+Inference job G8M4Q2VN completed:
 
-The registered sequence remains inference first, then evaluation only after a clean aggregate inference artifact.
+- expected notes: 7,889;
+- successful notes: 7,889;
+- failures: 0;
+- outcome labels read or used during inference: no;
+- max-chunk truncations: 0;
+- declared aggregate artifact SHA-256: 605d5c39bec34bb36f49b7f0cc17b54bb72172e77445c91bed8433e71b32690d.
+
+Evaluation job H9Q4M2VK is running using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates. No MetaVision ICU-death DiffusionGemma outcome-performance result is available until that job is terminal and its declared aggregate artifact is read.
 
 ## Interpretation
 
@@ -95,6 +102,7 @@ This is a registered H6 sensitivity result. It does not replace the stripped-not
 - ventilation evaluation: B7Q2M9RK, artifact SHA-256 126be5aa7b0af9302e39485dabdd64c291fab60c6b9abfccbf1dae553a464431;
 - RRT inference: D4M8Q2VN, artifact SHA-256 763056a90bbf2e5b59e86268bba624d50826689dfb2e5eb0beec3033f74f7182;
 - RRT evaluation: F7K3Q9MV, artifact SHA-256 179b0e6ea1ab6e4f60eeeb4027ae7c291eec51599597ce7dbcead318e884ef9a;
-- MetaVision ICU-death inference: G8M4Q2VN, running at this documentation checkpoint.
+- MetaVision ICU-death inference: G8M4Q2VN, artifact SHA-256 605d5c39bec34bb36f49b7f0cc17b54bb72172e77445c91bed8433e71b32690d;
+- MetaVision ICU-death evaluation: H9Q4M2VK, running at this documentation checkpoint.
 
 Update this document only from canonical RunRelay artifacts after each terminal registered job.
