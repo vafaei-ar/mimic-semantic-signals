@@ -26,7 +26,9 @@ Y6Z3R8M4 completed the registered CHARTEVENTS storetime preparation at validated
 
 Z7B4R9M5 completed the invasive-ventilation storetime evaluation: comparator AUROC 0.71690, augmented AUROC 0.72358, delta AUROC +0.00668, 95% refit-bootstrap interval -0.02079 to +0.02286, with 500/500 valid bootstrap replicates and zero replacements. Artifact SHA-256: ee34846501989672c7a4e3fc2dcfb2536f0ed086fce7af9c4357b9f723bbcca4.
 
-A8C5R2M9 is now running the RRT storetime evaluation at the same validated project commit.
+A8C5R2M9 completed the RRT storetime evaluation: comparator AUROC 0.97401, augmented AUROC 0.97453, delta AUROC +0.00053, 95% refit-bootstrap interval -0.00307 to +0.00261, with 500/500 valid bootstrap replicates and zero replacements. Artifact SHA-256: 07b9dc303cdab37737274a7759fe6c098813d423b2b28b3ddbd8c0aa1510f839.
+
+B9D6R3M2 is now running the MetaVision ICU-death storetime evaluation at the same validated project commit.
 
 The currently running job is not changed by documentation-only commits.
 
