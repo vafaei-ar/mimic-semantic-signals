@@ -13,12 +13,14 @@ This directory contains aggregate manuscript-facing result summaries. Row-level 
 | H5 common-logistic lexical comparison | Complete | v2_1_h5_lexical_results.md |
 | H6 unstripped-note Open-Jev | Complete | v2_1_h6_unstripped_results.md |
 | H6 Laya alternative instrument | Complete | v2_1_h6_laya_results.md |
-| H6 DiffusionGemma alternative instrument | In progress | v2_1_h6_diffusiongemma_results.md |
+| H6 DiffusionGemma alternative instrument | Complete | v2_1_h6_diffusiongemma_results.md |
 | H6 aggregate sensitivity index | In progress | v2_1_h6_sensitivity_results.md |
 
 ## Current live registered job
 
-D4M8Q2VN and F7K3Q9MV completed the DiffusionGemma RRT inference/evaluation arm. The registered RRT delta AUROC is -0.00083 with 95% refit-bootstrap interval -0.00283 to +0.00244. G8M4Q2VN completed MetaVision ICU-death DiffusionGemma inference on all 7,889 frozen notes with zero failures and zero label access. H9Q4M2VK is now running the registered MetaVision ICU-death evaluation at project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00.
+The registered DiffusionGemma arm is complete for all three outcomes: ventilation delta AUROC -0.00811 (95% interval -0.02030 to +0.01445), RRT -0.00083 (-0.00283 to +0.00244), and MetaVision ICU death +0.00499 (-0.00654 to +0.00652).
+
+The current registered continuation is T2X6P4N8, which is preparing/fixing the broad respiratory-support ventilation endpoint sensitivity inputs at project commit a96f721f1fcf76195301575110c4e5023f7511f1. No broad-endpoint semantic or predictive performance is opened by that preparation task.
 
 The currently running job is not changed by documentation-only commits.
 
