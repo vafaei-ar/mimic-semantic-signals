@@ -63,7 +63,8 @@ out.write_text(json.dumps({
         "117_evaluate_rich_comparator_v2_1.py",
         "118_run_registered_openjev_v2_1.py",
         "119_audit_registered_openjev_environment_v2_1.py",
-        "120_evaluate_h1_ventilation_openjev_v2_1.py",\n        "139_audit_h6_broad_ventilation_inputs_v2_1.py",
+        "120_evaluate_h1_ventilation_openjev_v2_1.py",
+        "139_audit_h6_broad_ventilation_inputs_v2_1.py",
         "v2_1_registered_inference_contract.py"
     ],
     "registration_gate_expected_state": "locked_until_osf_approved_doi_hash_verified_and_verbatim_form_imported"
