@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "registration_id": "ahxn9",
+  "doi": "10.17605/OSF.IO/AHXN9",
+  "analysis_name": "invasive_ventilation_any_support_sensitivity",
+  "registered_role": "H6 broad respiratory-support ventilation endpoint sensitivity",
+  "base_outcome": "invasive_ventilation",
+  "source": "metavision",
+  "rows": 11380,
+  "unique_patients": 9174,
+  "cases": 543,
+  "controls": 10837,
+  "note_available_rows": 4590,
+  "case_note_rows": 226,
+  "control_note_rows": 4364,
+  "cohort_audit_job_id": "R8V4N2M7",
+  "cohort_audit_artifact_sha256": "6c42513c979aa88ea634fed817960de2f8b1188aab9e37f7d35a945d5579f3ba",
+  "relationship_to_primary": {
+    "primary_cases_subset": true,
+    "primary_controls_identical": true,
+    "added_case_rows": 264,
+    "explicit_intubation_sensitivity_identical_to_primary": true
+  }
+}
