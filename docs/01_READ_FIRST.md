@@ -1,6 +1,6 @@
 # 01 - Read this first
 
-Updated: 2026-10-01
+Updated: 2026-10-02
 
 This repository contains both the current corrected v2.1 manuscript-facing analysis and a substantial v1 provenance archive. The v1 files are intentionally retained because they document how the study evolved, but affected v1 numerical results are not final manuscript evidence.
 
@@ -44,15 +44,17 @@ Completed:
 - H6 unstripped-note Open-Jev sensitivity for all three outcomes;
 - H6 Laya alternative-instrument sensitivity for all three outcomes;
 - H6 DiffusionGemma invasive-ventilation inference/evaluation;
-- H6 DiffusionGemma RRT inference/evaluation, with delta AUROC -0.00083 and 95% refit-bootstrap interval -0.00283 to +0.00244.
+- H6 DiffusionGemma RRT inference/evaluation, with delta AUROC -0.00083 and 95% refit-bootstrap interval -0.00283 to +0.00244;
+- H6 DiffusionGemma MetaVision ICU-death inference/evaluation, with delta AUROC +0.00499 and 95% refit-bootstrap interval -0.00654 to +0.00652;
+- H6 ventilation endpoint audit: explicit-intubation is identical to primary H1; broad respiratory support has 11,380 stays and 543 cases.
 
 Current execution:
 
-- G8M4Q2VN - H6 DiffusionGemma MetaVision ICU-death inference on the frozen stripped-note corpus.
+- T2X6P4N8 - H6 broad respiratory-support ventilation endpoint input preparation/freeze, before semantic or predictive performance.
 
-The active job is pinned to project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00. Later documentation-only commits do not alter that execution.
+The active preparation job is pinned to project commit a96f721f1fcf76195301575110c4e5023f7511f1. Later documentation-only commits do not alter that execution.
 
-After the DiffusionGemma RRT arm, the registered sequence continues with DiffusionGemma MetaVision ICU death, remaining H6 endpoint/timing/CareVue sensitivities, H7 shuffled negative control, H8 blinded clinician construct validation, and H9 corrected Zigong external validation.
+The DiffusionGemma three-outcome arm is complete. The registered sequence now continues with the broad respiratory-support endpoint sensitivity, prospective-timing/note-availability sensitivities, CareVue death sensitivity, H7 shuffled negative control, H8 blinded clinician construct validation, and H9 corrected Zigong external validation.
 
 ## Current interpretation guardrail
 
