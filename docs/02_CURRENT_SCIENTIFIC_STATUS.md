@@ -107,7 +107,7 @@ The completed DiffusionGemma three-outcome arm therefore does not establish a co
 
 For the registered ventilation endpoint sensitivity, aggregate audit R8V4N2M7 confirmed that the explicit-intubation arm is empirically identical to primary H1 and needs no separate predictive rerun. The broad respiratory-support arm contains 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. Preparation job T2X6P4N8 completed cleanly with 34 structured features, the frozen context block, five patient-grouped split repeats, and a 4,590-note stripped corpus. Label-free Open-Jev inference V3X7P5N9 then completed 4,590/4,590 notes with zero failures and zero outcome-label access. Evaluation W4Y8P6N2 completed with comparator AUROC 0.70385, augmented AUROC 0.69741, delta AUROC -0.00643, 95% patient-cluster refit-bootstrap interval -0.01879 to +0.01046, primary delta AUPRC -0.00296, five frozen-partition delta-AUROCs -0.00643, +0.00160, -0.01098, -0.00698, and -0.00634, and 500/500 valid bootstrap replicates with zero replacements. Evaluation artifact SHA-256: 824114f7217a3a5af6806ce6b4e413e4ec070edd865f21ee2bb60e68c3c2ea80.
 
-Current job Y6Z3R8M4 is preparing the registered CHARTEVENTS storetime sensitivity under the prespecified rule that eligible CHARTEVENTS must retain the original charttime lookback and also have nonmissing storetime at or before the landmark. This preparation opens no predictive performance.
+CHARTEVENTS storetime preparation Y6Z3R8M4 completed under the prespecified rule that eligible rows retain the original charttime lookback and also have nonmissing storetime at or before the landmark. Of 2,588,698 in-window CHARTEVENTS rows, 127,617 (4.93%) lacked storetime, 187,322 (7.24%) were stored after the landmark, and 2,273,759 (87.83%) were retained. At least one CHARTEVENTS-derived feature changed versus the primary comparator in 56.18% of ventilation rows, 53.24% of RRT rows, and 45.33% of the all-source ICU-death preparation rows. The death evaluator is fail-closed to the registered MetaVision subset before fitting. Current job Z7B4R9M5 is running the invasive-ventilation storetime evaluation.
 
 See docs/results/v2_1_h6_diffusiongemma_results.md and docs/results/v2_1_h6_sensitivity_results.md.
 
@@ -125,7 +125,7 @@ The central manuscript claim remains unlocked until the registered H6-H9 sequenc
 
 ## Current registered execution order
 
-1. Complete the running CHARTEVENTS storetime preparation, then run its timing-matched evaluations for ventilation, RRT, and MetaVision ICU death.
+1. Complete the running invasive-ventilation CHARTEVENTS storetime evaluation, then run RRT and MetaVision ICU-death storetime evaluations sequentially.
 2. Run the registered 1-hour and 2-hour laboratory-lag sensitivities and note-availability sensitivity.
 3. Run the separate CareVue ICU-death sensitivity.
 4. Run H7 comparator-risk-decile patient-shuffled negative control.
