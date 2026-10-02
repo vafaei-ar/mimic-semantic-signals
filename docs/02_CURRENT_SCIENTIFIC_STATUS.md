@@ -105,7 +105,9 @@ DiffusionGemma MetaVision ICU-death inference job G8M4Q2VN completed 7,889/7,889
 
 The completed DiffusionGemma three-outcome arm therefore does not establish a consistent positive incremental-AUROC effect: ventilation is negative, RRT is essentially null, and death has a small positive point estimate with uncertainty spanning both directions.
 
-For the registered ventilation endpoint sensitivity, aggregate audit R8V4N2M7 confirmed that the explicit-intubation arm is empirically identical to primary H1 and needs no separate predictive rerun. The broad respiratory-support arm contains 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. Preparation job T2X6P4N8 completed cleanly with 34 structured features, the frozen context block, five patient-grouped split repeats, and a 4,590-note stripped corpus. Label-free Open-Jev inference V3X7P5N9 then completed 4,590/4,590 notes with zero failures and zero outcome-label access. Its aggregate artifact SHA-256 is dae6af7fa6980954662a323cff18e9edde18fb885ac65143bb073bbab99d951a. Current job W4Y8P6N2 is running the paired rich-comparator HGB endpoint evaluation with 500 valid patient-cluster refit-bootstrap replicates.
+For the registered ventilation endpoint sensitivity, aggregate audit R8V4N2M7 confirmed that the explicit-intubation arm is empirically identical to primary H1 and needs no separate predictive rerun. The broad respiratory-support arm contains 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. Preparation job T2X6P4N8 completed cleanly with 34 structured features, the frozen context block, five patient-grouped split repeats, and a 4,590-note stripped corpus. Label-free Open-Jev inference V3X7P5N9 then completed 4,590/4,590 notes with zero failures and zero outcome-label access. Evaluation W4Y8P6N2 completed with comparator AUROC 0.70385, augmented AUROC 0.69741, delta AUROC -0.00643, 95% patient-cluster refit-bootstrap interval -0.01879 to +0.01046, primary delta AUPRC -0.00296, five frozen-partition delta-AUROCs -0.00643, +0.00160, -0.01098, -0.00698, and -0.00634, and 500/500 valid bootstrap replicates with zero replacements. Evaluation artifact SHA-256: 824114f7217a3a5af6806ce6b4e413e4ec070edd865f21ee2bb60e68c3c2ea80.
+
+Current job Y6Z3R8M4 is preparing the registered CHARTEVENTS storetime sensitivity under the prespecified rule that eligible CHARTEVENTS must retain the original charttime lookback and also have nonmissing storetime at or before the landmark. This preparation opens no predictive performance.
 
 See docs/results/v2_1_h6_diffusiongemma_results.md and docs/results/v2_1_h6_sensitivity_results.md.
 
@@ -123,8 +125,8 @@ The central manuscript claim remains unlocked until the registered H6-H9 sequenc
 
 ## Current registered execution order
 
-1. Complete the running paired HGB/500-refit-bootstrap evaluation for the broad respiratory-support ventilation endpoint.
-2. Run remaining H6 prospective-timing/note-availability sensitivities.
+1. Complete the running CHARTEVENTS storetime preparation, then run its timing-matched evaluations for ventilation, RRT, and MetaVision ICU death.
+2. Run the registered 1-hour and 2-hour laboratory-lag sensitivities and note-availability sensitivity.
 3. Run the separate CareVue ICU-death sensitivity.
 4. Run H7 comparator-risk-decile patient-shuffled negative control.
 5. Run H8 blinded clinician construct validation.
