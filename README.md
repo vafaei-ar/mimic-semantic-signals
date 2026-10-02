@@ -26,7 +26,7 @@ Detailed frozen protocols and result documents remain authoritative for exact co
 
 ## Current stage
 
-Updated: 2026-10-01.
+Updated: 2026-10-02.
 
 OSF registration ahxn9 is approved/public with DOI 10.17605/OSF.IO/AHXN9. Registered v2.1 real-label analysis is underway.
 
@@ -39,13 +39,14 @@ Completed registered work:
 - H6 Laya alternative-instrument sensitivity for all three outcomes;
 - H6 DiffusionGemma invasive-ventilation inference/evaluation;
 - H6 DiffusionGemma RRT inference/evaluation, with delta AUROC -0.00083 and 95% refit-bootstrap interval -0.00283 to +0.00244;
-- H6 DiffusionGemma MetaVision ICU-death inference, 7,889/7,889 notes with zero failures and zero label access.
+- H6 DiffusionGemma MetaVision ICU-death inference/evaluation, with delta AUROC +0.00499 and 95% refit-bootstrap interval -0.00654 to +0.00652;
+- H6 ventilation endpoint audit: explicit-intubation is empirically identical to H1; broad respiratory support freezes 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows.
 
 Current registered execution:
 
-- H9Q4M2VK - H6 DiffusionGemma MetaVision ICU-death evaluation using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates.
+- T2X6P4N8 - prepare/freeze the registered H6 broad respiratory-support ventilation endpoint inputs without semantic or predictive performance.
 
-The running scientific job remains pinned to project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00. Documentation-only commits made while it runs do not change that execution.
+The current registered preparation job is pinned to project commit a96f721f1fcf76195301575110c4e5023f7511f1. It freezes the broad-endpoint structured/context/split/stripped-note inputs before any broad-endpoint semantic or predictive result is opened.
 
 The authoritative registered execution order is in [10 - Post-registration execution and extension plan](docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md). The detailed post-registration decision-model extension, including Clef-Flash 9B, Clef 27B, Nimble 9B, and Tev1 4B, is frozen separately in [11 - Exploratory decision-model extension plan](docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md).
 
