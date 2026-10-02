@@ -1,6 +1,6 @@
 # Post-registration execution and extension plan
 
-Updated: 2026-10-01
+Updated: 2026-10-02
 
 This is the authoritative forward plan after OSF registration ahxn9, DOI 10.17605/OSF.IO/AHXN9. It does not modify the frozen registration. Anything not named in the registration is explicitly post-registration exploratory.
 
@@ -14,7 +14,8 @@ Completed registered work:
 - H6 unstripped-note Open-Jev sensitivity for all three outcomes;
 - H6 Laya alternative-instrument sensitivity for all three outcomes;
 - H6 DiffusionGemma invasive-ventilation inference/evaluation;
-- H6 DiffusionGemma RRT inference/evaluation; delta AUROC -0.00083, 95% refit-bootstrap interval -0.00283 to +0.00244.
+- H6 DiffusionGemma RRT inference/evaluation; delta AUROC -0.00083, 95% refit-bootstrap interval -0.00283 to +0.00244;
+- H6 DiffusionGemma MetaVision ICU-death inference/evaluation; delta AUROC +0.00499, 95% refit-bootstrap interval -0.00654 to +0.00652.
 
 DiffusionGemma ventilation result:
 
@@ -26,29 +27,30 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- H9Q4M2VK - evaluate_h6_diffusiongemma_v2_1_death
-- exact scientific commit: 097bf046a1c7eceb50d71d75e82e79f3993acb00
-- frozen rich-comparator HGB procedure with 500 patient-cluster refit-bootstrap replicates; aggregate result only.
+- T2X6P4N8 - prepare_h6_broad_ventilation_v2_1
+- exact project commit: a96f721f1fcf76195301575110c4e5023f7511f1
+- freezes the registered broad respiratory-support ventilation sensitivity structured/context/split/stripped-note inputs without semantic or predictive performance.
 
-Documentation-only commits made while this job runs do not alter its exact-commit execution.
+The broad endpoint audit R8V4N2M7 froze 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. The explicit-intubation endpoint is empirically identical to H1 and requires no separate predictive rerun.
 
 ## Track A - finish all registered analyses
 
-### A1. Complete H6 DiffusionGemma
+### A1. H6 DiffusionGemma complete
 
-1. RRT inference/evaluation is complete and clean.
-2. MetaVision ICU-death DiffusionGemma inference is complete and clean.
-3. Finish the running MetaVision ICU-death evaluation.
-4. Freeze the three-outcome DiffusionGemma H6 result document.
+The registered three-outcome DiffusionGemma arm is complete:
 
-Do not select a preferred semantic instrument post hoc based on point estimates.
+- ventilation delta AUROC -0.00811, 95% interval -0.02030 to +0.01445;
+- RRT -0.00083, -0.00283 to +0.00244;
+- MetaVision ICU death +0.00499, -0.00654 to +0.00652.
+
+All three evaluations completed 500/500 valid patient-cluster refit-bootstrap replicates with zero replacements. Do not select a preferred semantic instrument or outcome post hoc based on point estimates.
 
 ### A2. Complete remaining H6 sensitivities
 
 Run the registered sensitivities without changing definitions in response to observed performance:
 
-- ventilation explicit-intubation endpoint;
-- ventilation broad respiratory-support endpoint;
+- ventilation explicit-intubation endpoint: aggregate audit confirms it is empirically identical to primary H1, so no separate predictive rerun is needed;
+- ventilation broad respiratory-support endpoint: current active H6 sensitivity; freeze inputs, then run stripped-note Open-Jev inference and the paired rich-comparator evaluation using the same H1 machinery;
 - CHARTEVENTS storetime constraint;
 - 1-hour laboratory lag;
 - 2-hour laboratory lag;
@@ -183,4 +185,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Wait for H9Q4M2VK to become terminal and inspect its canonical declared aggregate evaluation artifact. If clean, freeze the complete three-outcome DiffusionGemma arm before moving to the remaining H6 sensitivities.
+Wait for T2X6P4N8 to become terminal and inspect its canonical aggregate preparation artifact. If clean, run label-free Open-Jev inference on the frozen 4,590-note broad respiratory-support corpus, then run the paired HGB/500-refit-bootstrap endpoint evaluation. After the broad endpoint is frozen, continue to the prospective-timing/note-availability sensitivities and CareVue death.
