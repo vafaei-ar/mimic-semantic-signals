@@ -18,7 +18,7 @@ This directory contains aggregate manuscript-facing result summaries. Row-level 
 
 ## Current live registered job
 
-D4M8Q2VN and F7K3Q9MV completed the DiffusionGemma RRT inference/evaluation arm. The registered RRT delta AUROC is -0.00083 with 95% refit-bootstrap interval -0.00283 to +0.00244. G8M4Q2VN is now running the MetaVision ICU-death DiffusionGemma inference at project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00.
+D4M8Q2VN and F7K3Q9MV completed the DiffusionGemma RRT inference/evaluation arm. The registered RRT delta AUROC is -0.00083 with 95% refit-bootstrap interval -0.00283 to +0.00244. G8M4Q2VN completed MetaVision ICU-death DiffusionGemma inference on all 7,889 frozen notes with zero failures and zero label access. H9Q4M2VK is now running the registered MetaVision ICU-death evaluation at project commit 097bf046a1c7eceb50d71d75e82e79f3993acb00.
 
 The currently running job is not changed by documentation-only commits.
 
