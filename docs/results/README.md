@@ -22,7 +22,9 @@ The registered DiffusionGemma arm is complete for all three outcomes: ventilatio
 
 The broad respiratory-support endpoint arm is complete. W4Y8P6N2 reported comparator AUROC 0.70385, augmented AUROC 0.69741, delta AUROC -0.00643, and 95% refit-bootstrap interval -0.01879 to +0.01046, with 500/500 valid bootstrap replicates and zero replacements. Artifact SHA-256: 824114f7217a3a5af6806ce6b4e413e4ec070edd865f21ee2bb60e68c3c2ea80.
 
-Y6Z3R8M4 is now preparing the registered CHARTEVENTS storetime sensitivity at validated project commit 27a061c25d88e56a155c93c83514a7a63b6cb298; this preparation reports aggregate availability loss and opens no predictive performance.
+Y6Z3R8M4 completed the registered CHARTEVENTS storetime preparation at validated project commit 27a061c25d88e56a155c93c83514a7a63b6cb298. Of 2,588,698 in-window CHARTEVENTS rows, 87.83% were retained after requiring nonmissing storetime at or before the landmark; 4.93% lacked storetime and 7.24% were stored after the landmark. Preparation artifact SHA-256: 9cf9de723239481a0b42604482a0186885520c7dc56df6640ac08e80d9a12901.
+
+Z7B4R9M5 is now running the invasive-ventilation storetime evaluation with the frozen primary semantics, splits, HGB specification, and 500 valid patient-cluster refit-bootstrap replicates.
 
 The currently running job is not changed by documentation-only commits.
 
