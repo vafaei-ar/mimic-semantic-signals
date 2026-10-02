@@ -139,7 +139,9 @@ Ventilation evaluation job B7Q2M9RK completed:
 - 95% refit-bootstrap interval -0.02030 to +0.01445;
 - 500/500 valid bootstrap replicates, zero replacements.
 
-RRT inference job D4M8Q2VN completed 7,709/7,709 notes with zero failures, zero label access, and zero max-chunk truncations. Aggregate artifact SHA-256: 763056a90bbf2e5b59e86268bba624d50826689dfb2e5eb0beec3033f74f7182. Current job F7K3Q9MV is running the registered RRT evaluation. No RRT DiffusionGemma outcome result should be inferred until its evaluation artifact is terminal and read.
+RRT inference job D4M8Q2VN completed 7,709/7,709 notes with zero failures, zero label access, and zero max-chunk truncations. Evaluation job F7K3Q9MV completed with comparator AUROC 0.97394, augmented AUROC 0.97310, delta AUROC -0.00083, 95% refit-bootstrap interval -0.00283 to +0.00244, and 500/500 valid bootstrap replicates with zero replacements. Evaluation artifact SHA-256: 179b0e6ea1ab6e4f60eeeb4027ae7c291eec51599597ce7dbcead318e884ef9a.
+
+Current job G8M4Q2VN is running the registered fully local MetaVision ICU-death DiffusionGemma inference. No death-arm outcome result should be inferred until its subsequent evaluation artifact is terminal and read.
 
 Read docs/results/v2_1_h6_diffusiongemma_results.md.
 
