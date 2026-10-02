@@ -17,7 +17,7 @@ Use these current documents:
 
 OSF registration ahxn9 is approved/public with DOI 10.17605/OSF.IO/AHXN9.
 
-H1-H5 are complete. H6 unstripped-note Open-Jev, Laya, and the three-outcome DiffusionGemma alternative-instrument analyses are complete. The current registered execution is T2X6P4N8, which prepares the frozen inputs for the broad respiratory-support ventilation endpoint sensitivity after an audit confirmed the explicit-intubation arm is identical to H1.
+H1-H5 are complete. H6 unstripped-note Open-Jev, Laya, the three-outcome DiffusionGemma arm, and the broad respiratory-support ventilation endpoint sensitivity are complete. The broad endpoint delta AUROC is -0.00643 with 95% refit-bootstrap interval -0.01879 to +0.01046. The current registered execution is Y6Z3R8M4, which prepares the prespecified CHARTEVENTS storetime sensitivity for all three primary outcomes before predictive evaluation.
 
 The corrected evidence so far shows near-zero primary Open-Jev incremental AUROC beyond the rich structured comparator, small positive TF-IDF increments in the common logistic H5 comparison, and no consistent positive H6 semantic-instrument increment yet.
 
