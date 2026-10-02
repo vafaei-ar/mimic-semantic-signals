@@ -87,11 +87,27 @@ Inference job G8M4Q2VN completed:
 - max-chunk truncations: 0;
 - declared aggregate artifact SHA-256: 605d5c39bec34bb36f49b7f0cc17b54bb72172e77445c91bed8433e71b32690d.
 
-Evaluation job H9Q4M2VK is running using the frozen rich-comparator HGB procedure and 500 patient-cluster refit-bootstrap replicates. No MetaVision ICU-death DiffusionGemma outcome-performance result is available until that job is terminal and its declared aggregate artifact is read.
+Evaluation job H9Q4M2VK completed:
+
+| N | Cases | Notes scored | Comparator AUROC | + DiffusionGemma AUROC | Delta AUROC | 95% refit-bootstrap interval | Delta AUPRC |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 19,811 | 214 | 7,889 | 0.93338 | 0.93837 | +0.00499 | -0.00654 to +0.00652 | +0.00882 |
+
+Five frozen-partition delta-AUROC estimates:
+
+- +0.00499;
+- +0.00613;
+- +0.00188;
+- -0.00066;
+- +0.00152.
+
+The primary refit bootstrap completed 500/500 valid replicates with zero replacements.
+
+Evaluation artifact SHA-256: b12f961687c67c2ed25a689cd5f79d492b2db89010a8fc9c543cabbd19e0dc23.
 
 ## Interpretation
 
-The completed ventilation estimate does not show a clear positive incremental-discrimination gain from DiffusionGemma beyond the rich structured comparator. RRT is also essentially null: delta AUROC -0.00083 with a narrow interval spanning zero. Together, the completed DiffusionGemma outcomes do not currently support a consistent positive incremental-discrimination pattern.
+The completed three-outcome DiffusionGemma arm does not show a consistent positive incremental-discrimination pattern. Ventilation is negative with a wide interval, RRT is essentially null with a narrow interval spanning zero, and MetaVision ICU death has a small positive point estimate (+0.00499) with an interval spanning negative and positive values. These estimates should be interpreted together rather than selecting the most favorable outcome post hoc.
 
 This is a registered H6 sensitivity result. It does not replace the stripped-note Open-Jev H1 primary result and should not be used to select a preferred semantic instrument post hoc.
 
@@ -103,6 +119,6 @@ This is a registered H6 sensitivity result. It does not replace the stripped-not
 - RRT inference: D4M8Q2VN, artifact SHA-256 763056a90bbf2e5b59e86268bba624d50826689dfb2e5eb0beec3033f74f7182;
 - RRT evaluation: F7K3Q9MV, artifact SHA-256 179b0e6ea1ab6e4f60eeeb4027ae7c291eec51599597ce7dbcead318e884ef9a;
 - MetaVision ICU-death inference: G8M4Q2VN, artifact SHA-256 605d5c39bec34bb36f49b7f0cc17b54bb72172e77445c91bed8433e71b32690d;
-- MetaVision ICU-death evaluation: H9Q4M2VK, running at this documentation checkpoint.
+- MetaVision ICU-death evaluation: H9Q4M2VK, artifact SHA-256 b12f961687c67c2ed25a689cd5f79d492b2db89010a8fc9c543cabbd19e0dc23.
 
 Update this document only from canonical RunRelay artifacts after each terminal registered job.
