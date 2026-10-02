@@ -17,9 +17,10 @@ from runrelay_progress import update_progress
 OUTCOMES = ("invasive_ventilation", "renal_replacement_therapy", "icu_death")
 LAGS = (1, 2)
 LAB_FEATURES = (
-    "lactate", "creatinine", "bun", "wbc", "hemoglobin", "platelets",
-    "sodium", "potassium", "bicarbonate", "chloride", "glucose",
-    "bilirubin_total", "inr", "ph",
+    "lactate_last", "creatinine_last", "bun_last", "wbc_last",
+    "hemoglobin_last", "platelets_last", "sodium_last", "potassium_last",
+    "bicarbonate_last", "chloride_last", "glucose_last",
+    "bilirubin_total_last", "inr_last", "ph_last",
 )
 
 
