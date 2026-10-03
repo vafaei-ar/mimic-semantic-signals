@@ -79,6 +79,7 @@ out.write_text(json.dumps({
         "151_evaluate_h6_lab_lag_2h_rrt_v2_1.py",
         "152_evaluate_h6_lab_lag_2h_death_v2_1.py",
         "153_audit_h6_note_availability_v2_1.py",
+        "154_evaluate_h6_carevue_death_openjev_v2_1.py",
         "v2_1_registered_inference_contract.py"
     ],
     "registration_gate_expected_state": "locked_until_osf_approved_doi_hash_verified_and_verbatim_form_imported"
@@ -149,6 +150,7 @@ bash -n scripts/run_h6_laya_eval_v2_1_death.sh
 .venv/bin/python -m py_compile src/151_evaluate_h6_lab_lag_2h_rrt_v2_1.py
 .venv/bin/python -m py_compile src/152_evaluate_h6_lab_lag_2h_death_v2_1.py
 .venv/bin/python -m py_compile src/153_audit_h6_note_availability_v2_1.py
+.venv/bin/python -m py_compile src/154_evaluate_h6_carevue_death_openjev_v2_1.py
 PYTHONPATH=src .venv/bin/python - <<'PY'
 import importlib.util
 from pathlib import Path
@@ -195,3 +197,5 @@ bash -n scripts/run_h6_lab_lag_2h_eval_v2_1_ventilation.sh
 bash -n scripts/run_h6_lab_lag_2h_eval_v2_1_rrt.sh
 bash -n scripts/run_h6_lab_lag_2h_eval_v2_1_death.sh
 bash -n scripts/run_h6_note_availability_audit_v2_1.sh
+bash -n scripts/run_h6_carevue_openjev_inference_v2_1_death.sh
+bash -n scripts/run_h6_carevue_openjev_eval_v2_1_death.sh
