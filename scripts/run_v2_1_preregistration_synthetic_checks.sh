@@ -83,6 +83,7 @@ out.write_text(json.dumps({
         "155_evaluate_h7_patient_shuffled_openjev_v2_1.py",
         "156_prepare_h8_clinician_validation_v2_1.py",
         "157_evaluate_h8_clinician_validation_v2_1.py",
+        "158_evaluate_h9_zigong_diffusiongemma_transport_v2_1.py",
         "v2_1_registered_inference_contract.py"
     ],
     "registration_gate_expected_state": "locked_until_osf_approved_doi_hash_verified_and_verbatim_form_imported"
@@ -157,6 +158,7 @@ bash -n scripts/run_h6_laya_eval_v2_1_death.sh
 .venv/bin/python -m py_compile src/155_evaluate_h7_patient_shuffled_openjev_v2_1.py
 .venv/bin/python -m py_compile src/156_prepare_h8_clinician_validation_v2_1.py
 .venv/bin/python -m py_compile src/157_evaluate_h8_clinician_validation_v2_1.py
+.venv/bin/python -m py_compile src/158_evaluate_h9_zigong_diffusiongemma_transport_v2_1.py
 PYTHONPATH=src .venv/bin/python - <<'PY'
 import importlib.util
 from pathlib import Path
@@ -229,6 +231,33 @@ PY
 PYTHONPATH=src .venv/bin/python - <<'PY'
 import importlib.util
 from pathlib import Path
+
+p = Path("src/158_evaluate_h9_zigong_diffusiongemma_transport_v2_1.py")
+spec = importlib.util.spec_from_file_location("h9transport", p)
+mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(mod)
+if mod.OUTCOME != "invasive_ventilation":
+    raise SystemExit("H9 outcome changed")
+if len(mod.SEMANTIC_NAMES) != 8:
+    raise SystemExit("H9 semantic construct count changed")
+text = p.read_text(encoding="utf-8")
+required = [
+    'len(out) != 340',
+    'int(out["label"].sum()) != 85',
+    'n_boot: int',
+    'MIMIC training uses the full registered corrected v2.1 ventilation cohort',
+    'LogisticRegression(',
+    'solver="liblinear"',
+    'C=1.0',
+    'max_iter=3000',
+]
+for needle in required:
+    if needle not in text:
+        raise SystemExit(f"H9 frozen implementation check missing: {needle}")
+PY
+PYTHONPATH=src .venv/bin/python - <<'PY'
+import importlib.util
+from pathlib import Path
 p = Path("src/153_audit_h6_note_availability_v2_1.py")
 spec = importlib.util.spec_from_file_location("noteavail", p)
 mod = importlib.util.module_from_spec(spec)
@@ -280,3 +309,4 @@ bash -n scripts/run_h7_patient_shuffled_v2_1_death_metavision.sh
 bash -n scripts/run_h7_patient_shuffled_v2_1_death_carevue.sh
 bash -n scripts/run_h8_clinician_validation_prepare_v2_1.sh
 bash -n scripts/run_h8_clinician_validation_eval_v2_1.sh
+bash -n scripts/run_h9_zigong_diffusiongemma_transport_v2_1.sh
