@@ -1,6 +1,6 @@
 # Registered v2.1 result documents
 
-Updated: 2026-10-02
+Updated: 2026-10-03
 
 This directory contains aggregate manuscript-facing result summaries. Row-level restricted data and patient-level predictions remain local.
 
@@ -14,9 +14,12 @@ This directory contains aggregate manuscript-facing result summaries. Row-level 
 | H6 unstripped-note Open-Jev | Complete | v2_1_h6_unstripped_results.md |
 | H6 Laya alternative instrument | Complete | v2_1_h6_laya_results.md |
 | H6 DiffusionGemma alternative instrument | Complete | v2_1_h6_diffusiongemma_results.md |
-| H6 aggregate sensitivity index | In progress | v2_1_h6_sensitivity_results.md |
+| H6 aggregate sensitivity index | Complete | v2_1_h6_sensitivity_results.md |
+| H7 patient-shuffled negative controls | Complete | v2_1_h7_patient_shuffled_results.md |
+| H8 clinician construct validation | Preparation complete; ratings pending governance gate | v2_1_h8_preparation_status.md |
+| H9 corrected Zigong external transport | Complete | v2_1_h9_zigong_transport_results.md |
 
-## Current live registered job
+## Current registered state
 
 The registered DiffusionGemma arm is complete for all three outcomes: ventilation delta AUROC -0.00811 (95% interval -0.02030 to +0.01445), RRT -0.00083 (-0.00283 to +0.00244), and MetaVision ICU death +0.00499 (-0.00654 to +0.00652).
 
@@ -42,4 +45,4 @@ Use canonical RunRelay aggregate artifacts and exact provenance for every numeri
 
 H6 alternative instruments are sensitivities. Do not use point-estimate differences to select a preferred instrument post hoc.
 
-The authoritative registered forward sequence is docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md. The separate post-registration exploratory decision-model plan is docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md.
+The authoritative registered forward sequence is docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md. The post-registration decision-model details are in docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md. The current publication-sprint priority, model-panel stopping rules, and missingness-resilience extension are in docs/12_PUBLICATION_SPRINT_AND_MISSINGNESS_RESILIENCE_PLAN_2026-10-03.md.
