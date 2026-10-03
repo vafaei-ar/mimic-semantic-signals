@@ -2903,3 +2903,20 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h8_clinician_validation_v2_1.json
+
+  evaluate_h9_zigong_diffusiongemma_transport_v2_1:
+    description: Run the corrected registered H9 Zigong external narrative transport using the full frozen v2.1 MIMIC ventilation cohort to fit the eight-score DiffusionGemma semantic-only logistic pipeline, then apply it unchanged to the frozen 340-note Zigong cohort with 2000 matched-set bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h9_zigong_diffusiongemma_transport_v2_1.sh
+    approval: automatic
+    timeout_minutes: 90
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/zigong_external/h9_diffusiongemma_external_transport_v2_1.json
