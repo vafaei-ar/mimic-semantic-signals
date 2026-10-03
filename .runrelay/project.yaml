@@ -2749,3 +2749,20 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h6_lab_lag_2h_v2_1_death.json
+
+  audit_h6_note_availability_v2_1:
+    description: Audit the registered H6 note-availability timing sensitivity, deterministically freeze the missing-storetime fallback delay from label-free timing data, quantify aggregate note availability and selected-note changes, and materialize local alternative corpora without semantic or predictive inference.
+    command:
+      - bash
+      - scripts/run_h6_note_availability_audit_v2_1.sh
+    approval: automatic
+    timeout_minutes: 180
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 32
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_note_availability_audit_v2_1.json
