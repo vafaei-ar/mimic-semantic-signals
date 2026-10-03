@@ -2957,7 +2957,7 @@ tasks:
       - outputs/multitask_benchmark/submission_semantic_alignment_audit_v2_1.json
 
   evaluate_submission_exploratory_v2_1:
-    description: Run the bounded post-registration Paper 1 explanatory analyses across the three primary MetaVision outcomes: note-available Open-Jev semantic-only discrimination and four-level HGB comparator decomposition over the five frozen patient-grouped partitions, with no new bootstrap.
+    description: Run the bounded post-registration Paper 1 explanatory analyses across the three primary MetaVision outcomes, including note-available Open-Jev semantic-only discrimination and four-level HGB comparator decomposition over the five frozen patient-grouped partitions, with no new bootstrap.
     command:
       - bash
       - scripts/run_submission_exploratory_v2_1.sh
