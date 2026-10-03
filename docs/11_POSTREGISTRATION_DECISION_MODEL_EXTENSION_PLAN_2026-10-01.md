@@ -1,8 +1,11 @@
 # 11 - Post-registration exploratory decision-model extension plan
 
+> **Deferred for Paper 1, 2026-10-03:** No Clef, Clef-Flash, Nimble, Tev1, hosted-Jev, or other new decision-model clinical evaluation will be run before initial submission. This document is retained only as a future/revision roadmap. The active plan is `docs/12_MINIMAL_SUBMISSION_PLAN_2026-10-03.md`.
+
+
 Updated: 2026-10-03
 
-This document freezes the scientific and operational basis for the local decision-model extension. The 2026-10-03 publication-priority amendment in docs/12_PUBLICATION_SPRINT_AND_MISSINGNESS_RESILIENCE_PLAN_2026-10-03.md narrows the clinical roster and adds explicit stopping rules. Where execution priority differs, docs/12 governs prospectively without changing any registered H1-H9 analysis.
+This document freezes the scientific and operational basis for the local decision-model extension. The 2026-10-03 minimal-submission plan in docs/12_MINIMAL_SUBMISSION_PLAN_2026-10-03.md defers this entire extension until after initial submission or a concrete reviewer request.
 
 This work is not part of OSF registration ahxn9 and must be labeled post-registration exploratory in code, RunRelay jobs, artifacts, tables, figures, and manuscript text.
 
