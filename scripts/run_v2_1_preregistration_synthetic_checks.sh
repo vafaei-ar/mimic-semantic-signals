@@ -81,6 +81,8 @@ out.write_text(json.dumps({
         "153_audit_h6_note_availability_v2_1.py",
         "154_evaluate_h6_carevue_death_openjev_v2_1.py",
         "155_evaluate_h7_patient_shuffled_openjev_v2_1.py",
+        "156_prepare_h8_clinician_validation_v2_1.py",
+        "157_evaluate_h8_clinician_validation_v2_1.py",
         "v2_1_registered_inference_contract.py"
     ],
     "registration_gate_expected_state": "locked_until_osf_approved_doi_hash_verified_and_verbatim_form_imported"
@@ -153,6 +155,8 @@ bash -n scripts/run_h6_laya_eval_v2_1_death.sh
 .venv/bin/python -m py_compile src/153_audit_h6_note_availability_v2_1.py
 .venv/bin/python -m py_compile src/154_evaluate_h6_carevue_death_openjev_v2_1.py
 .venv/bin/python -m py_compile src/155_evaluate_h7_patient_shuffled_openjev_v2_1.py
+.venv/bin/python -m py_compile src/156_prepare_h8_clinician_validation_v2_1.py
+.venv/bin/python -m py_compile src/157_evaluate_h8_clinician_validation_v2_1.py
 PYTHONPATH=src .venv/bin/python - <<'PY'
 import importlib.util
 from pathlib import Path
@@ -188,6 +192,39 @@ if not report["marginal_semantic_values_preserved_exactly"]:
 for name in mod.h1.SEMANTIC_NAMES:
     if not np.array_equal(np.sort(sem[name].to_numpy()), np.sort(shuf[name].to_numpy())):
         raise SystemExit(f"H7 marginal preservation failed for {name}")
+PY
+PYTHONPATH=src .venv/bin/python - <<'PY'
+import importlib.util
+import json
+from pathlib import Path
+import numpy as np
+
+from semantic_schema import SEMANTIC_CONSTRUCTS
+
+freeze = json.loads(Path("config/v2_1_h8_clinician_validation_freeze.json").read_text())
+if freeze["sampling_frame"]["sample_size"] != 200:
+    raise SystemExit("H8 sample size changed")
+if freeze["sampling_frame"]["seed"] != 20261003:
+    raise SystemExit("H8 sampling seed changed")
+if freeze["raters"]["primary_rater_count"] != 3:
+    raise SystemExit("H8 primary rater count changed")
+if freeze["constructs"] != SEMANTIC_CONSTRUCTS:
+    raise SystemExit("H8 frozen construct wording differs from semantic_schema.py")
+if freeze["uncertainty"]["valid_replicates_target"] != 2000:
+    raise SystemExit("H8 bootstrap target changed")
+
+p = Path("src/157_evaluate_h8_clinician_validation_v2_1.py")
+spec = importlib.util.spec_from_file_location("h8eval", p)
+mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(mod)
+
+perfect = np.array([[0.,0.,0.],[25.,25.,25.],[50.,50.,50.],[75.,75.,75.],[100.,100.,100.]])
+icc21, icc23 = mod.icc2_absolute(perfect)
+if not (abs(icc21 - 1.0) < 1e-12 and abs(icc23 - 1.0) < 1e-12):
+    raise SystemExit(f"H8 ICC synthetic check failed: {icc21}, {icc23}")
+rho = mod.safe_spearman(np.arange(10, dtype=float), np.arange(10, dtype=float))
+if abs(rho - 1.0) > 1e-12:
+    raise SystemExit(f"H8 Spearman synthetic check failed: {rho}")
 PY
 PYTHONPATH=src .venv/bin/python - <<'PY'
 import importlib.util
@@ -241,3 +278,5 @@ bash -n scripts/run_h7_patient_shuffled_v2_1_ventilation.sh
 bash -n scripts/run_h7_patient_shuffled_v2_1_rrt.sh
 bash -n scripts/run_h7_patient_shuffled_v2_1_death_metavision.sh
 bash -n scripts/run_h7_patient_shuffled_v2_1_death_carevue.sh
+bash -n scripts/run_h8_clinician_validation_prepare_v2_1.sh
+bash -n scripts/run_h8_clinician_validation_eval_v2_1.sh
