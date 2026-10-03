@@ -27,9 +27,9 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- Q5V8Z2N7 - audit_h6_note_availability_v2_1
-- exact project commit: e79124f195f88dbdf15f3712ebd6929e34085566
-- runs the label-free note-availability timing audit, freezes the missing-storetime fallback delay using the deterministic 90th-percentile documentation-delay rule rounded up to the next whole hour, quantifies aggregate note availability/selection changes, and materializes local alternative corpora without semantic or predictive inference.
+- S7X4P9M2 - infer_h6_carevue_openjev_v2_1_death
+- exact project commit: a1e7547333e9536dcbd651b44c2398589f4d1d7a
+- runs the registered Open-Jev instrument fully offline on the 23,272 frozen stripped-note CareVue ICU-death replication notes; row-level scores remain local and only aggregate inference diagnostics are shared.
 
 The broad endpoint audit R8V4N2M7 froze 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. The explicit-intubation endpoint is empirically identical to H1 and requires no separate predictive rerun.
 
@@ -54,10 +54,8 @@ Run the registered sensitivities without changing definitions in response to obs
 - CHARTEVENTS storetime constraint: complete across all three outcomes. Ventilation delta AUROC +0.00668 (95% interval -0.02079 to +0.02286), RRT +0.00053 (-0.00307 to +0.00261), and MetaVision ICU death -0.00207 (-0.00923 to +0.00689);
 - 1-hour laboratory lag: complete across all three outcomes. Ventilation delta AUROC +0.00717 (95% interval -0.02333 to +0.01829), RRT +0.00069 (-0.00331 to +0.00331), and MetaVision ICU death +0.00153 (-0.00936 to +0.00618);
 - 2-hour laboratory lag: complete across all three outcomes. Ventilation delta AUROC +0.00216 (95% interval -0.02269 to +0.01911), RRT -0.00110 (-0.00294 to +0.00309), and MetaVision ICU death -0.00415 (-0.00849 to +0.00655);
-- 1-hour laboratory lag;
-- 2-hour laboratory lag;
-- note-availability/timing sensitivity;
-- separate CareVue ICU-death replication/sensitivity.
+- note-availability/timing sensitivity: complete as an empirical identity sensitivity. Q5V8Z2N7 found 0 missing-storetime rows among 376,185 normalized bedside notes in the registered MetaVision admissions. The deterministic p90 rule froze a 3-hour fallback, but both registered note sensitivities select exactly the primary notes for all three outcomes, so no semantic/predictive rerun is required;
+- separate CareVue ICU-death replication/sensitivity: active. CareVue remains separate and is reported side by side with MetaVision without pooling.
 
 Report MetaVision and CareVue death separately without pooling.
 
@@ -187,4 +185,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Wait for Q5V8Z2N7 to become terminal and inspect its canonical aggregate note-availability audit artifact. If clean, persist the resulting fallback-delay value as a frozen contract before any semantic inference or outcome performance, then prepare timing-matched note context and run the two registered note-availability sensitivities. After the note-availability sensitivity is complete, continue to CareVue death.
+Wait for S7X4P9M2 to become terminal and inspect its canonical aggregate CareVue inference artifact. If clean, run the CareVue ICU-death HGB replication at the same validated exact commit using the frozen CareVue context, stripped corpus, and separate CareVue patient-grouped splits. After CareVue is frozen, continue to H7.
