@@ -2,6 +2,16 @@
 
 Updated: 2026-10-01
 
+## Manuscript-status override, 2026-10-03
+
+The active manuscript interpretation has changed after external review of the executed H9 path.
+
+The DiffusionGemma run `F2N7Q5K9` is retained as a **post-registration modified descriptive transport arm using the legacy frozen Zigong 24-hour cohort**, not as completed registered external validation. The registered translated Open-Jev/Laya/TF-IDF arm was not performed, and the legacy cohort was not rebuilt after the known leakage-screen problem was recognized.
+
+See `docs/registration/deviation_h9_partial_execution_2026-10-03.md` for the exact deviation record. The numerical AUROC 0.5546 (95% matched-set bootstrap interval 0.4796 to 0.6308) remains in the audit trail, but Paper 1 will not rely on Zigong for its central claim and will not rerun H9 before initial submission.
+
+Older wording below that calls this a corrected registered H9 result is preserved as execution-history context and is superseded for manuscript labeling by this override.
+
 This report distinguishes available external datasets, historical v1 external results, and the corrected manuscript-facing transport path.
 
 ## Current status summary
