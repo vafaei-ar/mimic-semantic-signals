@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "analysis": "v2.1 H6 note-availability missing-storetime fallback freeze",
+  "status": "frozen_before_note_availability_performance",
+  "registration_id": "ahxn9",
+  "doi": "10.17605/OSF.IO/AHXN9",
+  "source_audit_job": "Q5V8Z2N7",
+  "source_audit_artifact": "outputs/multitask_benchmark/h6_note_availability_audit_v2_1.json",
+  "source_audit_sha256": "bbfe5bb2ff2747544f975c11318198026a5666124a25b87e4f5bac202ab256ef",
+  "selection_rule": {
+    "population": "storetime-present normalized bedside notes eligible under the registered primary availability rule in the union of registered MetaVision populations",
+    "statistic": "90th percentile of nonnegative max(charttime,storetime)-charttime delay",
+    "quantile": 0.9,
+    "rounding": "ceil to next whole hour; minimum 1 hour",
+    "observed_q90_hours": 2.8420000000000014
+  },
+  "frozen_fallback_delay_hours": 3,
+  "observed_registered_note_scan": {
+    "normalized_bedside_rows": 376185,
+    "storetime_missing_rows": 0,
+    "storetime_missing_fraction": 0
+  },
+  "consequence": "Because no normalized bedside note in the registered admissions lacked storetime, storetime-only and 3-hour fallback sensitivities are empirically identical to the primary note-availability rule; no semantic or predictive rerun is required.",
+  "guardrails": [
+    "Freeze derived from label-free timing data before note-availability outcome-performance inspection.",
+    "No outcome performance informed the fallback value.",
+    "Registration files remain unchanged.",
+    "Row-level timing and note text remain local."
+  ]
+}
