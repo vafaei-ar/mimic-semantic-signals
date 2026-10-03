@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_any_clinician_rating",
+  "registration_id": "ahxn9",
+  "doi": "10.17605/OSF.IO/AHXN9",
+  "frozen_date": "2026-10-03",
+  "sampling_frame": {
+    "analysis": "icu_death",
+    "source": "metavision",
+    "corpus_variant": "language_stripped",
+    "note_available_rows": 7889,
+    "corpus_sha256": "8e60221c0c5db1074c0f14f5bd39b78252d0e5388bec8c3ca90b992c5a1a4aba",
+    "sample_size": 200,
+    "sampling_method": "uniform random without replacement from sorted frozen case_id frame",
+    "seed": 20261003,
+    "selection_uses_outcome_labels": false,
+    "selection_uses_model_scores": false,
+    "rationale": "Largest registered primary MetaVision note frame; single frame avoids duplicate-note/corpus ambiguity across outcome-specific corpora."
+  },
+  "raters": {
+    "primary_rater_count": 3,
+    "all_primary_raters_rate_all_notes": true,
+    "qualification": "clinician with ICU experience and authorized MIMIC-III access under applicable PhysioNet credential/DUA and institutional requirements",
+    "blinded_to": [
+      "case/patient identifiers",
+      "outcomes",
+      "comparator predictions",
+      "model scores",
+      "prior study results",
+      "other raters' scores"
+    ]
+  },
+  "rating_scale": {
+    "type": "continuous_integer_0_100",
+    "anchors": {
+      "0": "definitely absent / no evidence",
+      "25": "weak evidence",
+      "50": "uncertain or moderate evidence",
+      "75": "strong evidence",
+      "100": "definitely present / very strong evidence"
+    },
+    "deterioration_probability_12h": "integer 0-100 percent",
+    "missing_allowed_when": "genuinely not assessable from the note"
+  },
+  "constructs": [
+    {
+      "name": "overall_clinician_concern",
+      "question": "Does `clinical_note` indicate that the clinician is concerned that the patient's overall clinical condition is worsening or may worsen soon?",
+      "criteria": {
+        "true": "The note communicates a meaningful current concern about deterioration or impending worsening.",
+        "false": "The note is reassuring, neutral, or does not communicate concern about deterioration."
+      }
+    },
+    {
+      "name": "worsening_trajectory",
+      "question": "Does `clinical_note` describe a worsening clinical trajectory compared with an earlier assessment or expected course?",
+      "criteria": {
+        "true": "The note explicitly or clearly implies that the patient's trajectory is getting worse.",
+        "false": "The note describes stability, improvement, or no clear worsening trajectory."
+      }
+    },
+    {
+      "name": "respiratory_concern",
+      "question": "Does `clinical_note` express concern about respiratory deterioration, increasing work of breathing, respiratory fatigue, oxygenation, or need for more respiratory support?",
+      "criteria": {
+        "true": "A respiratory problem is presented as clinically concerning or worsening.",
+        "false": "Respiratory status is reassuring, unchanged, or not a meaningful concern in the note."
+      }
+    },
+    {
+      "name": "hemodynamic_concern",
+      "question": "Does `clinical_note` express concern about circulatory or hemodynamic deterioration, perfusion, hypotension, shock, or possible need for vasoactive support?",
+      "criteria": {
+        "true": "The note communicates meaningful concern about circulation, perfusion, or hemodynamic instability.",
+        "false": "Hemodynamics are reassuring, unchanged, or not a meaningful concern in the note."
+      }
+    },
+    {
+      "name": "poor_treatment_response",
+      "question": "Does `clinical_note` indicate that the patient is not responding as expected to current treatment or support?",
+      "criteria": {
+        "true": "The note indicates inadequate, incomplete, or disappointing response to treatment or support.",
+        "false": "The note indicates adequate response, expected course, or gives no evidence of poor response."
+      }
+    },
+    {
+      "name": "escalation_considered",
+      "question": "Does `clinical_note` indicate that escalation of monitoring, treatment, respiratory support, vasoactive support, or level of care is being considered?",
+      "criteria": {
+        "true": "The note states or clearly implies that stronger monitoring, treatment, support, or level of care is being considered.",
+        "false": "No escalation is being considered, or the note supports continuing the current plan without escalation."
+      }
+    },
+    {
+      "name": "diagnostic_uncertainty",
+      "question": "Does `clinical_note` indicate meaningful unresolved diagnostic uncertainty that affects current clinical management?",
+      "criteria": {
+        "true": "The note describes unresolved diagnostic uncertainty that is clinically consequential.",
+        "false": "There is no meaningful unresolved diagnostic uncertainty affecting management."
+      }
+    },
+    {
+      "name": "reassuring_stability",
+      "question": "Does `clinical_note` explicitly indicate that the patient's clinical condition is stable or reassuring without a new acute concern?",
+      "criteria": {
+        "true": "The note is explicitly reassuring or describes stable clinical status without a new acute concern.",
+        "false": "The note communicates deterioration, concern, uncertainty, or does not clearly support reassuring stability."
+      }
+    }
+  ],
+  "missing_and_adjudication": {
+    "no_imputation": true,
+    "clinician_aggregate_minimum_raters": 2,
+    "icc_requires_all_three_raters": true,
+    "primary_consensus_adjudication": false,
+    "data_entry_corrections": "audit-trailed and completed before model scores are joined"
+  },
+  "primary_analysis": {
+    "instrument": "Open-Jev",
+    "corpus": "registered stripped-note ICU-death MetaVision corpus",
+    "clinician_aggregate": "mean of available numeric ratings when at least two raters are present",
+    "inter_rater": [
+      "ICC(2,1) two-way random absolute agreement",
+      "ICC(2,3) two-way random absolute agreement",
+      "pairwise Spearman correlations"
+    ],
+    "model_human": "per-construct Spearman correlation between Open-Jev score and clinician aggregate",
+    "cross_construct": [
+      "8x8 model-human Spearman matrix",
+      "diagonal correlation",
+      "mean signed off-diagonal correlation",
+      "maximum signed off-diagonal correlation",
+      "diagonal-minus-mean-off-diagonal",
+      "matched-correlation rank"
+    ],
+    "deterioration_probability": "Spearman correlation of each Open-Jev construct with mean clinician 12-hour deterioration probability",
+    "p_values": false,
+    "binary_success_rule": false
+  },
+  "uncertainty": {
+    "bootstrap_unit": "source_patient",
+    "valid_replicates_target": 2000,
+    "seed": 20261003,
+    "interval": "two-sided 95% percentile",
+    "degenerate_rule": "omit mathematically undefined replicate estimates and report valid count; do not tune replacement rules after ratings"
+  },
+  "governance": {
+    "human_note_access_requires_irb_determination": true,
+    "all_raters_require_applicable_physionet_mimic_access": true,
+    "note_text_local_only": true,
+    "shareable_artifacts": "aggregate counts, reliability/association summaries, hashes, and provenance only"
+  }
+}
