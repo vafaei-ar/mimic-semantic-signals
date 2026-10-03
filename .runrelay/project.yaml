@@ -2869,3 +2869,37 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h7_patient_shuffled_v2_1_death_carevue.json
+
+  prepare_h8_clinician_validation_v2_1:
+    description: Freeze the registered H8 uniform random 200-note MetaVision ICU-death stripped-note sample and materialize three local blinded clinician-rating packets without reading outcomes or model scores; share aggregate hashes/counts only.
+    command:
+      - bash
+      - scripts/run_h8_clinician_validation_prepare_v2_1.sh
+    approval: automatic
+    timeout_minutes: 60
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 20
+    artifacts:
+      - outputs/multitask_benchmark/h8_clinician_validation_preparation_v2_1.json
+
+  evaluate_h8_clinician_validation_v2_1:
+    description: Evaluate the registered H8 blinded clinician construct-validation ratings after the local IRB/DUA governance gate is documented, using frozen ICC, model-human Spearman, cross-construct, deterioration-probability, and 2000 patient-cluster bootstrap summaries; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h8_clinician_validation_eval_v2_1.sh
+    approval: manual
+    timeout_minutes: 120
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 12
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h8_clinician_validation_v2_1.json
