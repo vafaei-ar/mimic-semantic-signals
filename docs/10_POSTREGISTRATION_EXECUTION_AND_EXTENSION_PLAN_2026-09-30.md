@@ -27,9 +27,9 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- J8N5V3R7 - evaluate_h6_lab_lag_1h_v2_1_death
+- K9P6W4R2 - evaluate_h6_lab_lag_2h_v2_1_ventilation
 - exact project commit: 1ec1ed7d7b6117463b0ec5627eee918ff7ea22af
-- evaluates the MetaVision ICU-death 1-hour laboratory-result lag sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates.
+- evaluates the invasive-ventilation 2-hour laboratory-result lag sensitivity using the frozen rich-comparator HGB procedure, primary stripped-note Open-Jev scores, and 500 patient-cluster refit-bootstrap replicates.
 
 The broad endpoint audit R8V4N2M7 froze 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. The explicit-intubation endpoint is empirically identical to H1 and requires no separate predictive rerun.
 
@@ -52,8 +52,8 @@ Run the registered sensitivities without changing definitions in response to obs
 - ventilation explicit-intubation endpoint: aggregate audit confirms it is empirically identical to primary H1, so no separate predictive rerun is needed;
 - ventilation broad respiratory-support endpoint: complete; comparator AUROC 0.70385, augmented AUROC 0.69741, delta AUROC -0.00643, 95% refit-bootstrap interval -0.01879 to +0.01046;
 - CHARTEVENTS storetime constraint: complete across all three outcomes. Ventilation delta AUROC +0.00668 (95% interval -0.02079 to +0.02286), RRT +0.00053 (-0.00307 to +0.00261), and MetaVision ICU death -0.00207 (-0.00923 to +0.00689);
-- 1-hour laboratory lag: current active sensitivity preparation; effective availability = charttime + 1 hour, with original mappings and 24-hour lab lookback unchanged;
-- 2-hour laboratory lag: prepared in the same frozen label-free build after the 1-hour arm, with effective availability = charttime + 2 hours;
+- 1-hour laboratory lag: complete across all three outcomes. Ventilation delta AUROC +0.00717 (95% interval -0.02333 to +0.01829), RRT +0.00069 (-0.00331 to +0.00331), and MetaVision ICU death +0.00153 (-0.00936 to +0.00618);
+- 2-hour laboratory lag: current active arm; prepared in the same frozen label-free build, with effective availability = charttime + 2 hours. Ventilation is running first, followed sequentially by RRT and MetaVision ICU death;
 - 1-hour laboratory lag;
 - 2-hour laboratory lag;
 - note-availability/timing sensitivity;
@@ -187,4 +187,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Wait for J8N5V3R7 to become terminal and inspect its canonical aggregate 1-hour MetaVision ICU-death result. If clean, freeze the complete 1-hour laboratory-lag arm and start the 2-hour arm sequentially with ventilation, RRT, and MetaVision ICU death at the same corrected validated commit. After both lag arms are frozen, continue to note availability and CareVue death.
+Wait for K9P6W4R2 to become terminal and inspect its canonical aggregate 2-hour ventilation result. If clean, continue sequentially to 2-hour RRT and MetaVision ICU death at the same corrected validated commit. After the 2-hour arm is frozen, continue to note availability and CareVue death.
