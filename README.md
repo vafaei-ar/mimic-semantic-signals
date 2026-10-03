@@ -29,7 +29,7 @@ Detailed frozen protocols and result documents remain authoritative for exact co
 
 Updated: 2026-10-03.
 
-OSF registration ahxn9 is approved/public with DOI 10.17605/OSF.IO/AHXN9. The registered internal H1-H7 path is complete. H8 will not be performed and the existing Zigong H9 result is retained only as a post-registration modified descriptive arm under dated deviation records. The remaining work is a bounded integrity/explanatory analysis set followed by provenance freeze and manuscript submission.
+OSF registration ahxn9 is approved/public with DOI 10.17605/OSF.IO/AHXN9. The registered internal H1-H7 path is complete. H8 will not be performed and the existing Zigong H9 result is retained only as a post-registration modified descriptive arm under dated deviation records. The bounded label-free alignment audit and post-registration explanatory decomposition are also complete. The research phase is closed; remaining work is manuscript, figures, supplement, reporting checklists, and submission.
 
 Completed registered work:
 
@@ -57,6 +57,14 @@ Historical registered execution is documented in [10 - Post-registration executi
 The corrected evidence so far does not support a clear incremental-AUROC gain from the eight Open-Jev semantic scores beyond the rich structured comparator. In the common logistic H5 comparison, TF-IDF adds small positive AUROC increments while Open-Jev adds negative increments in all three primary partitions. Registered H6 instrument sensitivities have not yet overturned that overall pattern.
 
 The paper should therefore remain open to a framing centered on the value and limits of interpretable semantic compression rather than assuming unique predictive information beyond physiology.
+
+## Final Paper 1 explanatory result
+
+For ventilation, post-registration decomposition showed Open-Jev augmentation delta AUROC +0.02032 over the 34-feature physiology/laboratory/urine comparator, +0.01137 after treatment/support context, -0.00172 after documentation behavior, and -0.00005 with the registered rich comparator. Because semantic-score missingness also reveals note availability before documentation context is represented, the early positive increment is not attributed purely to semantic content.
+
+For RRT, Open-Jev remained essentially null at every comparator level. For MetaVision ICU death, the semantic scores had standalone AUROC 0.65682 among note-available rows but did not add discrimination even over the physiology-only comparator (delta AUROC -0.00428).
+
+No additional predictive analysis is planned before initial submission.
 
 ## Scientific framing
 
