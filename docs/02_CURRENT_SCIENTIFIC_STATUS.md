@@ -2,6 +2,18 @@
 
 Updated: 2026-10-03
 
+## Submission-status override, 2026-10-03
+
+The active Paper 1 plan is now `docs/12_MINIMAL_SUBMISSION_PLAN_2026-10-03.md`.
+
+- H8 human construct validation will not be performed; the frozen 200-note preparation remains provenance only under `docs/registration/deviation_h8_not_performed_2026-10-03.md`.
+- The existing Zigong DiffusionGemma result is retained only as a post-registration modified descriptive arm using the legacy frozen 24-hour cohort. Registered external validation was not completed as planned; see `docs/registration/deviation_h9_partial_execution_2026-10-03.md`.
+- The missingness-resilience and new decision-model panel are cut from Paper 1.
+- The only remaining computational work is a label-free semantic-alignment audit, note-available semantic-only discrimination, and a four-level HGB comparator decomposition, all clearly post-registration exploratory except the integrity role of the alignment audit.
+- After those analyses, complete the OSF attachment text diff, manuscript-number provenance index, manuscript, figures, supplement, and reporting checklists.
+
+This override governs submission planning where older sections below describe H8/H9 or the broader exploratory roadmap as still pending.
+
 ## Scientific question
 
 The study asks whether prospectively available ICU narrative documentation contains reusable information about near-term deterioration that is not fully represented by structured physiology, and whether a small set of clinically interpretable semantic scores can provide useful low-dimensional compression of that narrative information.
@@ -123,7 +135,7 @@ The strongest current interpretation is:
 4. Laya and DiffusionGemma show instrument-specific variation, but completed H6 estimates do not yet establish a consistently positive semantic increment.
 5. The scientific value of semantic compression may therefore depend more on interpretability, dimensionality, human construct validity, stability, runtime, and transport than on predictive gain alone.
 
-The central manuscript claim remains unlocked until H8 human construct validation is completed and the final registered provenance index is frozen. H6, H7, and the corrected computational H9 analysis are complete.
+The central manuscript claim no longer depends on H8, which is formally not performed. H6 and H7 are complete. The existing H9 numerical result is preserved but is descriptive under a dated deviation rather than treated as completed registered external validation.
 
 ## Current registered execution order
 
