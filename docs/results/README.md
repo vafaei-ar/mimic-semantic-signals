@@ -6,6 +6,8 @@ This directory contains aggregate manuscript-facing result summaries. Row-level 
 
 ## Current result index
 
+| Paper 1 provenance index | Current; final explanatory scalar row pending Reader extraction | PAPER1_PROVENANCE_INDEX_2026-10-03.md |
+
 | Analysis | Status | Document |
 |---|---|---|
 | H1-H3 primary stripped-note Open-Jev | Complete | v2_1_primary_openjev_results.md |
