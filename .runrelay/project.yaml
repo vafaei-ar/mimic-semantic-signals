@@ -2801,3 +2801,71 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h6_carevue_openjev_v2_1_death.json
+
+  evaluate_h7_patient_shuffled_v2_1_ventilation:
+    description: Run the registered H7 patient-shuffled semantic negative control for invasive ventilation using repeat-1 rich-comparator OOF-risk deciles, seed 20260929, complete eight-score between-patient permutations, frozen folds/HGB settings, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h7_patient_shuffled_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 300
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h7_patient_shuffled_v2_1_ventilation.json
+
+  evaluate_h7_patient_shuffled_v2_1_rrt:
+    description: Run the registered H7 patient-shuffled semantic negative control for RRT using repeat-1 rich-comparator OOF-risk deciles, seed 20260929, complete eight-score between-patient permutations, frozen folds/HGB settings, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h7_patient_shuffled_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h7_patient_shuffled_v2_1_rrt.json
+
+  evaluate_h7_patient_shuffled_v2_1_death_metavision:
+    description: Run the registered H7 patient-shuffled semantic negative control for MetaVision ICU death using repeat-1 rich-comparator OOF-risk deciles, seed 20260929, complete eight-score between-patient permutations, frozen folds/HGB settings, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h7_patient_shuffled_v2_1_death_metavision.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h7_patient_shuffled_v2_1_death_metavision.json
+
+  evaluate_h7_patient_shuffled_v2_1_death_carevue:
+    description: Run the registered H7 patient-shuffled semantic negative control for the separate CareVue ICU-death replication using repeat-1 rich-comparator OOF-risk deciles, seed 20260929, complete eight-score between-patient permutations, frozen CareVue folds/HGB settings, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h7_patient_shuffled_v2_1_death_carevue.sh
+    approval: automatic
+    timeout_minutes: 420
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h7_patient_shuffled_v2_1_death_carevue.json
