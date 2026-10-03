@@ -6,7 +6,7 @@ This directory contains aggregate manuscript-facing result summaries. Row-level 
 
 ## Current result index
 
-| Paper 1 provenance index | Current; final explanatory scalar row pending Reader extraction | PAPER1_PROVENANCE_INDEX_2026-10-03.md |
+| Paper 1 provenance index | Current | PAPER1_PROVENANCE_INDEX_2026-10-03.md |
 
 | Analysis | Status | Document |
 |---|---|---|
@@ -21,6 +21,7 @@ This directory contains aggregate manuscript-facing result summaries. Row-level 
 | H8 clinician construct validation | Not performed; frozen preparation retained as provenance | v2_1_h8_preparation_status.md |
 | H9 Zigong external transport | Partial/deviated; descriptive legacy-cohort DiffusionGemma arm only | v2_1_h9_zigong_transport_results.md |
 | Paper 1 label-free semantic alignment audit | Complete; gross alignment supported with construct-level caveats | v2_1_submission_semantic_alignment_audit.md |
+| Paper 1 exploratory semantic-only/comparator decomposition | Complete; no new bootstrap | v2_1_submission_explanatory_results.md |
 
 ## Current registered state
 
