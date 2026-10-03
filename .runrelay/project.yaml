@@ -2972,3 +2972,21 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/submission_exploratory_explanatory_v2_1.json
+
+
+  summarize_submission_exploratory_v2_1:
+    description: Extract a compact manuscript-facing summary from the already-safe aggregate Paper 1 exploratory result artifact; read no raw clinical data and perform no model fitting.
+    command:
+      - bash
+      - scripts/run_summarize_submission_exploratory_v2_1.sh
+    approval: automatic
+    timeout_minutes: 10
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 2
+      gpu_count: 0
+      wait_minutes: 10
+    artifacts:
+      - outputs/multitask_benchmark/submission_exploratory_explanatory_summary_v2_1.json
