@@ -27,9 +27,9 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- S7X4P9M2 - infer_h6_carevue_openjev_v2_1_death
+- T8Y5Q2N6 - evaluate_h6_carevue_openjev_v2_1_death
 - exact project commit: a1e7547333e9536dcbd651b44c2398589f4d1d7a
-- runs the registered Open-Jev instrument fully offline on the 23,272 frozen stripped-note CareVue ICU-death replication notes; row-level scores remain local and only aggregate inference diagnostics are shared.
+- evaluates the prespecified CareVue ICU-death replication using the frozen source-specific rich-comparator HGB procedure, completed stripped-note Open-Jev scores, separate CareVue patient-grouped splits, and 500 patient-cluster refit-bootstrap replicates.
 
 The broad endpoint audit R8V4N2M7 froze 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. The explicit-intubation endpoint is empirically identical to H1 and requires no separate predictive rerun.
 
@@ -185,4 +185,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Wait for S7X4P9M2 to become terminal and inspect its canonical aggregate CareVue inference artifact. If clean, run the CareVue ICU-death HGB replication at the same validated exact commit using the frozen CareVue context, stripped corpus, and separate CareVue patient-grouped splits. After CareVue is frozen, continue to H7.
+Wait for T8Y5Q2N6 to become terminal and inspect its canonical aggregate CareVue replication result. If clean, freeze the CareVue result side by side with MetaVision without pooling, then continue to H7.
