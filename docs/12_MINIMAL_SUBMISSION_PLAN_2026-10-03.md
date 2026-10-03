@@ -112,7 +112,7 @@ Before manuscript lock:
 
 1. create one provenance index for every manuscript-facing number with exact code commit, job, artifact path/hash, cohort/input hashes, and registered/exploratory/deviation status;
 2. preserve the v1 integrity-review history;
-3. complete the text-level comparison of the OSF-hosted SAP and technical-appendix PDFs against the corresponding submitted scientific text.
+3. retain the completed OSF scientific-text comparison in `docs/registration/osf_attachment_text_verification_2026-10-03.md`; the frozen OSF PDFs match the exact registered-source word sequence after formatting-only normalization.
 
 The byte mismatch is already verified in `docs/registration/osf_attachment_verification_2026-09-28.md`: the OSF-hosted PDF hashes differ from the earlier local package hashes while the manifest is byte-identical. What remains is a text-level extraction/diff to substantiate the existing statement that visible scientific content matches.
 
@@ -165,7 +165,7 @@ The research phase ends when:
 - the H8 and H9 deviations are logged;
 - the label-free alignment audit passes scientific review;
 - semantic-only discrimination and comparator decomposition are complete;
-- the OSF text-level PDF comparison is recorded;
+- the OSF text-level PDF comparison is recorded (complete 2026-10-03);
 - the manuscript-number provenance index is complete.
 
 Then write, generate the central figure/supplement/checklists, and submit. No additional analysis is permitted without a concrete integrity or reviewer-driven reason.
