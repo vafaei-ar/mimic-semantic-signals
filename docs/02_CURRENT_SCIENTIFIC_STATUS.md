@@ -123,14 +123,14 @@ The strongest current interpretation is:
 4. Laya and DiffusionGemma show instrument-specific variation, but completed H6 estimates do not yet establish a consistently positive semantic increment.
 5. The scientific value of semantic compression may therefore depend more on interpretability, dimensionality, human construct validity, stability, runtime, and transport than on predictive gain alone.
 
-The central manuscript claim remains unlocked until the registered H6-H9 sequence is complete.
+The central manuscript claim remains unlocked until H8 human construct validation is completed and the final registered provenance index is frozen. H6, H7, and the corrected computational H9 analysis are complete.
 
 ## Current registered execution order
 
-1. Freeze the H8 clinician-validation note sample, construct definitions, rater instructions, rating scale, missing/adjudication rules, and analysis summaries before any rating begins.
+1. H8 design/sample freeze is complete: 200 uniformly sampled MetaVision ICU-death stripped notes, three blinded rater packets, and the full rating/ICC/model-human/2,000-bootstrap analysis contract are frozen before ratings.
 2. Begin H8 ratings only after the Penn State IRB determination and applicable PhysioNet credential/DUA requirements for every rater are documented.
-3. Run H9 corrected Zigong external validation.
-4. Freeze an authoritative H1-H9 result/provenance index.
+3. Corrected H9 Zigong external validation is complete: AUROC 0.5546, 95% matched-set bootstrap interval 0.4796 to 0.6308.
+4. After H8 is complete, freeze an authoritative H1-H9 result/provenance index.
 
 Post-registration exploratory decision-model work begins only after the registered critical path is frozen. The frozen exploratory roster is Clef-Flash 9B, Clef 27B, Nimble 9B, and Tev1 4B. Clef-Flash is the first technical/preflight target, followed by Clef 27B if local hardware feasibility is clean, then Nimble and Tev1. All remain outside registered H6 and require a label-free local integration/score-quality gate before any outcome evaluation. See docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md.
 
@@ -146,7 +146,7 @@ Therefore hosted Jev remains outside the current restricted-data execution path.
 
 The corrected Zigong route is frozen as a 24-hour external narrative transport analysis because the source nursing-note cadence made the 12-hour design infeasible. The frozen cohort contains 85 cases, 255 controls, 340 patient-unique notes, and 85 matched sets, with zero blank predictor notes and zero direct ventilation leakage hits.
 
-A label-free bilingual semantic gate made DiffusionGemma the only model eligible for direct Chinese outcome scoring. The final transport model is trained on the full frozen MIMIC ventilation cohort and applied unchanged to Zigong with no Zigong refit or recalibration.
+A label-free bilingual semantic gate made DiffusionGemma the only model eligible for direct Chinese outcome scoring. Corrected H9 job F2N7Q5K9 trained the semantic-only logistic pipeline on the full frozen corrected v2.1 MIMIC ventilation cohort (11,116 stays, 279 cases) and applied it unchanged to Zigong. AUROC was 0.5546 with 95% matched-set bootstrap interval 0.4796 to 0.6308. The earlier 0.5906 result is provenance only because its evaluator trained on the obsolete 1,460-row v1 benchmark rather than the protocol-required full cohort.
 
 See docs/05_EXTERNAL_VALIDATION_STATUS.md.
 
@@ -157,8 +157,7 @@ A plausible final story, if the remaining evidence is consistent, is not that se
 This framing still requires:
 
 - H8 human construct validity;
-- H9 corrected external transport;
-- completion of all registered H6 sensitivities;
+- final H1-H9 provenance freeze;
 - practical compression/runtime/stability analysis;
 - exact provenance audit of every manuscript number.
 
