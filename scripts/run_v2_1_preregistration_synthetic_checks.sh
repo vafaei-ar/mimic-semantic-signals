@@ -80,6 +80,7 @@ out.write_text(json.dumps({
         "152_evaluate_h6_lab_lag_2h_death_v2_1.py",
         "153_audit_h6_note_availability_v2_1.py",
         "154_evaluate_h6_carevue_death_openjev_v2_1.py",
+        "155_evaluate_h7_patient_shuffled_openjev_v2_1.py",
         "v2_1_registered_inference_contract.py"
     ],
     "registration_gate_expected_state": "locked_until_osf_approved_doi_hash_verified_and_verbatim_form_imported"
@@ -151,6 +152,43 @@ bash -n scripts/run_h6_laya_eval_v2_1_death.sh
 .venv/bin/python -m py_compile src/152_evaluate_h6_lab_lag_2h_death_v2_1.py
 .venv/bin/python -m py_compile src/153_audit_h6_note_availability_v2_1.py
 .venv/bin/python -m py_compile src/154_evaluate_h6_carevue_death_openjev_v2_1.py
+.venv/bin/python -m py_compile src/155_evaluate_h7_patient_shuffled_openjev_v2_1.py
+PYTHONPATH=src .venv/bin/python - <<'PY'
+import importlib.util
+from pathlib import Path
+import numpy as np
+import pandas as pd
+
+p = Path("src/155_evaluate_h7_patient_shuffled_openjev_v2_1.py")
+spec = importlib.util.spec_from_file_location("h7shuffle", p)
+mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(mod)
+
+if mod.SHUFFLE_SEED != 20260929:
+    raise SystemExit("H7 shuffle seed changed")
+if mod.RISK_DECILES != 10:
+    raise SystemExit("H7 risk-decile count changed")
+
+# Synthetic-only check: 20 patients, two patients per decile, one note row each.
+subjects = np.arange(100, 120, dtype=int)
+risks = np.linspace(0.01, 0.99, 20)
+has_note = np.ones(20, dtype=int)
+patient_deciles, _ = mod.balanced_patient_risk_deciles(subjects, risks, has_note)
+sem = pd.DataFrame({
+    name: np.arange(20, dtype=float) + j / 100.0
+    for j, name in enumerate(mod.h1.SEMANTIC_NAMES)
+})
+shuf, report = mod.shuffle_semantic_vectors_between_patients(
+    sem, subjects, has_note, patient_deciles
+)
+if report["same_patient_assignments"] != 0:
+    raise SystemExit("H7 synthetic shuffle retained same-patient assignment")
+if not report["marginal_semantic_values_preserved_exactly"]:
+    raise SystemExit("H7 synthetic shuffle changed semantic marginals")
+for name in mod.h1.SEMANTIC_NAMES:
+    if not np.array_equal(np.sort(sem[name].to_numpy()), np.sort(shuf[name].to_numpy())):
+        raise SystemExit(f"H7 marginal preservation failed for {name}")
+PY
 PYTHONPATH=src .venv/bin/python - <<'PY'
 import importlib.util
 from pathlib import Path
@@ -199,3 +237,7 @@ bash -n scripts/run_h6_lab_lag_2h_eval_v2_1_death.sh
 bash -n scripts/run_h6_note_availability_audit_v2_1.sh
 bash -n scripts/run_h6_carevue_openjev_inference_v2_1_death.sh
 bash -n scripts/run_h6_carevue_openjev_eval_v2_1_death.sh
+bash -n scripts/run_h7_patient_shuffled_v2_1_ventilation.sh
+bash -n scripts/run_h7_patient_shuffled_v2_1_rrt.sh
+bash -n scripts/run_h7_patient_shuffled_v2_1_death_metavision.sh
+bash -n scripts/run_h7_patient_shuffled_v2_1_death_carevue.sh
