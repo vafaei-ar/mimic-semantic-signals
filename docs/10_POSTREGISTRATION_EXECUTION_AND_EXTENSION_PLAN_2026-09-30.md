@@ -29,7 +29,7 @@ Current registered execution:
 
 - X3D8N6Q2 - evaluate_h7_patient_shuffled_v2_1_rrt
 - exact project commit: 5dfaa30dedd273c453b6205100f199097b2f71ee
-- submitted for automatic dispatch of the registered H7 RRT patient-shuffled semantic negative control using the same frozen risk-decile, seed, permutation, fold, HGB, and bootstrap definitions.
+- running the registered H7 RRT patient-shuffled semantic negative control using the same frozen risk-decile, seed, permutation, fold, HGB, and bootstrap definitions.
 
 The broad endpoint audit R8V4N2M7 froze 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. The explicit-intubation endpoint is empirically identical to H1 and requires no separate predictive rerun.
 
