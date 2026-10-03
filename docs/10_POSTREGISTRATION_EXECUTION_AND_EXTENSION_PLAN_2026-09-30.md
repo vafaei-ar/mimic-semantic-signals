@@ -27,7 +27,9 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- next registered step: label-free note-availability timing audit and fallback-delay freeze before any note-availability predictive evaluation.
+- Q5V8Z2N7 - audit_h6_note_availability_v2_1
+- exact project commit: e79124f195f88dbdf15f3712ebd6929e34085566
+- runs the label-free note-availability timing audit, freezes the missing-storetime fallback delay using the deterministic 90th-percentile documentation-delay rule rounded up to the next whole hour, quantifies aggregate note availability/selection changes, and materializes local alternative corpora without semantic or predictive inference.
 
 The broad endpoint audit R8V4N2M7 froze 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. The explicit-intubation endpoint is empirically identical to H1 and requires no separate predictive rerun.
 
@@ -185,4 +187,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Run the registered note-availability timing audit before any note-availability outcome performance. Freeze one conservative fallback delay for missing-storetime notes using a deterministic label-free rule, quantify storetime completeness and selected-note changes, then prepare timing-matched note context/corpora. After the note-availability sensitivity is complete, continue to CareVue death.
+Wait for Q5V8Z2N7 to become terminal and inspect its canonical aggregate note-availability audit artifact. If clean, persist the resulting fallback-delay value as a frozen contract before any semantic inference or outcome performance, then prepare timing-matched note context and run the two registered note-availability sensitivities. After the note-availability sensitivity is complete, continue to CareVue death.
