@@ -82,23 +82,25 @@ def main() -> None:
     parts = []
     for key in ("ventilation", "rrt", "death_metavision"):
         rec = out["results"][key]
-        sem_auc = rec["semantic_only"]["primary_metrics"]["auroc"]
+        sem = rec["semantic_only"]
         lv = rec["comparator_decomposition"]
-        deltas = [
-            lv["A_structured_34"]["primary_delta"]["auroc"],
-            lv["B_plus_treatment_support"]["primary_delta"]["auroc"],
-            lv["C_plus_documentation_behavior"]["primary_delta"]["auroc"],
-            lv["D_registered_rich_comparator"]["primary_delta"]["auroc"],
+        ranges = [
+            lv["A_structured_34"]["delta_auroc_range"],
+            lv["B_plus_treatment_support"]["delta_auroc_range"],
+            lv["C_plus_documentation_behavior"]["delta_auroc_range"],
+            lv["D_registered_rich_comparator"]["delta_auroc_range"],
         ]
         parts.append(
-            f"{labels[key]} sem={sem_auc:.5f} "
-            f"A={deltas[0]:+.5f} B={deltas[1]:+.5f} "
-            f"C={deltas[2]:+.5f} D={deltas[3]:+.5f}"
+            f"{labels[key]} semR=[{sem['auroc_range'][0]:.5f},{sem['auroc_range'][1]:.5f}] "
+            f"AR=[{ranges[0][0]:+.5f},{ranges[0][1]:+.5f}] "
+            f"BR=[{ranges[1][0]:+.5f},{ranges[1][1]:+.5f}] "
+            f"CR=[{ranges[2][0]:+.5f},{ranges[2][1]:+.5f}] "
+            f"DR=[{ranges[3][0]:+.5f},{ranges[3][1]:+.5f}]"
         )
     update_progress(
         current=1,
         total=1,
-        phase="submission_metric_extract",
+        phase="submission_metric_ranges",
         message=" | ".join(parts),
         unit="summary",
     )
