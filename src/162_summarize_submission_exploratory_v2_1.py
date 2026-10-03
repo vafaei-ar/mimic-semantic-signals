@@ -82,28 +82,18 @@ def main() -> None:
     parts = []
     for key in ("ventilation", "rrt", "death_metavision"):
         rec = out["results"][key]
-        sem = rec["semantic_only"]
-        sem_auc = sem["primary_metrics"]["auroc"]
-        sem_rng = sem["auroc_range"]
+        sem_auc = rec["semantic_only"]["primary_metrics"]["auroc"]
         lv = rec["comparator_decomposition"]
-        level_parts = []
-        for level in (
-            "A_structured_34",
-            "B_plus_treatment_support",
-            "C_plus_documentation_behavior",
-            "D_registered_rich_comparator",
-        ):
-            x = lv[level]
-            b = x["primary_comparator"]["auroc"]
-            a = x["primary_plus_openjev"]["auroc"]
-            d = x["primary_delta"]["auroc"]
-            rr = x["delta_auroc_range"]
-            level_parts.append(
-                f"{level[0]}:{b:.5f}>{a:.5f} d{d:+.5f}[{rr[0]:+.5f},{rr[1]:+.5f}]"
-            )
+        deltas = [
+            lv["A_structured_34"]["primary_delta"]["auroc"],
+            lv["B_plus_treatment_support"]["primary_delta"]["auroc"],
+            lv["C_plus_documentation_behavior"]["primary_delta"]["auroc"],
+            lv["D_registered_rich_comparator"]["primary_delta"]["auroc"],
+        ]
         parts.append(
-            f"{labels[key]} sem={sem_auc:.5f}[{sem_rng[0]:.5f},{sem_rng[1]:.5f}] "
-            + " ".join(level_parts)
+            f"{labels[key]} sem={sem_auc:.5f} "
+            f"A={deltas[0]:+.5f} B={deltas[1]:+.5f} "
+            f"C={deltas[2]:+.5f} D={deltas[3]:+.5f}"
         )
     update_progress(
         current=1,
