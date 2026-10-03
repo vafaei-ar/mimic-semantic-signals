@@ -1,5 +1,7 @@
 # Frozen Zigong DiffusionGemma external transport result v1
 
+> **Historical/superseded for manuscript-facing H9.** This run trained on the obsolete 1,460-row v1 MIMIC benchmark rather than the protocol-required full corrected v2.1 ventilation cohort. The authoritative registered H9 result is `docs/zigong_diffusiongemma_external_transport_result_freeze_v2_1.md` from job `F2N7Q5K9`. The numerical results below are retained only for provenance.
+
 This document freezes the external narrative transport result exactly as observed. No model, prompt, threshold, translation rule, coefficient, endpoint definition, or cohort definition may be changed in response to these results.
 
 ## Canonical run
