@@ -4,6 +4,8 @@ import argparse
 import json
 from pathlib import Path
 
+from runrelay_progress import update_progress
+
 
 METRIC_KEYS = ("auroc", "auprc", "brier", "log_loss")
 
@@ -71,6 +73,45 @@ def main() -> None:
     target = Path(args.output).expanduser().resolve()
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(out, indent=2, sort_keys=True), encoding="utf-8")
+
+    labels = {
+        "ventilation": "vent",
+        "rrt": "rrt",
+        "death_metavision": "death",
+    }
+    parts = []
+    for key in ("ventilation", "rrt", "death_metavision"):
+        rec = out["results"][key]
+        sem = rec["semantic_only"]
+        sem_auc = sem["primary_metrics"]["auroc"]
+        sem_rng = sem["auroc_range"]
+        lv = rec["comparator_decomposition"]
+        level_parts = []
+        for level in (
+            "A_structured_34",
+            "B_plus_treatment_support",
+            "C_plus_documentation_behavior",
+            "D_registered_rich_comparator",
+        ):
+            x = lv[level]
+            b = x["primary_comparator"]["auroc"]
+            a = x["primary_plus_openjev"]["auroc"]
+            d = x["primary_delta"]["auroc"]
+            rr = x["delta_auroc_range"]
+            level_parts.append(
+                f"{level[0]}:{b:.5f}>{a:.5f} d{d:+.5f}[{rr[0]:+.5f},{rr[1]:+.5f}]"
+            )
+        parts.append(
+            f"{labels[key]} sem={sem_auc:.5f}[{sem_rng[0]:.5f},{sem_rng[1]:.5f}] "
+            + " ".join(level_parts)
+        )
+    update_progress(
+        current=1,
+        total=1,
+        phase="submission_metric_extract",
+        message=" | ".join(parts),
+        unit="summary",
+    )
     print(json.dumps({"status": "completed", "output": str(target)}))
 
 
