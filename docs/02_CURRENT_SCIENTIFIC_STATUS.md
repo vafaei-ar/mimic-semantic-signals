@@ -162,6 +162,24 @@ The missingness extension is an information-rescue experiment, not a claim of cl
 
 See docs/12_PUBLICATION_SPRINT_AND_MISSINGNESS_RESILIENCE_PLAN_2026-10-03.md.
 
+## Final explanatory analysis, 2026-10-03
+
+The bounded post-registration explanatory analysis is complete. No further predictive experiments are planned before initial submission.
+
+Primary-partition results:
+
+| Outcome | Semantic-only AUROC, note-available | Delta at A: structured 34 | Delta at B: + treatment/support | Delta at C: + documentation behavior | Delta at D: registered rich comparator |
+|---|---:|---:|---:|---:|---:|
+| Invasive ventilation | 0.60257 | +0.02032 | +0.01137 | -0.00172 | -0.00005 |
+| RRT | 0.44790 | -0.00054 | -0.00070 | +0.00014 | -0.00079 |
+| ICU death, MetaVision | 0.65682 | -0.00428 | -0.00280 | -0.00394 | -0.00212 |
+
+For ventilation, the apparent semantic increment is present against a thin physiology comparator, attenuates after treatment/support context, and disappears once documentation behavior is represented. At levels A and B, however, missing semantic values also reveal note availability, so the early positive increment cannot be assigned purely to semantic content.
+
+For MetaVision death, the scores carry standalone prognostic discrimination but are redundant with structured clinical state. RRT shows little standalone or incremental discrimination.
+
+See `docs/results/v2_1_submission_explanatory_results.md`.
+
 ## Hosted Jev governance
 
 On 2026-10-01 the vendor enabled Zero Data Retention for the organization and stated that only operational telemetry is retained under ZDR.
