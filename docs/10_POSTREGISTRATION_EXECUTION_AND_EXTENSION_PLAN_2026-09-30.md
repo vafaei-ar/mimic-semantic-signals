@@ -27,9 +27,9 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- T8Y5Q2N6 - evaluate_h6_carevue_openjev_v2_1_death
-- exact project commit: a1e7547333e9536dcbd651b44c2398589f4d1d7a
-- evaluates the prespecified CareVue ICU-death replication using the frozen source-specific rich-comparator HGB procedure, completed stripped-note Open-Jev scores, separate CareVue patient-grouped splits, and 500 patient-cluster refit-bootstrap replicates.
+- W2C7M9R4 - evaluate_h7_patient_shuffled_v2_1_ventilation
+- exact project commit: 5dfaa30dedd273c453b6205100f199097b2f71ee
+- runs the registered H7 ventilation patient-shuffled semantic negative control using repeat-1 comparator-risk deciles, seed 20260929, complete eight-score between-patient permutations, frozen folds/HGB settings, and 500 patient-cluster refit-bootstrap replicates.
 
 The broad endpoint audit R8V4N2M7 froze 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. The explicit-intubation endpoint is empirically identical to H1 and requires no separate predictive rerun.
 
@@ -55,13 +55,13 @@ Run the registered sensitivities without changing definitions in response to obs
 - 1-hour laboratory lag: complete across all three outcomes. Ventilation delta AUROC +0.00717 (95% interval -0.02333 to +0.01829), RRT +0.00069 (-0.00331 to +0.00331), and MetaVision ICU death +0.00153 (-0.00936 to +0.00618);
 - 2-hour laboratory lag: complete across all three outcomes. Ventilation delta AUROC +0.00216 (95% interval -0.02269 to +0.01911), RRT -0.00110 (-0.00294 to +0.00309), and MetaVision ICU death -0.00415 (-0.00849 to +0.00655);
 - note-availability/timing sensitivity: complete as an empirical identity sensitivity. Q5V8Z2N7 found 0 missing-storetime rows among 376,185 normalized bedside notes in the registered MetaVision admissions. The deterministic p90 rule froze a 3-hour fallback, but both registered note sensitivities select exactly the primary notes for all three outcomes, so no semantic/predictive rerun is required;
-- separate CareVue ICU-death replication/sensitivity: active. CareVue remains separate and is reported side by side with MetaVision without pooling.
+- separate CareVue ICU-death replication/sensitivity: complete. T8Y5Q2N6 reported comparator AUROC 0.93799, augmented AUROC 0.93544, delta AUROC -0.00255, and 95% refit-bootstrap interval -0.00858 to +0.00812, with 500/500 valid replicates and zero replacements. CareVue remains separate and is reported side by side with MetaVision without pooling.
 
 Report MetaVision and CareVue death separately without pooling.
 
 ### A3. H7 shuffled negative control
 
-Run the registered patient-shuffled negative control within comparator-risk strata using the frozen definitions and aggregate-only reporting.
+Run the registered patient-shuffled negative control sequentially for ventilation, RRT, MetaVision ICU death, and CareVue ICU death. The frozen implementation assigns note-available patients to ten balanced deciles using mean repeat-1 rich-comparator OOF risk across that patient's note-available rows, then permutes complete eight-score row vectors only between different patients within the same decile using seed 20260929. No-note rows remain unchanged; frozen folds, HGB settings, and the 500-valid-replicate patient-cluster refit bootstrap are reused.
 
 ### A4. H8 clinician construct validation
 
@@ -185,4 +185,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Wait for T8Y5Q2N6 to become terminal and inspect its canonical aggregate CareVue replication result. If clean, freeze the CareVue result side by side with MetaVision without pooling, then continue to H7.
+Wait for W2C7M9R4 to become terminal and inspect its canonical aggregate H7 ventilation result. If clean, continue sequentially to H7 RRT, MetaVision ICU death, and CareVue ICU death at the same validated exact commit before moving to H8.
