@@ -61,7 +61,7 @@ Report MetaVision and CareVue death separately without pooling.
 
 ### A3. H7 shuffled negative control
 
-Run the registered patient-shuffled negative control sequentially for ventilation, RRT, MetaVision ICU death, and CareVue ICU death. The frozen implementation assigns note-available patients to ten balanced deciles using mean repeat-1 rich-comparator OOF risk across that patient's note-available rows, then permutes complete eight-score row vectors only between different patients within the same decile using seed 20260929. No-note rows remain unchanged; frozen folds, HGB settings, and the 500-valid-replicate patient-cluster refit bootstrap are reused. Ventilation is complete: comparator AUROC 0.72468, shuffled-augmented AUROC 0.71408, delta AUROC -0.01059, 95% interval -0.02851 to +0.01432, with all five frozen-partition delta-AUROCs negative. RRT is complete: comparator AUROC 0.97394, shuffled-augmented AUROC 0.97369, delta AUROC -0.00024, 95% interval -0.00269 to +0.00313. MetaVision ICU death is complete: comparator AUROC 0.93338, shuffled-augmented AUROC 0.93647, delta AUROC +0.00309, 95% interval -0.00663 to +0.00599.
+Run the registered patient-shuffled negative control sequentially for ventilation, RRT, MetaVision ICU death, and CareVue ICU death. The frozen implementation assigns note-available patients to ten balanced deciles using mean repeat-1 rich-comparator OOF risk across that patient's note-available rows, then permutes complete eight-score row vectors only between different patients within the same decile using seed 20260929. No-note rows remain unchanged; frozen folds, HGB settings, and the 500-valid-replicate patient-cluster refit bootstrap are reused. Ventilation is complete: comparator AUROC 0.72468, shuffled-augmented AUROC 0.71408, delta AUROC -0.01059, 95% interval -0.02851 to +0.01432, with all five frozen-partition delta-AUROCs negative. RRT is complete: comparator AUROC 0.97394, shuffled-augmented AUROC 0.97369, delta AUROC -0.00024, 95% interval -0.00269 to +0.00313. MetaVision ICU death is complete: comparator AUROC 0.93338, shuffled-augmented AUROC 0.93647, delta AUROC +0.00309, 95% interval -0.00663 to +0.00599. CareVue ICU death is complete: comparator AUROC 0.93799, shuffled-augmented AUROC 0.93087, delta AUROC -0.00712, 95% interval -0.00784 to +0.00882. H7 is complete.
 
 ### A4. H8 clinician construct validation
 
@@ -185,4 +185,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Wait for final H7 CareVue ICU-death job Z5G2R8N4 to become terminal and inspect its canonical aggregate artifact. If clean, freeze the complete H7 arm and continue to H8.
+H7 is frozen. Continue to H8 by freezing the random-note sample and complete clinician-rating/analysis contract before any ratings are collected. Human annotation remains gated on the Penn State IRB determination and applicable PhysioNet credential/DUA requirements.
