@@ -1,6 +1,9 @@
 # Post-registration execution and extension plan
 
-Updated: 2026-10-02
+> **Paper 1 status override, 2026-10-03:** This document preserves the historical registered execution plan. The active submission path is now `docs/12_MINIMAL_SUBMISSION_PLAN_2026-10-03.md`. H8 will not be performed because independent qualified raters/resources are unavailable. H9 was only partially executed as registered and the existing DiffusionGemma legacy-cohort result is descriptive under a dated deviation. Track B decision-model work, OPUS, missingness-resilience work, new datasets, and further external-validation work are deferred until after initial submission or a reviewer request.
+
+
+Updated: 2026-10-03
 
 This is the authoritative forward plan after OSF registration ahxn9, DOI 10.17605/OSF.IO/AHXN9. It does not modify the frozen registration. Anything not named in the registration is explicitly post-registration exploratory.
 
