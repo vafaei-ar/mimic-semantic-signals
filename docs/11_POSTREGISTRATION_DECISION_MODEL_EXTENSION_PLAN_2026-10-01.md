@@ -1,8 +1,8 @@
 # 11 - Post-registration exploratory decision-model extension plan
 
-Updated: 2026-10-01
+Updated: 2026-10-03
 
-This document freezes the scientific and operational plan for the local decision-model extension that will begin only after the registered H1-H9 critical path is complete and the registered evidence/provenance index is frozen.
+This document freezes the scientific and operational basis for the local decision-model extension. The 2026-10-03 publication-priority amendment in docs/12_PUBLICATION_SPRINT_AND_MISSINGNESS_RESILIENCE_PLAN_2026-10-03.md narrows the clinical roster and adds explicit stopping rules. Where execution priority differs, docs/12 governs prospectively without changing any registered H1-H9 analysis.
 
 This work is not part of OSF registration ahxn9 and must be labeled post-registration exploratory in code, RunRelay jobs, artifacts, tables, figures, and manuscript text.
 
@@ -24,7 +24,7 @@ This extension is not a leaderboard. Its value is in separating three possibilit
 
 Model repository: `Cloudflare/clef-flash`.
 
-Role: first technical/preflight target because it is the smaller Cloudflare decision model and should provide the fastest route to validating the integration.
+Role after the 2026-10-03 publication-sprint amendment: preferred technical/preflight target for validating the common Cloudflare integration, and fallback clinical Cloudflare model only if Clef 27B is not feasible under a stable frozen local resource plan. It is not a default fourth clinical model.
 
 Verified model-card properties at plan freeze:
 
@@ -153,23 +153,24 @@ For each exploratory instrument, report at minimum:
 - score dimensionality and storage footprint;
 - construct-level agreement with the registered instruments.
 
-If the registered refit-bootstrap framework is computationally feasible, retain it for the exploratory clinical comparison so uncertainty is directly comparable. If a different uncertainty method is required for practical reasons, freeze and justify it before opening exploratory outcome results.
+The first exploratory clinical pass should report uniform point estimates and frozen-partition stability for every screened model that passed the label-free gate. Do not automatically spend the full 500-valid-replicate refit-bootstrap budget on every new model. Before opening exploratory outcomes, freeze a promotion rule for at most one representative new model to receive the expensive full uncertainty analysis. Report all screened models regardless of direction. If a different uncertainty method is used, freeze and justify it before opening outcome results.
 
 ## Planned order
 
-After H1-H9 and the registered provenance index are frozen:
+After H8 and the registered H1-H9 provenance index are frozen:
 
 1. implement and validate the common local decision-model adapter without clinical labels;
-2. Clef-Flash label-free preflight;
-3. Clef-Flash frozen-note label-free inference;
-4. Clef-Flash clinical evaluation;
-5. Clef 27B hardware/model preflight;
-6. Clef 27B label-free inference and clinical evaluation if feasible;
-7. Nimble 9B preflight, label-free inference, and clinical evaluation;
-8. Tev1 4B preflight, label-free inference, and clinical evaluation;
-9. cross-instrument synthesis against Open-Jev, Laya, DiffusionGemma, and TF-IDF.
+2. use Clef-Flash 9B for the Cloudflare technical/preflight gate;
+3. preflight Clef 27B and use it as the default Cloudflare clinical model if feasible without changing its frozen execution policy;
+4. preflight and evaluate Nimble 9B;
+5. preflight and evaluate Tev1 4B;
+6. use Clef-Flash clinically only if Clef 27B is not feasible under the frozen local resource plan;
+7. synthesize the representative panel against Open-Jev, Laya, DiffusionGemma, and TF-IDF;
+8. stop adding models if the representative panel reproduces the same scientific pattern.
 
-Long jobs remain sequential.
+The default clinical panel is therefore Clef 27B, Nimble 9B, and Tev1 4B, with Clef-Flash 9B serving as the preflight/fallback model rather than an automatic additional clinical arm.
+
+Long jobs remain sequential, and no model-panel job should delay H8 completion or manuscript assembly.
 
 ## Interpretation rules
 
@@ -192,4 +193,4 @@ The vendor-side ZDR clarification is complete, but the institutional/data-use ga
 
 The registered H1-H9 results remain the primary evidentiary spine.
 
-Clef, Clef-Flash, Nimble, Tev1, any future hosted-Jev analysis, and OPUS belong in a clearly marked exploratory/supplementary extension. Their purpose is to test the generality and mechanism of the registered findings, not to rescue or redefine the preregistered hypotheses.
+Clef, Clef-Flash, Nimble, Tev1, any future hosted-Jev analysis, and OPUS remain post-registration exploratory. Under the 2026-10-03 publication-sprint amendment, the manuscript-facing decision-model panel is intentionally bounded rather than exhaustive. Their purpose is to test the generality and mechanism of the registered findings, not to rescue or redefine the preregistered hypotheses.
