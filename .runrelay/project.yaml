@@ -2920,3 +2920,55 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/zigong_external/h9_diffusiongemma_external_transport_v2_1.json
+
+
+  validate_submission_minimal_analyses_v2_1:
+    description: Validate the bounded Paper 1 semantic-alignment and exploratory decomposition code using synthetic/static self-tests only; read no real clinical data and compute no real outcome performance.
+    command:
+      - bash
+      - scripts/run_validate_submission_minimal_analyses_v2_1.sh
+    approval: automatic
+    timeout_minutes: 20
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/integrity/submission_minimal_analysis_validation_v2_1.json
+
+  audit_submission_semantic_alignment_v2_1:
+    description: Run the bounded post-registration label-free semantic alignment audit across the three primary MetaVision cohorts, comparing construct-state associations with deterministic between-patient shuffled references; read no outcome labels and share aggregate diagnostics only.
+    command:
+      - bash
+      - scripts/run_submission_semantic_alignment_audit_v2_1.sh
+    approval: automatic
+    timeout_minutes: 60
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 8
+      gpu_count: 0
+      wait_minutes: 20
+    artifacts:
+      - outputs/multitask_benchmark/submission_semantic_alignment_audit_v2_1.json
+
+  evaluate_submission_exploratory_v2_1:
+    description: Run the bounded post-registration Paper 1 explanatory analyses across the three primary MetaVision outcomes: note-available Open-Jev semantic-only discrimination and four-level HGB comparator decomposition over the five frozen patient-grouped partitions, with no new bootstrap.
+    command:
+      - bash
+      - scripts/run_submission_exploratory_v2_1.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/submission_exploratory_explanatory_v2_1.json
