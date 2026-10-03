@@ -178,7 +178,7 @@ The corrected primary Open-Jev effects are near zero. H5 shows small positive TF
 
 The manuscript should therefore remain open to a limits/tradeoff framing: low-dimensional semantic measurements may be valuable for interpretability and compression even when predictive efficiency is lower than high-dimensional lexical text and incremental discrimination over strong structured physiology is limited.
 
-H8 human construct validity and H9 external transport are essential to determining whether that framing is strong enough.
+Corrected H9 external transport is complete and weak (AUROC 0.5546, 95% matched-set bootstrap interval 0.4796 to 0.6308). H8 human construct validity is the remaining registered evidence needed before the central framing and provenance index are locked.
 
 ## Execution rules
 
@@ -191,4 +191,14 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-H7 is frozen. Continue to H8 by freezing the random-note sample and complete clinician-rating/analysis contract before any ratings are collected. Human annotation remains gated on the Penn State IRB determination and applicable PhysioNet credential/DUA requirements.
+H6 and H7 are complete. Corrected computational H9 is also complete and frozen at job F2N7Q5K9 (AUROC 0.5546, 95% matched-set bootstrap interval 0.4796 to 0.6308).
+
+H8 design and sample preparation are complete at corrected commit fbeb6297ea82cf20555726c0eef1909151145368. Job D8K5W3R7 froze a uniform random 200-note sample from the registered 7,889-note MetaVision ICU-death stripped corpus using seed 20261003 and materialized three blinded local rater packets. No outcome labels or model scores were used in sampling.
+
+Do not distribute or rate the packets until the local governance gate is documented. The manual H8 evaluation requires:
+
+- `data/real_mimic_local/h8_clinician_validation/h8_governance_gate_local.json` with the IRB determination documented and all three primary raters authorized for MIMIC;
+- completed local files `h8_rater_1_completed_v2_1_local.csv`, `h8_rater_2_completed_v2_1_local.csv`, and `h8_rater_3_completed_v2_1_local.csv`;
+- the frozen H8 linkage/sample hashes and the registered Open-Jev scores.
+
+Only after those prerequisites are satisfied should the manual RunRelay task `evaluate_h8_clinician_validation_v2_1` be submitted. After H8 completes, freeze the authoritative H1-H9 result/provenance index. Do not start Track B exploratory decision-model outcome work before that registered freeze.
