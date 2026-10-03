@@ -169,3 +169,14 @@ The research phase ends when:
 - the manuscript-number provenance index is complete.
 
 Then write, generate the central figure/supplement/checklists, and submit. No additional analysis is permitted without a concrete integrity or reviewer-driven reason.
+
+
+## Execution checkpoint, 2026-10-03
+
+The label-free semantic alignment audit is complete at job `V3K7R2M9` and exact commit `3f3eb770e9d2b60726bb34868481e651f669672e`.
+
+The matched hemodynamic and respiratory constructs show consistently stronger expected-direction associations with corresponding structured support states than between-patient shuffled semantic vectors. Semantic/note case IDs matched exactly and the shuffled reference had zero same-patient donor assignments. This is sufficient for the narrow integrity purpose of excluding gross score-to-stay misalignment.
+
+`reassuring_stability` was weak/inconsistent and should not be treated as construct-validated.
+
+The semantic-only discrimination and four-level HGB comparator decomposition are the only active predictive analysis and are being executed together under the bounded exploratory task `evaluate_submission_exploratory_v2_1`. No additional predictive experiment should be introduced after that task completes.
