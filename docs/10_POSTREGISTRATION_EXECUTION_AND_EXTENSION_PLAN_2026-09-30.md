@@ -27,9 +27,9 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- Z5G2R8N4 - evaluate_h7_patient_shuffled_v2_1_death_carevue
-- exact project commit: 5dfaa30dedd273c453b6205100f199097b2f71ee
-- running the final registered H7 patient-shuffled semantic negative control for the separate CareVue ICU-death replication using the same frozen risk-decile, seed, permutation, CareVue fold, HGB, and bootstrap definitions.
+- H7 is complete.
+- H8 sample/design freeze is complete at corrected commit fbeb6297ea82cf20555726c0eef1909151145368; D8K5W3R7 froze 200 random notes and three local blinded rater packets without outcome/model-score access. Human annotation is blocked until the documented IRB/PhysioNet authorization gate is satisfied.
+- corrected H9 is complete at commit e173ffd79d78757e21426b02d33ecd75e32b96cd; F2N7Q5K9 produced AUROC 0.5546 with 95% matched-set bootstrap interval 0.4796 to 0.6308.
 
 The broad endpoint audit R8V4N2M7 froze 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. The explicit-intubation endpoint is empirically identical to H1 and requires no separate predictive rerun.
 
@@ -65,28 +65,34 @@ Run the registered patient-shuffled negative control sequentially for ventilatio
 
 ### A4. H8 clinician construct validation
 
-Before rating begins, freeze:
+The pre-rating freeze is complete in `docs/registration/postregistration_h8_clinician_validation_freeze_2026-10-03.md` and `config/v2_1_h8_clinician_validation_freeze.json`.
 
-- note sample;
-- construct definitions;
-- rater instructions;
-- rating scale;
-- missing/adjudication rules;
-- agreement and model-versus-human summaries.
+Frozen implementation:
 
-Use blinded multi-rater evaluation. Do not tune the semantic instruments to the human ratings.
+- 200 uniformly random notes from the 7,889-note MetaVision ICU-death stripped corpus, seed 20261003;
+- three independent primary clinician raters, each rating all notes;
+- integer 0-100 ratings for all eight constructs plus 0-100 12-hour deterioration probability;
+- no imputation, clinician aggregate requires at least two raters, ICC requires all three;
+- no primary consensus adjudication;
+- ICC(2,1), ICC(2,3), same-construct Spearman, 8x8 cross-construct discrimination, deterioration-probability association;
+- 2,000 patient-cluster bootstrap replicates, seed 20261003;
+- primary confirmatory instrument is stripped-note Open-Jev only.
+
+Preparation job D8K5W3R7 completed without reading outcomes/model scores and generated three local blinded packets. Human annotation may begin only after the Penn State IRB determination and applicable PhysioNet/MIMIC authorization for all raters are documented. Do not tune semantic instruments to human ratings.
 
 ### A5. H9 corrected Zigong external validation
 
-Use the frozen 24-hour Zigong narrative transport design.
+Complete. Corrected job F2N7Q5K9 used the frozen 340-note cohort with 85 cases, 255 controls, and 85 matched sets and trained the semantic-only logistic pipeline on the full corrected v2.1 MIMIC ventilation cohort (11,116 stays, 279 cases).
 
-Only DiffusionGemma is eligible for direct-Chinese outcome scoring under the frozen bilingual semantic gate.
+- AUROC: 0.5546
+- 95% matched-set bootstrap interval: 0.4796 to 0.6308
+- AUPRC: 0.3030, 95% interval 0.2485 to 0.3908
+- descriptive Brier: 0.2390, 95% interval 0.2379 to 0.2400
+- 2,000 matched-set bootstrap replicates
 
-Use the frozen 340-note cohort with 85 cases, 255 controls, and 85 matched sets. Fit the semantic-only logistic pipeline on the full frozen MIMIC ventilation cohort, then apply it unchanged to Zigong.
+No Zigong refit, recalibration, threshold selection, coefficient modification, prompt adaptation, or post-hoc translation was performed. Artifact SHA-256: `14191cbef81c49dfe266500ec9eddb322254a10d17d9d82f75a1b39bf363f57f`.
 
-No Zigong refit, recalibration, threshold selection, coefficient modification, prompt adaptation, or post hoc translation.
-
-Primary metric: AUROC. Secondary AUPRC/Brier are descriptive, with 2,000 matched-set bootstrap replicates.
+The historical 0.5906 result is superseded for manuscript use because its evaluator trained on the obsolete 1,460-row v1 MIMIC benchmark.
 
 ### A6. Freeze registered evidence
 
