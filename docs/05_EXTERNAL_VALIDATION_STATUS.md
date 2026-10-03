@@ -8,7 +8,7 @@ This report distinguishes available external datasets, historical v1 external re
 
 | Dataset | Narrative available | Current role | Manuscript status |
 |---|---|---|---|
-| Zigong | Chinese nursing narratives | registered external narrative transport | corrected cohort/protocol frozen; H9 pending |
+| Zigong | Chinese nursing narratives | registered external narrative transport | corrected H9 complete; AUROC 0.5546 (95% CI 0.4796 to 0.6308) |
 | eICU | no comparable bedside narrative | structured transport | v1 affected by lab-window bug; corrected rerun required if used |
 | NWICU | no comparable bedside narrative | structured transport | v1 provenance; align to corrected structured lineage if used |
 | MIMIC-BR | no comparable narrative | possible structured cross-country validation | pending/access dependent |
@@ -72,7 +72,14 @@ Secondary metrics: AUPRC and descriptive Brier score, with 2,000 matched-set boo
 
 Because the Zigong analytic cohort has artificial 25% prevalence, AUPRC is conditional on the sampled cohort and Brier score is not population calibration.
 
-Read docs/zigong_diffusiongemma_external_transport_protocol_v1.md.
+Corrected registered H9 job `F2N7Q5K9` used the full v2.1 MIMIC ventilation cohort (11,116 stays, 279 cases) and produced AUROC **0.5546** with 95% matched-set bootstrap interval **0.4796 to 0.6308**, AUPRC 0.3030, and descriptive Brier score 0.2390. The aggregate artifact SHA-256 is `14191cbef81c49dfe266500ec9eddb322254a10d17d9d82f75a1b39bf363f57f`.
+
+The older frozen result reporting AUROC 0.5906 is historical provenance only: its implementation trained on the obsolete 1,460-row v1 MIMIC benchmark and did not follow the frozen requirement to use the full corrected MIMIC cohort.
+
+Read:
+
+- docs/zigong_diffusiongemma_external_transport_protocol_v1.md
+- docs/zigong_diffusiongemma_external_transport_result_freeze_v2_1.md.
 
 ## eICU
 
@@ -92,7 +99,7 @@ A second external narrative cohort would strengthen the paper if a suitable data
 
 ## Next external-analysis order
 
-1. complete the registered MIMIC H6-H8 path;
-2. run registered H9 corrected Zigong transport exactly as frozen;
-3. freeze the external result regardless of performance;
+1. corrected registered H9 Zigong transport is complete and frozen regardless of performance;
+2. complete H8 human construct validation under its governance gate;
+3. freeze the final H1-H9 provenance index;
 4. add corrected structured transport or a second narrative cohort only as clearly labeled additional validation.
