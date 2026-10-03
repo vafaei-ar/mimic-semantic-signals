@@ -1,6 +1,6 @@
 # 02 - Current scientific status
 
-Updated: 2026-10-02
+Updated: 2026-10-03
 
 ## Scientific question
 
@@ -134,6 +134,22 @@ The central manuscript claim remains unlocked until H8 human construct validatio
 
 Post-registration exploratory decision-model work begins only after the registered critical path is frozen. The frozen exploratory roster is Clef-Flash 9B, Clef 27B, Nimble 9B, and Tev1 4B. Clef-Flash is the first technical/preflight target, followed by Clef 27B if local hardware feasibility is clean, then Nimble and Tev1. All remain outside registered H6 and require a label-free local integration/score-quality gate before any outcome evaluation. See docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md.
 
+## Current publication-sprint priority
+
+The project is now in a publication-sprint phase. H6 and H7 are complete, corrected computational H9 is complete, and H8 sample preparation is frozen. H8 human construct validation plus the final H1-H9 provenance freeze remain the registered critical path.
+
+Post-registration additions are intentionally bounded:
+
+- a structured-data missingness-resilience analysis will test whether narrative representations recover predictive information when prespecified blocks of structured EHR information are masked;
+- the default new local decision-model clinical panel is limited to Nimble 9B, Tev1 4B, and Clef 27B;
+- Clef-Flash 9B is the integration/preflight and fallback Cloudflare model rather than an automatic fourth clinical arm;
+- all screened exploratory models must be reported, and full refit-bootstrap uncertainty will not be run automatically for every new model;
+- later model releases do not interrupt Paper 1 unless they represent a qualitatively different measurement architecture that directly threatens the manuscript interpretation.
+
+The missingness extension is an information-rescue experiment, not a claim of clinical-value imputation. The initial design begins from observed structured data, applies frozen masking rules, and measures how much performance is recovered by Open-Jev and TF-IDF, with any new decision-model representation added only after a separate label-free freeze.
+
+See docs/12_PUBLICATION_SPRINT_AND_MISSINGNESS_RESILIENCE_PLAN_2026-10-03.md.
+
 ## Hosted Jev governance
 
 On 2026-10-01 the vendor enabled Zero Data Retention for the organization and stated that only operational telemetry is retained under ZDR.
@@ -158,7 +174,8 @@ This framing still requires:
 
 - H8 human construct validity;
 - final H1-H9 provenance freeze;
-- practical compression/runtime/stability analysis;
+- the bounded missingness-resilience analysis or its prespecified stop condition;
+- practical compression/runtime/stability analysis for the bounded representative model panel;
 - exact provenance audit of every manuscript number.
 
 ## Claim guardrails
