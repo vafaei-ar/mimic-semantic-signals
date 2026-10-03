@@ -365,7 +365,7 @@ def main() -> None:
     args = ap.parse_args()
 
     require_osf_registration()
-    root = Path(args.root).expanduser().resolve()
+    root = cohort.resolve_root(args.root)
     local_root = Path(args.local_root).expanduser().resolve()
     contract_path = Path(args.analysis_populations).expanduser().resolve()
     strip_path = Path(args.strip_freeze).expanduser().resolve()
