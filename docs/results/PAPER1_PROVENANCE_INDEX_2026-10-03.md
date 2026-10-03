@@ -140,7 +140,19 @@ The bounded exploratory analysis completed successfully:
 - uncertainty: five pre-frozen patient-grouped partitions only; no new refit bootstrap
 - status: post-registration exploratory
 
-The scalar result table is frozen separately once extracted from the canonical safe artifact. This analysis does not modify H1-H3 or H5.
+Canonical primary-partition scalar extraction from job `A5N9R3K7`:
+
+| Outcome | Semantic-only AUROC, note-available | Level A delta AUROC | Level B delta AUROC | Level C delta AUROC | Level D delta AUROC |
+|---|---:|---:|---:|---:|---:|
+| Ventilation | 0.60257 | +0.02032 | +0.01137 | -0.00172 | -0.00005 |
+| RRT | 0.44790 | -0.00054 | -0.00070 | +0.00014 | -0.00079 |
+| MetaVision ICU death | 0.65682 | -0.00428 | -0.00280 | -0.00394 | -0.00212 |
+
+Compact-summary artifact SHA-256: `b1a2c9b02cb7c07fb12d0b326ba10517ecc4e3ddcc3a8146000f4b3804fac113`.
+
+Canonical interpretation and availability caveat: `docs/results/v2_1_submission_explanatory_results.md`.
+
+This analysis does not modify H1-H3 or H5.
 
 ## Manuscript provenance rule
 
