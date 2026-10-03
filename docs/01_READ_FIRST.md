@@ -17,7 +17,7 @@ This repository contains both the current corrected v2.1 manuscript-facing analy
 9. docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md - supplementary synthetic plan.
 10. docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md - authoritative registered forward execution order.
 11. docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md - detailed post-registration exploratory decision-model plan.
-12. docs/12_PUBLICATION_SPRINT_AND_MISSINGNESS_RESILIENCE_PLAN_2026-10-03.md - current publication-priority amendment, bounded model-panel rules, and missingness-resilience extension.
+12. docs/12_MINIMAL_SUBMISSION_PLAN_2026-10-03.md - current authoritative minimal submission path and scope stop.
 
 Current aggregate result summaries are indexed in docs/results/README.md.
 
@@ -27,7 +27,7 @@ The numbered reports are the navigation and synthesis layer.
 
 For exact cohort definitions, item IDs, model settings, seeds, bootstrap rules, artifact hashes, and prespecified interpretation rules, detailed frozen protocol/result documents remain authoritative.
 
-Documents 06 and 07 intentionally preserve the state of the project at the correction and preregistration gates. They should not be rewritten to look like live status reports. When they conflict with later status, use the newest applicable frozen protocol/result plus docs/02, docs/03, and docs/10. For post-registration exploratory decision-model details, use docs/11. For current publication priority, stopping rules, the reduced representative model panel, and the structured-data missingness-resilience extension, use docs/12.
+Documents 06 and 07 intentionally preserve the state of the project at the correction and preregistration gates. They should not be rewritten to look like live status reports. When they conflict with later status, use the newest applicable frozen protocol/result plus docs/02, docs/03, and docs/10. Docs/11 preserves a deferred exploratory decision-model plan but is not active for Paper 1. For current publication priority, remaining analyses, deviations, and stopping rules, use docs/12.
 
 ## Current manuscript rule
 
@@ -44,17 +44,17 @@ Completed:
 - H5 common-logistic lexical comparisons;
 - the full registered H6 sensitivity program, including unstripped notes, Laya, DiffusionGemma, broad respiratory-support endpoint, CHARTEVENTS storetime, 1-hour/2-hour laboratory lag, note-availability identity sensitivity, and the separate CareVue ICU-death replication;
 - H7 patient-shuffled negative controls for ventilation, RRT, MetaVision ICU death, and CareVue ICU death;
-- corrected computational H9 Zigong DiffusionGemma transport using the full frozen v2.1 MIMIC ventilation cohort, with AUROC 0.5546 and 95% matched-set bootstrap interval 0.4796 to 0.6308;
-- H8 design/sample freeze: 200 uniformly sampled stripped MetaVision ICU-death notes and three blinded local rater packets are frozen before any rating, with no outcomes or model scores used in selection.
+- a post-registration modified DiffusionGemma-only Zigong transport run using the legacy frozen 24-hour cohort, AUROC 0.5546 with 95% matched-set bootstrap interval 0.4796 to 0.6308; this is descriptive only under the dated H9 deviation;
+- H8 design/sample freeze: 200 uniformly sampled stripped MetaVision ICU-death notes and three blinded local rater packets were frozen before any rating, but H8 will not be performed under the dated resource deviation.
 
 Current gate:
 
-- no automatic scientific RunRelay job is active;
-- H8 human annotation may begin only after the Penn State IRB determination and applicable PhysioNet/MIMIC authorization for all three primary raters are documented locally;
-- the H8 evaluator is intentionally manual and requires the frozen governance-gate file plus three completed local rater files;
-- the final H1-H9 provenance/result index and all post-registration exploratory decision-model work remain blocked until H8 is complete.
+- H8 is formally not performed for Paper 1 because independent qualified raters/resources are unavailable;
+- H9 external validation was only partially executed as registered and the existing DiffusionGemma legacy-cohort result is descriptive rather than central evidence;
+- the only remaining computational work is the label-free semantic-alignment audit, semantic-only exploratory discrimination, and four-level HGB comparator decomposition;
+- after those checks, complete the OSF text-level attachment comparison, freeze the manuscript provenance index, and write.
 
-The registered computational path is therefore complete except for H8 human construct validation and the final provenance freeze.
+No new model panel, missingness-resilience study, OPUS workstream, external dataset, or additional sensitivity is on the Paper 1 critical path.
 
 ## Current interpretation guardrail
 
