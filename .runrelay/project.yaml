@@ -2766,3 +2766,38 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/h6_note_availability_audit_v2_1.json
+
+  infer_h6_carevue_openjev_v2_1_death:
+    description: Run the exact registered Open-Jev instrument fully offline on the frozen stripped-note CareVue ICU-death replication corpus; verify exact model revision and inference contract, keep row-level scores local, and share aggregate diagnostics only.
+    command:
+      - bash
+      - scripts/run_h6_carevue_openjev_inference_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 720
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 16
+      gpu_count: 1
+      min_vram_gb: 12
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/h6_carevue_openjev_inference_v2_1_death.json
+
+  evaluate_h6_carevue_openjev_v2_1_death:
+    description: Evaluate the prespecified CareVue ICU-death replication using the frozen source-specific rich-comparator HGB procedure, stripped-note Open-Jev scores, CareVue patient-grouped splits, and 500 patient-cluster refit-bootstrap replicates; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_h6_carevue_openjev_eval_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/h6_carevue_openjev_v2_1_death.json
