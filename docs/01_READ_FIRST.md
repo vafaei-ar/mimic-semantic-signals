@@ -41,26 +41,25 @@ Completed:
 - H1-H3 primary stripped-note Open-Jev analyses;
 - H4 six-construct analyses;
 - H5 common-logistic lexical comparisons;
-- H6 unstripped-note Open-Jev sensitivity for all three outcomes;
-- H6 Laya alternative-instrument sensitivity for all three outcomes;
-- H6 DiffusionGemma invasive-ventilation inference/evaluation;
-- H6 DiffusionGemma RRT inference/evaluation, with delta AUROC -0.00083 and 95% refit-bootstrap interval -0.00283 to +0.00244;
-- H6 DiffusionGemma MetaVision ICU-death inference/evaluation, with delta AUROC +0.00499 and 95% refit-bootstrap interval -0.00654 to +0.00652;
-- H6 ventilation endpoint audit: explicit-intubation is identical to primary H1; broad respiratory support has 11,380 stays and 543 cases.
+- the full registered H6 sensitivity program, including unstripped notes, Laya, DiffusionGemma, broad respiratory-support endpoint, CHARTEVENTS storetime, 1-hour/2-hour laboratory lag, note-availability identity sensitivity, and the separate CareVue ICU-death replication;
+- H7 patient-shuffled negative controls for ventilation, RRT, MetaVision ICU death, and CareVue ICU death;
+- corrected computational H9 Zigong DiffusionGemma transport using the full frozen v2.1 MIMIC ventilation cohort, with AUROC 0.5546 and 95% matched-set bootstrap interval 0.4796 to 0.6308;
+- H8 design/sample freeze: 200 uniformly sampled stripped MetaVision ICU-death notes and three blinded local rater packets are frozen before any rating, with no outcomes or model scores used in selection.
 
-Current execution:
+Current gate:
 
-- T2X6P4N8 - H6 broad respiratory-support ventilation endpoint input preparation/freeze, before semantic or predictive performance.
+- no automatic scientific RunRelay job is active;
+- H8 human annotation may begin only after the Penn State IRB determination and applicable PhysioNet/MIMIC authorization for all three primary raters are documented locally;
+- the H8 evaluator is intentionally manual and requires the frozen governance-gate file plus three completed local rater files;
+- the final H1-H9 provenance/result index and all post-registration exploratory decision-model work remain blocked until H8 is complete.
 
-The active preparation job is pinned to project commit a96f721f1fcf76195301575110c4e5023f7511f1. Later documentation-only commits do not alter that execution.
-
-The DiffusionGemma three-outcome arm is complete. The registered sequence now continues with the broad respiratory-support endpoint sensitivity, prospective-timing/note-availability sensitivities, CareVue death sensitivity, H7 shuffled negative control, H8 blinded clinician construct validation, and H9 corrected Zigong external validation.
+The registered computational path is therefore complete except for H8 human construct validation and the final provenance freeze.
 
 ## Current interpretation guardrail
 
 The corrected primary Open-Jev estimates are near zero after the rich structured comparator. H5 shows small positive TF-IDF increments and negative Open-Jev increments within the same logistic family. H6 alternative-instrument results so far do not justify selecting a preferred semantic instrument post hoc.
 
-Do not lock the manuscript claim until H6-H9 are complete.
+Do not lock the manuscript claim until H8 human construct validation is complete and the final H1-H9 provenance index is frozen.
 
 ## Naming convention
 
