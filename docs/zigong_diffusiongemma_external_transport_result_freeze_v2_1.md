@@ -1,5 +1,8 @@
 # Frozen corrected v2.1 H9 Zigong DiffusionGemma external transport result
 
+> **Manuscript-label override, 2026-10-03:** The numerical result in this freeze remains immutable provenance, but subsequent external review confirmed that the run reused the legacy `ventilation24_v1` Zigong cohort and that the registered translated arm was not performed. Therefore this file no longer establishes completed registered H9 external validation. For Paper 1, label it a post-registration modified descriptive DiffusionGemma-only transport arm and cite `docs/registration/deviation_h9_partial_execution_2026-10-03.md`.
+
+
 Updated: 2026-10-03
 
 This document freezes the manuscript-facing registered H9 external narrative transport result exactly as observed. No model, prompt, threshold, translation rule, coefficient, endpoint definition, cohort definition, or preprocessing rule may be changed in response to this result.
