@@ -27,9 +27,9 @@ DiffusionGemma ventilation result:
 
 Current registered execution:
 
-- W2C7M9R4 - evaluate_h7_patient_shuffled_v2_1_ventilation
+- X3D8N6Q2 - evaluate_h7_patient_shuffled_v2_1_rrt
 - exact project commit: 5dfaa30dedd273c453b6205100f199097b2f71ee
-- runs the registered H7 ventilation patient-shuffled semantic negative control using repeat-1 comparator-risk deciles, seed 20260929, complete eight-score between-patient permutations, frozen folds/HGB settings, and 500 patient-cluster refit-bootstrap replicates.
+- submitted for automatic dispatch of the registered H7 RRT patient-shuffled semantic negative control using the same frozen risk-decile, seed, permutation, fold, HGB, and bootstrap definitions.
 
 The broad endpoint audit R8V4N2M7 froze 11,380 stays, 543 cases, 10,837 unchanged controls, and 4,590 note-available rows. The explicit-intubation endpoint is empirically identical to H1 and requires no separate predictive rerun.
 
@@ -61,7 +61,7 @@ Report MetaVision and CareVue death separately without pooling.
 
 ### A3. H7 shuffled negative control
 
-Run the registered patient-shuffled negative control sequentially for ventilation, RRT, MetaVision ICU death, and CareVue ICU death. The frozen implementation assigns note-available patients to ten balanced deciles using mean repeat-1 rich-comparator OOF risk across that patient's note-available rows, then permutes complete eight-score row vectors only between different patients within the same decile using seed 20260929. No-note rows remain unchanged; frozen folds, HGB settings, and the 500-valid-replicate patient-cluster refit bootstrap are reused.
+Run the registered patient-shuffled negative control sequentially for ventilation, RRT, MetaVision ICU death, and CareVue ICU death. The frozen implementation assigns note-available patients to ten balanced deciles using mean repeat-1 rich-comparator OOF risk across that patient's note-available rows, then permutes complete eight-score row vectors only between different patients within the same decile using seed 20260929. No-note rows remain unchanged; frozen folds, HGB settings, and the 500-valid-replicate patient-cluster refit bootstrap are reused. Ventilation is complete: comparator AUROC 0.72468, shuffled-augmented AUROC 0.71408, delta AUROC -0.01059, 95% interval -0.02851 to +0.01432, with all five frozen-partition delta-AUROCs negative.
 
 ### A4. H8 clinician construct validation
 
@@ -185,4 +185,4 @@ H8 human construct validity and H9 external transport are essential to determini
 
 ## Immediate continuation point
 
-Wait for W2C7M9R4 to become terminal and inspect its canonical aggregate H7 ventilation result. If clean, continue sequentially to H7 RRT, MetaVision ICU death, and CareVue ICU death at the same validated exact commit before moving to H8.
+Continue with H7 RRT job X3D8N6Q2 at the same validated exact commit. Once terminal and clean, continue sequentially to MetaVision ICU death and CareVue ICU death before moving to H8.
