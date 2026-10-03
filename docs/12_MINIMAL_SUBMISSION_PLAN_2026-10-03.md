@@ -180,3 +180,28 @@ The matched hemodynamic and respiratory constructs show consistently stronger ex
 `reassuring_stability` was weak/inconsistent and should not be treated as construct-validated.
 
 The semantic-only discrimination and four-level HGB comparator decomposition are the only active predictive analysis and are being executed together under the bounded exploratory task `evaluate_submission_exploratory_v2_1`. No additional predictive experiment should be introduced after that task completes.
+
+
+## Research-phase closure, 2026-10-03
+
+The bounded Paper 1 computational work is complete.
+
+- H8 deviation: logged.
+- H9 deviation: logged.
+- Label-free semantic alignment audit: complete and passed its narrow gross-alignment purpose.
+- Semantic-only discrimination: complete.
+- Four-level HGB comparator decomposition: complete.
+- OSF attachment scientific-text verification: complete.
+- Paper 1 provenance index: created and current.
+
+The final explanatory result is:
+
+- ventilation semantic-only AUROC 0.60257; Open-Jev delta AUROC +0.02032 over the 34-feature structured comparator, +0.01137 after treatment/support, -0.00172 after documentation behavior, and -0.00005 with the registered rich comparator;
+- RRT semantic-only AUROC 0.44790 with essentially zero incremental AUROC at every comparator level;
+- MetaVision death semantic-only AUROC 0.65682 but no positive incremental AUROC even over structured physiology alone (level A delta -0.00428).
+
+For ventilation, the positive early-level increment cannot be assigned purely to semantic content because semantic-score missingness also reveals note availability before documentation/note context is explicitly represented. Its disappearance after documentation behavior is therefore interpreted as evidence that apparent narrative value is substantially absorbed by documentation-process/context information, not as causal mediation.
+
+**No further predictive experiment is permitted before initial submission unless a concrete integrity defect is discovered.**
+
+The remaining work is manuscript production: final figure/table generation, manuscript and supplement drafting, TRIPOD+AI/TRIPOD-LLM cross-checks, journal-specific disclosure/metadata review, preprint preparation, and submission.
