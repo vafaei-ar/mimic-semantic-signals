@@ -59,20 +59,19 @@ A stronger potential paper is increasingly:
 
 Can clinically interpretable low-dimensional semantic measurements provide useful compression, human interpretability, stability, and transport of ICU narrative information even when they do not improve discrimination over a strong nonlinear structured comparator as much as high-dimensional lexical text?
 
-That question remains open until H8 clinician validation and H9 transport are known.
+Corrected H9 is now known and shows weak transport (AUROC 0.5546, 95% matched-set bootstrap interval 0.4796 to 0.6308). The remaining registered uncertainty is H8 human construct validity.
 
 ## Remaining Lancet Digital Health path
 
-1. Complete the CHARTEVENTS storetime sensitivity across ventilation, RRT, and MetaVision ICU death.
-2. Complete the remaining H6 1-hour and 2-hour laboratory-lag, note-availability, and CareVue death sensitivities.
-3. Run H7 shuffled negative control.
-4. Complete H8 blinded multi-rater clinician construct validation.
-5. Run H9 corrected Zigong DiffusionGemma transport.
-6. Freeze a single H1-H9 provenance/result index.
-7. Quantify the practical compression tradeoff: dimensionality, runtime, hardware burden, stability, interpretability, and transport.
-8. Generate manuscript tables/figures only from frozen aggregate artifacts.
-9. Audit every manuscript number back to an exact commit, RunRelay job, and artifact hash.
-10. Lock the central claim only after these steps.
+1. Document the H8 Penn State IRB determination and applicable PhysioNet/MIMIC authorization for all three primary raters.
+2. Complete the frozen blinded three-rater H8 construct-validation packets and run the manual H8 ICC/model-human/2,000-bootstrap analysis.
+3. Freeze a single authoritative H1-H9 provenance/result index.
+4. Quantify the practical compression tradeoff: dimensionality, runtime, hardware burden, stability, interpretability, and transport.
+5. Generate manuscript tables/figures only from frozen aggregate artifacts.
+6. Audit every manuscript number back to an exact commit, RunRelay job, and artifact hash.
+7. Lock the central claim only after these steps.
+
+H6, H7, and corrected computational H9 are complete. The exploratory decision-model track remains blocked until H8 and the registered provenance freeze are complete.
 
 A second independent narrative cohort remains desirable but is not a substitute for the registered Zigong analysis.
 
