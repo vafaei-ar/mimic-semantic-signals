@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "irb_determination_documented": false,
+  "irb_reference": "REPLACE_WITH_NON-SENSITIVE_REFERENCE",
+  "all_primary_raters_authorized_for_mimic": false,
+  "primary_rater_count": 3,
+  "note": "Copy to data/real_mimic_local/h8_clinician_validation/h8_governance_gate_local.json only after the required institutional and PhysioNet/MIMIC access conditions are satisfied. Do not commit rater identities or sensitive governance records."
+}
