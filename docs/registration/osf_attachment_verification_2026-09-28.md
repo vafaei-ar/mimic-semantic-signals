@@ -36,3 +36,12 @@ The frozen OSF copies are authoritative for the registration record. The earlier
 ## Remaining lock
 
 Real-label v2.1 execution remains locked until the submitted OSF form text is imported verbatim into `docs/registration/osf_form_addendum_v2_1.md`, verified against the registration, and the resulting exact commit passes the synthetic/static preregistration validator.
+
+
+## Scientific-text follow-up, 2026-10-03
+
+The remaining text-level question is closed in `docs/registration/osf_attachment_text_verification_2026-10-03.md`.
+
+After normalization limited to PDF/Markdown formatting artifacts, the frozen OSF SAP and technical appendix have exact ordered alphabetic word-token sequences matching the exact source files at registration commit `873897e6c934cea3d558b6518ac1e399f9f75387`: 1,291/1,291 tokens for the SAP and 1,832/1,832 for the technical appendix, with zero word additions, deletions, substitutions, or reorderings.
+
+The PDF byte mismatch remains provenance but is not a scientific-content mismatch.
