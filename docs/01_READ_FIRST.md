@@ -1,6 +1,6 @@
 # 01 - Read this first
 
-Updated: 2026-10-02
+Updated: 2026-10-03
 
 This repository contains both the current corrected v2.1 manuscript-facing analysis and a substantial v1 provenance archive. The v1 files are intentionally retained because they document how the study evolved, but affected v1 numerical results are not final manuscript evidence.
 
@@ -17,6 +17,7 @@ This repository contains both the current corrected v2.1 manuscript-facing analy
 9. docs/09_OPUS_SYNTHETIC_CONSTRUCT_VALIDITY_PLAN_2026-09-26.md - supplementary synthetic plan.
 10. docs/10_POSTREGISTRATION_EXECUTION_AND_EXTENSION_PLAN_2026-09-30.md - authoritative registered forward execution order.
 11. docs/11_POSTREGISTRATION_DECISION_MODEL_EXTENSION_PLAN_2026-10-01.md - detailed post-registration exploratory decision-model plan.
+12. docs/12_PUBLICATION_SPRINT_AND_MISSINGNESS_RESILIENCE_PLAN_2026-10-03.md - current publication-priority amendment, bounded model-panel rules, and missingness-resilience extension.
 
 Current aggregate result summaries are indexed in docs/results/README.md.
 
@@ -26,7 +27,7 @@ The numbered reports are the navigation and synthesis layer.
 
 For exact cohort definitions, item IDs, model settings, seeds, bootstrap rules, artifact hashes, and prespecified interpretation rules, detailed frozen protocol/result documents remain authoritative.
 
-Documents 06 and 07 intentionally preserve the state of the project at the correction and preregistration gates. They should not be rewritten to look like live status reports. When they conflict with later status, use the newest applicable frozen protocol/result plus docs/02, docs/03, and docs/10. For post-registration exploratory decision-model work, use docs/11.
+Documents 06 and 07 intentionally preserve the state of the project at the correction and preregistration gates. They should not be rewritten to look like live status reports. When they conflict with later status, use the newest applicable frozen protocol/result plus docs/02, docs/03, and docs/10. For post-registration exploratory decision-model details, use docs/11. For current publication priority, stopping rules, the reduced representative model panel, and the structured-data missingness-resilience extension, use docs/12.
 
 ## Current manuscript rule
 
