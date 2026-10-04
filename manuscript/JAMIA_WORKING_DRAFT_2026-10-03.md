@@ -18,11 +18,11 @@ Target limits: structured abstract <=250 words; main text <=4000 words; <=4 tabl
 
 **Affiliation:** Department of Public Health Sciences, Penn State College of Medicine, Hershey, Pennsylvania, USA
 
-**Corresponding author:** Alireza Vafaei Sadr, Department of Public Health Sciences, Penn State College of Medicine, 700 HMC Crescent Road, Hershey, PA 17033, USA; [AUTHOR EMAIL]; [AUTHOR TELEPHONE]
+**Corresponding author:** Alireza Vafaei Sadr, Department of Public Health Sciences, Penn State College of Medicine, 700 HMC Crescent Road, Hershey, PA 17033, USA; asadr@pennstatehealth.psu.edu; 1-717-531-8521
 
 **Keywords:** electronic health records; natural language processing; intensive care units; clinical prediction; machine learning
 
-**Main-text word count:** 3,626 (abstract: 234)
+**Main-text word count:** 3,895 (abstract: 234)
 
 ## Abstract
 
