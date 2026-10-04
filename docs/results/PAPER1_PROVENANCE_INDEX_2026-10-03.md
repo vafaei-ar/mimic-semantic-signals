@@ -165,6 +165,17 @@ A bounded pre-submission review-response task recovered the already-registered s
 - note-available subgroup: post-registration exploratory; frozen OOF predictions only; no subgroup refitting
 - canonical summary: `docs/results/v2_1_submission_review_response_results.md`
 
+## Submission cohort characteristics
+
+The expanded main-text Table 1 uses aggregate descriptive summaries from the frozen MetaVision confirmatory cohorts.
+
+- job: `K6R3M8Q2`
+- exact project commit: `c929da3cc66d8b821506cb76e4d103fdf54db967`
+- artifact: `outputs/manuscript/paper1_table1_characteristics_v2_1.json`
+- artifact SHA-256: `10e9a983c802ebc1e0256d81d34fc8ac36cdf5492cd9cc90170e91b957e57151`
+- manuscript-facing summary: `docs/results/v2_1_submission_characteristics_results.md`
+- no model fitting; aggregate summaries only
+
 ## Manuscript provenance rule
 
 Every numerical value in the main text, abstract, figures, or supplement must map to one row/entry in this index or to a more detailed canonical result document linked from it.
