@@ -22,29 +22,29 @@ Target limits: structured abstract <=250 words; main text <=4000 words; <=4 tabl
 
 **Keywords:** electronic health records; natural language processing; intensive care units; clinical prediction; machine learning
 
-**Main-text word count:** [UPDATE FROM FINAL DOCX]
+**Main-text word count:** 3,078 (abstract: 231)
 
 ## Abstract
 
 ### Objective
 
-To evaluate whether eight low-dimensional semantic scores derived from prospectively available intensive care unit notes improve short-horizon deterioration prediction beyond a strong structured electronic health record comparator.
+To test whether eight low-dimensional semantic scores from prospectively available ICU notes improve short-horizon deterioration prediction beyond a strong structured electronic health record comparator.
 
 ### Materials and Methods
 
-We conducted a preregistered evaluation in MIMIC-III MetaVision intensive care unit stays. At a fixed 12-hour landmark, we predicted invasive ventilation, renal replacement therapy, and ICU death during the subsequent 12 hours. The comparator included 34 physiology, laboratory, and urine features plus treatment/support, documentation-behavior, and note-context variables. The primary augmentation added eight Open-Jev semantic scores from the most recent eligible bedside note. Performance was estimated using frozen patient-grouped cross-validation and 500-replicate patient-cluster refit bootstrap intervals. Prespecified secondary analyses compared lexical TF-IDF features and alternative semantic instruments. Post-registration analyses examined score alignment, semantic-only discrimination, and nested comparator strength.
+We conducted a preregistered MIMIC-III MetaVision study predicting invasive ventilation, renal replacement therapy, and ICU death during the 12 hours after a fixed 12-hour landmark. The comparator combined 34 physiology, laboratory, and urine features with treatment/support, documentation-behavior, and note-context variables. Eight Open-Jev scores were added to this comparator. Evaluation used frozen patient-grouped cross-validation and 500-replicate patient-cluster refit bootstrap intervals. Prespecified analyses compared TF-IDF and alternative semantic instruments.
 
 ### Results
 
-The primary Open-Jev delta AUROC was -0.00005 for ventilation (95% interval -0.02173 to 0.01910), -0.00079 for renal replacement therapy (-0.00323 to 0.00275), and -0.00212 for ICU death (-0.00802 to 0.00531). Within a common logistic model family, TF-IDF produced small positive increments while Open-Jev increments were negative for all three outcomes. In exploratory decomposition, the ventilation Open-Jev increment was +0.02032 over physiology alone, +0.01137 after treatment/support variables, and -0.00172 after documentation-behavior variables were added. ICU-death semantic scores had standalone AUROC 0.65682 but no positive incremental AUROC even over physiology alone.
+Open-Jev delta AUROC was -0.00005 for ventilation (95% interval -0.02173 to 0.01910), -0.00079 for renal replacement therapy (-0.00323 to 0.00275), and -0.00212 for ICU death (-0.00802 to 0.00531). Within a common logistic family, TF-IDF produced small positive increments while Open-Jev increments were negative for all outcomes. In exploratory decomposition, the ventilation Open-Jev increment decreased from +0.02032 over physiology alone to -0.00172 after documentation behavior was added. ICU-death semantic scores had standalone AUROC 0.65682 but no positive increment even over physiology alone.
 
 ### Discussion
 
-Low-dimensional semantic scores contained some prognostic information but generally added little discrimination after structured clinical state and documentation processes were represented.
+Semantic scores contained prognostic information but generally added little discrimination after structured clinical state and documentation processes were represented.
 
 ### Conclusion
 
-Narrative information was not absent, but compact semantic compression did not consistently improve discrimination beyond a rich structured EHR comparator.
+Clinical narrative retained predictive information, but compact semantic compression did not consistently improve discrimination beyond a rich structured EHR comparator.
 
 ## Background and Significance
 
