@@ -1,4 +1,4 @@
-# Working manuscript draft for JAMIA
+# JAMIA working manuscript
 
 Updated: 2026-10-03
 
@@ -8,7 +8,21 @@ Target article type: JAMIA Research and Applications
 
 Target limits: structured abstract <=250 words; main text <=4000 words; <=4 tables; <=6 figures.
 
-> Status: scientific working draft. References are intentionally not finalized here. Citation placeholders must be resolved from verified sources before submission. Internal RunRelay job IDs and artifact hashes should remain in the provenance supplement, not the submitted main text.
+> Status: submission-working draft. The scientific results, deviations, and references below have been checked against the frozen project record or verified publication metadata. Title-page identity/contact details, competing-interest declaration, and any local institutional determination remain author-completion items.
+
+## Title page
+
+**Title:** Incremental predictive value of low-dimensional semantic scores from ICU notes: a preregistered evaluation in MIMIC-III
+
+**Author:** [AUTHOR NAME, DEGREES]
+
+**Affiliation:** [DEPARTMENT, INSTITUTION, CITY, COUNTRY]
+
+**Corresponding author:** [POSTAL ADDRESS, EMAIL, TELEPHONE]
+
+**Keywords:** electronic health records; natural language processing; intensive care units; clinical prediction; machine learning
+
+**Main-text word count:** [UPDATE FROM FINAL DOCX]
 
 ## Abstract
 
@@ -34,35 +48,35 @@ Narrative information was not absent, but compact semantic compression did not c
 
 ## Background and Significance
 
-Clinical notes contain observations, assessments, treatment response, uncertainty, and plans that are incompletely represented in structured electronic health record data. Language models create a practical opportunity to transform this narrative information into structured features for risk prediction. A clinically appealing strategy is to reduce notes to a small set of semantic measurements, such as clinician concern, worsening trajectory, respiratory or hemodynamic concern, treatment response, escalation consideration, diagnostic uncertainty, and reassuring stability.
+Clinical notes can contain findings that are incompletely represented in structured electronic health record (EHR) fields. For example, natural language processing of MIMIC-III notes has identified encephalopathy-related information in patients without corresponding structured diagnostic codes.[1] Earlier ICU studies also showed that text-derived topics or note representations can predict mortality and, in some settings, improve models based on structured physiology.[2,3] A systematic review of ICU mortality models using neural representations of clinical text found that studies combining notes with structured variables generally reported higher discrimination, but all included studies used MIMIC data, none had external validation, and the review judged the available studies to have high risk of bias.[4]
 
-This approach has potential advantages over high-dimensional text representations. A compact semantic vector is easier to inspect, store, audit, and potentially transport across downstream tasks. Its predictive value, however, depends on whether the selected dimensions preserve information that is not already available in structured physiology, treatment state, and documentation behavior. A semantic score can be prognostic on its own yet add little after those variables are included.
+Recent work continues to test increasingly capable text models for clinical prediction. A JAMIA benchmark of long clinical documents found meaningful mortality signal across bag-of-words, neural, and instruction-tuned language-model approaches,[5] while a prospectively implemented sepsis system used a large language model to extract contextual information from notes for uncertain structured-model predictions.[6] These studies motivate a narrower question: how much information is retained when narrative text is compressed into a small set of predefined semantic measurements rather than represented at high dimensionality?
+
+A compact semantic vector is easier to inspect, store, audit, and reuse than thousands of lexical features or a large embedding. Its predictive value, however, depends on whether the selected dimensions preserve information that is not already available in structured physiology, treatment state, and documentation behavior. A semantic score can be prognostic on its own yet add little after those variables are included.
 
 Early exploratory analyses in this project suggested positive semantic increments for some deterioration outcomes. A subsequent integrity review identified methodological problems in that earlier analysis lineage, including source-system mixing, note-selection rules, semantic aggregation errors, and an insufficient structured comparator. Those results were placed on hold, the analysis was rebuilt, and the corrected v2.1 study was registered before its predictive performance was examined.
 
-The primary objective of the registered analysis was to estimate the incremental discrimination provided by eight Open-Jev semantic scores beyond a rich structured comparator for three short-horizon intensive care unit outcomes. Secondary analyses examined alternative semantic instruments, lexical text representation, timing and endpoint sensitivities, source-specific replication, and a patient-shuffled semantic negative control. After the registered analyses were complete, two bounded exploratory analyses were added to clarify the null result: a label-free alignment audit and a nested comparator decomposition.
+The primary objective of the registered analysis was to estimate the incremental discrimination provided by eight Open-Jev semantic scores beyond a rich structured comparator for three short-horizon ICU outcomes. Secondary analyses examined alternative semantic instruments, lexical text representation, timing and endpoint sensitivities, source-specific replication, and a patient-shuffled semantic negative control. After the registered analyses were complete, two bounded exploratory analyses were added to clarify the null result: a label-free alignment audit and a nested comparator decomposition.
 
 ## Materials and Methods
 
 ### Study design and data source
 
-We used MIMIC-III, a deidentified critical care database containing intensive care unit admissions from 2001 through 2012. [REFERENCE: MIMIC-III]
-
-The corrected confirmatory populations were restricted to MetaVision stays so that structured measurement and documentation processes were source-compatible. Adults were eligible after excluding neonatal intensive care unit admissions. The prediction landmark was 12 hours after intensive care unit admission, and each outcome was assessed during the following 12 hours.
+We used MIMIC-III, a deidentified, single-center critical care database containing detailed structured measurements and free-text clinical documentation from Beth Israel Deaconess Medical Center.[7] The corrected confirmatory populations were restricted to MetaVision stays so that structured measurement and documentation processes were source-compatible. Adults were eligible after excluding neonatal intensive care unit admissions. The prediction landmark was 12 hours after ICU admission, and each outcome was assessed during the following 12 hours.
 
 The registered analysis is available at OSF registration ahxn9, DOI 10.17605/OSF.IO/AHXN9. The repository preserves the corrected analysis code, frozen configuration, aggregate result summaries, and a manuscript-number provenance index.
 
 ### Outcomes and populations
 
-The three confirmatory outcomes were:
+The three confirmatory outcomes were new invasive ventilation, renal replacement therapy (RRT), and ICU death. Table 1 gives the frozen population counts and note availability. A separate CareVue ICU-death cohort of 25,632 stays and 306 cases was retained as a prespecified replication/sensitivity analysis rather than pooled with MetaVision.
 
-1. new invasive ventilation;
-2. renal replacement therapy;
-3. ICU death.
+**Table 1. Frozen confirmatory populations**
 
-The invasive-ventilation population contained 11,116 stays and 279 cases. The renal-replacement-therapy population contained 19,395 stays and 314 cases. The MetaVision ICU-death population contained 19,811 stays and 214 cases.
-
-A separate CareVue ICU-death cohort of 25,632 stays and 306 cases was retained as a prespecified replication/sensitivity analysis rather than pooled with MetaVision.
+| Outcome | Source | Stays, n | Cases, n (%) | Eligible note available, n (%) |
+|---|---|---:|---:|---:|
+| Invasive ventilation | MetaVision | 11,116 | 279 (2.51) | 4,499 (40.47) |
+| Renal replacement therapy | MetaVision | 19,395 | 314 (1.62) | 7,709 (39.75) |
+| ICU death | MetaVision | 19,811 | 214 (1.08) | 7,889 (39.82) |
 
 ### Structured comparator
 
@@ -76,18 +90,7 @@ The primary learner was a HistGradientBoostingClassifier with prespecified setti
 
 For each eligible stay, note identity was fixed before text processing. The primary corpus used the most recent eligible prospective bedside note and removed prespecified direct endpoint or treatment expressions without otherwise normalizing the text. Rows without an eligible note remained in the population and had semantic inputs treated as missing.
 
-Open-Jev was the primary semantic instrument. It produced eight scores:
-
-- overall clinician concern;
-- worsening trajectory;
-- respiratory concern;
-- hemodynamic concern;
-- poor treatment response;
-- escalation considered;
-- diagnostic uncertainty;
-- reassuring stability.
-
-The primary augmented model was identical to the rich structured comparator except for the addition of these eight semantic scores.
+Open-Jev was the primary semantic instrument. It produced eight scores: overall clinician concern, worsening trajectory, respiratory concern, hemodynamic concern, poor treatment response, escalation considered, diagnostic uncertainty, and reassuring stability. The primary augmented model was identical to the rich structured comparator except for the addition of these eight scores.
 
 ### Cross-validation and uncertainty
 
@@ -99,7 +102,7 @@ For the primary H1-H3 estimates, uncertainty was quantified using 500 valid pati
 
 Prespecified analyses included an unstripped-note Open-Jev sensitivity, Laya and DiffusionGemma semantic instruments, a six-construct subset, timing and laboratory-lag sensitivities, a broader respiratory-support endpoint, and separate CareVue ICU-death replication.
 
-A lexical comparison used TF-IDF features in a common L2-penalized logistic-regression family. Within each training fold, the same encoded rich comparator was evaluated alone, with Open-Jev, with TF-IDF, and with both representations. This analysis was designed to compare representation types while holding the downstream learner family constant.
+A lexical comparison used term frequency-inverse document frequency (TF-IDF) features in a common L2-penalized logistic-regression family. Within each training fold, the same encoded rich comparator was evaluated alone, with Open-Jev, with TF-IDF, and with both representations. This analysis was designed to compare representation types while holding the downstream learner family constant.
 
 The registered patient-shuffled negative control reassigned complete eight-score vectors between different note-available patients within strata of structured-model risk while preserving score marginals and leaving no-note rows unchanged.
 
@@ -109,14 +112,7 @@ After the registered results were known, we performed two narrowly scoped explor
 
 First, a label-free alignment audit evaluated whether semantic scores were associated with clinically corresponding structured support states and whether those associations exceeded between-patient shuffled references. Outcome labels were not read for this audit.
 
-Second, among note-available rows only, we estimated discrimination from the eight Open-Jev scores alone. We also fit four nested HistGradientBoosting comparator levels using the same frozen populations and partitions:
-
-- level A: the 34-feature physiology, laboratory, and urine block;
-- level B: level A plus treatment/support context and death-specific code status;
-- level C: level B plus documentation-behavior variables;
-- level D: level C plus ordinary note context, corresponding to the registered rich comparator.
-
-At each level, we estimated the Open-Jev delta AUROC across the five frozen partitions without a new bootstrap.
+Second, among note-available rows only, we estimated discrimination from the eight Open-Jev scores alone. We also fit four nested HistGradientBoosting comparator levels using the same frozen populations and partitions: level A, the 34-feature physiology/laboratory/urine block; level B, level A plus treatment/support context and death-specific code status; level C, level B plus documentation-behavior variables; and level D, level C plus ordinary note context, corresponding to the registered rich comparator. At each level, we estimated the Open-Jev delta AUROC across the five frozen partitions without a new bootstrap.
 
 ### Registered deviations
 
@@ -124,95 +120,99 @@ The preregistered clinician construct-validation analysis was prepared but not p
 
 The preregistered external Zigong validation was not completed as planned. The translated Open-Jev, Laya, and TF-IDF arm was not performed. A DiffusionGemma-only transport analysis was executed using a legacy frozen Zigong cohort whose note-exclusion regex was later recognized to contain specification problems. That result is retained as descriptive audit-trail evidence and is not used to support the central external-validity claim.
 
+### Reporting framework
+
+Manuscript reporting was cross-checked against TRIPOD+AI, the current reporting guideline for prediction-model studies using regression or machine-learning methods,[8] and TRIPOD-LLM, which extends reporting guidance to studies that use large language models.[9]
+
 ## Results
 
 ### Primary analyses
 
-The rich structured comparator achieved AUROCs of 0.72468 for invasive ventilation, 0.97394 for renal replacement therapy, and 0.93338 for MetaVision ICU death.
+The rich structured comparator achieved AUROCs of 0.72468 for invasive ventilation, 0.97394 for RRT, and 0.93338 for MetaVision ICU death. Adding the eight Open-Jev scores changed AUROC by -0.00005, -0.00079, and -0.00212, respectively (Table 2). All three refit-bootstrap intervals included both negative and positive values. Across the five frozen patient-grouped partitions, ventilation delta AUROC ranged from -0.00551 to +0.00922, RRT from -0.00079 to +0.00332, and ICU death from -0.00327 to +0.00390.
 
-Adding the eight Open-Jev scores changed AUROC by -0.00005 for ventilation, -0.00079 for renal replacement therapy, and -0.00212 for ICU death. The corresponding 95% refit-bootstrap intervals were -0.02173 to 0.01910, -0.00323 to 0.00275, and -0.00802 to 0.00531, respectively.
+**Table 2. Registered primary Open-Jev results**
 
-Across the five frozen patient-grouped partitions, ventilation delta AUROC ranged from -0.00551 to +0.00922, renal replacement therapy from -0.00079 to +0.00332, and ICU death from -0.00327 to +0.00390.
-
-The registered primary analyses therefore did not show a consistent incremental discrimination gain from Open-Jev beyond the rich comparator.
+| Outcome | Comparator AUROC | + Open-Jev AUROC | Delta AUROC | 95% refit-bootstrap interval | Delta AUPRC |
+|---|---:|---:|---:|---:|---:|
+| Invasive ventilation | 0.72468 | 0.72463 | -0.00005 | -0.02173 to +0.01910 | +0.00387 |
+| Renal replacement therapy | 0.97394 | 0.97315 | -0.00079 | -0.00323 to +0.00275 | -0.00048 |
+| ICU death, MetaVision | 0.93338 | 0.93126 | -0.00212 | -0.00802 to +0.00531 | +0.00087 |
 
 ### Lexical versus semantic representation
 
-Within the common logistic-regression family, the Open-Jev increment was negative for all three outcomes: -0.00826 for ventilation, -0.00194 for renal replacement therapy, and -0.00631 for ICU death.
+Within the common logistic-regression family, Open-Jev increments were negative for all three outcomes, whereas TF-IDF increments were small and positive (Table 3). Adding Open-Jev after TF-IDF reduced AUROC in all three primary analyses. Thus, the bedside notes retained residual predictive information under the common logistic specification, but the eight-dimensional semantic representation did not preserve the same incremental discrimination.
 
-In the same models, TF-IDF increments were +0.00564, +0.00219, and +0.00123, respectively. Adding Open-Jev after TF-IDF reduced AUROC in all three primary analyses.
+**Table 3. Registered H5 representation comparison within a common logistic model family**
 
-These results indicate that the bedside notes retained a small amount of residual predictive information under the common logistic specification, but that the eight-dimensional semantic representation did not preserve the same incremental discrimination.
+| Outcome | Comparator AUROC | + Open-Jev | + TF-IDF | + TF-IDF + Open-Jev | Open-Jev increment | TF-IDF increment | Open-Jev after TF-IDF |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Invasive ventilation | 0.71425 | 0.70599 | 0.71989 | 0.71316 | -0.00826 | +0.00564 | -0.00673 |
+| Renal replacement therapy | 0.95853 | 0.95659 | 0.96072 | 0.95919 | -0.00194 | +0.00219 | -0.00153 |
+| ICU death, MetaVision | 0.90460 | 0.89828 | 0.90582 | 0.90002 | -0.00631 | +0.00123 | -0.00580 |
 
 ### Registered sensitivity analyses
 
-The prespecified semantic-instrument sensitivities did not materially change the primary conclusion.
+The prespecified semantic-instrument sensitivities did not materially change the primary conclusion (Figure 1). For unstripped Open-Jev, delta AUROC was -0.01043 for ventilation, -0.00034 for RRT, and +0.00108 for ICU death. For Laya, the corresponding estimates were +0.01031, -0.00079, and +0.00141. For DiffusionGemma, they were -0.00811, -0.00083, and +0.00499. All corresponding refit-bootstrap intervals included both negative and positive values. Endpoint, timing, laboratory-lag, and note-availability sensitivities likewise did not produce a reproducible positive semantic increment.
 
-For unstripped Open-Jev, delta AUROC was -0.01043 for ventilation, -0.00034 for renal replacement therapy, and +0.00108 for ICU death.
-
-For Laya, delta AUROC was +0.01031 for ventilation, -0.00079 for renal replacement therapy, and +0.00141 for ICU death.
-
-For DiffusionGemma, delta AUROC was -0.00811 for ventilation, -0.00083 for renal replacement therapy, and +0.00499 for ICU death.
-
-All corresponding refit-bootstrap intervals included both negative and positive values. Endpoint, timing, laboratory-lag, and note-availability sensitivities likewise did not produce a reproducible positive semantic increment.
-
-In the separate CareVue ICU-death replication, comparator AUROC was 0.93799 and comparator plus Open-Jev AUROC was 0.93544, for a delta of -0.00255 with a 95% interval of -0.00858 to 0.00812.
+In the separate CareVue ICU-death replication, comparator AUROC was 0.93799 and comparator plus Open-Jev AUROC was 0.93544, for a delta of -0.00255 with a 95% interval of -0.00858 to +0.00812.
 
 ### Patient-shuffled negative control
 
-The patient-shuffled semantic control did not show a reproducible positive increment. Delta AUROC was -0.01059 for ventilation, -0.00024 for renal replacement therapy, +0.00309 for MetaVision ICU death, and -0.00712 for CareVue ICU death. Each interval included both negative and positive values.
+The patient-shuffled semantic control did not show a reproducible positive increment (Figure 1). Delta AUROC was -0.01059 for ventilation, -0.00024 for RRT, +0.00309 for MetaVision ICU death, and -0.00712 for CareVue ICU death. Each interval included both negative and positive values.
 
 ### Label-free alignment audit
 
-Semantic and note case identifiers matched exactly in the corrected analysis files. Hemodynamic and respiratory concern scores showed stronger clinically expected associations with corresponding structured support states than did between-patient shuffled semantic vectors. This audit reduced concern about gross score-to-stay misalignment as an explanation for the null predictive results.
-
-Reassuring stability showed weak or inconsistent alignment and was not treated as a construct-validated measurement.
+Semantic and note case identifiers matched exactly in the corrected analysis files. Hemodynamic and respiratory concern scores showed stronger clinically expected associations with corresponding structured support states than did between-patient shuffled semantic vectors. This audit reduced concern about gross score-to-stay misalignment as an explanation for the null predictive results. Reassuring stability showed weak or inconsistent alignment and was not treated as a construct-validated measurement.
 
 ### Semantic-only discrimination
 
-Among note-available rows, the eight Open-Jev scores alone achieved AUROC 0.60257 for ventilation, 0.44790 for renal replacement therapy, and 0.65682 for MetaVision ICU death on the primary frozen partition.
-
-The ICU-death result is particularly informative: the semantic scores carried standalone prognostic discrimination, yet their addition did not improve discrimination even over the physiology-only comparator.
+Among note-available rows, the eight Open-Jev scores alone achieved AUROC 0.60257 for ventilation, 0.44790 for RRT, and 0.65682 for MetaVision ICU death on the primary frozen partition. The ICU-death result is informative because the semantic scores carried standalone prognostic discrimination, yet their addition did not improve discrimination even over the physiology-only comparator.
 
 ### Comparator decomposition
 
-For invasive ventilation, the Open-Jev delta AUROC was +0.02032 over the 34-feature physiology/laboratory/urine comparator. The increment decreased to +0.01137 after treatment/support context was added and to -0.00172 after documentation-behavior variables were added. With the registered rich comparator, the delta was -0.00005.
+For invasive ventilation, the Open-Jev delta AUROC was +0.02032 over the 34-feature physiology/laboratory/urine comparator. The increment decreased to +0.01137 after treatment/support context was added and to -0.00172 after documentation-behavior variables were added. With the registered rich comparator, the delta was -0.00005 (Figure 2). The five frozen partitions all produced positive ventilation increments at levels A and B; level C and D results were mixed.
 
-At the first two levels, the augmented model could also exploit semantic-score missingness as a marker of note availability because note-context variables had not yet been added to the comparator. The positive early-level increments therefore cannot be attributed entirely to semantic content.
+At levels A and B, the augmented model could also exploit semantic-score missingness as a marker of note availability because note-context variables had not yet been added to the comparator. The positive early-level increments therefore cannot be attributed entirely to semantic content.
 
-For renal replacement therapy, the Open-Jev delta AUROC remained close to zero at every comparator level: -0.00054, -0.00070, +0.00014, and -0.00079 from levels A through D.
-
-For MetaVision ICU death, the corresponding values were -0.00428, -0.00280, -0.00394, and -0.00212. Despite semantic-only AUROC 0.65682, the eight scores did not improve discrimination even over the physiology-only comparator.
+For RRT, the primary-partition Open-Jev delta AUROC remained close to zero at every comparator level: -0.00054, -0.00070, +0.00014, and -0.00079 from levels A through D. For MetaVision ICU death, the corresponding values were -0.00428, -0.00280, -0.00394, and -0.00212. Despite semantic-only AUROC 0.65682, the eight scores did not improve discrimination even over the physiology-only comparator.
 
 ## Discussion
 
-In this preregistered corrected analysis, eight low-dimensional semantic scores derived from bedside ICU notes did not consistently improve short-horizon deterioration discrimination beyond a rich structured EHR comparator. The result was stable across three outcomes, alternative semantic instruments, text-processing sensitivities, timing analyses, a separate CareVue death replication, and patient-shuffled negative controls.
+In this preregistered corrected analysis, eight low-dimensional semantic scores derived from bedside ICU notes did not consistently improve short-horizon deterioration discrimination beyond a rich structured EHR comparator. The result was similar across three outcomes, alternative semantic instruments, text-processing sensitivities, timing analyses, a separate CareVue death replication, and patient-shuffled negative controls.
 
-The findings do not imply that the notes contained no predictive information. In the common logistic family, TF-IDF produced small positive increments for all three outcomes while Open-Jev increments were negative. The semantic-only analysis also showed standalone discrimination for ventilation and especially ICU death. The central result is therefore better interpreted as a failure of incremental value after low-dimensional compression and structured adjustment, rather than absence of prognostic information in clinical text.
+This finding differs from much of the earlier ICU-note prediction literature, where note-derived representations often improved discrimination when added to structured variables.[2-4] The systematic review by Vagliano et al also found important limitations in that literature, including reliance on MIMIC, limited calibration reporting, no external validation, and high risk of bias across included studies.[4] Our analysis addresses a different representation question: whether a small set of predefined semantic scores retains incremental information after a deliberately strong structured and documentation-aware comparator.
 
-The exploratory comparator decomposition clarifies this distinction. For ventilation, semantic augmentation improved discrimination over physiology alone, but the increment attenuated after treatment/support variables were added and disappeared after documentation behavior was represented. Because semantic missingness also exposed note availability before note-context variables entered the comparator, the early positive increment cannot be assigned solely to semantic content. The pattern is consistent with a substantial portion of apparent narrative value reflecting treatment state, documentation process, or closely related clinical context.
+The notes themselves were not devoid of predictive signal. In the common logistic family, TF-IDF produced small positive increments for all three outcomes while Open-Jev increments were negative. The semantic-only analysis also showed standalone discrimination for ventilation and especially ICU death. This distinction is consistent with recent clinical-text benchmarks showing that high-dimensional lexical or language-model representations can extract meaningful predictive information from long clinical documents.[5] The central result is therefore a loss of incremental predictive value after low-dimensional semantic compression and structured adjustment, not absence of prognostic information in clinical text.
 
-The ICU-death analysis showed a different form of redundancy. The semantic scores achieved standalone AUROC 0.65682 among note-available rows but did not improve AUROC even when added only to the core physiology/laboratory comparator. In that outcome, prognostic information represented by the semantic scores appears largely recoverable from structured clinical state. Renal replacement therapy showed little standalone semantic discrimination and little incremental value at any comparator level.
+The exploratory comparator decomposition helps explain why a thinner baseline can make semantic augmentation appear more useful. For ventilation, Open-Jev improved discrimination over physiology alone, the increment attenuated after treatment/support variables were added, and it disappeared after documentation behavior was represented. Because semantic missingness also exposed note availability before note-context variables entered the comparator, the early positive increment cannot be assigned solely to semantic content. The pattern is consistent with treatment state, documentation process, note availability, and semantic content carrying overlapping predictive information.
 
-These results also help explain why earlier exploratory analyses in the project appeared more favorable. The integrity review identified several analysis choices that could inflate or distort apparent semantic value, including source-system mixing, note-selection differences, semantic aggregation errors, and a thinner comparator. After those issues were corrected and the analysis was registered, the estimated increments moved toward zero. This history is scientifically relevant because incremental-value studies are especially sensitive to comparator definition. A text-derived feature can appear useful against an incomplete baseline while adding little once treatment state, documentation behavior, and other available clinical information are represented.
+The ICU-death analysis showed a different form of redundancy. The semantic scores achieved standalone AUROC 0.65682 among note-available rows but did not improve AUROC even when added only to the core physiology/laboratory comparator. In that outcome, prognostic information represented by the semantic scores appears largely recoverable from structured clinical state. RRT showed little standalone semantic discrimination and little incremental value at any comparator level.
 
-The H5 comparison suggests a performance-compression tradeoff. TF-IDF is high dimensional and not readily interpretable at the patient level, but it retained small positive predictive increments under the same logistic learner in which the eight Open-Jev scores did not. Compressing a note to eight predefined dimensions may improve auditability and dimensionality while discarding weak, distributed lexical signals that remain useful for prediction. Human construct validation was not available in this study, so the eight dimensions should not be described as clinically validated or inherently interpretable.
+The findings do not argue against all uses of language models in clinical prediction. Other systems use text selectively or at higher dimensionality and have reported improved performance, including a prospectively implemented sepsis system that applied an LLM to uncertain structured-model predictions.[6] Our result is narrower: eight fixed semantic dimensions did not provide a reproducible incremental discrimination advantage for these three short-horizon ICU outcomes once a rich comparator was used.
+
+The analysis history also matters. The integrity review identified source-system mixing, note-selection differences, semantic aggregation errors, and a thinner comparator in the earlier exploratory lineage. After those issues were corrected and the analysis was registered, the estimated increments moved toward zero. Incremental-value studies are especially sensitive to comparator definition because a text-derived feature can appear useful against an incomplete baseline while becoming redundant after clinically available context is represented.
+
+The H5 comparison suggests a performance-compression tradeoff. TF-IDF is high dimensional and not readily interpretable at the patient level, but it retained small positive predictive increments under the same logistic learner in which the eight Open-Jev scores did not. Compressing a note to eight predefined dimensions may improve auditability and dimensionality while discarding weak, distributed lexical signals useful for prediction. Human construct validation was not available, so these dimensions should not be described as clinically validated or inherently interpretable.
 
 The study has several strengths. The corrected analysis was preregistered before v2.1 predictive performance was examined. Patient grouping, note identity, model settings, uncertainty estimation, and major sensitivity analyses were frozen in advance. The complete analysis lineage, including failed pre-result checks and post-registration deviations, is preserved. The label-free alignment audit further reduces concern that the null result arose from a gross score-to-stay join error.
 
-Several limitations are important. First, MIMIC-III is a single-center database from an older clinical era, and the confirmatory populations were restricted to MetaVision. Second, the structured comparators were already highly discriminative for renal replacement therapy and ICU death, leaving limited headroom for AUROC improvement. Third, clinician construct validation was not performed, so semantic-score meaning was not independently confirmed by human raters. Fourth, external narrative transport was not completed as registered. The available DiffusionGemma Zigong result used a legacy cohort with a recognized note-exclusion specification problem and is not used as central evidence. Fifth, the comparator decomposition and semantic-only analyses were conducted after the registered results were known and are exploratory. Finally, discrimination does not capture every potential use of structured semantic features, including auditing, retrieval, cohort characterization, or other tasks outside short-horizon risk prediction.
+Several limitations are important. First, MIMIC-III is a single-center database from an older clinical era, and the confirmatory populations were restricted to MetaVision. Second, the structured comparators were already highly discriminative for RRT and ICU death, leaving limited headroom for AUROC improvement. Third, clinician construct validation was not performed, so semantic-score meaning was not independently confirmed by human raters. Fourth, external narrative transport was not completed as registered. The available DiffusionGemma Zigong result used a legacy cohort with a recognized note-exclusion specification problem and is not used as central evidence. Fifth, the comparator decomposition and semantic-only analyses were specified after the registered results were known and are exploratory. Finally, discrimination does not capture every potential use of structured semantic features, including auditing, retrieval, cohort characterization, or other tasks outside short-horizon risk prediction.
 
-The practical implication is narrow. For the three deterioration outcomes studied here, adding eight fixed semantic scores to a strong EHR model did not improve discrimination in a reproducible way. Researchers evaluating language-model-derived EHR features should therefore compare them with strong structured and documentation-process baselines and should distinguish standalone prognostic association from incremental predictive value.
+For the outcomes studied here, adding eight fixed semantic scores to a strong EHR model did not improve discrimination in a reproducible way. Evaluation of text-derived EHR features should therefore distinguish standalone prognostic association from incremental predictive value and should compare narrative representations against strong structured and documentation-process baselines.
 
 ## Conclusion
 
-In corrected preregistered MIMIC-III analyses, eight low-dimensional semantic scores derived from prospective ICU notes did not consistently improve discrimination for invasive ventilation, renal replacement therapy, or ICU death beyond a rich structured EHR comparator. Clinical text still contained residual predictive information, particularly in high-dimensional lexical form, but the compact semantic representation did not preserve a consistent incremental advantage. For ventilation, apparent benefit over physiology alone disappeared after documentation behavior was represented; for ICU death, semantic scores were prognostic on their own but redundant with structured clinical state. These findings define a practical limit of low-dimensional semantic compression for short-horizon ICU deterioration prediction.
+In corrected preregistered MIMIC-III analyses, eight low-dimensional semantic scores derived from prospective ICU notes did not consistently improve discrimination for invasive ventilation, RRT, or ICU death beyond a rich structured EHR comparator. Clinical text retained residual predictive information, particularly in high-dimensional lexical form, but the compact semantic representation did not preserve a consistent incremental advantage. For ventilation, apparent benefit over physiology alone disappeared after documentation behavior was represented; for ICU death, semantic scores were prognostic on their own but redundant with structured clinical state.
 
 ## Data and code availability
 
-MIMIC-III data are available through PhysioNet subject to its credentialing and data-use requirements. Restricted clinical notes and row-level derived data are not redistributed by this repository. Analysis code, frozen configuration, aggregate result summaries, and provenance documentation are available in the public project repository.
+MIMIC-III data are available through PhysioNet subject to credentialing and the MIMIC data-use agreement.[7] Restricted clinical notes and row-level derived data are not redistributed by this repository. Analysis code, frozen configuration, aggregate result summaries, and provenance documentation are available in the public project repository.
 
 The Zigong source data are subject to their original access and use conditions. The modified Zigong transport result is not central evidence for this manuscript.
+
+## Ethics statement
+
+The MIMIC-III project was approved by the institutional review boards of Beth Israel Deaconess Medical Center and the Massachusetts Institute of Technology; the requirement for individual patient consent was waived because the project did not affect clinical care and protected health information was deidentified.[7] This secondary analysis used deidentified MIMIC-III data under PhysioNet credentialing and its data-use agreement. [AUTHOR: add any applicable local institutional determination if one exists.]
 
 ## Funding
 
@@ -220,48 +220,34 @@ No external funding supported this study.
 
 ## Competing interests
 
-[AUTHOR TO COMPLETE ACCORDING TO JOURNAL POLICY.]
+[AUTHOR TO COMPLETE BEFORE SUBMISSION.]
 
-## AI-assisted tools
+## Acknowledgments and AI-assisted tools
 
-[AUTHOR TO COMPLETE ACCORDING TO THE TARGET JOURNAL'S CURRENT DISCLOSURE POLICY. Describe factual tool use transparently. Do not use this placeholder in the submitted version.]
+OpenAI ChatGPT (GPT-5.6 Sol) was used to assist with code generation and review, organization of analysis documentation, literature-search support, drafting and editing manuscript text, and preparation of reproducible figure code. The author specified the scientific questions and analysis decisions, reviewed the generated code and outputs, verified manuscript-facing numerical results against frozen aggregate artifacts, verified cited references, and takes responsibility for the final manuscript. No AI system is listed as an author.
 
-## Ethics / data-use statement
+## References
 
-[FINALIZE FROM MIMIC-III/PHYSIONET TERMS AND ANY APPLICABLE INSTITUTIONAL DETERMINATION. Do not infer or invent an IRB determination.]
+1. Ariño H, Bae SK, Chaturvedi J, et al. Identifying encephalopathy in patients admitted to an intensive care unit: going beyond structured information using natural language processing. *Front Digit Health*. 2023;5:1085602. doi:10.3389/fdgth.2023.1085602
+2. Lehman LW, Saeed M, Long W, et al. Risk stratification of ICU patients using topic models inferred from unstructured progress notes. *AMIA Annu Symp Proc*. 2012;2012:505-511. PMID:23304322
+3. Mahbub M, Srinivasan S, Danciu I, et al. Unstructured clinical notes within the 24 hours since admission predict short, mid & long-term mortality in adult ICU patients. *PLoS One*. 2022;17(1):e0262182. doi:10.1371/journal.pone.0262182
+4. Vagliano I, Dormosh N, Rios M, et al. Prognostic models of in-hospital mortality of intensive care patients using neural representation of unstructured text: a systematic review and critical appraisal. *J Biomed Inform*. 2023;146:104504. doi:10.1016/j.jbi.2023.104504
+5. Yoon WJ, Chen S, Gao Y, et al. LCD benchmark: long clinical document benchmark on mortality prediction for language models. *J Am Med Inform Assoc*. 2025;32(2):285-295. doi:10.1093/jamia/ocae287
+6. Shashikumar SP, Mohammadi S, Krishnamoorthy R, et al. Development and prospective implementation of a large language model based system for early sepsis prediction. *NPJ Digit Med*. 2025;8(1):290. doi:10.1038/s41746-025-01689-w
+7. Johnson AEW, Pollard TJ, Shen L, et al. MIMIC-III, a freely accessible critical care database. *Sci Data*. 2016;3:160035. doi:10.1038/sdata.2016.35
+8. Collins GS, Moons KGM, Dhiman P, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. *BMJ*. 2024;385:e078378. doi:10.1136/bmj-2023-078378
+9. Gallifant J, Afshar M, Ameen S, et al. The TRIPOD-LLM reporting guideline for studies using large language models. *Nat Med*. 2025;31(1):60-69. doi:10.1038/s41591-024-03425-5
 
-## Candidate tables and figures
+## Figure legends
 
-### Main Table 1
-Cohort characteristics and primary structured-comparator performance for the three MetaVision outcomes.
+### Figure 1. Incremental discrimination from low-dimensional semantic scores
 
-### Main Table 2
-Registered H1-H3 primary results: comparator AUROC, augmented AUROC, delta AUROC, and 95% refit-bootstrap interval.
+Delta area under the receiver operating characteristic curve (AUROC) for the registered primary Open-Jev analyses, principal registered H6 semantic-instrument sensitivities, separate CareVue ICU-death replication, and registered H7 patient-shuffled negative controls. Points show the primary-partition delta AUROC, defined as augmented model minus its corresponding comparator. Horizontal lines show 95% patient-cluster refit-bootstrap percentile intervals. Panel A presents the three MetaVision outcomes for primary stripped-note Open-Jev, unstripped-note Open-Jev, Laya, and DiffusionGemma. Panel B presents the CareVue Open-Jev replication and patient-shuffled semantic controls. All displayed intervals span zero. MetaVision and CareVue ICU-death analyses are shown separately and were not pooled.
 
-### Main Table 3
-Common-logistic H5 representation comparison: comparator, Open-Jev, TF-IDF, TF-IDF + Open-Jev.
+**Alt text:** Two-panel forest plot of changes in AUROC after adding semantic scores. In panel A, estimates for invasive ventilation, renal replacement therapy, and MetaVision ICU death are clustered near zero for primary Open-Jev and the principal semantic-model sensitivities, with every confidence interval crossing zero. Panel B shows the CareVue ICU-death replication and patient-shuffled semantic controls; these estimates are also near zero or negative, and every confidence interval crosses zero.
 
-### Main Figure 1
-Forest plot of registered delta AUROC estimates and 95% refit-bootstrap intervals for:
-- H1-H3 primary Open-Jev;
-- principal H6 alternative instruments;
-- CareVue ICU-death replication;
-- H7 patient-shuffled controls.
+### Figure 2. Exploratory attenuation of Open-Jev increment across comparator levels
 
-### Main Figure 2
-Exploratory comparator decomposition showing Open-Jev delta AUROC across comparator levels A-D for ventilation, RRT, and ICU death, with five-partition ranges.
+Post-registration exploratory decomposition of Open-Jev incremental AUROC across four nested HistGradientBoosting comparators: A, 34 structured physiology/laboratory/urine features; B, A plus treatment/support context and death-specific code status; C, B plus documentation-behavior variables; and D, C plus ordinary note context, equal to the registered rich comparator. Thin lines and open symbols show all five frozen patient-grouped partitions; the primary partition is emphasized. No new bootstrap was performed, and the spread across partitions is a stability summary rather than a confidence interval. For ventilation, levels A and B require a note-availability caveat because semantic missingness can reveal note availability before documentation/note-context variables enter the comparator.
 
-### Supplement
-Complete H4-H7 sensitivity tables; timing and laboratory-lag results; label-free alignment audit; semantic-only results; H8/H9 deviation records; registration/provenance table; OSF attachment verification.
-
-## References to resolve before submission
-
-Use verified references only. At minimum the final manuscript will need references for:
-- MIMIC-III;
-- clinical prediction reporting standards, including TRIPOD+AI;
-- TRIPOD-LLM;
-- prior work on clinical-note prediction and language models;
-- prior work on documentation behavior as predictive signal;
-- the specific semantic/decision-model methods if citable publications or model papers exist.
-
-Do not fabricate references from model cards or repository names. Verify DOI/PMID and claim support before inserting them.
+**Alt text:** Three-panel plot showing Open-Jev delta AUROC across increasingly rich comparators. Ventilation is positive over physiology alone and after treatment/support variables, then becomes mixed around zero after documentation behavior and note context are included. Renal replacement therapy remains close to zero across all four comparator levels. ICU-death values are near zero or negative across the comparator sequence.
