@@ -1,0 +1,150 @@
+{
+  "title": "Paper 1 Figure 1 data: registered delta AUROC estimates",
+  "updated": "2026-10-03",
+  "primary_and_h6": [
+    {
+      "outcome": "Invasive ventilation",
+      "analysis": "Primary Open-Jev",
+      "estimate": -0.00005,
+      "lo": -0.02173,
+      "hi": 0.0191,
+      "category": "Primary"
+    },
+    {
+      "outcome": "Invasive ventilation",
+      "analysis": "Unstripped Open-Jev",
+      "estimate": -0.01043,
+      "lo": -0.02177,
+      "hi": 0.01773,
+      "category": "H6 sensitivity"
+    },
+    {
+      "outcome": "Invasive ventilation",
+      "analysis": "Laya",
+      "estimate": 0.01031,
+      "lo": -0.01595,
+      "hi": 0.02519,
+      "category": "H6 sensitivity"
+    },
+    {
+      "outcome": "Invasive ventilation",
+      "analysis": "DiffusionGemma",
+      "estimate": -0.00811,
+      "lo": -0.0203,
+      "hi": 0.01445,
+      "category": "H6 sensitivity"
+    },
+    {
+      "outcome": "RRT",
+      "analysis": "Primary Open-Jev",
+      "estimate": -0.00079,
+      "lo": -0.00323,
+      "hi": 0.00275,
+      "category": "Primary"
+    },
+    {
+      "outcome": "RRT",
+      "analysis": "Unstripped Open-Jev",
+      "estimate": -0.00034,
+      "lo": -0.00308,
+      "hi": 0.0031,
+      "category": "H6 sensitivity"
+    },
+    {
+      "outcome": "RRT",
+      "analysis": "Laya",
+      "estimate": -0.00079,
+      "lo": -0.00278,
+      "hi": 0.00302,
+      "category": "H6 sensitivity"
+    },
+    {
+      "outcome": "RRT",
+      "analysis": "DiffusionGemma",
+      "estimate": -0.00083,
+      "lo": -0.00283,
+      "hi": 0.00244,
+      "category": "H6 sensitivity"
+    },
+    {
+      "outcome": "ICU death (MetaVision)",
+      "analysis": "Primary Open-Jev",
+      "estimate": -0.00212,
+      "lo": -0.00802,
+      "hi": 0.00531,
+      "category": "Primary"
+    },
+    {
+      "outcome": "ICU death (MetaVision)",
+      "analysis": "Unstripped Open-Jev",
+      "estimate": 0.00108,
+      "lo": -0.00911,
+      "hi": 0.00602,
+      "category": "H6 sensitivity"
+    },
+    {
+      "outcome": "ICU death (MetaVision)",
+      "analysis": "Laya",
+      "estimate": 0.00141,
+      "lo": -0.0066,
+      "hi": 0.00728,
+      "category": "H6 sensitivity"
+    },
+    {
+      "outcome": "ICU death (MetaVision)",
+      "analysis": "DiffusionGemma",
+      "estimate": 0.00499,
+      "lo": -0.00654,
+      "hi": 0.00652,
+      "category": "H6 sensitivity"
+    }
+  ],
+  "replication_and_negative_controls": [
+    {
+      "outcome": "ICU death (CareVue)",
+      "analysis": "Open-Jev replication",
+      "estimate": -0.00255,
+      "lo": -0.00858,
+      "hi": 0.00812,
+      "category": "Replication"
+    },
+    {
+      "outcome": "Invasive ventilation",
+      "analysis": "Patient-shuffled semantic control",
+      "estimate": -0.01059,
+      "lo": -0.02851,
+      "hi": 0.01432,
+      "category": "H7 shuffled control"
+    },
+    {
+      "outcome": "RRT",
+      "analysis": "Patient-shuffled semantic control",
+      "estimate": -0.00024,
+      "lo": -0.00269,
+      "hi": 0.00313,
+      "category": "H7 shuffled control"
+    },
+    {
+      "outcome": "ICU death (MetaVision)",
+      "analysis": "Patient-shuffled semantic control",
+      "estimate": 0.00309,
+      "lo": -0.00663,
+      "hi": 0.00599,
+      "category": "H7 shuffled control"
+    },
+    {
+      "outcome": "ICU death (CareVue)",
+      "analysis": "Patient-shuffled semantic control",
+      "estimate": -0.00712,
+      "lo": -0.00784,
+      "hi": 0.00882,
+      "category": "H7 shuffled control"
+    }
+  ],
+  "provenance": {
+    "primary": "docs/results/v2_1_primary_openjev_results.md",
+    "h6": "docs/results/v2_1_h6_sensitivity_results.md",
+    "h7": "docs/results/v2_1_h7_patient_shuffled_results.md",
+    "index": "docs/results/PAPER1_PROVENANCE_INDEX_2026-10-03.md"
+  }
+}
