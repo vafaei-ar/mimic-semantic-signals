@@ -14,11 +14,11 @@ Target limits: structured abstract <=250 words; main text <=4000 words; <=4 tabl
 
 **Title:** Incremental predictive value of low-dimensional semantic scores from ICU notes: a preregistered evaluation in MIMIC-III
 
-**Author:** [AUTHOR NAME, DEGREES]
+**Author:** Alireza Vafaei Sadr, PhD, MS
 
-**Affiliation:** [DEPARTMENT, INSTITUTION, CITY, COUNTRY]
+**Affiliation:** Department of Public Health Sciences, Penn State College of Medicine, Hershey, Pennsylvania, USA
 
-**Corresponding author:** [POSTAL ADDRESS, EMAIL, TELEPHONE]
+**Corresponding author:** Alireza Vafaei Sadr, Department of Public Health Sciences, Penn State College of Medicine, 700 HMC Crescent Road, Hershey, PA 17033, USA; [AUTHOR EMAIL]; [AUTHOR TELEPHONE]
 
 **Keywords:** electronic health records; natural language processing; intensive care units; clinical prediction; machine learning
 
