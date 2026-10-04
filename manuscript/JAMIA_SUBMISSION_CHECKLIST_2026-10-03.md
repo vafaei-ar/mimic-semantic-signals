@@ -10,7 +10,7 @@ This is an internal pre-submission cross-check, not a reproduced journal or repo
 
 | Requirement | Current status | Action |
 |---|---|---|
-| Research and Applications main text <=4,000 words | Pass: 3,895 words | None |
+| Research and Applications main text <=4,000 words | Pass: 3,904 words | None |
 | Structured abstract <=250 words | Pass: 234 words | None |
 | Abstract headings: Objective; Materials and Methods; Results; Discussion; Conclusion | Present | None |
 | Background and Significance section | Present | None |
