@@ -3247,3 +3247,21 @@ tasks:
       wait_minutes: 5
     artifacts:
       - outputs/integrity/extension_python_runtimes_v2_1.json
+
+
+  audit_extension_osf_upload_readiness_v2_1:
+    description: Check for an existing local OSF upload client/configuration without reading credential contents, clinical notes, or outcome labels; no upload is performed.
+    command:
+      - /usr/bin/python3
+      - src/169_audit_osf_upload_readiness_v2_1.py
+    approval: automatic
+    timeout_minutes: 5
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 1
+      gpu_count: 0
+      wait_minutes: 5
+    artifacts:
+      - outputs/integrity/extension_osf_upload_readiness_v2_1.json
