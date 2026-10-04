@@ -3062,3 +3062,38 @@ tasks:
       wait_minutes: 15
     artifacts:
       - outputs/manuscript/paper1_table1_characteristics_v2_1.json
+
+
+  build_paper1_nature_figure1:
+    description: Generate the revised Paper 1 Figure 1 as an editable vector SVG from the frozen manuscript-facing aggregate results and registered precision-planning values; no model fitting and no row-level data.
+    command:
+      - .venv/bin/python
+      - manuscript/figure1_nature_style.py
+    approval: automatic
+    timeout_minutes: 10
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 2
+      gpu_count: 0
+      wait_minutes: 10
+    artifacts:
+      - outputs/manuscript/Figure_1_nature_style.svg
+
+  build_paper1_nature_figure2:
+    description: Generate the revised Paper 1 Figure 2 as an editable vector SVG from frozen comparator-decomposition, lexical-comparison, alignment-audit, and note-available subgroup aggregate results; no model fitting and no row-level data.
+    command:
+      - .venv/bin/python
+      - manuscript/figure2_nature_style.py
+    approval: automatic
+    timeout_minutes: 10
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 2
+      gpu_count: 0
+      wait_minutes: 10
+    artifacts:
+      - outputs/manuscript/Figure_2_nature_style.svg
