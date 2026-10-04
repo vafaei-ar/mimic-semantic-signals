@@ -3142,3 +3142,23 @@ tasks:
       wait_minutes: 5
     artifacts:
       - outputs/integrity/paper1_figure_python_environment.json
+
+
+  qa_paper1_final_matplotlib_figures:
+    description: Regenerate the final Paper 1 matplotlib figures from frozen aggregate JSON data and create compact JPEG/data-URI previews for visual QA; no model fitting, row-level data, or figure-content changes.
+    command:
+      - bash
+      - -lc
+      - /home/asadr/miniconda3/bin/python manuscript/make_paper1_figures.py --root . --out outputs/manuscript && /home/asadr/miniconda3/bin/python scripts/make_paper1_figure_previews.py
+    approval: automatic
+    timeout_minutes: 15
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 2
+      gpu_count: 0
+      wait_minutes: 10
+    artifacts:
+      - outputs/manuscript/Figure_1_preview_data_uri.txt
+      - outputs/manuscript/Figure_2_preview_data_uri.txt
