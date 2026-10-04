@@ -90,5 +90,18 @@ Items requiring final attention:
 - RRT semantic-only AUROC below 0.5 explicitly reported without post-hoc inversion.
 - Negative common-logistic Open-Jev increments explicitly explained as valid held-out results.
 - AI disclosure expanded to include Anthropic Claude.
-- **Author action required:** insert the exact Anthropic Claude model/version used, because current OUP policy requires name and version for disclosed GenAI tools.
 - **Author action required:** set the true author/contact details and competing-interest statement. Do not invent a local ethics determination if none exists.
+
+
+## Final mock-review cleanup
+
+- Claude disclosure now identifies Anthropic Claude (Opus 5.5).
+- Post-registration explanatory work is consistently described as four exploratory analyses.
+- The phrase referring to external mock review was removed from the Methods.
+- Main-text ventilation delta AUROC is rounded to -0.0001; standalone ICU-death semantic AUROC is 0.657.
+- Table 1 expanded with age, sex, MAP, lactate, creatinine, ICU length of stay, and case/control note availability using aggregate frozen-cohort summaries.
+- Calibration-slope interpretation added, while retaining calibration as a secondary outcome.
+- Instrument score generation and across-chunk aggregation are described explicitly.
+- Main-text hypothesis shorthand (H1-H3/H5/H6/H7) was replaced with plain descriptions.
+- Laya wording changed to “the Laya typed-decision model.”
+- Verified author identity/affiliation can be entered from Penn State records; exact personal email and telephone still require author confirmation before upload.
