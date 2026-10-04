@@ -1,0 +1,267 @@
+{
+  "updated": "2026-10-04",
+  "status": "mixed registered secondary and post-registration exploratory panels; statuses encoded in panel subtitles/legend",
+  "comparator_decomposition": {
+    "levels": [
+      {
+        "key": "A",
+        "label": "34 structured physiology/lab/urine"
+      },
+      {
+        "key": "B",
+        "label": "+ treatment/support"
+      },
+      {
+        "key": "C",
+        "label": "+ documentation behaviour"
+      },
+      {
+        "key": "D",
+        "label": "+ note context (registered rich comparator)"
+      }
+    ],
+    "outcomes": {
+      "Invasive ventilation": [
+        [
+          0.0203180197405477,
+          0.011368195313877338,
+          -0.001721832445131244,
+          -0.00004663434013885137
+        ],
+        [
+          0.012250609636506926,
+          0.002606231207766596,
+          -0.0015392639645870343,
+          -0.00551277433642805
+        ],
+        [
+          0.002677340307978615,
+          0.00578828075724902,
+          0.00848513472528567,
+          -0.0050454387150353774
+        ],
+        [
+          0.007056668661028942,
+          0.0030070880889611074,
+          -0.00016503926049182827,
+          -0.005365925775990488
+        ],
+        [
+          0.0034641707703231273,
+          0.00016735444049875703,
+          0.004524192473482014,
+          0.009215739387463007
+        ]
+      ],
+      "RRT": [
+        [
+          -0.0005367663233878384,
+          -0.0006958267419786557,
+          0.00014070087394779662,
+          -0.0007886258949026947
+        ],
+        [
+          -0.000024701932792692283,
+          0.0006530990744453291,
+          -0.00027689531421026814,
+          0.0007056741341052719
+        ],
+        [
+          -0.0002356697912386796,
+          -0.0006542674091044587,
+          -0.0005596323017159621,
+          0.00002837384172138524
+        ],
+        [
+          0.0015278479242196719,
+          0.000007176912905970667,
+          -0.0005330944144590344,
+          -0.00024151146453421646
+        ],
+        [
+          0.0015987825285231905,
+          0.00012618014318444004,
+          0.0006178821297206927,
+          0.003324412820036038
+        ]
+      ],
+      "ICU death": [
+        [
+          -0.004280170672699701,
+          -0.0027977293873420184,
+          -0.003939664615840832,
+          -0.0021179095217225274
+        ],
+        [
+          0.0029307842751060686,
+          0.003446789252026572,
+          0.001935018663451804,
+          0.0038976974827826805
+        ],
+        [
+          0.0002010130293641499,
+          -0.006301746548084131,
+          0.0011252437551236838,
+          -0.003268190486909406
+        ],
+        [
+          -0.0023926034835581866,
+          -0.0041058640007363145,
+          -0.002697342097469746,
+          0.0010289101087855856
+        ],
+        [
+          -0.0033926611883661195,
+          -0.0008329045214339192,
+          -0.0008739178560137617,
+          -0.0004246787725948886
+        ]
+      ]
+    }
+  },
+  "logistic_representation": {
+    "note": "All increments use the same registered L2-logistic model family and primary frozen partition; no bootstrap interval was prespecified for this comparison.",
+    "outcomes": [
+      {
+        "outcome": "Invasive ventilation",
+        "openjev": -0.00826,
+        "tfidf": 0.00564,
+        "openjev_after_tfidf": -0.00673
+      },
+      {
+        "outcome": "RRT",
+        "openjev": -0.00194,
+        "tfidf": 0.00219,
+        "openjev_after_tfidf": -0.00153
+      },
+      {
+        "outcome": "ICU death",
+        "openjev": -0.00631,
+        "tfidf": 0.00123,
+        "openjev_after_tfidf": -0.0058
+      }
+    ],
+    "tfidf_max_features": 10000
+  },
+  "alignment": [
+    {
+      "outcome": "Ventilation",
+      "pair": "Hemodynamic vs vasoactive",
+      "real": 0.183,
+      "shuffled": 0.015
+    },
+    {
+      "outcome": "Ventilation",
+      "pair": "Respiratory vs high-flow",
+      "real": 0.177,
+      "shuffled": 0.003
+    },
+    {
+      "outcome": "Ventilation",
+      "pair": "Respiratory vs NIV",
+      "real": 0.081,
+      "shuffled": -0.003
+    },
+    {
+      "outcome": "Ventilation",
+      "pair": "Respiratory vs FiO2",
+      "real": 0.061,
+      "shuffled": 0.027
+    },
+    {
+      "outcome": "RRT",
+      "pair": "Hemodynamic vs vasoactive",
+      "real": 0.137,
+      "shuffled": 0.001
+    },
+    {
+      "outcome": "RRT",
+      "pair": "Respiratory vs high-flow",
+      "real": 0.129,
+      "shuffled": 0.012
+    },
+    {
+      "outcome": "RRT",
+      "pair": "Respiratory vs NIV",
+      "real": 0.106,
+      "shuffled": 0
+    },
+    {
+      "outcome": "RRT",
+      "pair": "Respiratory vs FiO2",
+      "real": 0.077,
+      "shuffled": -0.009
+    },
+    {
+      "outcome": "ICU death",
+      "pair": "Hemodynamic vs vasoactive",
+      "real": 0.145,
+      "shuffled": -0.019
+    },
+    {
+      "outcome": "ICU death",
+      "pair": "Respiratory vs high-flow",
+      "real": 0.128,
+      "shuffled": 0.006
+    },
+    {
+      "outcome": "ICU death",
+      "pair": "Respiratory vs NIV",
+      "real": 0.103,
+      "shuffled": -0.007
+    },
+    {
+      "outcome": "ICU death",
+      "pair": "Respiratory vs FiO2",
+      "real": 0.084,
+      "shuffled": -0.023
+    }
+  ],
+  "note_available": {
+    "note": "Post-registration exploratory; already-frozen full-cohort OOF predictions restricted to has_note=1; no subgroup refitting.",
+    "outcomes": [
+      {
+        "outcome": "Ventilation",
+        "n": 4499,
+        "cases": 135,
+        "deltas": [
+          0.010868384424754685,
+          -0.015799300675561012,
+          0.002559663237939991,
+          0.007556777675934212,
+          0.027862647248531935
+        ]
+      },
+      {
+        "outcome": "RRT",
+        "n": 7709,
+        "cases": 143,
+        "deltas": [
+          -0.0011756681066752428,
+          0.000007394139035721281,
+          -0.0005684244383686865,
+          -0.000808733957029073,
+          0.004306161720911916
+        ]
+      },
+      {
+        "outcome": "ICU death",
+        "n": 7889,
+        "cases": 83,
+        "deltas": [
+          -0.007587614099750284,
+          0.006780388270993365,
+          -0.003082275296420134,
+          0.00006328156592538825,
+          0.000030869056548921137
+        ]
+      }
+    ]
+  },
+  "provenance": {
+    "decomposition": "outputs/multitask_benchmark/submission_exploratory_explanatory_v2_1.json | SHA256 2d125d4f739057594ab066cabca1b5925c2b2c74960f701cadd32d7c923100aa",
+    "lexical": "docs/results/v2_1_h5_lexical_results.md (canonical aggregate H5 summaries)",
+    "alignment": "outputs/multitask_benchmark/submission_semantic_alignment_audit_v2_1.json | SHA256 da28306244f8fcfa07a5172abcb86e33bd1e2639af974240fcc3f3fa0ea5003b",
+    "note_available": "outputs/multitask_benchmark/submission_review_metrics_v2_1.json | SHA256 9b22334207c7afbd6193b22acb87335f795c0d140b2a25627990d6247d3cb39b"
+  }
+}
