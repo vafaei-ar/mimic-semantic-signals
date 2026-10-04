@@ -1,0 +1,282 @@
+{
+  "updated": "2026-10-04",
+  "status": "manuscript-facing figure data frozen from corrected v2.1 aggregate results",
+  "design": {
+    "landmark_hours": 12,
+    "horizon_hours": 12,
+    "cohorts": [
+      {
+        "outcome": "Invasive ventilation",
+        "source": "MetaVision",
+        "n": 11116,
+        "cases": 279
+      },
+      {
+        "outcome": "RRT",
+        "source": "MetaVision",
+        "n": 19395,
+        "cases": 314
+      },
+      {
+        "outcome": "ICU death",
+        "source": "MetaVision",
+        "n": 19811,
+        "cases": 214
+      },
+      {
+        "outcome": "ICU death replication",
+        "source": "CareVue",
+        "n": 25632,
+        "cases": 306
+      }
+    ],
+    "semantic_constructs": [
+      "Overall concern",
+      "Worsening trajectory",
+      "Respiratory concern",
+      "Hemodynamic concern",
+      "Poor treatment response",
+      "Escalation considered",
+      "Diagnostic uncertainty",
+      "Reassuring stability"
+    ],
+    "comparator_lines": [
+      "34 physiology/laboratory/urine features",
+      "+ treatment/support context",
+      "+ documentation behaviour",
+      "+ note context"
+    ],
+    "note_policy": "Single latest eligible bedside note before the 12-hour landmark; endpoint/treatment expressions stripped for the primary corpus."
+  },
+  "planning_magnitude": {
+    "ventilation": 0.0233,
+    "rrt": 0.0113,
+    "death_metavision": 0.0241,
+    "note": "Approximate 80% detectable full-cohort delta AUROC from pre-analysis precision planning; interpretive reference only, not an equivalence margin."
+  },
+  "forest": [
+    {
+      "group": "Invasive ventilation",
+      "analysis": "Primary Open-Jev",
+      "estimate": -0.00005,
+      "lo": -0.02173,
+      "hi": 0.0191,
+      "kind": "primary"
+    },
+    {
+      "group": "Invasive ventilation",
+      "analysis": "Unstripped note",
+      "estimate": -0.01043,
+      "lo": -0.02177,
+      "hi": 0.01773,
+      "kind": "sensitivity"
+    },
+    {
+      "group": "Invasive ventilation",
+      "analysis": "Laya",
+      "estimate": 0.01031,
+      "lo": -0.01595,
+      "hi": 0.02519,
+      "kind": "sensitivity"
+    },
+    {
+      "group": "Invasive ventilation",
+      "analysis": "DiffusionGemma",
+      "estimate": -0.00811,
+      "lo": -0.0203,
+      "hi": 0.01445,
+      "kind": "sensitivity"
+    },
+    {
+      "group": "Invasive ventilation",
+      "analysis": "Broad respiratory-support endpoint",
+      "estimate": -0.00643,
+      "lo": -0.01879,
+      "hi": 0.01046,
+      "kind": "endpoint"
+    },
+    {
+      "group": "Invasive ventilation",
+      "analysis": "CHARTEVENTS storetime",
+      "estimate": 0.00668,
+      "lo": -0.02079,
+      "hi": 0.02286,
+      "kind": "timing"
+    },
+    {
+      "group": "Invasive ventilation",
+      "analysis": "1-h laboratory lag",
+      "estimate": 0.00717,
+      "lo": -0.02333,
+      "hi": 0.01829,
+      "kind": "timing"
+    },
+    {
+      "group": "Invasive ventilation",
+      "analysis": "2-h laboratory lag",
+      "estimate": 0.00216,
+      "lo": -0.02269,
+      "hi": 0.01911,
+      "kind": "timing"
+    },
+    {
+      "group": "Invasive ventilation",
+      "analysis": "Patient-shuffled scores",
+      "estimate": -0.01059,
+      "lo": -0.02851,
+      "hi": 0.01432,
+      "kind": "control"
+    },
+    {
+      "group": "Renal replacement therapy",
+      "analysis": "Primary Open-Jev",
+      "estimate": -0.00079,
+      "lo": -0.00323,
+      "hi": 0.00275,
+      "kind": "primary"
+    },
+    {
+      "group": "Renal replacement therapy",
+      "analysis": "Unstripped note",
+      "estimate": -0.00034,
+      "lo": -0.00308,
+      "hi": 0.0031,
+      "kind": "sensitivity"
+    },
+    {
+      "group": "Renal replacement therapy",
+      "analysis": "Laya",
+      "estimate": -0.00079,
+      "lo": -0.00278,
+      "hi": 0.00302,
+      "kind": "sensitivity"
+    },
+    {
+      "group": "Renal replacement therapy",
+      "analysis": "DiffusionGemma",
+      "estimate": -0.00083,
+      "lo": -0.00283,
+      "hi": 0.00244,
+      "kind": "sensitivity"
+    },
+    {
+      "group": "Renal replacement therapy",
+      "analysis": "CHARTEVENTS storetime",
+      "estimate": 0.00053,
+      "lo": -0.00307,
+      "hi": 0.00261,
+      "kind": "timing"
+    },
+    {
+      "group": "Renal replacement therapy",
+      "analysis": "1-h laboratory lag",
+      "estimate": 0.00069,
+      "lo": -0.00331,
+      "hi": 0.00331,
+      "kind": "timing"
+    },
+    {
+      "group": "Renal replacement therapy",
+      "analysis": "2-h laboratory lag",
+      "estimate": -0.0011,
+      "lo": -0.00294,
+      "hi": 0.00309,
+      "kind": "timing"
+    },
+    {
+      "group": "Renal replacement therapy",
+      "analysis": "Patient-shuffled scores",
+      "estimate": -0.00024,
+      "lo": -0.00269,
+      "hi": 0.00313,
+      "kind": "control"
+    },
+    {
+      "group": "ICU death",
+      "analysis": "Primary Open-Jev (MetaVision)",
+      "estimate": -0.00212,
+      "lo": -0.00802,
+      "hi": 0.00531,
+      "kind": "primary"
+    },
+    {
+      "group": "ICU death",
+      "analysis": "Unstripped note (MetaVision)",
+      "estimate": 0.00108,
+      "lo": -0.00911,
+      "hi": 0.00602,
+      "kind": "sensitivity"
+    },
+    {
+      "group": "ICU death",
+      "analysis": "Laya (MetaVision)",
+      "estimate": 0.00141,
+      "lo": -0.0066,
+      "hi": 0.00728,
+      "kind": "sensitivity"
+    },
+    {
+      "group": "ICU death",
+      "analysis": "DiffusionGemma (MetaVision)",
+      "estimate": 0.00499,
+      "lo": -0.00654,
+      "hi": 0.00652,
+      "kind": "sensitivity"
+    },
+    {
+      "group": "ICU death",
+      "analysis": "CHARTEVENTS storetime (MetaVision)",
+      "estimate": -0.00207,
+      "lo": -0.00923,
+      "hi": 0.00689,
+      "kind": "timing"
+    },
+    {
+      "group": "ICU death",
+      "analysis": "1-h laboratory lag (MetaVision)",
+      "estimate": 0.00153,
+      "lo": -0.00936,
+      "hi": 0.00618,
+      "kind": "timing"
+    },
+    {
+      "group": "ICU death",
+      "analysis": "2-h laboratory lag (MetaVision)",
+      "estimate": -0.00415,
+      "lo": -0.00849,
+      "hi": 0.00655,
+      "kind": "timing"
+    },
+    {
+      "group": "ICU death",
+      "analysis": "CareVue replication",
+      "estimate": -0.00255,
+      "lo": -0.00858,
+      "hi": 0.00812,
+      "kind": "replication"
+    },
+    {
+      "group": "ICU death",
+      "analysis": "Patient-shuffled scores (MetaVision)",
+      "estimate": 0.00309,
+      "lo": -0.00663,
+      "hi": 0.00599,
+      "kind": "control"
+    },
+    {
+      "group": "ICU death",
+      "analysis": "Patient-shuffled scores (CareVue)",
+      "estimate": -0.00712,
+      "lo": -0.00784,
+      "hi": 0.00882,
+      "kind": "control"
+    }
+  ],
+  "provenance": {
+    "primary": "docs/results/v2_1_primary_openjev_results.md",
+    "h6": "docs/results/v2_1_h6_sensitivity_results.md",
+    "h7": "docs/results/v2_1_h7_patient_shuffled_results.md",
+    "sap": "docs/postreview_confirmatory_sap_v2_1_draft.md",
+    "index": "docs/results/PAPER1_PROVENANCE_INDEX_2026-10-03.md"
+  }
+}
