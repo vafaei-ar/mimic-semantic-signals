@@ -176,6 +176,28 @@ The expanded main-text Table 1 uses aggregate descriptive summaries from the fro
 - manuscript-facing summary: `docs/results/v2_1_submission_characteristics_results.md`
 - no model fitting; aggregate summaries only
 
+## Final manuscript figure provenance
+
+The final main figures are code-generated editable vector graphics. No generative-image output is used in the manuscript figures.
+
+### Figure 1
+
+- generator: `manuscript/figure1_nature_style.py`
+- frozen data: `manuscript/figure1_nature_style_data.json`
+- RunRelay job: `N7V3R9K5`
+- exact project commit: `9e595c77f08694a63334f4c7fcf7f479be54bb4a`
+- canonical SVG: `outputs/manuscript/Figure_1_nature_style.svg`
+- SHA-256: `df8e0aaf4aa4c3abdacb09b74ab43c5103d65d7f6a321205a1093269606d8c9d`
+
+### Figure 2
+
+- generator: `manuscript/figure2_nature_style.py`
+- frozen data: `manuscript/figure2_nature_style_data.json`
+- RunRelay job: `P8W4T2M6`
+- exact project commit: `9e595c77f08694a63334f4c7fcf7f479be54bb4a`
+- canonical SVG: `outputs/manuscript/Figure_2_nature_style.svg`
+- SHA-256: `df105b1f2b66f09d218253d0843cc53725876a9162fef13e197cef071aea70ff`
+
 ## Manuscript provenance rule
 
 Every numerical value in the main text, abstract, figures, or supplement must map to one row/entry in this index or to a more detailed canonical result document linked from it.
