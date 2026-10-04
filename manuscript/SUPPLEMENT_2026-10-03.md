@@ -16,12 +16,12 @@ The corrected v2.1 analysis used source-compatible cohorts, adult/NICU eligibili
 
 The prediction landmark was 12 hours after ICU admission. Primary outcomes were assessed during the subsequent 12 hours.
 
-| Outcome | Source | Stays | Unique patients | Cases | Controls | Eligible-note rows |
-|---|---|---:|---:|---:|---:|---:|
-| Invasive ventilation | MetaVision | 11,116 | 8,982 | 279 | 10,837 | 4,499 |
-| Renal replacement therapy | MetaVision | 19,395 | [see frozen split manifest] | 314 | 19,081 | 7,709 |
-| ICU death | MetaVision | 19,811 | [see frozen split manifest] | 214 | 19,597 | 7,889 |
-| ICU death replication | CareVue | 25,632 | [see frozen split manifest] | 306 | 25,326 | 23,272 |
+| Outcome | Source | Stays | Cases | Controls | Eligible-note rows |
+|---|---|---:|---:|---:|---:|
+| Invasive ventilation | MetaVision | 11,116 | 279 | 10,837 | 4,499 |
+| Renal replacement therapy | MetaVision | 19,395 | 314 | 19,081 | 7,709 |
+| ICU death | MetaVision | 19,811 | 214 | 19,597 | 7,889 |
+| ICU death replication | CareVue | 25,632 | 306 | 25,326 | 23,272 |
 
 MetaVision and CareVue death analyses were not pooled.
 
