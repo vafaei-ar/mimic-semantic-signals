@@ -3044,3 +3044,21 @@ tasks:
       wait_minutes: 15
     artifacts:
       - outputs/multitask_benchmark/submission_review_metrics_v2_1.json
+
+
+  summarize_submission_characteristics_v2_1:
+    description: Summarize aggregate baseline characteristics for the three frozen MetaVision confirmatory cohorts, including age, sex, MAP, lactate, creatinine, ICU length of stay, and note availability by case/control status; no model fitting and no row-level artifacts.
+    command:
+      - bash
+      - scripts/run_submission_characteristics_v2_1.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/manuscript/paper1_table1_characteristics_v2_1.json
