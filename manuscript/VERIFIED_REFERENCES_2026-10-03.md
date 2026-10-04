@@ -20,8 +20,8 @@ References 1-7 and 11-17 were verified against PubMed metadata. References 8-10 
 | 12 | Gallifant et al., 2025 | 10.1038/s41591-024-03425-5 | TRIPOD-LLM reporting framework |
 | 13 | Rossetti et al., 2025 | 10.1038/s41591-025-03609-7 | CONCERN trial; nursing surveillance documentation patterns as deterioration signal |
 | 14 | Wan et al., 2025 | 10.1016/j.jbi.2025.104887 | Generalizability of deterioration prediction from nursing documentation patterns across many hospitals |
-| 15 | Singh et al., 2021 | 10.2196/25022 | Informative missingness features in critical-care prediction |
-| 16 | Pencina et al., 2010 | 10.1515/CCLM.2010.340 | Added predictive value should be assessed with metrics beyond discrimination alone |
-| 17 | Kim et al., 2023 | 10.1016/j.ijnurstu.2022.104411 | Systematic review of nursing data, including documentation frequency, in ICU outcome prediction |
+| 15 | Kim et al., 2023 | 10.1016/j.ijnurstu.2022.104411 | Nursing data, including documentation frequency, in ICU outcome prediction |
+| 16 | Singh et al., 2021 | 10.2196/25022 | Informative missingness features in critical-care prediction |
+| 17 | Pencina et al., 2010 | 10.1515/CCLM.2010.340 | Added predictive value should be assessed with metrics beyond discrimination alone |
 
 No manuscript claim should be expanded beyond what these sources or model cards support without adding another verified source.
