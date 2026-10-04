@@ -36,7 +36,7 @@ We conducted a preregistered MIMIC-III MetaVision study predicting invasive vent
 
 ### Results
 
-Open-Jev delta AUROC was -0.00005 for ventilation (95% interval -0.0217 to 0.0191), -0.0008 for renal replacement therapy (-0.0032 to 0.0028), and -0.0021 for ICU death (-0.0080 to 0.0053). Delta Brier score and log loss were also near zero, with bootstrap intervals spanning both directions for all outcomes. Within a common logistic family, TF-IDF produced small positive increments while Open-Jev increments were negative for all outcomes. In exploratory decomposition, the ventilation Open-Jev increment decreased from +0.0203 over physiology alone to -0.0017 after documentation behavior was added.
+Open-Jev delta AUROC was -0.0001 for ventilation (95% interval -0.0217 to 0.0191), -0.0008 for renal replacement therapy (-0.0032 to 0.0028), and -0.0021 for ICU death (-0.0080 to 0.0053). Delta Brier score and log loss were also near zero, with bootstrap intervals spanning both directions for all outcomes. Within a common logistic family, TF-IDF produced small positive increments while Open-Jev increments were negative for all outcomes. In exploratory decomposition, the ventilation Open-Jev increment decreased from +0.0203 over physiology alone to -0.0017 after documentation behavior was added.
 
 ### Discussion
 
@@ -56,7 +56,7 @@ A compact semantic vector is easier to inspect, store, audit, and reuse than tho
 
 Early exploratory analyses in this project suggested positive semantic increments for some deterioration outcomes. A subsequent integrity review identified methodological problems in that earlier analysis lineage, including source-system mixing, note-selection rules, semantic aggregation errors, and an insufficient structured comparator. Those results were placed on hold, the analysis was rebuilt, and the corrected v2.1 study was registered before its predictive performance was examined.
 
-The primary objective of the registered analysis was to estimate the incremental discrimination provided by eight Open-Jev semantic scores beyond a rich structured comparator for three short-horizon ICU outcomes. Secondary analyses examined alternative semantic instruments, lexical text representation, timing and endpoint sensitivities, source-specific replication, and a patient-shuffled semantic negative control. After the registered analyses were complete, two bounded exploratory analyses were added to clarify the null result: a label-free alignment audit and a nested comparator decomposition.
+The primary objective of the registered analysis was to estimate the incremental discrimination provided by eight Open-Jev semantic scores beyond a rich structured comparator for three short-horizon ICU outcomes. Secondary analyses examined alternative semantic instruments, lexical text representation, timing and endpoint sensitivities, source-specific replication, and a patient-shuffled semantic negative control. After the registered analyses were complete, four bounded exploratory analyses were used to clarify the null result: a label-free alignment audit, semantic-only discrimination, nested comparator decomposition, and a note-available frozen-prediction subgroup analysis.
 
 ## Materials and Methods
 
@@ -70,13 +70,22 @@ The registered analysis is available at OSF registration ahxn9, DOI 10.17605/OSF
 
 The three confirmatory outcomes were new invasive ventilation, renal replacement therapy (RRT), and ICU death. Table 1 gives the frozen population counts and note availability. A separate CareVue ICU-death cohort of 25,632 stays and 306 cases was retained as a prespecified replication/sensitivity analysis rather than pooled with MetaVision.
 
-**Table 1. Frozen confirmatory populations**
+**Table 1. Frozen MetaVision confirmatory cohort characteristics**
 
-| Outcome | Source | Stays, n | Cases, n (%) | Eligible note available, n (%) |
-|---|---|---:|---:|---:|
-| Invasive ventilation | MetaVision | 11,116 | 279 (2.51) | 4,499 (40.47) |
-| Renal replacement therapy | MetaVision | 19,395 | 314 (1.62) | 7,709 (39.75) |
-| ICU death | MetaVision | 19,811 | 214 (1.08) | 7,889 (39.82) |
+| Characteristic | Invasive ventilation (n=11,116) | RRT (n=19,395) | ICU death (n=19,811) |
+|---|---:|---:|---:|
+| Cases, n (%) | 279 (2.5) | 314 (1.6) | 214 (1.1) |
+| Age, years, median [IQR] | 65.9 [53.3-79.0] | 66.1 [53.9-78.1] | 66.0 [53.9-78.1] |
+| Male sex, n (%) | 6,003 (54.0) | 10,926 (56.3) | 11,160 (56.3) |
+| Mean arterial pressure, mmHg, median [IQR] | 75 [66-86] | 75 [66-85] | 75 [66-85] |
+| Lactate, mmol/L, median [IQR] | 1.6 [1.2-2.2] | 1.7 [1.2-2.4] | 1.7 [1.2-2.4] |
+| Creatinine, mg/dL, median [IQR] | 1.0 [0.7-1.6] | 1.0 [0.7-1.4] | 1.0 [0.7-1.5] |
+| ICU length of stay, days, median [IQR] | 2.04 [1.41-3.31] | 2.31 [1.52-4.31] | 2.31 [1.51-4.32] |
+| Eligible note available, n (%) | 4,499 (40.5) | 7,709 (39.7) | 7,889 (39.8) |
+| Eligible note among cases, n/N (%) | 135/279 (48.4) | 143/314 (45.5) | 83/214 (38.8) |
+| Eligible note among controls, n/N (%) | 4,364/10,837 (40.3) | 7,566/19,081 (39.7) | 7,806/19,597 (39.8) |
+
+Continuous summaries use available measurements without imputation. Nonmissing counts for mean arterial pressure were 10,910, 19,159, and 19,567; for lactate, 6,097, 13,458, and 13,790; and for creatinine, 10,913, 19,151, and 19,563, respectively. ICU length of stay is descriptive and was not used as a predictor.
 
 ### Structured comparator
 
@@ -90,17 +99,17 @@ The primary learner was a HistGradientBoostingClassifier with prespecified setti
 
 For each eligible stay, note identity was fixed before text processing. The primary corpus used the most recent eligible prospective bedside note and removed prespecified direct endpoint or treatment expressions without otherwise normalizing the text. Rows without an eligible note remained in the population and had semantic inputs treated as missing.
 
-Open-Jev, an open-source DeBERTa-v3-large typed-decision model, was the primary semantic instrument.[8] It produced eight scores: overall clinician concern, worsening trajectory, respiratory concern, hemodynamic concern, poor treatment response, escalation considered, diagnostic uncertainty, and reassuring stability. The exact frozen question wording and affirmative/negative criteria are provided in Supplementary Section S4.2. The primary augmented model was identical to the rich structured comparator except for the addition of these eight scores.
+Open-Jev, an open-source DeBERTa-v3-large typed-decision model, was the primary semantic instrument.[8] It produced eight scores: overall clinician concern, worsening trajectory, respiratory concern, hemodynamic concern, poor treatment response, escalation considered, diagnostic uncertainty, and reassuring stability. Each construct was posed as a yes/no typed decision, and the Open-Jev score was the model probability assigned to the affirmative response. Notes were processed in overlapping chunks; chunk scores were combined by taking the maximum for the seven concern-oriented constructs and the minimum for reassuring stability. The Laya typed-decision model[9] used the same question schema and aggregation rule. DiffusionGemma[10] was prompted to return a zero-shot 0-1 support score for each construct, with the same across-chunk aggregation; these prompted scores were not treated as calibrated typed-decision probabilities. The exact frozen question wording, response criteria, and instrument versions are provided in Supplementary Section S4. The primary augmented model was identical to the rich structured comparator except for the addition of these eight scores.
 
 ### Cross-validation and uncertainty
 
 Patient-grouped fold assignments were frozen before predictive evaluation. The point estimate used the first of five prespecified five-fold partitions. Four additional partitions assessed sensitivity to fold assignment and refitting.
 
-For the primary H1-H3 estimates, uncertainty was quantified using 500 valid patient-cluster bootstrap replicates of the complete repeat-1 cross-fitting procedure. Both comparator and augmented models were refit within each bootstrap replicate. We report percentile 95% intervals and do not use confirmatory p-values or binary significance classifications. Registered secondary metrics included AUPRC, Brier score, log loss, calibration-in-the-large, calibration slope, expected calibration error, and decision-curve net benefit.
+For the three primary outcome analyses, uncertainty was quantified using 500 valid patient-cluster bootstrap replicates of the complete repeat-1 cross-fitting procedure. Both comparator and augmented models were refit within each bootstrap replicate. We report percentile 95% intervals and do not use confirmatory p-values or binary significance classifications. Registered secondary metrics included AUPRC, Brier score, log loss, calibration-in-the-large, calibration slope, expected calibration error, and decision-curve net benefit.
 
 ### Secondary and sensitivity analyses
 
-Prespecified analyses included an unstripped-note Open-Jev sensitivity, Laya typed decisions[9] and DiffusionGemma[10] as alternative semantic instruments, a six-construct subset, timing and laboratory-lag sensitivities, a broader respiratory-support endpoint, and separate CareVue ICU-death replication.
+Prespecified analyses included an unstripped-note Open-Jev sensitivity, the Laya typed-decision model[9] and DiffusionGemma[10] as alternative semantic instruments, a six-construct subset, timing and laboratory-lag sensitivities, a broader respiratory-support endpoint, and separate CareVue ICU-death replication.
 
 A lexical comparison used term frequency-inverse document frequency (TF-IDF) features in a common L2-penalized logistic-regression family. Within each training fold, the same encoded rich comparator was evaluated alone, with Open-Jev, with TF-IDF, and with both representations. This analysis was designed to compare representation types while holding the downstream learner family constant.
 
@@ -108,13 +117,15 @@ The registered patient-shuffled negative control reassigned complete eight-score
 
 ### Post-registration explanatory analyses
 
-After the registered results were known, we performed two narrowly scoped exploratory analyses.
+After the registered results were known, we performed four narrowly scoped exploratory analyses.
 
 First, a label-free alignment audit evaluated whether semantic scores were associated with clinically corresponding structured support states and whether those associations exceeded between-patient shuffled references. Outcome labels were not read for this audit.
 
-Second, among note-available rows only, we estimated discrimination from the eight Open-Jev scores alone. We also fit four nested HistGradientBoosting comparator levels using the same frozen populations and partitions: level A, the 34-feature physiology/laboratory/urine block; level B, level A plus treatment/support context and death-specific code status; level C, level B plus documentation-behavior variables; and level D, level C plus ordinary note context, corresponding to the registered rich comparator. At each level, we estimated the Open-Jev delta AUROC across the five frozen partitions without a new bootstrap.
+Second, among note-available rows only, we estimated discrimination from the eight Open-Jev scores alone.
 
-Third, after external mock review of the submission package, we performed a bounded exploratory note-available subgroup analysis. This analysis did not refit any model. It restricted the already-frozen full-cohort out-of-fold comparator and augmented predictions to rows with `has_note=1` and summarized performance across the five frozen partitions.
+Third, we fit four nested HistGradientBoosting comparator levels using the same frozen populations and partitions: level A, the 34-feature physiology/laboratory/urine block; level B, level A plus treatment/support context and death-specific code status; level C, level B plus documentation-behavior variables; and level D, level C plus ordinary note context, corresponding to the registered rich comparator. At each level, we estimated the Open-Jev delta AUROC across the five frozen partitions without a new bootstrap.
+
+Fourth, we performed a post-registration exploratory subgroup analysis restricted to patients with an eligible note. This analysis did not refit any model. It restricted the already-frozen full-cohort out-of-fold comparator and augmented predictions to rows with `has_note=1` and summarized performance across the five frozen partitions.
 
 ### Registered deviations
 
@@ -130,13 +141,13 @@ Manuscript reporting was cross-checked against TRIPOD+AI, the current reporting 
 
 ### Primary analyses
 
-The rich structured comparator achieved AUROCs of 0.725 for invasive ventilation, 0.974 for RRT, and 0.933 for MetaVision ICU death. Adding the eight Open-Jev scores changed AUROC by -0.00005, -0.0008, and -0.0021, respectively (Table 2). All three refit-bootstrap intervals included both negative and positive values. Across the five frozen patient-grouped partitions, ventilation delta AUROC ranged from -0.0055 to +0.0092, RRT from -0.0008 to +0.0033, and ICU death from -0.0033 to +0.0039.
+The rich structured comparator achieved AUROCs of 0.725 for invasive ventilation, 0.974 for RRT, and 0.933 for MetaVision ICU death. Adding the eight Open-Jev scores changed AUROC by -0.0001, -0.0008, and -0.0021, respectively (Table 2). All three refit-bootstrap intervals included both negative and positive values. Across the five frozen patient-grouped partitions, ventilation delta AUROC ranged from -0.0055 to +0.0092, RRT from -0.0008 to +0.0033, and ICU death from -0.0033 to +0.0039.
 
 **Table 2. Registered primary Open-Jev results**
 
 | Outcome | Comparator AUROC | + Open-Jev AUROC | Delta AUROC | 95% refit-bootstrap interval | Delta AUPRC |
 |---|---:|---:|---:|---:|---:|
-| Invasive ventilation | 0.725 | 0.725 | -0.00005 | -0.0217 to +0.0191 | +0.0039 |
+| Invasive ventilation | 0.725 | 0.725 | -0.0001 | -0.0217 to +0.0191 | +0.0039 |
 | Renal replacement therapy | 0.974 | 0.973 | -0.0008 | -0.0032 to +0.0028 | -0.0005 |
 | ICU death, MetaVision | 0.933 | 0.931 | -0.0021 | -0.0080 to +0.0053 | +0.0009 |
 
@@ -147,7 +158,7 @@ Registered proper-scoring and calibration metrics gave the same overall interpre
 
 Within the common logistic-regression family, Open-Jev increments were negative for all three outcomes, whereas TF-IDF increments were small and positive (Table 3). Adding Open-Jev after TF-IDF reduced AUROC in all three primary analyses. Thus, the bedside notes retained residual predictive information under the common logistic specification, but the eight-dimensional semantic representation did not preserve the same incremental discrimination.
 
-**Table 3. Registered H5 representation comparison within a common logistic model family**
+**Table 3. Registered representation comparison within a common logistic model family**
 
 | Outcome | Comparator AUROC | + Open-Jev | + TF-IDF | + TF-IDF + Open-Jev | Open-Jev increment | TF-IDF increment | Open-Jev after TF-IDF |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -179,7 +190,7 @@ Restricting the already-frozen full-cohort out-of-fold predictions to patients w
 
 ### Comparator decomposition
 
-For invasive ventilation, the Open-Jev delta AUROC was +0.0203 over the 34-feature physiology/laboratory/urine comparator. The increment decreased to +0.0114 after treatment/support context was added and to -0.0017 after documentation-behavior variables were added. With the registered rich comparator, the delta was -0.00005 (Figure 2). The five frozen partitions all produced positive ventilation increments at levels A and B; level C and D results were mixed.
+For invasive ventilation, the Open-Jev delta AUROC was +0.0203 over the 34-feature physiology/laboratory/urine comparator. The increment decreased to +0.0114 after treatment/support context was added and to -0.0017 after documentation-behavior variables were added. With the registered rich comparator, the delta was less than 0.0001 in magnitude (Figure 2). The five frozen partitions all produced positive ventilation increments at levels A and B; level C and D results were mixed.
 
 At levels A and B, the augmented model could also exploit semantic-score missingness as a marker of note availability because note-context variables had not yet been added to the comparator. The positive early-level increments therefore cannot be attributed entirely to semantic content.
 
@@ -203,7 +214,7 @@ The findings do not argue against all uses of language models in clinical predic
 
 The analysis history also matters. The integrity review identified source-system mixing, note-selection differences, semantic aggregation errors, and a thinner comparator in the earlier exploratory lineage. After those issues were corrected and the analysis was registered, the estimated increments moved toward zero. Incremental-value studies are especially sensitive to comparator definition because a text-derived feature can appear useful against an incomplete baseline while becoming redundant after clinically available context is represented.
 
-The H5 comparison suggests a performance-compression tradeoff. TF-IDF is high dimensional and not readily interpretable at the patient level, but it retained small positive predictive increments under the same logistic learner in which the eight Open-Jev scores did not. Compressing a note to eight predefined dimensions may improve auditability and dimensionality while discarding weak, distributed lexical signals useful for prediction. Human construct validation was not available, so these dimensions should not be described as clinically validated or inherently interpretable.
+The common-logistic representation comparison suggests a performance-compression tradeoff. TF-IDF is high dimensional and not readily interpretable at the patient level, but it retained small positive predictive increments under the same logistic learner in which the eight Open-Jev scores did not. Compressing a note to eight predefined dimensions may improve auditability and dimensionality while discarding weak, distributed lexical signals useful for prediction. Human construct validation was not available, so these dimensions should not be described as clinically validated or inherently interpretable.
 
 Assessment of added predictive value should not rely on the c-statistic alone; proper scoring and calibration measures provide complementary information about probability accuracy and risk separation.[17] In the present study, Brier score, log loss, calibration measures, and decision-curve summaries did not reveal a consistent benefit that was hidden by AUROC.
 
@@ -237,7 +248,7 @@ No external funding supported this study.
 
 ## Acknowledgments and AI-assisted tools
 
-OpenAI ChatGPT (GPT-5.6 Sol) was used for code generation and review, organization of analysis documentation, literature-search support, drafting and editing manuscript text, and preparation of reproducible figure code. Anthropic Claude [exact model/version to be confirmed by the author] was used for independent code, study-design, and manuscript review. The author specified the scientific questions, made and adjudicated the analysis decisions, reviewed AI-assisted code and recommendations, verified manuscript-facing numerical results against frozen aggregate artifacts, verified cited references, and takes responsibility for the final manuscript. No AI system is listed as an author.
+OpenAI ChatGPT (GPT-5.6 Sol) was used for code generation and review, organization of analysis documentation, literature-search support, drafting and editing manuscript text, and preparation of reproducible figure code. Anthropic Claude (Opus 5.5) was used for independent code, study-design, and manuscript review. The author specified the scientific questions, made and adjudicated the analysis decisions, reviewed AI-assisted code and recommendations, verified manuscript-facing numerical results against frozen aggregate artifacts, verified cited references, and takes responsibility for the final manuscript. No AI system is listed as an author.
 
 ## References
 
@@ -263,7 +274,7 @@ OpenAI ChatGPT (GPT-5.6 Sol) was used for code generation and review, organizati
 
 ### Figure 1. Incremental discrimination from low-dimensional semantic scores
 
-Delta area under the receiver operating characteristic curve (AUROC) for the registered primary Open-Jev analyses, principal registered H6 semantic-instrument sensitivities, separate CareVue ICU-death replication, and registered H7 patient-shuffled negative controls. Points show the primary-partition delta AUROC, defined as augmented model minus its corresponding comparator. Horizontal lines show 95% patient-cluster refit-bootstrap percentile intervals. Panel A presents the three MetaVision outcomes for primary stripped-note Open-Jev, unstripped-note Open-Jev, Laya, and DiffusionGemma. Panel B presents the CareVue Open-Jev replication and patient-shuffled semantic controls. All displayed intervals span zero. MetaVision and CareVue ICU-death analyses are shown separately and were not pooled.
+Delta area under the receiver operating characteristic curve (AUROC) for the registered primary Open-Jev analyses, principal registered alternative-instrument sensitivities, separate CareVue ICU-death replication, and registered patient-shuffled negative controls. Points show the primary-partition delta AUROC, defined as augmented model minus its corresponding comparator. Horizontal lines show 95% patient-cluster refit-bootstrap percentile intervals. Panel A presents the three MetaVision outcomes for primary stripped-note Open-Jev, unstripped-note Open-Jev, Laya, and DiffusionGemma. Panel B presents the CareVue Open-Jev replication and patient-shuffled semantic controls. All displayed intervals span zero. MetaVision and CareVue ICU-death analyses are shown separately and were not pooled.
 
 **Alt text:** Two-panel forest plot of changes in AUROC after adding semantic scores. In panel A, estimates for invasive ventilation, renal replacement therapy, and MetaVision ICU death are clustered near zero for primary Open-Jev and the principal semantic-model sensitivities, with every confidence interval crossing zero. Panel B shows the CareVue ICU-death replication and patient-shuffled semantic controls; these estimates are also near zero or negative, and every confidence interval crosses zero.
 
