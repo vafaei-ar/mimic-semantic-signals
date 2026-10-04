@@ -82,7 +82,6 @@ y = draw_panel(
     "Source replication and patient-shuffled negative controls", "B", 330
 )
 
-svg.append(f'<text x="45" y="{H-28}" class="note">Points are delta AUROC estimates; horizontal lines are 95% patient-cluster refit-bootstrap intervals. All displayed intervals span zero.</text>')
 svg.append('</svg>')
 
 OUT.write_text("\n".join(svg), encoding="utf-8")
