@@ -70,7 +70,7 @@ Items requiring final attention:
 
 ## Author-only items before upload
 
-- Replace author, degree, department, institutional affiliation, postal address, email, and telephone placeholders.
+- Author name, degrees, department, institution, and postal address are filled from verified Penn State records; replace only the email and telephone placeholders.
 - Complete the competing-interest declaration.
 - Confirm whether any local institutional/IRB determination should be named.
 - Confirm that the manuscript is not under consideration elsewhere.
