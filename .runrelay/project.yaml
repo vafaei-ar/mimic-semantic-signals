@@ -3176,3 +3176,38 @@ tasks:
       wait_minutes: 5
     artifacts:
       - outputs/integrity/paper1_submission_repo_audit.json
+
+
+  audit_extension_embedding_environment_v2_1:
+    description: Audit locally cached open-weight embedding models and installed embedding packages using label-free environment metadata only; read no clinical notes or outcome labels and use no network.
+    command:
+      - /usr/bin/python3
+      - src/165_audit_extension_embedding_environment_v2_1.py
+    approval: automatic
+    timeout_minutes: 10
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 1
+      gpu_count: 0
+      wait_minutes: 5
+    artifacts:
+      - outputs/integrity/extension_embedding_environment_v2_1.json
+
+  freeze_paper1_jamia_ready_v2_1:
+    description: Create and push the immutable Git tag paper1-jamia-ready-2026-10-04 at the frozen JAMIA-ready commit f57ddfbdc5ac6c700431a96b281b40cdd1505382; no project files are modified.
+    command:
+      - /usr/bin/python3
+      - src/166_freeze_paper1_jamia_ready_v2_1.py
+    approval: manual
+    timeout_minutes: 10
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 1
+      gpu_count: 0
+      wait_minutes: 5
+    artifacts:
+      - outputs/integrity/paper1_extension_freeze.json
