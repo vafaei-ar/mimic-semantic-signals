@@ -22,7 +22,7 @@ Target limits: structured abstract <=250 words; main text <=4000 words; <=4 tabl
 
 **Keywords:** electronic health records; natural language processing; intensive care units; clinical prediction; machine learning
 
-**Main-text word count:** 3,078 (abstract: 231)
+**Main-text word count:** 3,626 (abstract: 234)
 
 ## Abstract
 
@@ -195,7 +195,7 @@ The notes themselves were not devoid of predictive signal. In the common logisti
 
 The exploratory comparator decomposition helps explain why a thinner baseline can make semantic augmentation appear more useful. For ventilation, Open-Jev improved discrimination over physiology alone, the increment attenuated after treatment/support variables were added, and it disappeared after documentation behavior was represented. Because semantic missingness also exposed note availability before note-context variables entered the comparator, the early positive increment cannot be assigned solely to semantic content. The pattern is consistent with treatment state, documentation process, note availability, and semantic content carrying overlapping predictive information.
 
-This interpretation is consistent with work treating documentation behavior itself as a clinical signal. The CONCERN early-warning system uses nursing surveillance documentation patterns to estimate deterioration risk and was evaluated in a multisite pragmatic cluster-randomized trial.[13] A separate analysis found that a deterioration-prediction framework based on nursing documentation patterns reproduced and generalized across a large set of US hospitals,[14] and a systematic review of ICU prediction studies identified documentation frequency among the nursing-data modalities used for outcome prediction.[17] More broadly, missingness and measurement patterns in EHR data can themselves be informative about clinical state and clinician behavior.[15] These findings reinforce the need to distinguish narrative semantic content from the process by which clinical information is measured and documented.
+This interpretation is consistent with work treating documentation behavior itself as a clinical signal. The CONCERN early-warning system uses nursing surveillance documentation patterns to estimate deterioration risk and was evaluated in a multisite pragmatic cluster-randomized trial.[13] A separate analysis found that a deterioration-prediction framework based on nursing documentation patterns reproduced and generalized across a large set of US hospitals,[14] and a systematic review of ICU prediction studies identified documentation frequency among the nursing-data modalities used for outcome prediction.[15] More broadly, missingness and measurement patterns in EHR data can themselves be informative about clinical state and clinician behavior.[16] These findings reinforce the need to distinguish narrative semantic content from the process by which clinical information is measured and documented.
 
 The ICU-death analysis showed a different form of redundancy. The semantic scores achieved standalone AUROC 0.657 among note-available rows but did not improve AUROC even when added only to the core physiology/laboratory comparator. In that outcome, prognostic information represented by the semantic scores appears largely recoverable from structured clinical state. RRT showed little standalone semantic discrimination and little incremental value at any comparator level.
 
@@ -205,7 +205,7 @@ The analysis history also matters. The integrity review identified source-system
 
 The H5 comparison suggests a performance-compression tradeoff. TF-IDF is high dimensional and not readily interpretable at the patient level, but it retained small positive predictive increments under the same logistic learner in which the eight Open-Jev scores did not. Compressing a note to eight predefined dimensions may improve auditability and dimensionality while discarding weak, distributed lexical signals useful for prediction. Human construct validation was not available, so these dimensions should not be described as clinically validated or inherently interpretable.
 
-Assessment of added predictive value should not rely on the c-statistic alone; proper scoring and calibration measures provide complementary information about probability accuracy and risk separation.[16] In the present study, Brier score, log loss, calibration measures, and decision-curve summaries did not reveal a consistent benefit that was hidden by AUROC.
+Assessment of added predictive value should not rely on the c-statistic alone; proper scoring and calibration measures provide complementary information about probability accuracy and risk separation.[17] In the present study, Brier score, log loss, calibration measures, and decision-curve summaries did not reveal a consistent benefit that was hidden by AUROC.
 
 The study has several strengths. The corrected analysis was preregistered before v2.1 predictive performance was examined. Patient grouping, note identity, model settings, uncertainty estimation, and major sensitivity analyses were frozen in advance. The complete analysis lineage, including failed pre-result checks and post-registration deviations, is preserved. The label-free alignment audit further reduces concern that the null result arose from a gross score-to-stay join error.
 
@@ -255,9 +255,9 @@ OpenAI ChatGPT (GPT-5.6 Sol) was used for code generation and review, organizati
 12. Gallifant J, Afshar M, Ameen S, et al. The TRIPOD-LLM reporting guideline for studies using large language models. *Nat Med*. 2025;31(1):60-69. doi:10.1038/s41591-024-03425-5
 13. Rossetti SC, Dykes PC, Knaplund C, et al. Real-time surveillance system for patient deterioration: a pragmatic cluster-randomized controlled trial. *Nat Med*. 2025;31(6):1895-1902. doi:10.1038/s41591-025-03609-7
 14. Wan YKJ, Abdelrahman SE, Facelli JC, et al. Conceptual framework for prediction models of patient deterioration based on nursing documentation patterns: reproducibility and generalizability with a large number of hospitals across the United States. *J Biomed Inform*. 2025;169:104887. doi:10.1016/j.jbi.2025.104887
-15. Singh J, Sato M, Ohkuma T. On missingness features in machine learning models for critical care: observational study. *JMIR Med Inform*. 2021;9(12):e25022. doi:10.2196/25022
-16. Pencina MJ, D'Agostino RB, Vasan RS. Statistical methods for assessment of added usefulness of new biomarkers. *Clin Chem Lab Med*. 2010;48(12):1703-1711. doi:10.1515/CCLM.2010.340
-17. Kim M, Park S, Kim C, Choi M. Diagnostic accuracy of clinical outcome prediction using nursing data in intensive care patients: a systematic review. *Int J Nurs Stud*. 2023;138:104411. doi:10.1016/j.ijnurstu.2022.104411
+15. Kim M, Park S, Kim C, Choi M. Diagnostic accuracy of clinical outcome prediction using nursing data in intensive care patients: a systematic review. *Int J Nurs Stud*. 2023;138:104411. doi:10.1016/j.ijnurstu.2022.104411
+16. Singh J, Sato M, Ohkuma T. On missingness features in machine learning models for critical care: observational study. *JMIR Med Inform*. 2021;9(12):e25022. doi:10.2196/25022
+17. Pencina MJ, D'Agostino RB, Vasan RS. Statistical methods for assessment of added usefulness of new biomarkers. *Clin Chem Lab Med*. 2010;48(12):1703-1711. doi:10.1515/CCLM.2010.340
 
 ## Figure legends
 
