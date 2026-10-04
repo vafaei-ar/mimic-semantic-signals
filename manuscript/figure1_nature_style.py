@@ -169,11 +169,7 @@ gap=20
 positions=[]
 for g in groups:
     grot=[r for r in rows if r["group"]==g]
-    top=y-3
-    bottom=y+row_h*len(grot)-10
-    # planning magnitude band for the outcome group
     xlo=sx(-mde[g]); xhi=sx(mde[g])
-    svg.append(f'<rect x="{xlo:.1f}" y="{top:.1f}" width="{xhi-xlo:.1f}" height="{bottom-top:.1f}" fill="{BAND}" opacity="0.72"/>')
     svg.append(text(38,y-10,g,"group"))
     svg.append(text(38,y+8,f"pre-analysis 80% detectable Δ≈{mde[g]:.3f}","tiny"))
     y+=20
@@ -182,6 +178,8 @@ for g in groups:
         svg.append(text(245,y+4,r["analysis"],"small"))
         est,lo,hi=r["estimate"],r["lo"],r["hi"]
         ci_cls="ciprimary" if r["kind"]=="primary" else "ci"
+        if r["kind"]=="primary":
+            svg.append(f'<rect x="{xlo:.1f}" y="{y-10:.1f}" width="{xhi-xlo:.1f}" height="20" fill="{BAND}" opacity="0.82"/>')
         svg.append(line(sx(lo),y,sx(hi),y,ci_cls))
         svg.append(line(sx(lo),y-5,sx(lo),y+5,ci_cls))
         svg.append(line(sx(hi),y-5,sx(hi),y+5,ci_cls))
@@ -196,7 +194,7 @@ for g in groups:
         elif kind=="timing":
             svg.append(polygon([(xm,y-6),(xm+6,y+5),(xm-6,y+5)],WHITE,MID,1.1))
         elif kind=="endpoint":
-            svg.append(f'<rect x="{xm-5}" y="{y-5}" width="10" height="10" fill="{WHITE}" stroke="{MID}" stroke-width="1.1"/>')
+            svg.append(circle(xm,y,5,WHITE,MID,1.1))
         else:
             svg.append(circle(xm,y,5,WHITE,MID,1.1))
         y+=row_h
