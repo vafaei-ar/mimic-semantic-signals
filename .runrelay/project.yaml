@@ -2990,3 +2990,23 @@ tasks:
       wait_minutes: 10
     artifacts:
       - outputs/multitask_benchmark/submission_exploratory_explanatory_summary_v2_1.json
+
+
+  build_paper1_figure1:
+    description: Generate the Paper 1 main registered delta-AUROC forest figure from the frozen manuscript-facing aggregate estimates; no raw clinical data, model fitting, or new statistical analysis.
+    command:
+      - bash
+      - -lc
+      - python manuscript/figure1_registered_delta_auroc.py
+    approval: automatic
+    timeout_minutes: 10
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 2
+      gpu_count: 0
+      wait_minutes: 10
+    artifacts:
+      - outputs/manuscript/figure1_registered_delta_auroc.pdf
+      - outputs/manuscript/figure1_registered_delta_auroc.png
