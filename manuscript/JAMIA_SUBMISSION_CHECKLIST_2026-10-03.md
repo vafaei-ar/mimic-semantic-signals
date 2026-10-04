@@ -10,15 +10,15 @@ This is an internal pre-submission cross-check, not a reproduced journal or repo
 
 | Requirement | Current status | Action |
 |---|---|---|
-| Research and Applications main text <=4,000 words | Pending final DOCX count | Verify after Word export |
-| Structured abstract <=250 words | Draft designed to comply | Verify exact count |
+| Research and Applications main text <=4,000 words | Pass: 3,078 words | None |
+| Structured abstract <=250 words | Pass: 231 words | None |
 | Abstract headings: Objective; Materials and Methods; Results; Discussion; Conclusion | Present | None |
 | Background and Significance section | Present | None |
 | Main tables <=4 | 3 | None |
 | Main figures <=6 | 2 | None |
-| Manuscript double-spaced | To be applied in DOCX | Verify render |
-| Tables in Word at first citation | To be applied in DOCX | Verify render |
-| Figures supplied separately | Figure 1 and Figure 2 SVG generated | Export/submit in accepted format if needed |
+| Manuscript double-spaced | Pass in final DOCX | Render verified |
+| Tables in Word at first citation | Pass in final DOCX | Render verified |
+| Figures supplied separately | Pass: corrected vector PDF files generated; SVG source retained | None |
 | Figure legends at manuscript end | Present | None |
 | Alt text for main figures | Present | None |
 | References numbered in order of citation | Present | Final citation-order check |
