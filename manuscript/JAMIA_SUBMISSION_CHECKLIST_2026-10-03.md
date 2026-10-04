@@ -22,7 +22,7 @@ This is an internal pre-submission cross-check, not a reproduced journal or repo
 | Figure legends at manuscript end | Present | None |
 | Alt text for main figures | Present | None |
 | References numbered in order of citation | Present | Final citation-order check |
-| Data/code availability | Present | Add public repository URL in submission version |
+| Data/code availability | Present with public repository URL | Verify before upload |
 | Funding | “No external funding supported this study” | Confirm |
 | Competing interests | Placeholder | Author must complete |
 | Corresponding-author details | Complete from public Penn State records | Verify before upload |
@@ -90,7 +90,7 @@ Items requiring final attention:
 - RRT semantic-only AUROC below 0.5 explicitly reported without post-hoc inversion.
 - Negative common-logistic Open-Jev increments explicitly explained as valid held-out results.
 - AI disclosure expanded to include Anthropic Claude.
-- **Author action required:** set the true author/contact details and competing-interest statement. Do not invent a local ethics determination if none exists.
+- **Author action required:** complete the competing-interest statement and add a local ethics determination only if one genuinely applies.
 
 
 ## Final mock-review cleanup
