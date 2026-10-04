@@ -270,15 +270,18 @@ No new bootstrap or confirmatory p-value was used. The ventilation level-A/B inc
 
 ### Table S9. Registered H1-H3 secondary proper-scoring and calibration metrics
 
-Lower Brier score and log loss are better. Delta values are augmented minus comparator. Bootstrap intervals for delta Brier score and delta log loss come from the same 500-valid-replicate patient-cluster refit bootstrap used for the registered primary analysis. Calibration quantities are primary-partition descriptive estimates.
+Lower Brier score and log loss are better. Delta values are augmented minus comparator. Bootstrap intervals come from the same 500-valid-replicate patient-cluster refit bootstrap used for the registered primary analysis.
 
-| Outcome | Brier, comparator | Brier, + Open-Jev | Delta Brier (95% interval) | Log loss, comparator | Log loss, + Open-Jev | Delta log loss (95% interval) | Calibration slope, comparator / augmented | Quantile-bin ECE, comparator / augmented |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Ventilation | 0.02411 | 0.02407 | -0.00004 (-0.00020 to +0.00024) | 0.11582 | 0.11553 | -0.00029 (-0.00124 to +0.00387) | 0.615 / 0.634 | 0.01119 / 0.01147 |
-| RRT | 0.01287 | 0.01298 | +0.00011 (-0.00047 to +0.00038) | 0.04640 | 0.04713 | +0.00073 (-0.00154 to +0.00181) | 0.713 / 0.699 | 0.00493 / 0.00480 |
-| ICU death, MetaVision | 0.00912 | 0.00911 | -0.00001 (-0.00023 to +0.00019) | 0.04310 | 0.04384 | +0.00074 (-0.00097 to +0.00167) | 0.762 / 0.748 | 0.00582 / 0.00591 |
+| Outcome | Metric | Comparator | + Open-Jev | Delta (95% refit-bootstrap interval) |
+|---|---|---:|---:|---:|
+| Ventilation | Brier score | 0.02411 | 0.02407 | -0.00004 (-0.00020 to +0.00024) |
+| Ventilation | Log loss | 0.11582 | 0.11553 | -0.00029 (-0.00124 to +0.00387) |
+| RRT | Brier score | 0.01287 | 0.01298 | +0.00011 (-0.00047 to +0.00038) |
+| RRT | Log loss | 0.04640 | 0.04713 | +0.00073 (-0.00154 to +0.00181) |
+| ICU death, MetaVision | Brier score | 0.00912 | 0.00911 | -0.00001 (-0.00023 to +0.00019) |
+| ICU death, MetaVision | Log loss | 0.04310 | 0.04384 | +0.00074 (-0.00097 to +0.00167) |
 
-Calibration-in-the-large estimates were 0.636 versus 0.676 for ventilation, 0.615 versus 0.605 for RRT, and 1.201 versus 1.240 for ICU death. Across the prespecified decision-curve thresholds, the 95% bootstrap interval for incremental net benefit spanned zero for every outcome and threshold.
+Primary-partition calibration slopes were 0.615 versus 0.634 for ventilation, 0.713 versus 0.699 for RRT, and 0.762 versus 0.748 for ICU death. Quantile-bin expected calibration error was 0.01119 versus 0.01147, 0.00493 versus 0.00480, and 0.00582 versus 0.00591, respectively. Calibration-in-the-large estimates were 0.636 versus 0.676 for ventilation, 0.615 versus 0.605 for RRT, and 1.201 versus 1.240 for ICU death. Across the prespecified decision-curve thresholds, the 95% bootstrap interval for incremental net benefit spanned zero for every outcome and threshold.
 
 ### Table S10. Exploratory note-available subgroup using frozen full-cohort OOF predictions
 
