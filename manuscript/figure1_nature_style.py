@@ -149,23 +149,23 @@ def sx(v):
 
 svg.append(text(PLOT_X0+50,500,"Worse with semantic scores  ←","tiny"))
 svg.append(text(PLOT_X1-50,500,"→  Better with semantic scores","tiny","end"))
-svg.append(line(sx(0),520,sx(0),1588,"zero"))
+svg.append(line(sx(0),520,sx(0),1460,"zero"))
 
 ticks=[-0.03,-0.02,-0.01,0,0.01,0.02,0.03]
 for t in ticks:
     x=sx(t)
-    svg.append(line(x,1588,x,1598,"axis"))
+    svg.append(line(x,1460,x,1470,"axis"))
     lab="0" if t==0 else f"{t:+.02f}"
-    svg.append(text(x,1620,lab,"axistext","middle"))
-svg.append(text((PLOT_X0+PLOT_X1)/2,1650,"ΔAUROC (semantic scores minus comparator)","axistext","middle"))
+    svg.append(text(x,1492,lab,"axistext","middle"))
+svg.append(text((PLOT_X0+PLOT_X1)/2,1524,"ΔAUROC (semantic scores minus comparator)","axistext","middle"))
 
 rows=D["forest"]
 groups=["Invasive ventilation","Renal replacement therapy","ICU death"]
 mde={"Invasive ventilation":D["planning_magnitude"]["ventilation"],"Renal replacement therapy":D["planning_magnitude"]["rrt"],"ICU death":D["planning_magnitude"]["death_metavision"]}
 
-y=550
-row_h=33
-gap=34
+y=540
+row_h=27
+gap=20
 positions=[]
 for g in groups:
     grot=[r for r in rows if r["group"]==g]
@@ -204,7 +204,7 @@ for g in groups:
     y+=gap
 
 # legend / footnote
-ly=1540
+ly=1570
 svg.append(circle(60,ly,5,BLUE,BLUE,1)); svg.append(text(75,ly+4,"Primary","tiny"))
 svg.append(circle(210,ly,5,WHITE,MID,1.1)); svg.append(text(225,ly+4,"Sensitivity","tiny"))
 svg.append(polygon([(375,ly-5),(380,ly+4),(370,ly+4)],WHITE,MID,1.1)); svg.append(text(392,ly+4,"Timing","tiny"))
