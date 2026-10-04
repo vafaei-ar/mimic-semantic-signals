@@ -3229,3 +3229,21 @@ tasks:
       wait_minutes: 10
     artifacts:
       - outputs/integrity/extension_embedding_smoke_v2_1.json
+
+
+  audit_extension_python_runtimes_v2_1:
+    description: Inventory existing local Python runtimes for torch, transformers, sentence-transformers, and scikit-learn availability using no clinical notes, outcome labels, or network access.
+    command:
+      - /usr/bin/python3
+      - src/168_audit_extension_python_runtimes_v2_1.py
+    approval: automatic
+    timeout_minutes: 10
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 1
+      gpu_count: 0
+      wait_minutes: 5
+    artifacts:
+      - outputs/integrity/extension_python_runtimes_v2_1.json
