@@ -22,7 +22,7 @@ Target limits: structured abstract <=250 words; main text <=4000 words; <=4 tabl
 
 **Keywords:** electronic health records; natural language processing; intensive care units; clinical prediction; machine learning
 
-**Main-text word count:** 3,895 (abstract: 234)
+**Main-text word count:** 3,904 (abstract: 234)
 
 ## Abstract
 
