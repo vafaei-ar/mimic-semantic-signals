@@ -25,8 +25,10 @@ Thank you for considering this work.
 
 Sincerely,
 
-[AUTHOR NAME, DEGREES]  
-[DEPARTMENT]  
-[INSTITUTION]  
-[EMAIL]  
-[TELEPHONE]
+Alireza Vafaei Sadr, PhD, MS  
+Assistant Professor, Department of Public Health Sciences  
+Penn State College of Medicine  
+700 HMC Crescent Road  
+Hershey, PA 17033, USA  
+[AUTHOR EMAIL]  
+[AUTHOR TELEPHONE]
