@@ -3008,3 +3008,21 @@ tasks:
       wait_minutes: 10
     artifacts:
       - outputs/manuscript/figure1_registered_delta_auroc.svg
+
+
+  build_paper1_figure2:
+    description: Generate the Paper 1 exploratory comparator-decomposition figure from the frozen five-partition aggregate estimates; no raw clinical data, model fitting, or new statistical analysis.
+    command:
+      - .venv/bin/python
+      - manuscript/figure2_comparator_decomposition.py
+    approval: automatic
+    timeout_minutes: 10
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 2
+      gpu_count: 0
+      wait_minutes: 10
+    artifacts:
+      - outputs/manuscript/figure2_comparator_decomposition.svg
