@@ -10,7 +10,7 @@ This is an internal pre-submission cross-check, not a reproduced journal or repo
 
 | Requirement | Current status | Action |
 |---|---|---|
-| Research and Applications main text <=4,000 words | Pass: 3,626 words | None |
+| Research and Applications main text <=4,000 words | Pass: 3,895 words | None |
 | Structured abstract <=250 words | Pass: 234 words | None |
 | Abstract headings: Objective; Materials and Methods; Results; Discussion; Conclusion | Present | None |
 | Background and Significance section | Present | None |
@@ -25,7 +25,7 @@ This is an internal pre-submission cross-check, not a reproduced journal or repo
 | Data/code availability | Present | Add public repository URL in submission version |
 | Funding | “No external funding supported this study” | Confirm |
 | Competing interests | Placeholder | Author must complete |
-| Corresponding-author details | Placeholder | Author must complete |
+| Corresponding-author details | Complete from public Penn State records | Verify before upload |
 | Ethics/data-use statement | MIMIC source ethics and DUA stated | Add local determination only if applicable |
 | AI use disclosed in manuscript | Present | Keep |
 | AI use disclosed in cover letter | Present | Keep |
@@ -70,7 +70,7 @@ Items requiring final attention:
 
 ## Author-only items before upload
 
-- Author name, degrees, department, institution, and postal address are filled from verified Penn State records; replace only the email and telephone placeholders.
+- Author name, degrees, department, institution, postal address, public email, and public telephone are filled from verified Penn State and publication records; verify before upload.
 - Complete the competing-interest declaration.
 - Confirm whether any local institutional/IRB determination should be named.
 - Confirm that the manuscript is not under consideration elsewhere.
@@ -104,4 +104,4 @@ Items requiring final attention:
 - Instrument score generation and across-chunk aggregation are described explicitly.
 - Main-text hypothesis shorthand (H1-H3/H5/H6/H7) was replaced with plain descriptions.
 - Laya wording changed to “the Laya typed-decision model.”
-- Verified author identity/affiliation can be entered from Penn State records; exact personal email and telephone still require author confirmation before upload.
+- Author identity, affiliation, public email, and public telephone have been entered from Penn State/publication records; verify them before upload.
