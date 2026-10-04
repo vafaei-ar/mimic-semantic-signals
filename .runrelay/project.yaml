@@ -3097,3 +3097,30 @@ tasks:
       wait_minutes: 10
     artifacts:
       - outputs/manuscript/Figure_2_nature_style.svg
+
+
+  build_paper1_final_matplotlib_figures:
+    description: Generate final Paper 1 Figures 1 and 2 with the supplied matplotlib design using only the frozen manuscript-facing aggregate JSON data; no model fitting, no row-level data, and no generative-image content.
+    command:
+      - .venv/bin/python
+      - manuscript/make_paper1_figures.py
+      - --root
+      - .
+      - --out
+      - outputs/manuscript
+    approval: automatic
+    timeout_minutes: 15
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 2
+      gpu_count: 0
+      wait_minutes: 10
+    artifacts:
+      - outputs/manuscript/Figure_1.pdf
+      - outputs/manuscript/Figure_1.svg
+      - outputs/manuscript/Figure_1.png
+      - outputs/manuscript/Figure_2.pdf
+      - outputs/manuscript/Figure_2.svg
+      - outputs/manuscript/Figure_2.png
