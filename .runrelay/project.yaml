@@ -3125,8 +3125,6 @@ tasks:
       - outputs/manuscript/Figure_2.svg
       - outputs/manuscript/Figure_2.png
 
-
-  check_paper1_figure_python:
     description: Check existing project/system Python interpreters for matplotlib availability before rendering the supplied Paper 1 figure code; read no clinical data and modify no environment.
     command:
       - /usr/bin/python3
@@ -3143,8 +3141,6 @@ tasks:
     artifacts:
       - outputs/integrity/paper1_figure_python_environment.json
 
-
-  qa_paper1_final_matplotlib_figures:
     description: Regenerate the final Paper 1 matplotlib figures from frozen aggregate JSON data and create compact JPEG/data-URI previews for visual QA; no model fitting, row-level data, or figure-content changes.
     command:
       - bash
