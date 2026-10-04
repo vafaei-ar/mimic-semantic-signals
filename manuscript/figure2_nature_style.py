@@ -60,12 +60,13 @@ for idx,(outcome,reps) in enumerate(D["comparator_decomposition"]["outcomes"].it
 svg.append(text(ax0+18,575,"Primary partition","tiny")); svg.append(line(ax0+112,571,ax0+150,571,"primary"))
 svg.append(text(ax0+215,575,"Other frozen partitions","tiny")); svg.append(line(ax0+340,571,ax0+378,571,"secondary"))
 # level definitions
-defs=[("A","34 structured physiology/lab/urine"),("B","+ treatment/support"),("C","+ documentation behaviour"),("D","+ note context")]
+defs=[("A","34 structured physiology/lab/urine"),("B","+ treatment/support"),("C","+ documentation behaviour"),("D","+ note context (availability, age, category)")]
 for i,(k,lab) in enumerate(defs):
     x=ax0+40+i*198
     svg.append(text(x,625,k,"head","middle"))
     lines=wrap(lab,26)
     for j,ln in enumerate(lines): svg.append(text(x,644+j*14,ln,"tiny","middle"))
+svg.append(text(28,365,"ΔAUROC","small","middle",'transform="rotate(-90 28 365)"'))
 svg.append(text(ax0+2,685,"Post-registration exploratory; five frozen patient-grouped partitions; no new bootstrap.","tiny"))
 
 # Panel B: common logistic representation comparison
@@ -144,6 +145,7 @@ for i,row in enumerate(D["note_available"]["outcomes"]):
     for j,(v,jx) in enumerate(zip(deltas,jit)):
         if j==0: svg.append(circle(x+jx,dy(v),5.5,BLUE,BLUE,1))
         else: svg.append(circle(x+jx,dy(v),4.5,WHITE,MID,1))
+svg.append(text(1050,1080,"ΔAUROC","small","middle",'transform="rotate(-90 1050 1080)"'))
 svg.append(text(dx0+50,1345,"● primary frozen partition","tiny"))
 svg.append(text(dx0+260,1345,"○ four additional frozen partitions","tiny"))
 svg.append(text(dx0+50,1380,"Frozen full-cohort OOF predictions restricted to eligible-note rows; no subgroup refitting.","tiny"))
