@@ -17,7 +17,7 @@ Four post-registration explanatory analyses help make the negative result inform
 
 We believe the manuscript is well suited to JAMIA because it evaluates an informatics representation strategy under a transparent preregistered design, documents an integrity-driven correction of earlier exploratory analyses, and shows how comparator construction can change conclusions about the incremental value of clinical text. The paper also provides complete provenance for manuscript-facing estimates and separates registered analyses from post-registration explanatory work.
 
-The study uses deidentified MIMIC-III data under its credentialing and data-use requirements. No external funding supported the study. The manuscript has not been submitted elsewhere. [AUTHOR: confirm this sentence immediately before submission.]
+The study uses deidentified MIMIC-III data under its credentialing and data-use requirements. No external funding supported the study.
 
 Generative AI disclosure: OpenAI ChatGPT (GPT-5.6 Sol) assisted with code generation and review, organization of analysis documentation, literature-search support, drafting and editing manuscript text, and preparation of reproducible figure code. Anthropic Claude (Opus 5.5) was used for independent code, study-design, and manuscript review. The author directed the scientific questions, made and adjudicated the analysis decisions, reviewed AI-assisted code and recommendations, verified manuscript-facing numerical results against frozen aggregate artifacts, verified cited references, and takes responsibility for the final manuscript. No AI system is listed as an author.
 
