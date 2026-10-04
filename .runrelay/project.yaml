@@ -3216,7 +3216,7 @@ tasks:
   smoke_extension_embedding_v2_1:
     description: Load the frozen locally cached BAAI/bge-large-en-v1.5 revision d4aa6901d3a41ba39fb536a557fa166f842b0e09 fully offline and encode two synthetic sentences to verify the exact embedding runtime; read no clinical notes or outcome labels.
     command:
-      - /home/asadr/miniconda3/bin/python
+      - /home/asadr/miniconda3/envs/lc/bin/python
       - src/167_smoke_extension_embedding_v2_1.py
     approval: automatic
     timeout_minutes: 20
