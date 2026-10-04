@@ -178,25 +178,28 @@ The expanded main-text Table 1 uses aggregate descriptive summaries from the fro
 
 ## Final manuscript figure provenance
 
-The final main figures are code-generated editable vector graphics. No generative-image output is used in the manuscript figures.
+The final main figures are generated with the author-supplied matplotlib script from the frozen manuscript-facing aggregate JSON files. No generative-image output is used in the manuscript figures.
+
+- generator: `manuscript/make_paper1_figures.py`
+- frozen inputs: `manuscript/figure1_nature_style_data.json` and `manuscript/figure2_nature_style_data.json`
+- canonical RunRelay job: `Z5K2R8M4`
+- exact project commit: `6596d4f905f975ec45b29515708dd8bad8687353`
+- execution interpreter: existing `/home/asadr/miniconda3/bin/python` with matplotlib 3.10.6
+- no model fitting, row-level data access, or package installation was performed
 
 ### Figure 1
 
-- generator: `manuscript/figure1_nature_style.py`
-- frozen data: `manuscript/figure1_nature_style_data.json`
-- RunRelay job: `N7V3R9K5`
-- exact project commit: `9e595c77f08694a63334f4c7fcf7f479be54bb4a`
-- canonical SVG: `outputs/manuscript/Figure_1_nature_style.svg`
-- SHA-256: `df8e0aaf4aa4c3abdacb09b74ab43c5103d65d7f6a321205a1093269606d8c9d`
+- PDF: `outputs/manuscript/Figure_1.pdf`, SHA-256 `72da60281b4114d0cc8599b1381ce6d5228b9e8fbec862d5dd14ccb8afa0f79c`
+- SVG: `outputs/manuscript/Figure_1.svg`, SHA-256 `4ee5ab74cc3ddaca6a492ff6c4b250ae446267ea03f750bf61d16bdb98f22320`
+- PNG: `outputs/manuscript/Figure_1.png`, SHA-256 `1c505c9aedf91270d4d0859c39239ec036e42c1e40cc4f8fb4267ebbb7289126`
 
 ### Figure 2
 
-- generator: `manuscript/figure2_nature_style.py`
-- frozen data: `manuscript/figure2_nature_style_data.json`
-- RunRelay job: `P8W4T2M6`
-- exact project commit: `9e595c77f08694a63334f4c7fcf7f479be54bb4a`
-- canonical SVG: `outputs/manuscript/Figure_2_nature_style.svg`
-- SHA-256: `df105b1f2b66f09d218253d0843cc53725876a9162fef13e197cef071aea70ff`
+- PDF: `outputs/manuscript/Figure_2.pdf`, SHA-256 `49a21587f5a7472238e36a7e72275d7e49c172c9a4511ffc770570ce93376129`
+- SVG: `outputs/manuscript/Figure_2.svg`, SHA-256 `72288cf2eecb183900fd96756eaa96eeb7a1244f71c9b76ca02749b0af9d6723`
+- PNG: `outputs/manuscript/Figure_2.png`, SHA-256 `b17caeb23fe2409c84b4de495a1d043d922a920bf4f0e910de013d0460bdcfc8`
+
+Visual QA used RunRelay job `B6N3T8R4` at commit `944a08347788628a3dcd146e35a8de0b6195c530`; it regenerated the same figure code/data and created compact previews only.
 
 ## Manuscript provenance rule
 
