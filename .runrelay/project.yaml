@@ -3102,7 +3102,7 @@ tasks:
   build_paper1_final_matplotlib_figures:
     description: Generate final Paper 1 Figures 1 and 2 with the supplied matplotlib design using only the frozen manuscript-facing aggregate JSON data; no model fitting, no row-level data, and no generative-image content.
     command:
-      - .venv/bin/python
+      - /home/asadr/miniconda3/bin/python
       - manuscript/make_paper1_figures.py
       - --root
       - .
