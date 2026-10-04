@@ -1,6 +1,6 @@
 # JAMIA submission and reporting cross-check
 
-Updated: 2026-10-03
+Updated: 2026-10-04
 
 Target: **Journal of the American Medical Informatics Association (JAMIA), Research and Applications**
 
@@ -77,3 +77,18 @@ Items requiring final attention:
 - Add the exact public GitHub/archival URL.
 - Confirm Penn State affiliation as entered in the submission system.
 - Select JAMIA's standard subscription route if no open-access agreement is being used, so no voluntary OA charge is incurred.
+
+
+## Mock-review response status
+
+- Registered Brier score, log loss, calibration, ECE, and decision-curve results added.
+- Exploratory note-available subgroup added using frozen full-cohort OOF predictions without refitting.
+- Exact eight frozen semantic questions and response criteria added to the supplement.
+- Open-Jev, Laya, and DiffusionGemma model-card references added.
+- Documentation-process, informative-missingness, nursing-data, and added-value literature added.
+- Main-text absolute AUROCs rounded to three decimals; incremental estimates retain sufficient precision to show very small effects.
+- RRT semantic-only AUROC below 0.5 explicitly reported without post-hoc inversion.
+- Negative common-logistic Open-Jev increments explicitly explained as valid held-out results.
+- AI disclosure expanded to include Anthropic Claude.
+- **Author action required:** insert the exact Anthropic Claude model/version used, because current OUP policy requires name and version for disclosed GenAI tools.
+- **Author action required:** set the true author/contact details and competing-interest statement. Do not invent a local ethics determination if none exists.
