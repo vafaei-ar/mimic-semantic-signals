@@ -125,7 +125,7 @@ Laya and DiffusionGemma were prespecified alternative instruments. The primary a
 | Laya | package version 0.3.4; checkpoint `convaiinnovations/laya-typed-decisions`, frozen revision `f9ab0b228f0fc0f14d873dbc99038f135c2da1b2`; 600-token chunks, 100-token overlap, maximum 8 chunks |
 | DiffusionGemma | `google/diffusiongemma-26B-A4B-it`, revision `f7f5b7f5fa82ffc52addd066915886d497f5517b`; native Transformers BF16 backend |
 
-The exact semantic-question schema SHA-256 was `72763082c314a4542817ccfcd42d2b10d9446fc8e84c3391a2140790b2483623`. Registered inference code refused execution when the frozen model/schema contract was not satisfied.
+The exact semantic-question schema SHA-256 was `72763082c314a4542817ccfcd42d2b10d9446fc8e84c3391a2140790b2483623`. Registered inference code refused execution when the frozen model/schema contract was not satisfied. Open-Jev and Laya treated each construct as a yes/no typed decision and used the model probability assigned to the affirmative response as the construct score. DiffusionGemma instead used prompted zero-shot 0-1 support scores; these were not treated as calibrated typed-decision probabilities. Across note chunks, the seven concern-oriented constructs used the maximum score and reassuring stability used the minimum score.
 
 #### S4.2 Frozen semantic questions and response criteria
 
