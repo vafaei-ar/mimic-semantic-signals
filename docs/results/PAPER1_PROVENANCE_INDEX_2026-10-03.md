@@ -154,6 +154,17 @@ Canonical interpretation and availability caveat: `docs/results/v2_1_submission_
 
 This analysis does not modify H1-H3 or H5.
 
+## Pre-submission mock-review response metrics
+
+A bounded pre-submission review-response task recovered the already-registered secondary H1-H3 metrics and evaluated the already-frozen full-cohort OOF predictions within the note-available subgroup without refitting.
+
+- job: `R4M8K2Q7`
+- exact project commit: `88a37e1157c12360c14aa392bb434fd89dcf092c`
+- artifact SHA-256: `9b22334207c7afbd6193b22acb87335f795c0d140b2a25627990d6247d3cb39b`
+- registered secondary metrics: copied from canonical H1-H3 aggregate reports; no model rerun
+- note-available subgroup: post-registration exploratory; frozen OOF predictions only; no subgroup refitting
+- canonical summary: `docs/results/v2_1_submission_review_response_results.md`
+
 ## Manuscript provenance rule
 
 Every numerical value in the main text, abstract, figures, or supplement must map to one row/entry in this index or to a more detailed canonical result document linked from it.
