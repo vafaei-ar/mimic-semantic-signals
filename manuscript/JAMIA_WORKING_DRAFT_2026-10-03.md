@@ -8,7 +8,7 @@ Target article type: JAMIA Research and Applications
 
 Target limits: structured abstract <=250 words; main text <=4000 words; <=4 tables; <=6 figures.
 
-> Status: submission-working draft. The scientific results, deviations, and references below have been checked against the frozen project record or verified publication metadata. Title-page identity/contact details, competing-interest declaration, and any local institutional determination remain author-completion items.
+> Status: submission-working draft. The scientific results, deviations, and references below have been checked against the frozen project record or verified publication metadata. Author identity and contact fields are populated from public Penn State and publication records; the competing-interest declaration, any applicable local institutional determination, and final submission confirmations remain author-completion items.
 
 ## Title page
 
@@ -64,7 +64,7 @@ The primary objective of the registered analysis was to estimate the incremental
 
 We used MIMIC-III, a deidentified, single-center critical care database containing detailed structured measurements and free-text clinical documentation from Beth Israel Deaconess Medical Center.[7] The corrected confirmatory populations were restricted to MetaVision stays so that structured measurement and documentation processes were source-compatible. Adults were eligible after excluding neonatal intensive care unit admissions. The prediction landmark was 12 hours after ICU admission, and each outcome was assessed during the following 12 hours.
 
-The registered analysis is available at OSF registration ahxn9, DOI 10.17605/OSF.IO/AHXN9. The repository preserves the corrected analysis code, frozen configuration, aggregate result summaries, and a manuscript-number provenance index.
+The registered analysis is available at OSF registration ahxn9, DOI 10.17605/OSF.IO/AHXN9. The public repository (https://github.com/vafaei-ar/mimic-semantic-signals) preserves the corrected analysis code, frozen configuration, aggregate result summaries, and a manuscript-number provenance index.
 
 ### Outcomes and populations
 
