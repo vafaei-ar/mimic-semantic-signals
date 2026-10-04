@@ -1,12 +1,18 @@
 # 12 - Minimal path to submission
 
-Updated: 2026-10-03
+Updated: 2026-10-04
 
 This document supersedes the earlier 2026-10-03 missingness-resilience and new-model publication-sprint plan for Paper 1.
 
 The governing constraint is now explicit: this is a single-author, unfunded study with no resources for independent clinician annotation, paid validation, or a broad new-model program. The goal is the shortest credible path to submission without adding new scientific scope.
 
 This plan does not modify the frozen OSF registration. Registered analyses already completed remain preserved. Deviations are documented separately.
+
+## Submission-production update, 2026-10-04
+
+All computational items listed below as remaining are now complete. The research phase is closed.
+
+The manuscript, supplement, cover letter, reporting checklist, provenance index, and final code-generated Figures 1 and 2 are in submission production. No further predictive experiment is permitted before initial submission unless a concrete integrity defect or reviewer-driven need is identified.
 
 ## Paper 1 scope
 
