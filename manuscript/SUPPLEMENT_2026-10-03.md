@@ -127,6 +127,24 @@ Laya and DiffusionGemma were prespecified alternative instruments. The primary a
 
 The exact semantic-question schema SHA-256 was `72763082c314a4542817ccfcd42d2b10d9446fc8e84c3391a2140790b2483623`. Registered inference code refused execution when the frozen model/schema contract was not satisfied.
 
+#### S4.2 Frozen semantic questions and response criteria
+
+The same question schema was used for all eight score dimensions. Each instrument returned a probability for the affirmative response. The wording below is copied from the frozen `src/semantic_schema.py`.
+
+| Construct | Frozen question | Affirmative criterion | Negative criterion |
+|---|---|---|---|
+| Overall clinician concern | Does `clinical_note` indicate that the clinician is concerned that the patient's overall clinical condition is worsening or may worsen soon? | The note communicates a meaningful current concern about deterioration or impending worsening. | The note is reassuring, neutral, or does not communicate concern about deterioration. |
+| Worsening trajectory | Does `clinical_note` describe a worsening clinical trajectory compared with an earlier assessment or expected course? | The note explicitly or clearly implies that the patient's trajectory is getting worse. | The note describes stability, improvement, or no clear worsening trajectory. |
+| Respiratory concern | Does `clinical_note` express concern about respiratory deterioration, increasing work of breathing, respiratory fatigue, oxygenation, or need for more respiratory support? | A respiratory problem is presented as clinically concerning or worsening. | Respiratory status is reassuring, unchanged, or not a meaningful concern in the note. |
+| Hemodynamic concern | Does `clinical_note` express concern about circulatory or hemodynamic deterioration, perfusion, hypotension, shock, or possible need for vasoactive support? | The note communicates meaningful concern about circulation, perfusion, or hemodynamic instability. | Hemodynamics are reassuring, unchanged, or not a meaningful concern in the note. |
+| Poor treatment response | Does `clinical_note` indicate that the patient is not responding as expected to current treatment or support? | The note indicates inadequate, incomplete, or disappointing response to treatment or support. | The note indicates adequate response, expected course, or gives no evidence of poor response. |
+| Escalation considered | Does `clinical_note` indicate that escalation of monitoring, treatment, respiratory support, vasoactive support, or level of care is being considered? | The note states or clearly implies that stronger monitoring, treatment, support, or level of care is being considered. | No escalation is being considered, or the note supports continuing the current plan without escalation. |
+| Diagnostic uncertainty | Does `clinical_note` indicate meaningful unresolved diagnostic uncertainty that affects current clinical management? | The note describes unresolved diagnostic uncertainty that is clinically consequential. | There is no meaningful unresolved diagnostic uncertainty affecting management. |
+| Reassuring stability | Does `clinical_note` explicitly indicate that the patient's clinical condition is stable or reassuring without a new acute concern? | The note is explicitly reassuring or describes stable clinical status without a new acute concern. | The note communicates deterioration, concern, uncertainty, or does not clearly support reassuring stability. |
+
+These definitions were fixed before outcome analysis. They are operational model questions, not clinician-validated constructs; registered clinician validation was not completed.
+
+
 ### S5. Cross-validation and uncertainty
 
 Five deterministic patient-grouped 5-fold partitions were frozen before predictive evaluation. Partition 1 was the primary point estimate; partitions 2-5 assessed refit/split stability.
@@ -228,6 +246,8 @@ Semantic/note case identifiers matched exactly in all three primary cohorts, and
 | RRT | 7,709 | 143 | 0.44790 | 0.45285 | 0.47306 | 0.48725 | 0.49073 |
 | ICU death, MetaVision | 7,889 | 83 | 0.65682 | 0.70011 | 0.67292 | 0.68995 | 0.69343 |
 
+The RRT semantic-only AUROC remained below 0.5 in all five frozen partitions (0.448-0.491). Outcome coding and the positive-class probability were fixed before this exploratory analysis, and predictions were not inverted post hoc. The result is therefore reported as observed rather than transformed into an apparent AUROC above 0.5.
+
 ### Table S8. Post-registration comparator decomposition: Open-Jev delta AUROC across five frozen partitions
 
 | Outcome | Level | Repeat 1 | Repeat 2 | Repeat 3 | Repeat 4 | Repeat 5 |
@@ -246,6 +266,31 @@ Semantic/note case identifiers matched exactly in all three primary cohorts, and
 | ICU death | D + note context | -0.00212 | +0.00390 | -0.00327 | +0.00103 | -0.00042 |
 
 No new bootstrap or confirmatory p-value was used. The ventilation level-A/B increments cannot be attributed solely to semantic content because semantic missingness also encodes note availability before documentation/note-context variables are included.
+
+
+### Table S9. Registered H1-H3 secondary proper-scoring and calibration metrics
+
+Lower Brier score and log loss are better. Delta values are augmented minus comparator. Bootstrap intervals for delta Brier score and delta log loss come from the same 500-valid-replicate patient-cluster refit bootstrap used for the registered primary analysis. Calibration quantities are primary-partition descriptive estimates.
+
+| Outcome | Brier, comparator | Brier, + Open-Jev | Delta Brier (95% interval) | Log loss, comparator | Log loss, + Open-Jev | Delta log loss (95% interval) | Calibration slope, comparator / augmented | Quantile-bin ECE, comparator / augmented |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Ventilation | 0.02411 | 0.02407 | -0.00004 (-0.00020 to +0.00024) | 0.11582 | 0.11553 | -0.00029 (-0.00124 to +0.00387) | 0.615 / 0.634 | 0.01119 / 0.01147 |
+| RRT | 0.01287 | 0.01298 | +0.00011 (-0.00047 to +0.00038) | 0.04640 | 0.04713 | +0.00073 (-0.00154 to +0.00181) | 0.713 / 0.699 | 0.00493 / 0.00480 |
+| ICU death, MetaVision | 0.00912 | 0.00911 | -0.00001 (-0.00023 to +0.00019) | 0.04310 | 0.04384 | +0.00074 (-0.00097 to +0.00167) | 0.762 / 0.748 | 0.00582 / 0.00591 |
+
+Calibration-in-the-large estimates were 0.636 versus 0.676 for ventilation, 0.615 versus 0.605 for RRT, and 1.201 versus 1.240 for ICU death. Across the prespecified decision-curve thresholds, the 95% bootstrap interval for incremental net benefit spanned zero for every outcome and threshold.
+
+### Table S10. Exploratory note-available subgroup using frozen full-cohort OOF predictions
+
+This post-registration analysis restricts the already-generated full-cohort out-of-fold predictions to rows with an eligible note. The comparator and augmented models were **not** refit in the subgroup. The table therefore evaluates whether the primary full-cohort predictions show a different incremental pattern among the patients for whom semantic scores existed; it is not a new subgroup-trained model.
+
+| Outcome | Note-available n (cases) | Comparator AUROC, repeat 1 | + Open-Jev AUROC, repeat 1 | Delta AUROC, repeat 1 | Delta AUROC across five frozen partitions | Delta AUPRC, repeat 1 |
+|---|---:|---:|---:|---:|---|---:|
+| Ventilation | 4,499 (135) | 0.697 | 0.708 | +0.0109 | -0.0158, +0.0026, +0.0076, +0.0109, +0.0279 | +0.0055 |
+| RRT | 7,709 (143) | 0.976 | 0.974 | -0.0012 | -0.0012, -0.0008, -0.0006, +0.0000, +0.0043 | -0.0039 |
+| ICU death, MetaVision | 7,889 (83) | 0.947 | 0.940 | -0.0076 | -0.0076, -0.0031, +0.0000, +0.0001, +0.0068 | +0.0069 |
+
+For ventilation, the primary-partition subgroup estimate was positive, but its direction was not stable across the five frozen partitions. RRT and ICU death likewise showed no stable positive incremental pattern. This analysis therefore does not support the hypothesis that the full-cohort null was simply dilution by rows without an eligible note.
 
 ## Registered deviations
 
