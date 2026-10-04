@@ -70,8 +70,6 @@ for pi,(outcome,repeats) in enumerate(payload["outcomes"].items()):
 
     svg.append(f'<text x="{(LEFT+RIGHT)/2:.1f}" y="{y0+PANEL_H+18}" text-anchor="middle" class="note">A: structured 34    B: + treatment/support    C: + documentation behavior    D: + note context</text>')
 
-svg.append(f'<text x="30" y="{H-50}" class="note">Filled black line: prespecified primary partition. Open gray lines: four additional frozen patient-grouped partitions.</text>')
-svg.append(f'<text x="30" y="{H-28}" class="note">No new bootstrap was performed; across-partition spread is a stability summary, not a confidence interval.</text>')
 svg.append('</svg>')
 
 OUT.write_text("\n".join(svg),encoding="utf-8")
