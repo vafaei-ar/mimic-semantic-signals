@@ -3007,5 +3007,4 @@ tasks:
       gpu_count: 0
       wait_minutes: 10
     artifacts:
-      - outputs/manuscript/figure1_registered_delta_auroc.pdf
-      - outputs/manuscript/figure1_registered_delta_auroc.png
+      - outputs/manuscript/figure1_registered_delta_auroc.svg
