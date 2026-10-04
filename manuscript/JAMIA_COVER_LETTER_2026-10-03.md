@@ -30,5 +30,5 @@ Assistant Professor, Department of Public Health Sciences
 Penn State College of Medicine  
 700 HMC Crescent Road  
 Hershey, PA 17033, USA  
-[AUTHOR EMAIL]  
-[AUTHOR TELEPHONE]
+asadr@pennstatehealth.psu.edu  
+1-717-531-8521
