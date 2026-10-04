@@ -1,6 +1,6 @@
 # Cover letter draft for JAMIA
 
-October 3, 2026
+October 4, 2026
 
 Editor-in-Chief  
 Journal of the American Medical Informatics Association
