@@ -1,29 +1,46 @@
 # Scientific writing and file-integrity audit
 
-Updated: 2026-10-03
+Updated: 2026-10-04
 
-**Verdict: PASS**
+**Verdict: PASS WITH MINOR ISSUES**
 
-**Scores:** Natural scientific writing 96/100; plain scientific clarity 96/100; provenance integrity 98/100.
+**Scores:** Natural scientific writing 96/100; plain scientific clarity 97/100; provenance integrity 99/100.
 
-## Critical issues
+## Critical scientific issues
 
 None.
 
-The final prose scan found no inflated significance language, generic openings, AI-associated stock vocabulary, vague attribution, excessive signposting, chat residue, or em-dash asides. Repeated passages were limited to scientifically necessary repeated results or availability statements.
+The mock-review revision adds the registered H1-H3 Brier score, log loss, calibration, expected calibration error, and decision-curve results. These secondary metrics do not reveal a benefit hidden by AUROC. The added note-available subgroup is explicitly post-registration exploratory and evaluates already-frozen full-cohort out-of-fold predictions without subgroup refitting.
 
-The final DOCX files contain transparent programmatic-generation indicators consistent with one-pass python-docx assembly. These indicators establish a document-production workflow, not AI authorship. The manuscript and cover letter separately disclose the use of OpenAI ChatGPT and assign scientific responsibility to the human author.
+The RRT semantic-only AUROC below 0.5 is reported without post-hoc inversion. Negative Open-Jev increments in the common-logistic analysis are retained as held-out results without post-hoc feature selection or sign correction.
+
+## Writing audit
+
+The final prose-pattern scan found no inflated significance language, generic openings, AI-associated stock vocabulary, vague attribution, excessive signposting, chat residue, or em-dash asides. Low-frequency semicolon joins were retained where they serve scientific lists or direct comparisons.
+
+## Provenance audit
+
+The DOCX files truthfully retain programmatic-assembly metadata identifying python-docx. This is a programmatic-generation indicator, not evidence that an AI system authored the scientific work. The manuscript and cover letter separately disclose generative-AI assistance.
+
+The Word author metadata field remains unset because the exact preferred author name/degrees were not supplied during generation. It should be set truthfully by the author before upload. No editing history, revision history, or Word provenance was fabricated.
 
 ## Visual verification
 
-The manuscript, supplement, and cover letter were rendered after final edits and inspected for clipping, broken tables, page overflow, and table-row splitting.
+The revised manuscript, supplement, and cover letter were rendered after the mock-review changes and inspected for clipping, broken tables, split rows, and overflow.
 
-- manuscript: 18 pages;
-- supplement: 10 pages;
-- cover letter: 1 page.
+- manuscript: 20 pages;
+- supplement: 14 pages;
+- cover letter: 1 page;
+- main text: 3,626 words;
+- abstract: 234 words.
 
-The two separate vector figures were regenerated after a visual QA pass identified footer/axis-label overlap at journal submission size. The corrected figure files no longer contain the overlapping in-image footer text; the corresponding methodological information remains in the manuscript legends.
+The exact eight-question semantic table and the new secondary-metric and note-available tables render legibly.
 
-## Remaining author-only fields
+## Minor author-only issues before upload
 
-Before submission, the author must supply correct identity/contact/affiliation fields, complete the competing-interest declaration, add any applicable local institutional determination, confirm that the manuscript is not under consideration elsewhere, and insert the final public repository/archive URL if desired.
+1. Replace `[exact model/version to be confirmed by the author]` with the exact Anthropic Claude model/version actually used.
+2. Supply true author identity/contact/affiliation fields and the competing-interest declaration.
+3. Add a local/Penn State ethics determination only if a real applicable determination exists.
+4. Confirm no concurrent submission and the final repository/archive URL.
+
+Once these factual author-only fields are completed, no scientific-analysis blocker remains.
