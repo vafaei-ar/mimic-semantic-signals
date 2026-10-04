@@ -18,7 +18,7 @@ This is an internal pre-submission cross-check, not a reproduced journal or repo
 | Main figures <=6 | 2 | None |
 | Manuscript double-spaced | Pass in final DOCX | Render verified |
 | Tables in Word at first citation | Pass in final DOCX | Render verified |
-| Figures supplied separately | Pass: corrected vector PDF files generated; SVG source retained | None |
+| Figures supplied separately | Pass: final code-generated vector PDFs; editable SVG source and generators retained | None |
 | Figure legends at manuscript end | Present | None |
 | Alt text for main figures | Present | None |
 | References numbered in order of citation | Present | Final citation-order check |
@@ -105,3 +105,17 @@ Items requiring final attention:
 - Main-text hypothesis shorthand (H1-H3/H5/H6/H7) was replaced with plain descriptions.
 - Laya wording changed to “the Laya typed-decision model.”
 - Author identity, affiliation, public email, and public telephone have been entered from Penn State/publication records; verify them before upload.
+
+
+## Final figure redesign status
+
+- Figure 1a is a code-drawn study-design schematic using the actual 12-hour landmark, single latest eligible pre-landmark note, exact eight constructs, rich comparator blocks, and 12-hour outcomes.
+- Figure 1b is one comprehensive registered forest plot grouped by outcome, combining primary estimates, semantic-instrument sensitivities, endpoint/timing analyses, CareVue replication, and shuffled controls.
+- The approximate pre-analysis 80% detectable full-cohort delta-AUROC magnitudes appear only as pale bands on the three primary rows and are explicitly labeled interpretive precision context, not equivalence margins.
+- Figure 2a retains the post-registration comparator decomposition with level D defined as ordinary note context (availability, age, category), not a text embedding.
+- Figure 2b compares Open-Jev and TF-IDF only within the same registered L2-logistic model family; TF-IDF uses up to 10,000 features.
+- Figure 2c uses the actual label-free alignment audit (real versus between-patient shuffled construct-state correlations), not a fabricated time-course analysis.
+- Figure 2d uses the actual note-available frozen-prediction subgroup across five partitions, with no subgroup refitting.
+- Registered Brier score, log loss, calibration, and decision-curve results remain in Supplementary Table S9 rather than a main absolute-metric graphics panel.
+- All manuscript figure graphics are generated with repository code from frozen aggregate values. No generative-image output is used in the submission figures.
+- Final canonical SVG provenance: Figure 1 RunRelay `N7V3R9K5`, SHA-256 `df8e0aaf4aa4c3abdacb09b74ab43c5103d65d7f6a321205a1093269606d8c9d`; Figure 2 RunRelay `P8W4T2M6`, SHA-256 `df105b1f2b66f09d218253d0843cc53725876a9162fef13e197cef071aea70ff`.
