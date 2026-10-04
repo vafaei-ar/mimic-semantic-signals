@@ -1,6 +1,6 @@
 # 01 - Read this first
 
-Updated: 2026-10-03
+Updated: 2026-10-04
 
 This repository contains both the current corrected v2.1 manuscript-facing analysis and a substantial v1 provenance archive. The v1 files are intentionally retained because they document how the study evolved, but affected v1 numerical results are not final manuscript evidence.
 
@@ -37,22 +37,19 @@ The manuscript-facing lineage is the corrected v2.1 registered analysis. OSF reg
 
 ## Current live gate
 
+The research phase is closed and Paper 1 is in submission production.
+
 Completed:
 
-- H1-H3 primary stripped-note Open-Jev analyses;
-- H4 six-construct analyses;
-- H5 common-logistic lexical comparisons;
-- the full registered H6 sensitivity program, including unstripped notes, Laya, DiffusionGemma, broad respiratory-support endpoint, CHARTEVENTS storetime, 1-hour/2-hour laboratory lag, note-availability identity sensitivity, and the separate CareVue ICU-death replication;
-- H7 patient-shuffled negative controls for ventilation, RRT, MetaVision ICU death, and CareVue ICU death;
-- a post-registration modified DiffusionGemma-only Zigong transport run using the legacy frozen 24-hour cohort, AUROC 0.5546 with 95% matched-set bootstrap interval 0.4796 to 0.6308; this is descriptive only under the dated H9 deviation;
-- H8 design/sample freeze: 200 uniformly sampled stripped MetaVision ICU-death notes and three blinded local rater packets were frozen before any rating, but H8 will not be performed under the dated resource deviation.
+- corrected v2.1 H1-H7 analyses and registered sensitivities;
+- H8 and H9 dated deviation records;
+- label-free semantic-alignment audit;
+- semantic-only discrimination, note-available frozen-prediction subgroup, and four-level comparator decomposition;
+- OSF scientific-text attachment verification;
+- manuscript-number provenance index;
+- final manuscript-facing figures generated from frozen aggregate JSON data.
 
-Current gate:
-
-- H8 is formally not performed for Paper 1 because independent qualified raters/resources are unavailable;
-- H9 external validation was only partially executed as registered and the existing DiffusionGemma legacy-cohort result is descriptive rather than central evidence;
-- the only remaining computational work is the label-free semantic-alignment audit, semantic-only exploratory discrimination, and four-level HGB comparator decomposition;
-- after those checks, complete the OSF text-level attachment comparison, freeze the manuscript provenance index, and write.
+H8 will not be performed for Paper 1. The existing Zigong DiffusionGemma legacy-cohort result is descriptive only and is not central evidence.
 
 No new model panel, missingness-resilience study, OPUS workstream, external dataset, or additional sensitivity is on the Paper 1 critical path.
 
@@ -60,7 +57,7 @@ No new model panel, missingness-resilience study, OPUS workstream, external data
 
 The corrected primary Open-Jev estimates are near zero after the rich structured comparator. H5 shows small positive TF-IDF increments and negative Open-Jev increments within the same logistic family. H6 alternative-instrument results so far do not justify selecting a preferred semantic instrument post hoc.
 
-Do not lock the manuscript claim until H8 human construct validation is complete and the final H1-H9 provenance index is frozen.
+The manuscript claim is now frozen narrowly around the corrected preregistered negative result. Do not claim human construct validity or registered external transport.
 
 ## Naming convention
 
