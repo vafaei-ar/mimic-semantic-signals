@@ -3026,3 +3026,21 @@ tasks:
       wait_minutes: 10
     artifacts:
       - outputs/manuscript/figure2_comparator_decomposition.svg
+
+
+  summarize_submission_review_metrics_v2_1:
+    description: Recover the registered H1-H3 secondary proper-scoring, calibration, and decision-curve metrics from completed aggregate reports and evaluate the already-frozen OOF predictions within the note-available subgroup without refitting; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_submission_review_metrics_v2_1.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/multitask_benchmark/submission_review_metrics_v2_1.json
