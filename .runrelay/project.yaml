@@ -3158,3 +3158,21 @@ tasks:
     artifacts:
       - outputs/manuscript/Figure_1_preview_data_uri.txt
       - outputs/manuscript/Figure_2_preview_data_uri.txt
+
+
+  audit_paper1_submission_repo:
+    description: Audit the current Paper 1 repository state for a clean tracked worktree, required submission sources, final figure-generator wiring, and absence of superseded current-plan language; no clinical data or model execution.
+    command:
+      - /usr/bin/python3
+      - scripts/audit_paper1_submission_repo.py
+    approval: automatic
+    timeout_minutes: 5
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 1
+      gpu_count: 0
+      wait_minutes: 5
+    artifacts:
+      - outputs/integrity/paper1_submission_repo_audit.json
