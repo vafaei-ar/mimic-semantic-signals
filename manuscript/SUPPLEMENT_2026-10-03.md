@@ -129,7 +129,7 @@ The exact semantic-question schema SHA-256 was `72763082c314a4542817ccfcd42d2b10
 
 #### S4.2 Frozen semantic questions and response criteria
 
-The same question schema was used for all eight score dimensions. Each instrument returned a probability for the affirmative response. The wording below is copied from the frozen `src/semantic_schema.py`.
+The same question schema was used for all eight score dimensions. Open-Jev and Laya returned the probability assigned to the affirmative response; DiffusionGemma returned a prompted 0-1 support score. The wording below is copied from the frozen `src/semantic_schema.py`.
 
 | Construct | Frozen question | Affirmative criterion | Negative criterion |
 |---|---|---|---|
