@@ -117,6 +117,16 @@ For multi-chunk notes, the registered aggregation used the maximum chunk score f
 
 Laya and DiffusionGemma were prespecified alternative instruments. The primary analysis used the same fixed note identities across representations.
 
+#### S4.1 Frozen instrument versions
+
+| Instrument | Frozen implementation |
+|---|---|
+| Open-Jev | `com-kotobalabs/open-jev-deberta-v3-large`, revision `19bf9a64815add579fbf6c907bef584d9277a8e4`; typed-decisions commit `10d7834d3b99041f890db4615fb38ef95ced50cc`; 220-token chunks, 40-token overlap, maximum 8 chunks |
+| Laya | package version 0.3.4; checkpoint `convaiinnovations/laya-typed-decisions`, frozen revision `f9ab0b228f0fc0f14d873dbc99038f135c2da1b2`; 600-token chunks, 100-token overlap, maximum 8 chunks |
+| DiffusionGemma | `google/diffusiongemma-26B-A4B-it`, revision `f7f5b7f5fa82ffc52addd066915886d497f5517b`; native Transformers BF16 backend |
+
+The exact semantic-question schema SHA-256 was `72763082c314a4542817ccfcd42d2b10d9446fc8e84c3391a2140790b2483623`. Registered inference code refused execution when the frozen model/schema contract was not satisfied.
+
 ### S5. Cross-validation and uncertainty
 
 Five deterministic patient-grouped 5-fold partitions were frozen before predictive evaluation. Partition 1 was the primary point estimate; partitions 2-5 assessed refit/split stability.
