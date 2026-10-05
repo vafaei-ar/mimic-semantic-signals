@@ -3306,3 +3306,131 @@ tasks:
       wait_minutes: 15
     artifacts:
       - outputs/multitask_benchmark/extension_t0_v2_1.json
+
+
+  time_extension_t1_tfidf_v2_1_ventilation:
+    description: >-
+      Run T1.1 ventilation five-partition supervised TF-IDF point estimates and
+      the first 10 frozen-seed full-refit bootstrap replicates for runtime
+      selection only; discard timing-replicate performance estimates and share
+      aggregate point estimates plus the predeclared 200-versus-500 decision.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_timing_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_timing_v2_1_ventilation.json
+
+  time_extension_t1_tfidf_v2_1_rrt:
+    description: >-
+      Run T1.1 RRT five-partition supervised TF-IDF point estimates and the
+      first 10 frozen-seed full-refit bootstrap replicates for runtime selection
+      only; discard timing-replicate performance estimates and share aggregate
+      point estimates plus the predeclared 200-versus-500 decision.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_timing_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_timing_v2_1_rrt.json
+
+  time_extension_t1_tfidf_v2_1_death:
+    description: >-
+      Run T1.1 MetaVision ICU-death five-partition supervised TF-IDF point
+      estimates and the first 10 frozen-seed full-refit bootstrap replicates for
+      runtime selection only; discard timing-replicate performance estimates
+      and share aggregate point estimates plus the predeclared 200-versus-500
+      decision.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_timing_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_timing_v2_1_death.json
+
+  evaluate_extension_t1_tfidf_v2_1_ventilation:
+    description: >-
+      Run the final T1.1 ventilation supervised TF-IDF benchmark with the
+      predeclared patient-cluster full-refit bootstrap target selected by the
+      timing gate; refit TF-IDF, logistic text model, and both HGB models inside
+      every replicate and share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_full_v2_1_ventilation.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_v2_1_ventilation.json
+
+  evaluate_extension_t1_tfidf_v2_1_rrt:
+    description: >-
+      Run the final T1.1 RRT supervised TF-IDF benchmark with the predeclared
+      patient-cluster full-refit bootstrap target selected by the timing gate;
+      refit TF-IDF, logistic text model, and both HGB models inside every
+      replicate and share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_full_v2_1_rrt.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_v2_1_rrt.json
+
+  evaluate_extension_t1_tfidf_v2_1_death:
+    description: >-
+      Run the final T1.1 MetaVision ICU-death supervised TF-IDF benchmark with
+      the predeclared patient-cluster full-refit bootstrap target selected by
+      the timing gate; refit TF-IDF, logistic text model, and both HGB models
+      inside every replicate and share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_full_v2_1_death.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_v2_1_death.json
