@@ -3286,7 +3286,12 @@ tasks:
 
 
   evaluate_extension_t0_v2_1:
-    description: Run the frozen exploratory Tier 0 analyses from already-fitted registered Open-Jev OOF predictions: fixed alert burden at 2/5/10/20%, registered decision curves, and compatible upper delta-AUROC limits; includes a 2,000-replicate patient-cluster bootstrap conditional on fitted models and shares aggregate results only.
+    description: >-
+      Run the frozen exploratory Tier 0 analyses from already-fitted registered
+      Open-Jev OOF predictions: fixed alert burden at 2/5/10/20%, registered
+      decision curves, and compatible upper delta-AUROC limits; includes a
+      2,000-replicate patient-cluster bootstrap conditional on fitted models and
+      shares aggregate results only.
     command:
       - bash
       - scripts/run_extension_t0_v2_1.sh
