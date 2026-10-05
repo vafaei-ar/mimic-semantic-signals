@@ -3265,3 +3265,21 @@ tasks:
       wait_minutes: 5
     artifacts:
       - outputs/integrity/extension_osf_upload_readiness_v2_1.json
+
+
+  verify_extension_osf_public_v2_1:
+    description: Verify that the frozen exploratory extension addendum is publicly listed on OSF project wmyb2 and byte-identical to the committed protocol text before any extension task reads outcome labels; reads no clinical data.
+    command:
+      - .venv/bin/python
+      - src/170_verify_extension_osf_public_v2_1.py
+    approval: automatic
+    timeout_minutes: 5
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 1
+      gpu_count: 0
+      wait_minutes: 5
+    artifacts:
+      - outputs/integrity/extension_osf_public_verification_v2_1.json
