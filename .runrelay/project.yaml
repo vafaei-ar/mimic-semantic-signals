@@ -3434,3 +3434,22 @@ tasks:
       wait_minutes: 30
     artifacts:
       - outputs/multitask_benchmark/extension_t1_tfidf_v2_1_death.json
+
+  cache_extension_embeddings_v2_1:
+    description: Cache the frozen BAAI/bge-large-en-v1.5 document embeddings for the three primary MetaVision stripped-note corpora fully offline; read no outcome labels, keep row-level embeddings local, and share aggregate hashes/counts only.
+    command:
+      - bash
+      - scripts/run_extension_embedding_cache_v2_1.sh
+    approval: automatic
+    timeout_minutes: 480
+    requires_gpu: true
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 16
+      gpu_count: 1
+      min_vram_gb: 12
+      wait_minutes: 60
+    artifacts:
+      - outputs/multitask_benchmark/extension_embedding_cache_v2_1.json
+
