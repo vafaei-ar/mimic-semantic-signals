@@ -3283,3 +3283,21 @@ tasks:
       wait_minutes: 5
     artifacts:
       - outputs/integrity/extension_osf_public_verification_v2_1.json
+
+
+  evaluate_extension_t0_v2_1:
+    description: Run the frozen exploratory Tier 0 analyses from already-fitted registered Open-Jev OOF predictions: fixed alert burden at 2/5/10/20%, registered decision curves, and compatible upper delta-AUROC limits; includes a 2,000-replicate patient-cluster bootstrap conditional on fitted models and shares aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t0_v2_1.sh
+    approval: automatic
+    timeout_minutes: 60
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+    artifacts:
+      - outputs/multitask_benchmark/extension_t0_v2_1.json
