@@ -76,6 +76,7 @@ For the primary high-score subsequent-only proportion among notes with any quali
 - resample source patients with replacement;
 - keep all sampled stays/notes for each sampled patient;
 - report the two-sided 95% percentile interval;
+- if a bootstrap draw contains zero high-score notes with any qualifying transition, replace that draw with the next deterministic child seed; replacements are capped at 5% of the target;
 - no model refitting occurs because T0.4 is descriptive and label-free.
 
 ## Guardrails
