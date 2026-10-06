@@ -98,7 +98,7 @@ def main() -> None:
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
 
-    point = base.point_estimates(outcome, write_local_predictions=True)
+    point = base.point_estimates(\n        outcome,\n        write_local_predictions=True,\n        prediction_filename="extension_t1_tfidf_unstripped_predictions_v2_1_local.csv",\n    )
     point["representation"] = (
         "TF-IDF supervised text log-odds late fusion on frozen full unstripped notes"
     )
