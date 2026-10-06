@@ -381,7 +381,12 @@ def load_population(outcome: str):
     )
 
 
-def point_estimates(\n    outcome: str,\n    *,\n    write_local_predictions: bool,\n    prediction_filename: str = "extension_t1_tfidf_predictions_v2_1_local.csv",\n) -> dict:
+def point_estimates(
+    outcome: str,
+    *,
+    write_local_predictions: bool,
+    prediction_filename: str = "extension_t1_tfidf_predictions_v2_1_local.csv",
+) -> dict:
     (
         merged,
         x_base,
