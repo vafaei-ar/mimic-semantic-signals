@@ -381,7 +381,7 @@ def load_population(outcome: str):
     )
 
 
-def point_estimates(outcome: str, *, write_local_predictions: bool) -> dict:
+def point_estimates(\n    outcome: str,\n    *,\n    write_local_predictions: bool,\n    prediction_filename: str = "extension_t1_tfidf_predictions_v2_1_local.csv",\n) -> dict:
     (
         merged,
         x_base,
@@ -505,7 +505,7 @@ def point_estimates(outcome: str, *, write_local_predictions: bool) -> dict:
         local_pred[f"extension_t1_tfidf_augmented_repeat_{ri}"] = pa
 
     if write_local_predictions:
-        pred_path = BASE / outcome / "extension_t1_tfidf_predictions_v2_1_local.csv"
+        pred_path = BASE / outcome / prediction_filename
         local_pred.to_csv(pred_path, index=False)
     else:
         pred_path = None
