@@ -3953,3 +3953,18 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/extension_t0_4_support_timing_v2_1.json
 
+  validate_extension_staged_v2_1:
+    description: Compile all staged extension Python files and run synthetic-only self-tests for T1.2, T1.2b, T1.4, T0.4, and T1.5; read no clinical notes, cached clinical embeddings, or outcome data.
+    command:
+      - bash
+      - scripts/run_extension_staged_validation_v2_1.sh
+    approval: automatic
+    timeout_minutes: 60
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+
