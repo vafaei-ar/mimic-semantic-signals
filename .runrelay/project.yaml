@@ -3921,3 +3921,35 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/extension_t1_decomposition_v2_1_death.json
 
+  validate_extension_t0_4_v2_1:
+    description: Run synthetic-only tests for the T0.4 support-episode, chart-evidence washout, note-relative category, and patient-cluster bootstrap logic; read no clinical notes or outcome data.
+    command:
+      - bash
+      - scripts/run_extension_t0_4_selftest_v2_1.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+
+  evaluate_extension_t0_4_v2_1:
+    description: Run the frozen label-free T0.4 timing analysis for MetaVision vasoactive, high-flow, and NIV support transitions relative to frozen Open-Jev note scores; omit the unresolved FiO2 arm per documented deviation and share aggregate summaries only.
+    command:
+      - bash
+      - scripts/run_extension_t0_4_v2_1.sh
+    approval: automatic
+    timeout_minutes: 240
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 3
+      min_ram_gb: 16
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t0_4_support_timing_v2_1.json
+
