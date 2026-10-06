@@ -20,7 +20,10 @@ os.environ["HF_DATASETS_OFFLINE"] = "1"
 BASE = Path("data/real_mimic_local/population_landmark12_v2_1")
 POPULATION_CONTRACT = Path("config/v2_1_analysis_population_contract.json")
 ATTESTATION = Path("docs/registration/exploratory_extension_osf_upload_attestation_2026-10-05.md")
-PROTOCOL = Path("docs/registration/exploratory_extension_protocol_v2_1_2026-10-04.md")\nEMBEDDING_IMPLEMENTATION = Path(\n    "docs/registration/exploratory_extension_embedding_implementation_clarification_2026-10-05.md"\n)
+PROTOCOL = Path("docs/registration/exploratory_extension_protocol_v2_1_2026-10-04.md")
+EMBEDDING_IMPLEMENTATION = Path(
+    "docs/registration/exploratory_extension_embedding_implementation_clarification_2026-10-05.md"
+)
 
 MODEL_ID = "BAAI/bge-large-en-v1.5"
 REVISION = "d4aa6901d3a41ba39fb536a557fa166f842b0e09"
@@ -343,7 +346,10 @@ def main() -> None:
     report["status"] = "completed"
     report["total_notes"] = int(progress_offset)
     report["protocol_sha256"] = sha256_file(PROTOCOL)
-    report["osf_upload_attestation_sha256"] = sha256_file(ATTESTATION)\n    report["embedding_implementation_clarification_sha256"] = sha256_file(\n        EMBEDDING_IMPLEMENTATION\n    )
+    report["osf_upload_attestation_sha256"] = sha256_file(ATTESTATION)
+    report["embedding_implementation_clarification_sha256"] = sha256_file(
+        EMBEDDING_IMPLEMENTATION
+    )
 
     output = Path(args.output).expanduser().resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
