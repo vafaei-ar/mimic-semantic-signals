@@ -41,11 +41,32 @@ def configure_unstripped() -> None:
 
 
 def self_test() -> None:
+    import numpy as np
+
     configure_unstripped()
     for outcome, spec in base.OUTCOME_SPECS.items():
         if spec["notes"] != "fixed_notes_full_v2_1_local.jsonl":
             raise RuntimeError(f"{outcome}: unstripped note override failed")
-    base.self_test()
+
+    text = np.asarray(
+        [
+            "stable oxygen requirement",
+            "worsening respiratory failure intubation planned",
+            "stable hemodynamics",
+            "norepinephrine started for shock",
+        ] * 10,
+        dtype=object,
+    )
+    y = np.asarray([0, 1, 0, 1] * 10, dtype=int)
+    groups = np.repeat(np.arange(20, dtype=int), 2)
+    score = base.inner_crossfit_text(text, y, groups, seed=20261005)
+    if score.shape != (40,) or not np.isfinite(score).all():
+        raise RuntimeError("T1.4 self-test failed: text cross-fitting")
+    vec, model = base.fit_text_model(text, y)
+    pred = model.decision_function(vec.transform(text.tolist()))
+    if pred.shape != (40,) or not np.isfinite(pred).all():
+        raise RuntimeError("T1.4 self-test failed: full text fit")
+
     print(json.dumps({"t1_4_self_test": "passed"}))
 
 
