@@ -462,6 +462,66 @@ def summarize_pair(
     }
 
 
+def self_test() -> None:
+    base_time = pd.Timestamp("2026-01-01T00:00:00")
+    icu_intime = {1: base_time}
+
+    intervals = pd.DataFrame(
+        {
+            "icustay_id": [1, 1, 1],
+            "starttime": [
+                base_time + pd.Timedelta(hours=7),
+                base_time + pd.Timedelta(hours=8),
+                base_time + pd.Timedelta(hours=20),
+            ],
+            "endtime": [
+                base_time + pd.Timedelta(hours=8),
+                base_time + pd.Timedelta(hours=9),
+                base_time + pd.Timedelta(hours=21),
+            ],
+        }
+    )
+    trans, merged = vaso_episode_map(intervals, icu_intime)
+    if len(trans.get(1, [])) != 2:
+        raise RuntimeError("T0.4 self-test failed: vaso episode washout")
+    if not ongoing_vaso(base_time + pd.Timedelta(hours=8.5), merged[1]):
+        raise RuntimeError("T0.4 self-test failed: vaso ongoing state")
+
+    ev = pd.DataFrame(
+        {
+            "icustay_id": [1, 1, 1],
+            "charttime": [
+                base_time + pd.Timedelta(hours=7),
+                base_time + pd.Timedelta(hours=8),
+                base_time + pd.Timedelta(hours=15),
+            ],
+        }
+    )
+    etrans, positives = evidence_transition_map(ev, icu_intime)
+    if len(etrans.get(1, [])) != 2:
+        raise RuntimeError("T0.4 self-test failed: chart-evidence washout")
+    if transition_category(
+        base_time + pd.Timedelta(hours=14),
+        etrans[1],
+    ) != "both":
+        raise RuntimeError("T0.4 self-test failed: prior/subsequent category")
+    if not ongoing_evidence(base_time + pd.Timedelta(hours=20), positives[1]):
+        raise RuntimeError("T0.4 self-test failed: ongoing evidence window")
+
+    frame = pd.DataFrame(
+        {
+            "subject_id": np.arange(20, dtype=int),
+        }
+    )
+    high = np.ones(20, dtype=bool)
+    cats = np.asarray(["subsequent_only"] * 10 + ["prior_only"] * 10, dtype=object)
+    boot = primary_bootstrap(frame, high, cats)
+    if not (0.0 <= boot["observed_subsequent_only_proportion"] <= 1.0):
+        raise RuntimeError("T0.4 self-test failed: bootstrap proportion")
+
+    print(json.dumps({"t0_4_self_test": "passed"}, indent=2))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(
         description=(
@@ -469,9 +529,16 @@ def main() -> None:
             "MetaVision vasoactive, high-flow, and NIV support transitions."
         )
     )
-    ap.add_argument("--root", required=True)
-    ap.add_argument("--output", required=True)
+    ap.add_argument("--root")
+    ap.add_argument("--output")
+    ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args()
+
+    if args.self_test:
+        self_test()
+        return
+    if not args.root or not args.output:
+        ap.error("--root and --output are required unless --self-test is used")
 
     require_osf_registration()
     for gate in (ATTESTATION, T0_4_CLARIFICATION, FIO2_DEVIATION):
