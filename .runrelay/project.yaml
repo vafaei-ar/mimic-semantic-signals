@@ -3570,3 +3570,237 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/extension_t1_embedding_v2_1_death.json
 
+  validate_extension_t1_unstripped_v2_1:
+    description: Run synthetic-only self-tests for the T1.4 unstripped TF-IDF sensitivity wrapper; read no clinical notes or outcome data.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_unstripped_selftest_v2_1.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+
+  time_extension_t1_unstripped_v2_1_ventilation:
+    description: Run T1.4 ventilation five-partition supervised TF-IDF point estimates on frozen unstripped notes plus the first 10 full-refit bootstrap replicates for the mechanical runtime gate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_unstripped_timing_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_unstripped_timing_v2_1_ventilation.json
+
+  time_extension_t1_unstripped_v2_1_rrt:
+    description: Run T1.4 RRT five-partition supervised TF-IDF point estimates on frozen unstripped notes plus the first 10 full-refit bootstrap replicates for the mechanical runtime gate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_unstripped_timing_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_unstripped_timing_v2_1_rrt.json
+
+  time_extension_t1_unstripped_v2_1_death:
+    description: Run T1.4 MetaVision ICU-death five-partition supervised TF-IDF point estimates on frozen unstripped notes plus the first 10 full-refit bootstrap replicates for the mechanical runtime gate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_unstripped_timing_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_unstripped_timing_v2_1_death.json
+
+  evaluate_extension_t1_unstripped_v2_1_ventilation:
+    description: Run the final T1.4 ventilation endpoint/treatment-language sensitivity using frozen unstripped notes and the timing-selected full-refit bootstrap target; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_unstripped_full_v2_1_ventilation.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_unstripped_v2_1_ventilation.json
+
+  evaluate_extension_t1_unstripped_v2_1_rrt:
+    description: Run the final T1.4 RRT endpoint/treatment-language sensitivity using frozen unstripped notes and the timing-selected full-refit bootstrap target; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_unstripped_full_v2_1_rrt.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_unstripped_v2_1_rrt.json
+
+  evaluate_extension_t1_unstripped_v2_1_death:
+    description: Run the final T1.4 MetaVision ICU-death endpoint/treatment-language sensitivity using frozen unstripped notes and the timing-selected full-refit bootstrap target; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_tfidf_unstripped_full_v2_1_death.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_tfidf_unstripped_v2_1_death.json
+
+  validate_extension_t1_early_fusion_v2_1:
+    description: Run synthetic-only self-tests for the T1.2b 32-component PCA early-fusion implementation; read no clinical notes, cached clinical embeddings, or outcome data.
+    command:
+      - bash
+      - scripts/run_extension_t1_early_fusion_selftest_v2_1.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+
+  time_extension_t1_early_fusion_v2_1_ventilation:
+    description: Run T1.2b ventilation five-partition 32-component embedding early-fusion point estimates plus the first 10 full-refit bootstrap replicates for the mechanical runtime gate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_early_fusion_timing_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_early_fusion_timing_v2_1_ventilation.json
+
+  time_extension_t1_early_fusion_v2_1_rrt:
+    description: Run T1.2b RRT five-partition 32-component embedding early-fusion point estimates plus the first 10 full-refit bootstrap replicates for the mechanical runtime gate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_early_fusion_timing_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_early_fusion_timing_v2_1_rrt.json
+
+  time_extension_t1_early_fusion_v2_1_death:
+    description: Run T1.2b MetaVision ICU-death five-partition 32-component embedding early-fusion point estimates plus the first 10 full-refit bootstrap replicates for the mechanical runtime gate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_early_fusion_timing_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 360
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_early_fusion_timing_v2_1_death.json
+
+  evaluate_extension_t1_early_fusion_v2_1_ventilation:
+    description: Run the final T1.2b ventilation 32-component embedding early-fusion benchmark with the timing-selected patient-cluster full-refit bootstrap target; refit PCA and both HGB models inside every replicate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_early_fusion_full_v2_1_ventilation.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_early_fusion_v2_1_ventilation.json
+
+  evaluate_extension_t1_early_fusion_v2_1_rrt:
+    description: Run the final T1.2b RRT 32-component embedding early-fusion benchmark with the timing-selected patient-cluster full-refit bootstrap target; refit PCA and both HGB models inside every replicate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_early_fusion_full_v2_1_rrt.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_early_fusion_v2_1_rrt.json
+
+  evaluate_extension_t1_early_fusion_v2_1_death:
+    description: Run the final T1.2b MetaVision ICU-death 32-component embedding early-fusion benchmark with the timing-selected patient-cluster full-refit bootstrap target; refit PCA and both HGB models inside every replicate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_early_fusion_full_v2_1_death.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 24
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_early_fusion_v2_1_death.json
+
