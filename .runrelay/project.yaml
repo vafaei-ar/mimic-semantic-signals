@@ -3804,3 +3804,120 @@ tasks:
     artifacts:
       - outputs/multitask_benchmark/extension_t1_early_fusion_v2_1_death.json
 
+  validate_extension_t1_decomposition_v2_1:
+    description: Run synthetic-only self-tests for the T1.5 supervised-text comparator-decomposition helpers; read no clinical notes, cached clinical embeddings, or outcome data.
+    command:
+      - bash
+      - scripts/run_extension_t1_decomposition_selftest_v2_1.sh
+    approval: automatic
+    timeout_minutes: 30
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 15
+
+  time_extension_t1_decomposition_v2_1_ventilation:
+    description: Run T1.5 ventilation A-through-D supervised-text decomposition point estimates plus the first 10 joint A/D refit-bootstrap replicates for the mechanical runtime gate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_decomposition_timing_v2_1_ventilation.sh
+    approval: automatic
+    timeout_minutes: 720
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 28
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_decomposition_timing_v2_1_ventilation.json
+
+  time_extension_t1_decomposition_v2_1_rrt:
+    description: Run T1.5 RRT A-through-D supervised-text decomposition point estimates plus the first 10 joint A/D refit-bootstrap replicates for the mechanical runtime gate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_decomposition_timing_v2_1_rrt.sh
+    approval: automatic
+    timeout_minutes: 720
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 28
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_decomposition_timing_v2_1_rrt.json
+
+  time_extension_t1_decomposition_v2_1_death:
+    description: Run T1.5 MetaVision ICU-death A-through-D supervised-text decomposition point estimates plus the first 10 joint A/D refit-bootstrap replicates for the mechanical runtime gate; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_decomposition_timing_v2_1_death.sh
+    approval: automatic
+    timeout_minutes: 720
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 28
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_decomposition_timing_v2_1_death.json
+
+  evaluate_extension_t1_decomposition_v2_1_ventilation:
+    description: Run the final T1.5 ventilation supervised-text comparator decomposition with timing-selected joint A/D patient-cluster refit-bootstrap intervals for TF-IDF and frozen-embedding scalar scores; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_decomposition_full_v2_1_ventilation.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 28
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_decomposition_v2_1_ventilation.json
+
+  evaluate_extension_t1_decomposition_v2_1_rrt:
+    description: Run the final T1.5 RRT supervised-text comparator decomposition with timing-selected joint A/D patient-cluster refit-bootstrap intervals for TF-IDF and frozen-embedding scalar scores; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_decomposition_full_v2_1_rrt.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 28
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_decomposition_v2_1_rrt.json
+
+  evaluate_extension_t1_decomposition_v2_1_death:
+    description: Run the final T1.5 MetaVision ICU-death supervised-text comparator decomposition with timing-selected joint A/D patient-cluster refit-bootstrap intervals for TF-IDF and frozen-embedding scalar scores; share aggregate results only.
+    command:
+      - bash
+      - scripts/run_extension_t1_decomposition_full_v2_1_death.sh
+    approval: manual
+    timeout_minutes: 4500
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 4
+      min_ram_gb: 28
+      gpu_count: 0
+      wait_minutes: 30
+    artifacts:
+      - outputs/multitask_benchmark/extension_t1_decomposition_v2_1_death.json
+
