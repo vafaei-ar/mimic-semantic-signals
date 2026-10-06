@@ -834,6 +834,56 @@ def run_full_bootstrap(outcome: str, timing: dict) -> dict:
     }
 
 
+def self_test() -> None:
+    rng = np.random.default_rng(20261005)
+    n_groups = 80
+    reps = 2
+    groups = np.repeat(np.arange(n_groups, dtype=int), reps)
+    group_y = np.asarray([(i % 5) == 0 for i in range(n_groups)], dtype=int)
+    y = np.repeat(group_y, reps)
+    embeddings = rng.normal(size=(len(y), 12)).astype(np.float64)
+    embeddings[:, 0] += y * 0.9
+    norms = np.linalg.norm(embeddings, axis=1)
+    embeddings = embeddings / norms[:, None]
+
+    splits = make_inner_splits(y, groups, seed=20261005)
+    selected_c, means = select_c(embeddings, y, splits)
+    score, selected_c_2, means_2 = inner_crossfit_embedding(
+        embeddings,
+        y,
+        groups,
+        seed=20261005,
+    )
+    if selected_c not in C_GRID or selected_c_2 != selected_c:
+        raise RuntimeError("self-test failed: C selection")
+    if means != means_2:
+        raise RuntimeError("self-test failed: deterministic CV means")
+    if not np.isfinite(score).all():
+        raise RuntimeError("self-test failed: non-finite score")
+    for tr, va in splits:
+        if set(groups[tr]).intersection(set(groups[va])):
+            raise RuntimeError("self-test failed: group leakage")
+
+    yy = np.asarray([0, 1] * 50, dtype=int)
+    pb = np.linspace(0.0, 1.0, len(yy), dtype=float)
+    pa = pb[::-1].copy()
+    case_id = np.asarray([f"c{i:03d}" for i in range(len(yy))])
+    alert = deterministic_alert_5(yy, pb, pa, case_id)
+    if alert["alerts"] != 5:
+        raise RuntimeError("self-test failed: alert budget")
+
+    print(
+        json.dumps(
+            {
+                "self_test": "passed",
+                "selected_c": float(selected_c),
+                "cv_means": means,
+            },
+            indent=2,
+        )
+    )
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(
         description="Paper 1 extension T1.2 cross-fitted frozen-embedding benchmark."
@@ -842,7 +892,12 @@ def main() -> None:
     ap.add_argument("--mode", choices=("timing", "full"), required=True)
     ap.add_argument("--output", required=True)
     ap.add_argument("--timing-input")
+    ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args()
+
+    if args.self_test:
+        self_test()
+        return
 
     require_osf_registration()
     for gate in (
