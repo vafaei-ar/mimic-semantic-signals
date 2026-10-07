@@ -3968,3 +3968,15 @@ tasks:
       gpu_count: 0
       wait_minutes: 15
 
+  diagnose_extension_runtime_v2_1:
+    description: Collect bounded non-clinical workstation telemetry and synthetic CPU/BLAS/sklearn timing to diagnose the abnormal T1.1 retry slowdown; read no MIMIC data, notes, labels, or row-level research data.
+    command:
+      - bash
+      - scripts/run_extension_runtime_diagnostic_v2_1.sh
+    approval: automatic
+    timeout_minutes: 15
+    requires_gpu: false
+    working_directory: .
+    artifacts:
+      - outputs/integrity/extension_runtime_diagnostic_v2_1.json
+
