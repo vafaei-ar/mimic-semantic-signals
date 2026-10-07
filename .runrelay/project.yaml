@@ -3992,3 +3992,15 @@ tasks:
     artifacts:
       - outputs/integrity/extension_runtime_readiness_v2_1.json
 
+  audit_runrelay_orphans_v2_1:
+    description: Read-only audit for lingering processes tagged with terminal RunRelay job ids C8M4R7K2 or F7M2R9K4; expose only job id, pid lineage, process name, process group, and session identifiers, with no command lines or unrelated environment values.
+    command:
+      - bash
+      - scripts/run_runrelay_orphan_audit_v2_1.sh
+    approval: automatic
+    timeout_minutes: 5
+    requires_gpu: false
+    working_directory: .
+    artifacts:
+      - outputs/integrity/runrelay_orphan_audit_v2_1.json
+
