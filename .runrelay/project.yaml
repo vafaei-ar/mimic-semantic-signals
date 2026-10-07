@@ -4016,3 +4016,14 @@ tasks:
     artifacts:
       - outputs/integrity/runrelay_orphan_cleanup_c8_v2_1.json
 
+  audit_cpu_contender_runrelay_tags_v2_1:
+    description: Read-only audit of the current top CPU contender PIDs to determine whether they are tagged with a RunRelay job id; expose only pid lineage, process name, group/session ids, and RUNRELAY_JOB_ID.
+    command:
+      - bash
+      - scripts/run_cpu_contender_runrelay_tag_audit_v2_1.sh
+    approval: automatic
+    timeout_minutes: 5
+    requires_gpu: false
+    working_directory: .
+    artifacts:
+      - outputs/integrity/cpu_contender_runrelay_tag_audit_v2_1.json
