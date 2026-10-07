@@ -3980,3 +3980,15 @@ tasks:
     artifacts:
       - outputs/integrity/extension_runtime_diagnostic_v2_1.json
 
+  check_extension_runtime_readiness_v2_1:
+    description: Run a lightweight operational readiness gate for long Tier-1 compute using system load, CPU pressure, package temperature, and safe process summaries; read no clinical or row-level research data.
+    command:
+      - bash
+      - scripts/run_extension_runtime_readiness_v2_1.sh
+    approval: automatic
+    timeout_minutes: 5
+    requires_gpu: false
+    working_directory: .
+    artifacts:
+      - outputs/integrity/extension_runtime_readiness_v2_1.json
+
