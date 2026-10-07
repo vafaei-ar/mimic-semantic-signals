@@ -4004,3 +4004,15 @@ tasks:
     artifacts:
       - outputs/integrity/runrelay_orphan_audit_v2_1.json
 
+  cleanup_runrelay_orphan_c8_v2_1:
+    description: Terminate only the lingering process group whose environment is re-verified as RUNRELAY_JOB_ID=C8M4R7K2; abort unless all matching processes are confined to one non-self process group/session, then share an aggregate cleanup record.
+    command:
+      - bash
+      - scripts/run_cleanup_runrelay_orphan_c8_v2_1.sh
+    approval: manual
+    timeout_minutes: 5
+    requires_gpu: false
+    working_directory: .
+    artifacts:
+      - outputs/integrity/runrelay_orphan_cleanup_c8_v2_1.json
+
