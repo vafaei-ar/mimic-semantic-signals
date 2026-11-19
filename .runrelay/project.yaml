@@ -3125,6 +3125,7 @@ tasks:
       - outputs/manuscript/Figure_2.svg
       - outputs/manuscript/Figure_2.png
 
+  audit_paper1_figure_python_environment:
     description: Check existing project/system Python interpreters for matplotlib availability before rendering the supplied Paper 1 figure code; read no clinical data and modify no environment.
     command:
       - /usr/bin/python3
@@ -3141,6 +3142,7 @@ tasks:
     artifacts:
       - outputs/integrity/paper1_figure_python_environment.json
 
+  preview_paper1_final_matplotlib_figures:
     description: Regenerate the final Paper 1 matplotlib figures from frozen aggregate JSON data and create compact JPEG/data-URI previews for visual QA; no model fitting, row-level data, or figure-content changes.
     command:
       - bash
@@ -3159,6 +3161,33 @@ tasks:
       - outputs/manuscript/Figure_1_preview_data_uri.txt
       - outputs/manuscript/Figure_2_preview_data_uri.txt
 
+
+
+  build_jamia_main_figures:
+    description: Render JAMIA main Figure 1 design and Figure 2 registered H1-H3 AUROC forest from prevalidated public aggregate JSON only, without patient data, new models or new inference.
+    command:
+      - /home/asadr/miniconda3/bin/python
+      - manuscript/make_jamia_main_figures.py
+      - --root
+      - .
+      - --out
+      - outputs/manuscript/jamia_v1
+    approval: automatic
+    timeout_minutes: 15
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 2
+      gpu_count: 0
+      wait_minutes: 10
+    artifacts:
+      - outputs/manuscript/jamia_v1/JAMIA_Figure_1_Study_design.pdf
+      - outputs/manuscript/jamia_v1/JAMIA_Figure_1_Study_design.svg
+      - outputs/manuscript/jamia_v1/JAMIA_Figure_1_Study_design.png
+      - outputs/manuscript/jamia_v1/JAMIA_Figure_2_Primary_delta_AUROC.pdf
+      - outputs/manuscript/jamia_v1/JAMIA_Figure_2_Primary_delta_AUROC.svg
+      - outputs/manuscript/jamia_v1/JAMIA_Figure_2_Primary_delta_AUROC.png
 
   audit_paper1_submission_repo:
     description: Audit the current Paper 1 repository state for a clean tracked worktree, required submission sources, final figure-generator wiring, and absence of superseded current-plan language; no clinical data or model execution.
