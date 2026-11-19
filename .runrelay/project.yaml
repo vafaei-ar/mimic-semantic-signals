@@ -3189,6 +3189,23 @@ tasks:
       - outputs/manuscript/jamia_v1/JAMIA_Figure_2_Primary_delta_AUROC.svg
       - outputs/manuscript/jamia_v1/JAMIA_Figure_2_Primary_delta_AUROC.png
 
+  audit_jamia_main_figures_v1:
+    description: Verify exact T0EK5K79 main figure artifacts using SHA256, PNG dimensions, SVG editable text and registered source values; produces safe aggregate QA only and performs no patient-level work or model refit.
+    command:
+      - /usr/bin/python3
+      - scripts/audit_jamia_main_figures_v1.py
+    approval: automatic
+    timeout_minutes: 5
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 1
+      gpu_count: 0
+      wait_minutes: 5
+    artifacts:
+      - outputs/integrity/jamia_main_figures_v1_audit.json
+
   audit_paper1_submission_repo:
     description: Audit the current Paper 1 repository state for a clean tracked worktree, required submission sources, final figure-generator wiring, and absence of superseded current-plan language; no clinical data or model execution.
     command:
