@@ -141,22 +141,22 @@ Manuscript reporting was cross-checked against TRIPOD+AI, the current reporting 
 
 ### Primary analyses
 
-The rich structured comparator achieved AUROCs of 0.725 for invasive ventilation, 0.974 for RRT, and 0.933 for MetaVision ICU death. Adding the eight Open-Jev scores changed AUROC by -0.0001, -0.0008, and -0.0021, respectively (Table 2). All three refit-bootstrap intervals included both negative and positive values. Across the five frozen patient-grouped partitions, ventilation delta AUROC ranged from -0.0055 to +0.0092, RRT from -0.0008 to +0.0033, and ICU death from -0.0033 to +0.0039.
+The rich structured comparator achieved AUROCs of 0.725 for invasive ventilation, 0.974 for RRT, and 0.933 for MetaVision ICU death. Adding the eight Open-Jev scores changed AUROC by -0.0001, -0.0008, and -0.0021, respectively (Table 2 and Figure 2). All three refit-bootstrap intervals included both negative and positive values. Across the five frozen patient-grouped partitions, ventilation delta AUROC ranged from -0.0055 to +0.0092, RRT from -0.0008 to +0.0033, and ICU death from -0.0033 to +0.0039.
 
 **Table 2. Registered primary Open-Jev results**
 
 | Outcome | Comparator AUROC | + Open-Jev AUROC | Delta AUROC | 95% refit-bootstrap interval | Delta AUPRC |
 |---|---:|---:|---:|---:|---:|
-| Invasive ventilation | 0.725 | 0.725 | -0.0001 | -0.0217 to +0.0191 | +0.0039 |
-| Renal replacement therapy | 0.974 | 0.973 | -0.0008 | -0.0032 to +0.0028 | -0.0005 |
-| ICU death, MetaVision | 0.933 | 0.931 | -0.0021 | -0.0080 to +0.0053 | +0.0009 |
+| Invasive ventilation | 0.72468 | 0.72463 | -0.00005 | -0.02173 to +0.01910 | +0.00387 |
+| Renal replacement therapy | 0.97394 | 0.97315 | -0.00079 | -0.00323 to +0.00275 | -0.00048 |
+| ICU death, MetaVision | 0.93338 | 0.93126 | -0.00212 | -0.00802 to +0.00531 | +0.00087 |
 
 Registered proper-scoring and calibration metrics gave the same overall interpretation. Delta Brier score was -0.00004 for ventilation (95% refit-bootstrap interval -0.00020 to +0.00024), +0.00011 for RRT (-0.00047 to +0.00038), and -0.00001 for ICU death (-0.00023 to +0.00019). Delta log loss was -0.00029 (-0.00124 to +0.00387), +0.00073 (-0.00154 to +0.00181), and +0.00074 (-0.00097 to +0.00167), respectively. Calibration slopes changed from 0.615 to 0.634, 0.713 to 0.699, and 0.762 to 0.748. Incremental decision-curve net-benefit intervals spanned zero at every prespecified threshold (Supplementary Table S9).
 
 
 ### Lexical versus semantic representation
 
-Within the common logistic-regression family, Open-Jev increments were negative for all three outcomes, whereas TF-IDF increments were small and positive (Table 3; Figure 2b). Adding Open-Jev after TF-IDF reduced AUROC in all three primary analyses. Thus, the bedside notes retained residual predictive information under the common logistic specification, but the eight-dimensional semantic representation did not preserve the same incremental discrimination.
+Within the common logistic-regression family, Open-Jev increments were negative for all three outcomes, whereas TF-IDF increments were small and positive (Table 3). Adding Open-Jev after TF-IDF reduced AUROC in all three primary analyses. Thus, the bedside notes retained residual predictive information under the common logistic specification, but the eight-dimensional semantic representation did not preserve the same incremental discrimination.
 
 **Table 3. Registered representation comparison within a common logistic model family**
 
@@ -168,17 +168,17 @@ Within the common logistic-regression family, Open-Jev increments were negative 
 
 ### Registered sensitivity analyses
 
-The prespecified semantic-instrument, endpoint, and prospective-timing sensitivities did not materially change the primary conclusion (Figure 1b). For unstripped Open-Jev, delta AUROC was -0.0104 for ventilation, -0.0003 for RRT, and +0.0011 for ICU death. For Laya, the corresponding estimates were +0.0103, -0.0008, and +0.0014. For DiffusionGemma, they were -0.0081, -0.0008, and +0.0050. All corresponding refit-bootstrap intervals included both negative and positive values. Endpoint, timing, laboratory-lag, and note-availability sensitivities likewise did not produce a reproducible positive semantic increment.
+The prespecified semantic-instrument, endpoint, and prospective-timing sensitivities did not materially change the primary conclusion . For unstripped Open-Jev, delta AUROC was -0.0104 for ventilation, -0.0003 for RRT, and +0.0011 for ICU death. For Laya, the corresponding estimates were +0.0103, -0.0008, and +0.0014. For DiffusionGemma, they were -0.0081, -0.0008, and +0.0050. All corresponding refit-bootstrap intervals included both negative and positive values. Endpoint, timing, laboratory-lag, and note-availability sensitivities likewise did not produce a reproducible positive semantic increment.
 
 In the separate CareVue ICU-death replication, comparator AUROC was 0.938 and comparator plus Open-Jev AUROC was 0.935, for a delta of -0.0026 with a 95% interval of -0.0086 to +0.0081.
 
 ### Patient-shuffled negative control
 
-The patient-shuffled semantic control did not show a reproducible positive increment (Figure 1b). Delta AUROC was -0.0106 for ventilation, -0.0002 for RRT, +0.0031 for MetaVision ICU death, and -0.0071 for CareVue ICU death. Each interval included both negative and positive values.
+The patient-shuffled semantic control did not show a reproducible positive increment . Delta AUROC was -0.0106 for ventilation, -0.0002 for RRT, +0.0031 for MetaVision ICU death, and -0.0071 for CareVue ICU death. Each interval included both negative and positive values.
 
 ### Label-free alignment audit
 
-Semantic and note case identifiers matched exactly in the corrected analysis files. Hemodynamic and respiratory concern scores showed stronger clinically expected associations with corresponding structured support states than did between-patient shuffled semantic vectors. This audit reduced concern about gross score-to-stay misalignment as an explanation for the null predictive results (Figure 2c). Reassuring stability showed weak or inconsistent alignment and was not treated as a construct-validated measurement.
+Semantic and note case identifiers matched exactly in the corrected analysis files. Hemodynamic and respiratory concern scores showed stronger clinically expected associations with corresponding structured support states than did between-patient shuffled semantic vectors. This audit reduced concern about gross score-to-stay misalignment as an explanation for the null predictive results . Reassuring stability showed weak or inconsistent alignment and was not treated as a construct-validated measurement.
 
 ### Semantic-only discrimination
 
@@ -186,11 +186,11 @@ Among note-available rows, the eight Open-Jev scores alone achieved AUROC 0.603 
 
 ### Note-available frozen-prediction subgroup
 
-Restricting the already-frozen full-cohort out-of-fold predictions to patients with eligible notes did not reveal a stable positive incremental effect (Figure 2d; Supplementary Table S10). For ventilation, primary-partition delta AUROC was +0.0109, but the five-partition values ranged from -0.0158 to +0.0279. For RRT, the primary estimate was -0.0012 and the five-partition range was -0.0012 to +0.0043. For ICU death, the primary estimate was -0.0076 and the range was -0.0076 to +0.0068. No model was refit for this exploratory subgroup analysis.
+Restricting the already-frozen full-cohort out-of-fold predictions to patients with eligible notes did not reveal a stable positive incremental effect (Supplementary Table S10). For ventilation, primary-partition delta AUROC was +0.0109, but the five-partition values ranged from -0.0158 to +0.0279. For RRT, the primary estimate was -0.0012 and the five-partition range was -0.0012 to +0.0043. For ICU death, the primary estimate was -0.0076 and the range was -0.0076 to +0.0068. No model was refit for this exploratory subgroup analysis.
 
 ### Comparator decomposition
 
-For invasive ventilation, the Open-Jev delta AUROC was +0.0203 over the 34-feature physiology/laboratory/urine comparator. The increment decreased to +0.0114 after treatment/support context was added and to -0.0017 after documentation-behavior variables were added. With the registered rich comparator, the delta was less than 0.0001 in magnitude (Figure 2a). The five frozen partitions all produced positive ventilation increments at levels A and B; level C and D results were mixed.
+For invasive ventilation, the Open-Jev delta AUROC was +0.0203 over the 34-feature physiology/laboratory/urine comparator. The increment decreased to +0.0114 after treatment/support context was added and to -0.0017 after documentation-behavior variables were added. With the registered rich comparator, the delta was less than 0.0001 in magnitude . The five frozen partitions all produced positive ventilation increments at levels A and B; level C and D results were mixed.
 
 At levels A and B, the augmented model could also exploit semantic-score missingness as a marker of note availability because note-context variables had not yet been added to the comparator. The positive early-level increments therefore cannot be attributed entirely to semantic content.
 
@@ -272,14 +272,14 @@ OpenAI ChatGPT (GPT-5.6 Sol) was used for code generation and review, organizati
 
 ## Figure legends
 
-### Figure 1. Preregistered design and registered analyses show no consistent incremental discrimination from low-dimensional semantic scores
+### Figure 1. Preregistered study design and semantic-score augmentation
 
-**a,** Corrected v2.1 study design. Adult MIMIC-III MetaVision ICU stays were evaluated at a fixed 12-hour landmark. The narrative input was the single latest eligible bedside note before the landmark; the primary corpus removed prespecified direct endpoint or treatment expressions before semantic inference. Eight typed semantic scores were added to a rich structured comparator containing 34 physiology/laboratory/urine features, treatment/support context, documentation-behavior variables, and ordinary note context. Outcomes were invasive ventilation, renal replacement therapy (RRT), and ICU death during the subsequent 12 hours. CareVue ICU death was analyzed separately as a replication. **b,** Delta AUROC for the registered primary Open-Jev analyses, alternative semantic instruments, endpoint and prospective-timing sensitivities, the separate CareVue ICU-death replication, and registered patient-shuffled negative controls. Points show primary-partition estimates and horizontal lines show 95% patient-cluster refit-bootstrap percentile intervals. The outcome-specific pale band spans the approximate pre-analysis 80% detectable full-cohort |delta AUROC| for the corresponding outcome. These planning values are precision context only and are not equivalence margins or decision thresholds.
+**Legend.** **a,** Adults in the MetaVision ICU cohorts of MIMIC-III were evaluated at a fixed 12-hour landmark after ICU admission. The study used structured measurements and the latest eligible pre-landmark bedside note. Before semantic scoring, the primary corpus removed prespecified direct endpoint and treatment expressions. The study evaluated new invasive ventilation, renal replacement therapy (RRT), and ICU death during the subsequent 12 hours. **b,** The rich structured HistGradientBoosting comparator contained 34 core physiologic, laboratory, and urine features, plus treatment/support context, documentation-behavior measures, and ordinary note context. The augmented model added eight predefined Open-Jev semantic scores to the same comparator. Cohort sizes were 11,116 stays (279 events) for ventilation, 19,395 (314 events) for RRT, and 19,811 (214 deaths) for ICU death. CareVue ICU death was evaluated separately and not pooled with MetaVision. This conceptual diagram does not represent a patient inclusion flow.
 
-**Alt text:** Two-panel figure. Panel a shows the preregistered 12-hour-landmark ICU design, single latest eligible pre-landmark note, eight typed semantic scores, rich structured comparator, and three 12-hour outcomes. Panel b is a comprehensive forest plot grouped by outcome; registered primary, sensitivity, timing, replication, and shuffled-control delta-AUROC estimates cluster around zero and all displayed 95% intervals span zero.
+**Alt text:** Two-part diagram. Panel a shows ICU admission, the 12-hour landmark, and the subsequent 12-hour outcome period. Panel b shows eligible MetaVision ICU stays, structured and bedside-note inputs, the rich structured comparator, addition of eight predefined semantic scores, and three separately assessed outcomes.
 
-### Figure 2. Representation comparison and exploratory analyses clarify the near-null primary result
+### Figure 2. Registered incremental discrimination from semantic-score augmentation
 
-**a,** Post-registration exploratory decomposition of Open-Jev incremental AUROC across four nested HistGradientBoosting comparators: A, 34 structured physiology/laboratory/urine features; B, A plus treatment/support context and death-specific code status; C, B plus documentation-behavior variables; and D, C plus ordinary note context (note availability, selected-note age, and note category), equal to the registered rich comparator. The filled blue line shows the primary frozen partition and pale open lines show four additional frozen partitions. No new bootstrap was performed. **b,** Registered secondary representation comparison within the same L2-penalized logistic-regression family. Points show primary-partition delta AUROC for Open-Jev, TF-IDF (up to 10,000 features), and Open-Jev after TF-IDF. **c,** Post-registration label-free alignment audit comparing real construct-state Spearman correlations with between-patient shuffled references. Outcome labels were not read. **d,** Post-registration exploratory note-available subgroup using the already-frozen full-cohort out-of-fold predictions, with no subgroup refitting; the filled blue point is the primary frozen partition and open points are four additional frozen partitions.
+**Legend.** Points show the original primary-partition change in area under the receiver operating characteristic curve (ΔAUROC), defined as the Open-Jev-augmented model minus the rich structured comparator. Horizontal whiskers show two-sided 95% source-patient-cluster full-refit-bootstrap percentile intervals with 500 valid replicates per outcome. The dashed vertical line indicates zero incremental AUROC. Ventilation ΔAUROC was −0.00005 (95% CI, −0.02173 to +0.01910), RRT was −0.00079 (−0.00323 to +0.00275), and ICU death was −0.00212 (−0.00802 to +0.00531). All intervals include zero. Four additional frozen patient-grouped partitions were stability checks, not independent external-validation cohorts or part of the displayed intervals. These intervals do not establish equivalence.
 
-**Alt text:** Four-panel figure. Panel a shows attenuation of the ventilation semantic increment as treatment/support and documentation context are added, with RRT and death near zero throughout. Panel b shows small positive TF-IDF increments and negative Open-Jev increments within the same logistic model family. Panel c shows stronger real than shuffled correlations between matched semantic scores and structured support states. Panel d shows mixed delta-AUROC values across five frozen partitions among note-available patients, with no stable positive incremental effect.
+**Alt text:** Three-row forest plot of incremental AUROC. Ventilation, RRT, and ICU death have point estimates near zero and horizontal 95% confidence intervals crossing a dashed vertical zero line. The ventilation interval is the widest.
