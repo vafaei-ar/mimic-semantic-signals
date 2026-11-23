@@ -3206,6 +3206,26 @@ tasks:
     artifacts:
       - outputs/integrity/jamia_main_figures_v1_audit.json
 
+
+  assemble_jamia_integrated_word_v1:
+    description: Create a complete editable JAMIA Word working manuscript from the tracked Markdown at the exact commit, with three native tables, original citations and separate registered figure legends. Verify only aggregate source values, no clinical rows or model fitting.
+    command:
+      - /home/asadr/miniconda3/bin/python
+      - manuscript/build_jamia_integrated_docx.py
+    approval: automatic
+    timeout_minutes: 8
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 1
+      gpu_count: 0
+      wait_minutes: 5
+    artifacts:
+      - outputs/manuscript/jamia_integrated_v1/JAMIA_Working_Manuscript_Integrated_v1.docx
+      - outputs/manuscript/jamia_integrated_v1/JAMIA_Working_Manuscript_Integrated_v1_QA.json
+      - outputs/manuscript/jamia_integrated_v1/JAMIA_Working_Manuscript_Integrated_v1.pdf
+
   audit_paper1_submission_repo:
     description: Audit the current Paper 1 repository state for a clean tracked worktree, required submission sources, final figure-generator wiring, and absence of superseded current-plan language; no clinical data or model execution.
     command:
