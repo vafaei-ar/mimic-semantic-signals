@@ -3245,6 +3245,27 @@ tasks:
       - outputs/integrity/jamia_word_assembly_diagnostic.json
 
 
+  build_jamia_submission_candidate_package_20261123:
+    description: Assemble review candidate manuscript, supplement and cover in editable Word/PDF, render two frozen aggregate-only figures, export a portable 18-reference RIS and package aggregate-safe files. No patient-level clinical data or model fitting.
+    command:
+      - /home/asadr/miniconda3/bin/python
+      - manuscript/build_jamia_submission_package_20261123.py
+    approval: automatic
+    timeout_minutes: 15
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 2
+      min_ram_gb: 4
+      gpu_count: 0
+      wait_minutes: 10
+    artifacts:
+      - outputs/manuscript/jamia_submission_candidate_20261123/JAMIA_Submission_Candidate_2026-11-23.zip
+      - outputs/manuscript/jamia_submission_candidate_20261123/JAMIA_Submission_Candidate_2026-11-23_Package_QA.json
+      - outputs/manuscript/jamia_submission_candidate_20261123/JAMIA_Submission_Candidate_2026-11-23.docx
+      - outputs/manuscript/jamia_submission_candidate_20261123/JAMIA_Supplement_Candidate_2026-11-23.docx
+      - outputs/manuscript/jamia_submission_candidate_20261123/Cover_Letter_2026-11-23.docx
+
   audit_jamia_integrated_layout_postrepair_v2:
     description: Verify completed TVQ69QH7 DOCX/PDF hashes, intact registered tables, landscape Table 3 PDF placement, portrait remaining pages, and no off-page text. Aggregate QA only; no manuscript modification, clinical data, or model fitting.
     command:
