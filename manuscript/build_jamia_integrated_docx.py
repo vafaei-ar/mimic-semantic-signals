@@ -145,6 +145,83 @@ def doc_html(source):
               '<style>' + css + '</style></head><body>' + "\n".join(out) + '</body></html>\n')
     return result, tables, refcount, figures
 
+
+def orient_table3_landscape(docx_path):
+    """Isolate the eight-column Table 3 in a landscape Word section.
+
+    Keep all manuscript text, registered values, and other tables untouched.
+    Change only document.xml, using standard library to avoid workstation
+    dependency changes. The original final section remains portrait.
+    """
+    with zipfile.ZipFile(docx_path, "r") as src:
+        files = [(item, src.read(item.filename)) for item in src.infolist()]
+    document = next(payload for item, payload in files if item.filename == "word/document.xml")
+    xml = document.decode("utf-8")
+    starts = [m.start() for m in re.finditer(r"<w:tbl(?=[\s>])", xml)]
+    if len(starts) != 3:
+        raise ValueError("Expected exactly three tables before orientation repair")
+    table_start = starts[2]
+    table_end_at = xml.find("</w:tbl>", table_start)
+    if table_end_at < 0:
+        raise ValueError("Could not locate complete Table 3")
+    table_end = table_end_at + len("</w:tbl>")
+    cap_match = list(re.finditer(r"<w:p(?=[\s>])", xml[:table_start]))
+    if not cap_match:
+        raise ValueError("Table 3 caption is missing")
+    caption_start = cap_match[-1].start()
+    caption_end = xml.find("</w:p>", caption_start) + len("</w:p>")
+    caption_xml = xml[caption_start:caption_end]
+    caption_text = html.unescape("".join(re.findall(
+        r"<w:t(?:\s[^>]*)?>(.*?)</w:t>", caption_xml, flags=re.S)))
+    if "Table 3" not in caption_text:
+        raise ValueError("Cannot safely locate Table 3 caption")
+    sections = list(re.finditer(r"<w:sectPr(?:\s[^>]*)?>.*?</w:sectPr>", xml, flags=re.S))
+    if len(sections) != 1 or sections[0].start() < table_end:
+        raise ValueError("Expected one final portrait section after Table 3")
+    portrait = sections[0].group()
+    if not re.search(r"<w:pgSz\b[^>]*/>", portrait):
+        raise ValueError("Cannot identify original page size")
+    if 'w:orient="landscape"' in portrait:
+        raise ValueError("Original final section is not portrait")
+    # A section's properties apply to the content preceding its break.
+    # The caption and Table 3 therefore live between a portrait break
+    # and a landscape break; all following content resumes portrait.
+    portrait_break = re.sub(
+        r"(<w:sectPr(?:\s[^>]*)?>)", r'\1<w:type w:val="nextPage"/>',
+        portrait, count=1)
+    landscape_break = re.sub(
+        r"(<w:sectPr(?:\s[^>]*)?>)", r'\1<w:type w:val="nextPage"/>',
+        portrait, count=1)
+    landscape_break = re.sub(
+        r"<w:pgSz\b[^>]*/>",
+        '<w:pgSz w:w="15840" w:h="12240" w:orient="landscape"/>',
+        landscape_break, count=1)
+    # Increase the grid and cell widths from the original portrait
+    # geometry (7.32in) to the available landscape text width (~8.9in).
+    table_xml = xml[table_start:table_end]
+    def widened(match):
+        return match.group(1) + str(round(int(match.group(2)) * 1.20)) + match.group(3)
+    for tag in ("gridCol", "tcW"):
+        table_xml = re.sub(
+            r'(<w:' + tag + r'\b[^>]*\bw:w=")(\d+)(")',
+            widened, table_xml)
+    # Only scale fixed-width tblW. Percent and automatic widths remain unchanged.
+    table_xml = re.sub(
+        r'(<w:tblW\b(?=[^>]*w:type="dxa")[^>]*\bw:w=")(\d+)(")',
+        widened, table_xml)
+    before = "<w:p><w:pPr>" + portrait_break + "</w:pPr></w:p>"
+    after = "<w:p><w:pPr>" + landscape_break + "</w:pPr></w:p>"
+    fixed = xml[:caption_start] + before + xml[caption_start:table_start]
+    fixed += table_xml + after + xml[table_end:]
+    ET.fromstring(fixed.encode("utf-8"))  # Fail before replacing the original.
+    temp = docx_path.with_suffix(".layout.tmp")
+    with zipfile.ZipFile(temp, "w") as dst:
+        for item, payload in files:
+            dst.writestr(item, fixed.encode("utf-8") if item.filename == "word/document.xml" else payload)
+    temp.replace(docx_path)
+    return {"table3_landscape_section": True, "other_sections_portrait": True,
+            "table3_grid_width_scale": 1.20}
+
 def extract_word_tables(docx_path):
     with zipfile.ZipFile(docx_path) as package:
         if package.testzip() is not None:
@@ -184,6 +261,7 @@ def main():
     cp = subprocess.run(cmd, capture_output=True, text=True, timeout=120, check=False)
     if cp.returncode != 0 or not TARGET.is_file():
         raise RuntimeError("DOCX conversion failed: " + (cp.stderr or cp.stdout)[-900:])
+    layout_changes = orient_table3_landscape(TARGET)
     word_tables, xml = extract_word_tables(TARGET)
     if len(word_tables) != 3:
         raise ValueError(f"Word native table count {len(word_tables)} != 3")
@@ -215,6 +293,7 @@ def main():
         "numbered_references_from_source": references,
         "figure_legend_headings": figures,
         "editable_word_tables": True,
+        "layout_correction": layout_changes,
         "pdf_rendered": render_ok,
         "zotero_field_linking": "pending",
         "figure_image_embedding": "not included, separate journal figures",
