@@ -3226,6 +3226,24 @@ tasks:
       - outputs/manuscript/jamia_integrated_v1/JAMIA_Working_Manuscript_Integrated_v1_QA.json
       - outputs/manuscript/jamia_integrated_v1/JAMIA_Working_Manuscript_Integrated_v1.pdf
 
+
+  diagnose_jamia_word_assembly_v1:
+    description: Run bounded document-only diagnostic and capture Python interpreter, docx package availability and generator traceback in a safe JSON artifact.
+    command:
+      - /home/asadr/miniconda3/bin/python
+      - scripts/diagnose_jamia_word_assembly.py
+    approval: automatic
+    timeout_minutes: 5
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 1
+      gpu_count: 0
+      wait_minutes: 5
+    artifacts:
+      - outputs/integrity/jamia_word_assembly_diagnostic.json
+
   audit_paper1_submission_repo:
     description: Audit the current Paper 1 repository state for a clean tracked worktree, required submission sources, final figure-generator wiring, and absence of superseded current-plan language; no clinical data or model execution.
     command:
