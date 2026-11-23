@@ -247,7 +247,7 @@ def main():
     source = data.decode("utf-8")
     markup, original_tables, references, figures = doc_html(source)
     OUT.mkdir(parents=True, exist_ok=True)
-    html_file = OUT / "JAMIA_Working_Manuscript_Integrated_v1.html"
+    html_file = OUT / "JAMIA_Submission_Candidate_2026-11-23.html"
     html_file.write_text(markup, encoding="utf-8")
     office = shutil.which("libreoffice") or shutil.which("soffice")
     if not office:
