@@ -3245,6 +3245,23 @@ tasks:
       - outputs/integrity/jamia_word_assembly_diagnostic.json
 
 
+  audit_jamia_integrated_layout_postrepair_v2:
+    description: Verify completed TVQ69QH7 DOCX/PDF hashes, intact registered tables, landscape Table 3 PDF placement, portrait remaining pages, and no off-page text. Aggregate QA only; no manuscript modification, clinical data, or model fitting.
+    command:
+      - /home/asadr/miniconda3/bin/python
+      - scripts/audit_jamia_integrated_layout_postrepair_v2.py
+    approval: automatic
+    timeout_minutes: 5
+    requires_gpu: false
+    working_directory: .
+    resources:
+      cpu_cores: 1
+      min_ram_gb: 1
+      gpu_count: 0
+      wait_minutes: 5
+    artifacts:
+      - outputs/integrity/jamia_integrated_layout_postrepair_v2.json
+
   audit_jamia_integrated_layout_v1:
     description: Read-only preflight of the previously generated JAMIA DOCX and PDF using canonical artifact checksums, Word page geometry, existing PDF text bounding boxes and table inventory. Produces only safe aggregate QA, no patient data or model fitting.
     command:
