@@ -73,45 +73,53 @@ def cover_letter():
     return docx,pdf
 
 def refs_ris():
-    s=MAIN_MD.read_text(encoding="utf-8").split("## References")[1].split("## Figure legends")[0]
-    lines=[x.strip() for x in s.splitlines() if re.match(r"^\d+\.\s",x.strip())]
-    if len(lines)!=18:
-        raise ValueError("Expected 18 numbered verified references")
+    """Export citation metadata checked against PubMed or source model cards."""
+    source=MAIN_MD.read_text(encoding="utf-8")
+    lines=[x.strip() for x in source.split("## References")[1].split("## Figure legends")[0].splitlines()
+           if re.match(r"^\d+\.\s",x.strip())]
+    registry=json.loads((ROOT/"manuscript/JAMIA_REFERENCES_PUBMED_VERIFIED_2026-11-23.json").read_text(encoding="utf-8"))
+    items=registry["items"]
+    if len(lines)!=18 or len(items)!=18:
+        raise ValueError("Expected exactly 18 manuscript references and registry items")
     output=[]
-    for i,line in enumerate(lines,1):
-        rec=line.split(". ",1)[1] if ". " in line else line
-        model=i in (8,9,10)
-        doi=re.search(r"doi:([0-9.]+/[^\s]+)",rec,re.I)
-        pmid=re.search(r"PMID:([0-9]+)",rec,re.I)
-        url=re.search(r"https?://[^\s]+",rec)
-        year=re.search(r"\b(20\d\d|19\d\d)\b",rec)
-        title=rec
-        # Parse the cited title only when an explicit journal boundary exists.
-        if not model:
-            m=re.search(r"(?:et al\.|[A-Z]{1,4}\.)\s+(.+?)\.\s+\*[^*]+\*\.",rec)
-            if m:
-                title=m.group(1)
-        else:
-            title=rec.split("[model card]")[0].strip()
-        parts=["TY  - "+("ELEC" if model else "JOUR"),
-               "ID  - JEV-REF-"+str(i),
-               "TI  - "+title,
-               "N1  - Source manuscript reference: "+line]
-        if year:
-            parts.append("PY  - "+year.group(0))
-        if doi:
-            parts.append("DO  - "+doi.group(1).rstrip("."))
-            parts.append("UR  - https://doi.org/"+doi.group(1).rstrip("."))
-        elif pmid:
-            parts.append("AN  - PMID:"+pmid.group(1))
-            parts.append("UR  - https://pubmed.ncbi.nlm.nih.gov/"+pmid.group(1)+"/")
-        elif url:
-            parts.append("UR  - "+url.group(0).rstrip("."))
-        parts.extend(["ER  - ",""])
-        output.append("\n".join(parts))
+    for i,(line,item) in enumerate(zip(lines,items),1):
+        if int(item["number"])!=i:
+            raise ValueError("PubMed metadata order does not match manuscript")
+        doi=item.get("doi")
+        if doi and doi.lower() not in line.lower():
+            raise ValueError("Manuscript DOI conflicts with registry at citation "+str(i))
+        if item.get("type")=="ELEC" and item.get("url") not in line:
+            raise ValueError("Model card URL mismatch for citation "+str(i))
+        p=["TY  - "+item["type"],
+           "ID  - JEV-REF-"+str(i),
+           "TI  - "+item["title"]]
+        for author in item["authors"]:
+            p.append("AU  - "+author)
+        if item.get("journal"):
+            p.extend(["JO  - "+item["journal"],"JF  - "+item["journal"]])
+        if item.get("publisher"):
+            p.append("PB  - "+item["publisher"])
+        if item.get("year"):
+            p.append("PY  - "+str(item["year"]))
+        for field,key in (("VL","volume"),("IS","issue"),("SP","pages"),("DO","doi")):
+            if item.get(key):
+                p.append(field+"  - "+str(item[key]))
+        if item.get("pmid"):
+            p.append("AN  - PMID:"+item["pmid"])
+        url=item.get("source_url") or item.get("url")
+        if url:
+            p.append("UR  - "+url)
+        if item.get("accessed"):
+            p.append("Y2  - "+item["accessed"])
+        p.extend(["N1  - Original manuscript reference: "+line,"ER  - ",""])
+        output.append("\n".join(p))
     dest=OUT/"JAMIA_References_Zotero_Import_2026-11-23.ris"
     dest.write_text("\n".join(output)+"\n",encoding="utf-8")
-    return dest,len(lines)
+    saved=dest.read_text(encoding="utf-8")
+    if saved.count("\nER  - ")!=18 or saved.count("\nAU  - ")<18 or saved.count("\nJO  - ")!=15:
+        raise ValueError("Incomplete RIS authors/journals after write")
+    return dest,len(items)
+
 
 def pdf_geometry(pdf):
     exe=shutil.which("pdftotext")
@@ -164,6 +172,7 @@ def main():
        "source_main_exists":MAIN_MD.exists(),
        "source_supplement_exists":SUPP_MD.exists(),
        "all_reference_records":refcount==18,
+       "verified_reference_metadata_in_ris":ris.exists() and ris.read_text(encoding="utf-8").count("\nJO  - ")==15,
        "main_pdf_has_landscape_table3":geom_main["available"] and any(
             p["orientation"]=="landscape" and p["table3"] for p in geom_main["pages"]),
        "supplement_pdf_readable":geom_supp["available"] and len(geom_supp["pages"])>4,
@@ -183,7 +192,7 @@ def main():
       "SUPPLEMENT: editable Word + PDF with registered S1-S10 and exploratory S11-S14.\n"
       "FIGURES: two registered figures in PDF/SVG/PNG, generated from frozen aggregate values.\n"
       "COVER: separate editable Word/PDF letter.\n"
-      "REFERENCES: RIS for Zotero metadata import. Word citations are plain text, not linked fields.\n\n"
+      "REFERENCES: PubMed-verified RIS with 15 article and 3 model-card records. Zotero library import still needs manual checking; Word citations are not linked fields.\n\n"
       "AUTHOR REQUIREMENTS BEFORE SUBMISSION:\n"
       "1. Verify conflicting interests and add accurate declaration; confirm funding.\n"
       "2. Confirm any applicable local institutional ethics determination.\n"
