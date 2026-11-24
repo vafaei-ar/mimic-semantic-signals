@@ -202,6 +202,8 @@ def main():
       "6. Review updated 2026 competitor paper and full text; approve final claims.\n"
       "7. Verify title page/affiliation/contact, final word count and journal portal forms.\n"
       "8. Keep main preregistered results separate from exploratory extensions.\n\n"
+      "Do not upload the internal QA JSON, README, repository Markdown, or source scripts to the journal.\n"
+      "Only the final author-approved Word manuscript, supplement, cover letter and figures belong in the submission portal.\n"
       "No protected patient-level MIMIC content is included.\n",encoding="utf-8")
     files=[
       manuscript,manuscript_pdf,supplement,supplement_pdf,letter,pdf_letter,ris,readme,
