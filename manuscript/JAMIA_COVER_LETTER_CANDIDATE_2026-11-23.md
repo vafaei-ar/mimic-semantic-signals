@@ -1,5 +1,3 @@
-# Cover letter draft for JAMIA
-
 November 23, 2026
 
 Suzanne R. Bakken, PhD, RN  
