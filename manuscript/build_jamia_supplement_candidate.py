@@ -9,7 +9,7 @@ SOURCE=ROOT/"manuscript/JAMIA_SUPPLEMENT_CANDIDATE_2026-11-23.md"
 OUT=ROOT/"outputs/manuscript/jamia_submission_candidate_20261123"
 TARGET=OUT/"JAMIA_Supplement_Candidate_2026-11-23.docx"
 QA=OUT/"JAMIA_Supplement_Candidate_2026-11-23_QA.json"
-SOURCE_SHA="492d6d41e530a7df01a674e6168785a5c19337b1"
+SOURCE_SHA="8e2d3d83297a60c72a58f4fcfe0c40addf319e74"
 W="{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 def git_blob(data):
