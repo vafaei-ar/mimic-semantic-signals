@@ -23,7 +23,7 @@ SRC = ROOT / "manuscript/JAMIA_SUBMISSION_CANDIDATE_2026-11-23.md"
 OUT = ROOT / "outputs/manuscript/jamia_submission_candidate_20261123"
 TARGET = OUT / "JAMIA_Submission_Candidate_2026-11-23.docx"
 QA = OUT / "JAMIA_Submission_Candidate_2026-11-23_QA.json"
-EXPECTED_SOURCE_BLOB = "af521f4241eff15c8140d63571af207b43f561e3"
+EXPECTED_SOURCE_BLOB = "8db45c66d22f2466352533208d98d8502f4d5c3b"
 EXPECTED_PRIMARY = [
     ["Invasive ventilation", "0.72468", "0.72463", "-0.00005", "-0.02173 to +0.01910", "+0.00387"],
     ["Renal replacement therapy", "0.97394", "0.97315", "-0.00079", "-0.00323 to +0.00275", "-0.00048"],
@@ -141,9 +141,55 @@ def doc_html(source):
     .bullet {margin:0 0 5pt .25in;}
     .page-break {page-break-before:always;}
     """
-    result = ('<!DOCTYPE html><html><head><meta charset="utf-8"><title>JAMIA Working Manuscript</title>'
+    result = ('<!DOCTYPE html><html><head><meta charset="utf-8"><title>JAMIA Submission Candidate</title>'
               '<style>' + css + '</style></head><body>' + "\n".join(out) + '</body></html>\n')
     return result, tables, refcount, figures
+
+
+
+def enforce_double_spaced_paragraphs(docx_path):
+    """Set explicit double spacing for all body paragraphs outside tables.
+
+    Preserve the original Word package, original text, metadata, and the
+    existing landscape section. Table cells keep their compact spacing.
+    """
+    with zipfile.ZipFile(docx_path, "r") as src:
+        items = [(item, src.read(item.filename)) for item in src.infolist()]
+    xml = next(data for item, data in items if item.filename == "word/document.xml").decode("utf-8")
+    table_spans = []
+    for table in re.finditer(r"<w:tbl(?=[\s>]).*?</w:tbl>", xml, flags=re.S):
+        table_spans.append((table.start(), table.end()))
+    paragraphs = list(re.finditer(r"<w:p(?=[\s>])[^>]*>.*?</w:p>", xml, flags=re.S))
+    edits = []
+    for p in paragraphs:
+        if any(a <= p.start() < b for a, b in table_spans):
+            continue
+        body = p.group()
+        if "<w:sectPr" in body:
+            continue
+        spacing = '<w:spacing w:line="480" w:lineRule="auto"/>'
+        if re.search(r"<w:pPr(?:\s[^>]*)?>", body):
+            body = re.sub(r"<w:spacing\b[^>]*/>", "", body)
+            body = body.replace("</w:pPr>", spacing + "</w:pPr>", 1)
+        else:
+            body = re.sub(r"^(<w:p(?:\s[^>]*)?>)", r"\1<w:pPr>" + spacing + "</w:pPr>", body, count=1)
+        edits.append((p.start(), p.end(), body))
+    if len(edits) < 35:
+        raise ValueError("Too few paragraphs for double-spacing verification")
+    fixed = xml
+    for begin, end, body in reversed(edits):
+        fixed = fixed[:begin] + body + fixed[end:]
+    ET.fromstring(fixed.encode("utf-8"))
+    temp = docx_path.with_suffix(".spacing.tmp")
+    with zipfile.ZipFile(temp, "w") as dst:
+        for item, data in items:
+            dst.writestr(item, fixed.encode("utf-8") if item.filename == "word/document.xml" else data)
+    temp.replace(docx_path)
+    check = fixed.count('w:line="480"')
+    if check < len(edits):
+        raise ValueError("Did not persist explicit double spacing")
+    return {"double_spaced_body_paragraphs": len(edits), "line_twips": 480,
+            "tables_keep_compact_spacing": True}
 
 
 def orient_table3_landscape(docx_path):
@@ -245,6 +291,10 @@ def main():
     if source_sha != EXPECTED_SOURCE_BLOB:
         raise ValueError("Manuscript source moved from frozen text. Refuse to assemble.")
     source = data.decode("utf-8")
+    # Remove repository preface: the journal Word file starts with its title page.
+    if "## Title page" not in source:
+        raise ValueError("Missing manuscript title page")
+    source = source[source.index("## Title page"):]
     markup, original_tables, references, figures = doc_html(source)
     OUT.mkdir(parents=True, exist_ok=True)
     html_file = OUT / "JAMIA_Submission_Candidate_2026-11-23.html"
@@ -262,6 +312,7 @@ def main():
     if cp.returncode != 0 or not TARGET.is_file():
         raise RuntimeError("DOCX conversion failed: " + (cp.stderr or cp.stdout)[-900:])
     layout_changes = orient_table3_landscape(TARGET)
+    paragraph_spacing = enforce_double_spaced_paragraphs(TARGET)
     word_tables, xml = extract_word_tables(TARGET)
     if len(word_tables) != 3:
         raise ValueError(f"Word native table count {len(word_tables)} != 3")
@@ -294,6 +345,7 @@ def main():
         "figure_legend_headings": figures,
         "editable_word_tables": True,
         "layout_correction": layout_changes,
+        "double_spacing_verification": paragraph_spacing,
         "pdf_rendered": render_ok,
         "zotero_field_linking": "pending (portable RIS included separately)",
         "figure_image_embedding": "not included, separate journal figures",
