@@ -92,7 +92,7 @@ def _save(fig, out, name):
     out.mkdir(parents=True, exist_ok=True)
     base = out / name
     fig.savefig(base.with_suffix(".pdf"), bbox_inches="tight",
-                metadata={"Title": name, "Subject": "JAMIA Paper 1 frozen aggregate results"})
+                metadata={"Title": name, "Subject": "Registered ICU prediction: study figure"})
     fig.savefig(base.with_suffix(".svg"), bbox_inches="tight",
                 metadata={"Title": name})
     fig.savefig(base.with_suffix(".png"), bbox_inches="tight", dpi=300)
@@ -150,8 +150,8 @@ def figure_1(design, cohorts, out):
 
 
 def figure_2(rows, cohorts, out):
-    fig = plt.figure(figsize=(7.2, 3.65), facecolor=WHITE)
-    ax = fig.add_axes([.30, .29, .57, .55])
+    fig = plt.figure(figsize=(7.2, 3.1), facecolor=WHITE)
+    ax = fig.add_axes([.30, .28, .57, .66])
     ax.set_facecolor(WHITE)
     ordered = list(zip(rows, cohorts))
     ys = [2, 1, 0]
@@ -175,14 +175,8 @@ def figure_2(rows, cohorts, out):
     ax.spines["bottom"].set_color(LIGHT)
     ax.grid(axis="x", color=LIGHT, alpha=.55, linewidth=.55, zorder=0)
 
-    fig.text(.035, .945, "Registered incremental discrimination across three ICU outcomes",
-             fontsize=10, fontweight="bold", ha="left", va="top", color=INK)
-    fig.text(.035, .865, "a  Primary 12-h outcome horizon and 500-valid-refit bootstrap intervals",
-             fontsize=8, ha="left", color=SUB)
-    fig.text(.035, .185,
-             "Points: original primary-partition ΔAUROC. Whiskers: two-sided 95% source-patient-cluster\n"
-             "percentile intervals with complete model refitting. Dashed line: no incremental change.",
-             fontsize=7, color=SUB, linespacing=1.4)
+    # Figure description and interval method belong in the manuscript legend,
+    # not as overlapping plot annotations. The figure contains one unlabelled panel.
     _save(fig, out, "JAMIA_Figure_2_Primary_delta_AUROC")
 
 
