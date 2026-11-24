@@ -102,7 +102,7 @@ Ordinary note context consisted of note availability, selected-note age at the p
 
 ### S4. Semantic instruments and text policy
 
-The primary instrument was Open-Jev evaluated on a fixed stripped-note corpus. Eight constructs were scored:
+The primary instrument was Open-Jev evaluated on the prespecified text corpus after endpoint-language removal. The Open-Jev model card reports training on public banking messages, sentiment reviews and BoolQ question answering. The Laya model card identifies four nonclinical typed-decision workflows (agent traces, customer service, invoices, and security incidents). These are out-of-domain applications for ICU narrative. Neither model card documents fine-tuning on MIMIC notes, although absence of documented training does not prove exclusion from all upstream encoder data. The present study did not independently evaluate clinician agreement or general-domain-to-clinical transfer. Eight constructs were scored:
 
 1. overall clinician concern;
 2. worsening trajectory;
@@ -125,7 +125,7 @@ Laya and DiffusionGemma were prespecified alternative instruments. The primary a
 | Laya | package version 0.3.4; checkpoint `convaiinnovations/laya-typed-decisions`, frozen revision `f9ab0b228f0fc0f14d873dbc99038f135c2da1b2`; 600-token chunks, 100-token overlap, maximum 8 chunks |
 | DiffusionGemma | `google/diffusiongemma-26B-A4B-it`, revision `f7f5b7f5fa82ffc52addd066915886d497f5517b`; native Transformers BF16 backend |
 
-The exact semantic-question schema SHA-256 was `72763082c314a4542817ccfcd42d2b10d9446fc8e84c3391a2140790b2483623`. Registered inference code refused execution when the frozen model/schema contract was not satisfied. Open-Jev and Laya treated each construct as a yes/no typed decision and used the model probability assigned to the affirmative response as the construct score. DiffusionGemma instead used prompted zero-shot 0-1 support scores; these were not treated as calibrated typed-decision probabilities. Across note chunks, the seven concern-oriented constructs used the maximum score and reassuring stability used the minimum score.
+The eight question definitions and model revisions were specified before outcome evaluation. Open-Jev and Laya treated each construct as a yes/no typed decision and used the model probability assigned to the affirmative response as the construct score. DiffusionGemma instead used prompted zero-shot 0-1 support scores; these were not treated as calibrated typed-decision probabilities. Across note chunks, the seven concern-oriented constructs used the maximum score and reassuring stability used the minimum score.
 
 #### S4.2 Frozen semantic questions and response criteria
 
@@ -171,7 +171,7 @@ The post-registration semantic-only and comparator-decomposition analyses reused
 | RRT | -0.00049 | -0.00317 to +0.00282 |
 | ICU death, MetaVision | -0.00472 | -0.00840 to +0.00530 |
 
-### Table S3. Registered H5 common-logistic representation comparison
+### Table S3. Registered common-logistic representation comparison
 
 | Outcome | Open-Jev increment | TF-IDF increment | Open-Jev after TF-IDF |
 |---|---:|---:|---:|
@@ -180,6 +180,8 @@ The post-registration semantic-only and comparator-decomposition analyses reused
 | ICU death, MetaVision | -0.00631 | +0.00123 | -0.00580 |
 
 The H5 comparison holds the downstream model family constant. It should not be numerically conflated with the HGB comparator-decomposition analysis.
+
+The registered common-logistic TF-IDF and Open-Jev comparisons report point differences only, without complete-refit uncertainty intervals. Positive TF-IDF point differences are descriptive and should not be interpreted as established incremental performance gains.
 
 ### Table S4. Registered H6 sensitivity results
 
@@ -246,7 +248,7 @@ Semantic/note case identifiers matched exactly in all three primary cohorts, and
 | RRT | 7,709 | 143 | 0.44790 | 0.45285 | 0.47306 | 0.48725 | 0.49073 |
 | ICU death, MetaVision | 7,889 | 83 | 0.65682 | 0.70011 | 0.67292 | 0.68995 | 0.69343 |
 
-The RRT semantic-only AUROC remained below 0.5 in all five frozen partitions (0.448-0.491). Outcome coding and the positive-class probability were fixed before this exploratory analysis, and predictions were not inverted post hoc. The result is therefore reported as observed rather than transformed into an apparent AUROC above 0.5.
+The RRT semantic-only AUROC was below 0.5 in all five prespecified partitions (0.448-0.491). This direction could reflect inverse ranking of cases and controls, model misspecification, or sampling variation. The same patients contributed to all partitions, and we did not estimate a confidence interval for the inverse association. The outcome label was fixed and predictions were not inverted after evaluation.
 
 ### Table S8. Post-registration comparator decomposition: Open-Jev delta AUROC across five frozen partitions
 
@@ -309,17 +311,9 @@ The registration prespecified two Zigong narrative arms: a translated-text Open-
 
 A DiffusionGemma-only transport analysis was run using the existing frozen 340-note Zigong 24-hour cohort. The legacy cohort had been selected under a note-leakage regex later recognized to contain specification problems, including an overbroad bare Chinese airway term, a generic tube-removal term, and an incorrectly escaped English ETT word-boundary expression. The existing result (AUROC 0.5546; 95% matched-set bootstrap interval 0.4796-0.6308) is retained as descriptive provenance only and is not used as completed registered external validation.
 
-## OSF attachment verification
+## Registration and reproducibility
 
-The frozen OSF-hosted SAP and technical-appendix PDF files differ byte-for-byte from the earlier locally packaged PDF hashes cited during registration preparation. The registration manifest is byte-identical.
-
-A subsequent text-content check compared the authoritative OSF PDFs with the exact Markdown source at registration commit `873897e6c934cea3d558b6518ac1e399f9f75387`. After normalization limited to PDF/Markdown formatting artifacts, the ordered alphabetic word-token sequences matched exactly: 1,291/1,291 tokens for the SAP and 1,832/1,832 tokens for the technical appendix, with zero additions, deletions, substitutions, or reorderings. The byte mismatch is retained as provenance but is not a scientific-content mismatch.
-
-## Provenance
-
-Every numerical result in the manuscript is traceable to an exact project commit, RunRelay job, declared aggregate artifact, and SHA-256 digest in `docs/results/PAPER1_PROVENANCE_INDEX_2026-10-03.md`.
-
-Restricted notes, row-level semantic scores, row-level predictions, and rater packets are not shared as repository or RunRelay artifacts.
+The corrected MIMIC-III analysis was registered at OSF `ahxn9` before its outcome performance was evaluated. A separate exploratory extension was registered at `wmyb2`. Source definitions, analysis code, and aggregate result files are available through the project repository. The original registration files and detailed verification history remain accessible through the project record. Restricted clinical notes and patient-level predictions are not redistributed.
 
 ## Post-registration exploratory extension (separate OSF project wmyb2)
 
@@ -363,7 +357,7 @@ Each cell gives the original ΔAUROC and its 95% full-refit percentile interval.
 
 All twelve ΔAUROC intervals include zero, as do the corresponding ΔAUPRC intervals. The study did not estimate a paired A-minus-D contrast and cannot claim statistically established attenuation from comparator enrichment. In particular, the death TF-IDF point estimates did not show a monotonic decline across A-D. The five partitions are within-dataset stability checks, not independent replication cohorts.
 
-### S13. Interpretation limitations from the final statistical review
+### S13. Interpretation limits of exploratory comparator analyses
 
 In T1.5, supervised text score functions set values to exactly zero for stays without an eligible note. Levels A and B lack an explicit `has_note` variable, whereas level C includes documentation proxies and D includes explicit note availability, age and categories. Thus, early-level text-score augmentation can partially encode *documentation availability* rather than information present in the words themselves. The design does not identify separate content and availability contributions.
 
