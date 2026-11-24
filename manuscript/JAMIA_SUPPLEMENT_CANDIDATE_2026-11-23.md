@@ -1,8 +1,6 @@
-# Supplementary Material: JAMIA submission candidate
+# Supplementary Material
 
 **Manuscript:** Incremental predictive value of predefined semantic scores from ICU notes beyond documentation-aware EHR models: a preregistered evaluation
-
-Updated: 2026-11-23
 
 ## Supplementary Methods
 
