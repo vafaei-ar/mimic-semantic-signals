@@ -4,13 +4,13 @@
 
 ## Supplementary Methods
 
-### S1. Corrected v2.1 analysis lineage
+### Supplementary Method 1. Cohort and analysis lineage
 
 An earlier exploratory analysis lineage produced larger positive semantic increments. Before those results were used for publication, an integrity review identified several design and implementation problems, including mixing CareVue and MetaVision documentation/source processes, note-selection rules that changed note availability, asymmetric case/control exclusions, incorrect cross-chunk semantic aggregation, and an insufficient structured comparator. The earlier positive estimates are not used as confirmatory evidence.
 
 The corrected v2.1 analysis used source-compatible cohorts, adult/NICU eligibility rules, fixed note identities before stripping, corrected max/min semantic aggregation, a 34-feature structured block, prespecified treatment and documentation context, fixed patient-grouped partitions, and patient-cluster refit bootstrap uncertainty. The corrected analysis was registered on OSF before predictive performance was examined: registration `ahxn9`, DOI `10.17605/OSF.IO/AHXN9`.
 
-### S2. Cohorts and prediction horizon
+### Supplementary Method 2. Cohorts and prediction horizon
 
 The prediction landmark was 12 hours after ICU admission. Primary outcomes were assessed during the subsequent 12 hours.
 
@@ -23,9 +23,9 @@ The prediction landmark was 12 hours after ICU admission. Primary outcomes were 
 
 MetaVision and CareVue death analyses were not pooled.
 
-### S3. Structured predictor definitions
+### Supplementary Method 3. Structured predictor definitions
 
-#### S3.1 Core 34-feature block
+#### Supplementary Method 3.1. Core 34-feature block
 
 The registered core block contained the following 34 features in fixed order:
 
@@ -66,7 +66,7 @@ The registered core block contained the following 34 features in fixed order:
 
 Airway-coded verbal GCS values (`1.0 ET/Trach` and `No Response-ETT`) were treated as missing rather than as verbal GCS=1.
 
-#### S3.2 Treatment/support context
+#### Supplementary Method 3.2. Treatment/support context
 
 Six-hour treatment/support context included:
 
@@ -81,7 +81,7 @@ Six-hour treatment/support context included:
 
 For ICU death only, code-status availability and limitation categories were additionally included.
 
-#### S3.3 Documentation behavior
+#### Supplementary Method 3.3. Documentation behavior
 
 Twelve-hour documentation-behavior variables were:
 
@@ -94,11 +94,11 @@ Twelve-hour documentation-behavior variables were:
 - respiratory note count;
 - other note count.
 
-#### S3.4 Ordinary note context
+#### Supplementary Method 3.4. Ordinary note context
 
 Ordinary note context consisted of note availability, selected-note age at the prediction landmark, and collapsed note category (nursing, physician, respiratory, other, or no note).
 
-### S4. Semantic instruments and text policy
+### Supplementary Method 4. Semantic instruments and text policy
 
 The primary instrument was Open-Jev evaluated on the prespecified text corpus after endpoint-language removal. The Open-Jev model card reports training on public banking messages, sentiment reviews and BoolQ question answering. The Laya model card identifies four nonclinical typed-decision workflows (agent traces, customer service, invoices, and security incidents). These are out-of-domain applications for ICU narrative. Neither model card documents fine-tuning on MIMIC notes, although absence of documented training does not prove exclusion from all upstream encoder data. The present study did not independently evaluate clinician agreement or general-domain-to-clinical transfer. Eight constructs were scored:
 
@@ -115,9 +115,9 @@ For multi-chunk notes, the registered aggregation used the maximum chunk score f
 
 Laya and DiffusionGemma were prespecified alternative instruments. The primary analysis used the same fixed note identities across representations.
 
-#### S4.1 Frozen instrument versions
+#### Supplementary Method 4.1. Model implementations
 
-| Instrument | Frozen implementation |
+| Instrument | Model implementation |
 |---|---|
 | Open-Jev | `com-kotobalabs/open-jev-deberta-v3-large`, revision `19bf9a64815add579fbf6c907bef584d9277a8e4`; typed-decisions commit `10d7834d3b99041f890db4615fb38ef95ced50cc`; 220-token chunks, 40-token overlap, maximum 8 chunks |
 | Laya | package version 0.3.4; checkpoint `convaiinnovations/laya-typed-decisions`, frozen revision `f9ab0b228f0fc0f14d873dbc99038f135c2da1b2`; 600-token chunks, 100-token overlap, maximum 8 chunks |
@@ -125,7 +125,7 @@ Laya and DiffusionGemma were prespecified alternative instruments. The primary a
 
 The eight question definitions and model revisions were specified before outcome evaluation. Open-Jev and Laya treated each construct as a yes/no typed decision and used the model probability assigned to the affirmative response as the construct score. DiffusionGemma instead used prompted zero-shot 0-1 support scores; these were not treated as calibrated typed-decision probabilities. Across note chunks, the seven concern-oriented constructs used the maximum score and reassuring stability used the minimum score.
 
-#### S4.2 Frozen semantic questions and response criteria
+#### Supplementary Method 4.2. Semantic questions and response criteria
 
 The same question schema was used for all eight score dimensions. Open-Jev and Laya returned the probability assigned to the affirmative response; DiffusionGemma returned a prompted 0-1 support score. The wording below is copied from the frozen `src/semantic_schema.py`.
 
@@ -143,7 +143,7 @@ The same question schema was used for all eight score dimensions. Open-Jev and L
 These definitions were fixed before outcome analysis. They are operational model questions, not clinician-validated constructs; registered clinician validation was not completed.
 
 
-### S5. Cross-validation and uncertainty
+### Supplementary Method 5. Cross-validation and uncertainty
 
 Five deterministic patient-grouped 5-fold partitions were frozen before predictive evaluation. Partition 1 was the primary point estimate; partitions 2-5 assessed refit/split stability.
 
@@ -153,7 +153,7 @@ The post-registration semantic-only and comparator-decomposition analyses reused
 
 ## Supplementary Results
 
-### Table S1. Five frozen-partition H1-H3 delta AUROC
+### Table S1. Primary delta AUROC across five patient-grouped partitions
 
 | Outcome | Repeat 1 | Repeat 2 | Repeat 3 | Repeat 4 | Repeat 5 |
 |---|---:|---:|---:|---:|---:|
@@ -161,7 +161,7 @@ The post-registration semantic-only and comparator-decomposition analyses reused
 | RRT | -0.00079 | +0.00071 | +0.00003 | -0.00024 | +0.00332 |
 | ICU death, MetaVision | -0.00212 | +0.00390 | -0.00327 | +0.00103 | -0.00042 |
 
-### Table S2. Registered H4 six-construct analysis
+### Table S2. Prespecified six-construct sensitivity analysis
 
 | Outcome | Delta AUROC | 95% refit-bootstrap interval |
 |---|---:|---:|
@@ -181,7 +181,7 @@ The H5 comparison holds the downstream model family constant. It should not be n
 
 The registered common-logistic TF-IDF and Open-Jev comparisons report point differences only, without complete-refit uncertainty intervals. Positive TF-IDF point differences are descriptive and should not be interpreted as established incremental performance gains.
 
-### Table S4. Registered H6 sensitivity results
+### Table S4. Prespecified model, endpoint, and timing sensitivities
 
 | Instrument/sensitivity | Outcome | Delta AUROC | 95% interval |
 |---|---|---:|---:|
@@ -208,7 +208,7 @@ The registered common-logistic TF-IDF and Open-Jev comparisons report point diff
 
 The explicit-intubation ventilation endpoint was empirically identical to the primary H1 endpoint. The note-availability/storetime fallback sensitivity selected exactly the same notes as the primary analysis in all three MetaVision outcomes and therefore required no semantic rerun.
 
-### Table S5. Registered H7 patient-shuffled negative controls
+### Table S5. Patient-shuffled negative controls
 
 | Outcome/source | Comparator AUROC | Shuffled + comparator AUROC | Delta AUROC | 95% interval |
 |---|---:|---:|---:|---:|
@@ -248,7 +248,7 @@ Semantic/note case identifiers matched exactly in all three primary cohorts, and
 
 The RRT semantic-only AUROC was below 0.5 in all five prespecified partitions (0.448-0.491). This direction could reflect inverse ranking of cases and controls, model misspecification, or sampling variation. The same patients contributed to all partitions, and we did not estimate a confidence interval for the inverse association. The outcome label was fixed and predictions were not inverted after evaluation.
 
-### Table S8. Post-registration comparator decomposition: Open-Jev delta AUROC across five frozen partitions
+### Table S8. Exploratory Open-Jev delta AUROC by comparator richness
 
 | Outcome | Level | Repeat 1 | Repeat 2 | Repeat 3 | Repeat 4 | Repeat 5 |
 |---|---|---:|---:|---:|---:|---:|
@@ -268,7 +268,7 @@ The RRT semantic-only AUROC was below 0.5 in all five prespecified partitions (0
 No new bootstrap or confirmatory p-value was used. The ventilation level-A/B increments cannot be attributed solely to semantic content because semantic missingness also encodes note availability before documentation/note-context variables are included.
 
 
-### Table S9. Registered H1-H3 secondary proper-scoring and calibration metrics
+### Table S9. Secondary scoring and calibration metrics
 
 Lower Brier score and log loss are better. Delta values are augmented minus comparator. Bootstrap intervals come from the same 500-valid-replicate patient-cluster refit bootstrap used for the registered primary analysis.
 
@@ -283,7 +283,7 @@ Lower Brier score and log loss are better. Delta values are augmented minus comp
 
 Primary-partition calibration slopes were 0.615 versus 0.634 for ventilation, 0.713 versus 0.699 for RRT, and 0.762 versus 0.748 for ICU death. Quantile-bin expected calibration error was 0.01119 versus 0.01147, 0.00493 versus 0.00480, and 0.00582 versus 0.00591, respectively. Calibration-in-the-large estimates were 0.636 versus 0.676 for ventilation, 0.615 versus 0.605 for RRT, and 1.201 versus 1.240 for ICU death. Across the prespecified decision-curve thresholds, the 95% bootstrap interval for incremental net benefit spanned zero for every outcome and threshold.
 
-### Table S10. Exploratory note-available subgroup using frozen full-cohort OOF predictions
+### Table S10. Exploratory note-available subgroup using existing full-cohort predictions
 
 This post-registration analysis restricts the already-generated full-cohort out-of-fold predictions to rows with an eligible note. The comparator and augmented models were **not** refit in the subgroup. The table therefore evaluates whether the primary full-cohort predictions show a different incremental pattern among the patients for whom semantic scores existed; it is not a new subgroup-trained model.
 
@@ -297,13 +297,13 @@ For ventilation, the primary-partition subgroup estimate was positive, but its d
 
 ## Registered deviations
 
-### S9. H8 clinician construct validation not performed
+### Supplementary Note 1. Clinician validation not completed
 
-The H8 design and 200-note sample were frozen before any human ratings. Three blinded rater packets were prepared locally, but no ratings were collected. The analysis was not performed because this single-author, unfunded study did not have the independent qualified clinician raters and associated logistical/governance resources required by the registered design. The decision therefore did not depend on H8 results.
+The prespecified clinician-validation design specified a 200-note sample before any human ratings. Three blinded rater packets were prepared locally, but no ratings were collected. The analysis was not performed because this single-author, unfunded study did not have the independent qualified clinician raters and associated logistical/governance resources required by the registered design. The decision did not depend on the results of an attempted validation.
 
 No claim of human-validated construct validity or clinical interpretability is made.
 
-### S10. H9 external-validation partial execution
+### Supplementary Note 2. External narrative validation not completed
 
 The registration prespecified two Zigong narrative arms: a translated-text Open-Jev/Laya/TF-IDF arm and a native-Chinese DiffusionGemma arm. The translated arm was not performed.
 
@@ -315,32 +315,32 @@ The corrected MIMIC-III analysis was registered at OSF `ahxn9` before its outcom
 
 ## Post-registration exploratory extension (separate OSF project wmyb2)
 
-The primary preregistered H1-H3 evaluation and its results remain unchanged. The analyses summarized below were conducted after the primary results were known, using separately frozen exploratory extension specifications. The extension stopped after completion of the T1.5 analyses. These outcomes do not constitute new registered primary hypotheses or independent external replications.
+The primary preregistered evaluation of the three ICU outcomes and its results remain unchanged. The analyses summarized below were conducted after the primary results were known, using separately frozen exploratory extension specifications. The exploratory extension concluded after the comparator-richness analyses. These outcomes do not constitute new registered primary hypotheses or independent external replications.
 
-### S11. Supervised text representation and fusion: methods
+### Supplementary Note 3. Exploratory supervised-text methods
 
-The T1.1 analysis fitted a supervised TF-IDF/logistic score inside training folds and supplied that score as one added predictor to the structured HistGradientBoosting model. T1.2 used a pinned BGE-large sentence embedding, combined chunks without outcome labels, and fitted a training-only logistic supervised score. T1.2b fitted 32 principal components from frozen embeddings inside the training fold and added the components directly to the structured learner. T1.4 repeated the TF-IDF analysis on unstripped source text as a sensitivity.
+The supervised TF-IDF analysis fitted a logistic score inside training folds and supplied that score as one added predictor to the structured HistGradientBoosting model. The embedding-scalar analysis used a specified BGE-large sentence embedding, combined chunks without outcome labels, and fitted a training-only logistic supervised score. The early-fusion analysis fitted 32 principal components from frozen embeddings inside the training fold and added the components directly to the structured learner. The unstripped-text sensitivity repeated the TF-IDF analysis on unstripped source text as a sensitivity.
 
 The held-out evaluation used the same five frozen patient-grouped outer partitions, with the first partition supplying the displayed point estimate. Patient-cluster bootstrap refits provided the reported percentile intervals for the richest comparator D. Each method retained patients without notes in the target population and used the prespecified missing-score/availability treatment. These four extensions differed in text representation and fusion, so their estimates are not interchangeable or independent replications.
 
-### Table S11. Exploratory supervised-text augmentation at registered rich comparator D
+### Table S11. Exploratory supervised-text augmentation with comparator D
 
 Each cell is the primary-partition ΔAUROC followed by its 95% patient-cluster full-refit percentile interval. ΔAUROC equals text-augmented minus rich structured comparator D.
 
 | Text representation | Invasive ventilation | RRT | ICU death, MetaVision |
 |---|---|---|---|
-| T1.1, stripped TF-IDF supervised scalar | −0.001370 [−0.014930, +0.014680] | −0.000680 [−0.002300, +0.002690] | +0.003390 [−0.006250, +0.007840] |
-| T1.2, frozen-BGE supervised scalar | +0.001937 [−0.014232, +0.017353] | −0.000800 [−0.002648, +0.002391] | −0.000462 [−0.006327, +0.006802] |
-| T1.2b, 32-component BGE early fusion | −0.002830 [−0.024938, +0.026863] | −0.000485 [−0.003479, +0.003209] | +0.000240 [−0.010065, +0.006978] |
-| T1.4, unstripped TF-IDF supervised scalar | +0.003773 [−0.016243, +0.014625] | +0.000619 [−0.001953, +0.003572] | +0.003294 [−0.005525, +0.008254] |
+| Stripped TF-IDF supervised scalar | −0.001370 [−0.014930, +0.014680] | −0.000680 [−0.002300, +0.002690] | +0.003390 [−0.006250, +0.007840] |
+| BGE embedding supervised scalar | +0.001937 [−0.014232, +0.017353] | −0.000800 [−0.002648, +0.002391] | −0.000462 [−0.006327, +0.006802] |
+| BGE early fusion (32 components) | −0.002830 [−0.024938, +0.026863] | −0.000485 [−0.003479, +0.003209] | +0.000240 [−0.010065, +0.006978] |
+| Unstripped TF-IDF supervised scalar | +0.003773 [−0.016243, +0.014625] | +0.000619 [−0.001953, +0.003572] | +0.003294 [−0.005525, +0.008254] |
 
 All intervals include zero. These tests do not establish equivalence or demonstrate that all possible text representations lack predictive value. Standalone primary-partition text AUROCs among note-available stays were 0.64023/0.87350/0.85626 for supervised TF-IDF and 0.615456/0.803578/0.794347 for the frozen BGE representation (ventilation/RRT/death). These standalone results describe a different estimand from augmentation against structured comparator D.
 
-### S12. Supervised text augmentation across structured comparator richness
+### Supplementary Note 4. Supervised-text analyses by comparator richness
 
-Levels A through D were fixed as: A, 34 physiology, laboratory and urine predictors; B, A plus treatment/support; C, B plus documentation behavior; and D, C plus ordinary note context, including explicit note availability. T1.5 tested the two scalar supervised scores (TF-IDF and frozen BGE embedding) at all four levels across five frozen patient-grouped partitions. Complete patient-cluster refit uncertainty was calculated for A and D only, using 200 valid replicates under the frozen 72-hour timing rule.
+Levels A through D were fixed as: A, 34 physiology, laboratory and urine predictors; B, A plus treatment/support; C, B plus documentation behavior; and D, C plus ordinary note context, including explicit note availability. The comparator-richness analysis tested the two scalar supervised scores (TF-IDF and frozen BGE embedding) at all four levels across five frozen patient-grouped partitions. Complete patient-cluster refit uncertainty was calculated for A and D only, using 200 valid replicates under the frozen 72-hour timing rule.
 
-### Table S12. T1.5 exploratory primary-partition ΔAUROC at comparator levels A and D
+### Table S12. Exploratory supervised-text ΔAUROC at comparator levels A and D
 
 Each cell gives the original ΔAUROC and its 95% full-refit percentile interval. These are level-specific intervals, not a paired A-minus-D comparison.
 
@@ -355,16 +355,14 @@ Each cell gives the original ΔAUROC and its 95% full-refit percentile interval.
 
 All twelve ΔAUROC intervals include zero, as do the corresponding ΔAUPRC intervals. The study did not estimate a paired A-minus-D contrast and cannot claim statistically established attenuation from comparator enrichment. In particular, the death TF-IDF point estimates did not show a monotonic decline across A-D. The five partitions are within-dataset stability checks, not independent replication cohorts.
 
-### S13. Interpretation limits of exploratory comparator analyses
+### Supplementary Note 5. Exploratory comparator interpretation limits
 
-In T1.5, supervised text score functions set values to exactly zero for stays without an eligible note. Levels A and B lack an explicit `has_note` variable, whereas level C includes documentation proxies and D includes explicit note availability, age and categories. Thus, early-level text-score augmentation can partially encode *documentation availability* rather than information present in the words themselves. The design does not identify separate content and availability contributions.
+In the comparator-richness analysis, supervised text score functions set values to exactly zero for stays without an eligible note. Levels A and B lack an explicit `has_note` variable, whereas level C includes documentation proxies and D includes explicit note availability, age and categories. Thus, early-level text-score augmentation can partially encode *documentation availability* rather than information present in the words themselves. The design does not identify separate content and availability contributions.
 
-For ventilation level A, the original TF-IDF point estimate was +0.022888, but the 200-replicate bootstrap mean was +0.003558 and the percentile interval was [−0.012831, +0.020596]. The observed point lies above this interval's upper percentile. A percentile interval need not contain the original estimate. Nevertheless, the displacement requires independent statistical interpretation. We preserve the prespecified estimate and interval without recentering or declaring the result positive.
+For ventilation at comparator level A, the TF-IDF point estimate (+0.022888) lies above the 200-refit percentile interval [−0.012831, +0.020596]; the bootstrap mean was +0.003558. The point-estimate and bootstrap workflows used different deterministic inner-fold seed offsets, and the analyses did not isolate their contribution to the difference. We retain the original estimates and interval without recentering them or claiming a positive incremental effect. A percentile interval is not required to contain the observed estimate.
 
-The original point-estimate and bootstrap text-model pipelines also use different deterministic inner-fold seed offsets, an inherited convention visible in the source code. Both preserve patient grouping. The available aggregate data do not show how much this seed difference contributes to the ventilation discrepancy. We did not run an unregistered follow-up outcome analysis to resolve it.
+The fixed 5% alert-budget analyses across the preceding supervised-text representations did not demonstrate a reliable operational benefit. The comparator-richness analysis did not evaluate fixed alert budgets. None of these extensions establishes prospective deployment value, external generalization, causal redundancy, or lack of all clinical usefulness for narrative-derived measurements.
 
-The fixed 5% alert-budget analyses across T1.1-T1.4 did not demonstrate a reliable operational benefit. T1.5 did not evaluate fixed alert budgets. None of these extensions establishes prospective deployment value, external generalization, causal redundancy, or lack of all clinical usefulness for narrative-derived measurements.
+### Supplementary Note 6. Exploratory extension provenance
 
-### S14. Exploratory extension provenance
-
-Primary preregistration: OSF `ahxn9` (DOI `10.17605/OSF.IO/AHXN9`). Separate exploratory extension: OSF `wmyb2`. The scientific execution remained fixed to commit `e5772f7a1a40b2368465e1b95e24a04abc98cc2a`. The canonical supplementary data are in the project result freezes and in `docs/results/v2_1_extension_t1_cross_outcome_synthesis_method_qa_2026-11-10.md` and `docs/results/v2_1_extension_t1_5_statistical_adjudication_2026-11-11.md`. The extension did not read a new independent bedside-narrative dataset. Its findings belong to the exploratory supplement and do not supersede H1-H3.
+Primary preregistration: OSF `ahxn9` (DOI `10.17605/OSF.IO/AHXN9`). Separate exploratory extension: OSF `wmyb2`. The internal extension task codes correspond to supervised TF-IDF (T1.1), BGE scalar (T1.2), BGE early fusion (T1.2b), unstripped TF-IDF (T1.4), and comparator richness (T1.5). These codes identify procedures, not independent hypothesis tests. The scientific execution remained fixed to commit `e5772f7a1a40b2368465e1b95e24a04abc98cc2a`. The canonical supplementary data are in the project result freezes and in `docs/results/v2_1_extension_t1_cross_outcome_synthesis_method_qa_2026-11-10.md` and `docs/results/v2_1_extension_t1_5_statistical_adjudication_2026-11-11.md`. The extension did not read a new independent bedside-narrative dataset. Its findings belong to the exploratory supplement and do not supersede H1-H3.
