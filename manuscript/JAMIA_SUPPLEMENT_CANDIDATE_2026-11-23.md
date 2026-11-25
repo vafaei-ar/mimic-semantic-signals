@@ -147,7 +147,7 @@ These definitions were fixed before outcome analysis. They are operational model
 
 Five deterministic patient-grouped 5-fold partitions were frozen before predictive evaluation. Partition 1 was the primary point estimate; partitions 2-5 assessed refit/split stability.
 
-For H1-H3 and the registered H6/H7 inferential analyses, uncertainty used 500 valid patient-cluster bootstrap replicates of the full repeat-1 cross-fitting procedure. The comparator and augmented model were refit inside each bootstrap replicate. Reported intervals are percentile 95% intervals.
+For the three primary outcomes and the prespecified semantic sensitivity and negative-control analyses, uncertainty used 500 valid patient-cluster bootstrap replicates of the full repeat-1 cross-fitting procedure. The comparator and augmented model were refit inside each bootstrap replicate. Reported intervals are percentile 95% intervals.
 
 The post-registration semantic-only and comparator-decomposition analyses reused the five frozen partitions and did not run a new bootstrap.
 
@@ -177,7 +177,7 @@ The post-registration semantic-only and comparator-decomposition analyses reused
 | RRT | -0.00194 | +0.00219 | -0.00153 |
 | ICU death, MetaVision | -0.00631 | +0.00123 | -0.00580 |
 
-The H5 comparison holds the downstream model family constant. It should not be numerically conflated with the HGB comparator-decomposition analysis.
+The common-logistic representation comparison holds the learner family constant. It should not be numerically conflated with the HGB comparator-decomposition analysis.
 
 The registered common-logistic TF-IDF and Open-Jev comparisons report point differences only, without complete-refit uncertainty intervals. Positive TF-IDF point differences are descriptive and should not be interpreted as established incremental performance gains.
 
@@ -206,7 +206,7 @@ The registered common-logistic TF-IDF and Open-Jev comparisons report point diff
 | 2-hour laboratory lag | ICU death, MetaVision | -0.00415 | -0.00849 to +0.00655 |
 | CareVue replication | ICU death, CareVue | -0.00255 | -0.00858 to +0.00812 |
 
-The explicit-intubation ventilation endpoint was empirically identical to the primary H1 endpoint. The note-availability/storetime fallback sensitivity selected exactly the same notes as the primary analysis in all three MetaVision outcomes and therefore required no semantic rerun.
+The explicit-intubation ventilation endpoint was empirically identical to the primary ventilation endpoint. The note-availability/storetime fallback sensitivity selected exactly the same notes as the primary analysis in all three MetaVision outcomes and therefore required no semantic rerun.
 
 ### Table S5. Patient-shuffled negative controls
 
