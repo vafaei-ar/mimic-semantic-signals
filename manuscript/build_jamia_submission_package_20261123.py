@@ -7,6 +7,7 @@ from __future__ import annotations
 import hashlib, html, json, re, shutil, subprocess, sys, zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from word_core_properties import set_title_creator, inspect_title_creator
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"outputs/manuscript/jamia_submission_candidate_20261123"
@@ -64,6 +65,8 @@ def cover_letter():
     docx=hp.with_suffix(".docx")
     if not docx.exists():
         raise RuntimeError("Cover letter DOCX missing")
+    set_title_creator(docx,"Cover letter to the Editor-in-Chief, JAMIA",
+                      "Alireza Vafaei Sadr")
     cp=subprocess.run([office,"-env:UserInstallation="+(OUT/".lo_cover_pdf").as_uri(),
        "--headless","--convert-to","pdf","--outdir",str(OUT),str(docx)],
        capture_output=True,text=True,timeout=120)
@@ -173,6 +176,13 @@ def main():
        "source_supplement_exists":SUPP_MD.exists(),
        "all_reference_records":refcount==18,
        "verified_reference_metadata_in_ris":ris.exists() and ris.read_text(encoding="utf-8").count("\nJO  - ")==15,
+       "author_and_title_metadata": (
+           inspect_title_creator(manuscript)["title"] ==
+           re.search(r"^\\*\\*Title:\\*\\*\\s*(.+)$", MAIN_MD.read_text(encoding="utf-8"), re.M).group(1)
+           and inspect_title_creator(manuscript)["creator"] == "Alireza Vafaei Sadr"
+           and inspect_title_creator(supplement) == {"title":"Supplementary Material","creator":"Alireza Vafaei Sadr"}
+           and inspect_title_creator(letter)["creator"] == "Alireza Vafaei Sadr"
+       ),
        "main_pdf_has_landscape_table3":geom_main["available"] and any(
             p["orientation"]=="landscape" and p["table3"] for p in geom_main["pages"]),
        "supplement_pdf_readable":geom_supp["available"] and len(geom_supp["pages"])>4,
