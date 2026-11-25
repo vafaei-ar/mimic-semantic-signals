@@ -2,7 +2,7 @@
 
 Uses only Python standard library and the workstation's existing LibreOffice,
 avoiding any dependency installation. It reads the tracked Markdown manuscript
-and generates three native Word tables, 17 numbered references and two figure
+and generates three native Word tables, 18 numbered references and two figure
 legends. No patient-level data, notes, predictions or model fitting are used.
 The references remain numbered plaintext, not Zotero-linked Word fields.
 """
@@ -17,13 +17,14 @@ import subprocess
 import zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from word_core_properties import set_title_creator
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "manuscript/JAMIA_SUBMISSION_CANDIDATE_2026-11-23.md"
 OUT = ROOT / "outputs/manuscript/jamia_submission_candidate_20261123"
 TARGET = OUT / "JAMIA_Submission_Candidate_2026-11-23.docx"
 QA = OUT / "JAMIA_Submission_Candidate_2026-11-23_QA.json"
-EXPECTED_SOURCE_BLOB = "8db45c66d22f2466352533208d98d8502f4d5c3b"
+EXPECTED_SOURCE_BLOB = "18a002a77e472b3247fe17171b00ebaa245f21fd"
 EXPECTED_PRIMARY = [
     ["Invasive ventilation", "0.72468", "0.72463", "-0.00005", "-0.02173 to +0.01910", "+0.00387"],
     ["Renal replacement therapy", "0.97394", "0.97315", "-0.00079", "-0.00323 to +0.00275", "-0.00048"],
@@ -313,6 +314,12 @@ def main():
         raise RuntimeError("DOCX conversion failed: " + (cp.stderr or cp.stdout)[-900:])
     layout_changes = orient_table3_landscape(TARGET)
     paragraph_spacing = enforce_double_spaced_paragraphs(TARGET)
+    title_match = re.search(r"^\\*\\*Title:\\*\\*\\s*(.+)$", source, re.M)
+    author_match = re.search(r"^\\*\\*Author:\\*\\*\\s*(.+)$", source, re.M)
+    if not title_match or not author_match:
+        raise ValueError("Cannot verify author/title from manuscript title page")
+    metadata = set_title_creator(TARGET, title_match.group(1),
+                                 author_match.group(1).split(",")[0])
     word_tables, xml = extract_word_tables(TARGET)
     if len(word_tables) != 3:
         raise ValueError(f"Word native table count {len(word_tables)} != 3")
@@ -346,6 +353,7 @@ def main():
         "editable_word_tables": True,
         "layout_correction": layout_changes,
         "double_spacing_verification": paragraph_spacing,
+        "verified_core_properties": metadata,
         "pdf_rendered": render_ok,
         "zotero_field_linking": "pending (portable RIS included separately)",
         "figure_image_embedding": "not included, separate journal figures",
