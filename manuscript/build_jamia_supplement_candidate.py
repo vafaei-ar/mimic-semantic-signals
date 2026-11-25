@@ -3,13 +3,14 @@ from __future__ import annotations
 import hashlib, html, json, re, shutil, subprocess, zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from word_core_properties import set_title_creator
 
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE=ROOT/"manuscript/JAMIA_SUPPLEMENT_CANDIDATE_2026-11-23.md"
 OUT=ROOT/"outputs/manuscript/jamia_submission_candidate_20261123"
 TARGET=OUT/"JAMIA_Supplement_Candidate_2026-11-23.docx"
 QA=OUT/"JAMIA_Supplement_Candidate_2026-11-23_QA.json"
-SOURCE_SHA="8e2d3d83297a60c72a58f4fcfe0c40addf319e74"
+SOURCE_SHA="b85bcd934495a9f6f2660770124fae3fa09cee3c"
 W="{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 def git_blob(data):
@@ -98,7 +99,7 @@ def main():
     if source_sha!=SOURCE_SHA:
         raise ValueError("Frozen supplement source changed")
     content=data.decode("utf-8")
-    for marker in ("Table S1.","Table S10.","Table S11.","Table S12.","S13.","S14."):
+    for marker in ("Table S1.","Table S10.","Table S11.","Table S12.","Supplementary Note 5.","Supplementary Note 6."):
         if marker not in content:
             raise ValueError("Supplement marker absent: "+marker)
     document,num_tables=make_html(content)
@@ -116,6 +117,7 @@ def main():
                        capture_output=True,text=True,timeout=120)
     if run.returncode or not TARGET.exists():
         raise RuntimeError("DOCX conversion failed: "+(run.stderr or run.stdout)[-500:])
+    metadata=set_title_creator(TARGET,"Supplementary Material","Alireza Vafaei Sadr")
     with zipfile.ZipFile(TARGET) as z:
         if z.testzip():
             raise ValueError("Corrupted DOCX")
@@ -132,7 +134,8 @@ def main():
     report={"status":"passed","source_sha":source_sha,"table_count":num_tables,
       "native_word_table_count":len(tables),"docx_sha256":hashlib.sha256(TARGET.read_bytes()).hexdigest(),
       "pdf_sha256":hashlib.sha256(pdf.read_bytes()).hexdigest(),"manual_visual_qa":None,
-      "source_patient_data_used":False,"new_model_fitting":False}
+      "source_patient_data_used":False,"new_model_fitting":False,
+      "verified_core_properties":metadata}
     QA.write_text(json.dumps(report,indent=2)+"\n")
     print(json.dumps({"status":"passed","tables":num_tables,"docx":str(TARGET.relative_to(ROOT))}))
 if __name__=="__main__":
