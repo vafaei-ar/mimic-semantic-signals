@@ -22,7 +22,7 @@ Target limits: structured abstract <=250 words; main text <=4000 words; <=4 tabl
 
 **Keywords:** electronic health records; natural language processing; intensive care units; clinical prediction; machine learning
 
-**Main-text word count:** 3,751
+**Main-text word count:** 3,753
 
 ## Abstract
 
@@ -190,7 +190,7 @@ Among note-available rows, the eight Open-Jev scores alone achieved AUROC 0.603 
 
 ### Note-available subgroup using prespecified predictions
 
-Restricting the already-frozen full-cohort out-of-fold predictions to patients with eligible notes did not reveal a stable positive incremental effect (Supplementary Table S10). For ventilation, primary-partition delta AUROC was +0.0109, but the five-partition values ranged from -0.0158 to +0.0279. For RRT, the primary estimate was -0.0012 and the five-partition range was -0.0012 to +0.0043. For ICU death, the primary estimate was -0.0076 and the range was -0.0076 to +0.0068. No model was refit for this exploratory subgroup analysis.
+Restricting the existing full-cohort out-of-fold predictions to patients with eligible notes did not reveal a stable positive incremental effect (Supplementary Table S10). For ventilation, primary-partition delta AUROC was +0.0109, but the five-partition values ranged from -0.0158 to +0.0279. For RRT, the primary estimate was -0.0012 and the five-partition range was -0.0012 to +0.0043. For ICU death, the primary estimate was -0.0076 and the range was -0.0076 to +0.0068. No model was refit for this exploratory subgroup analysis.
 
 ### Comparator decomposition
 
@@ -202,7 +202,7 @@ For RRT, the primary-partition Open-Jev delta AUROC remained close to zero at ev
 
 ### Exploratory supervised-text extensions
 
-Later post-registration TF-IDF, BGE embedding-scalar, 32-component embedding early-fusion, and unstripped TF-IDF experiments did not demonstrate reliable incremental AUROC beyond the rich structured comparator across the three outcomes. Their full-refit intervals included zero (Supplementary Table S11). Comparator-richness analyses also found no reliable positive increment at either the thin or rich comparator. These analyses cannot isolate narrative content from note availability, especially where thin comparators lacked documentation indicators (Supplementary Tables S12 and S13).
+Later post-registration TF-IDF, BGE embedding-scalar, 32-component embedding early-fusion, and unstripped TF-IDF experiments did not demonstrate reliable incremental AUROC beyond the rich structured comparator across the three outcomes. Their full-refit intervals included zero (Supplementary Table S11). Comparator-richness analyses also found no reliable positive increment at either the thin or rich comparator. These analyses cannot isolate narrative content from note availability, especially where thin comparators lacked documentation indicators (Supplementary Table S12 and Supplementary Note 5).
 
 ## Discussion
 
