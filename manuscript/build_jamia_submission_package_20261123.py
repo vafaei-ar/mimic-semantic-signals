@@ -178,7 +178,9 @@ def main():
        "verified_reference_metadata_in_ris":ris.exists() and ris.read_text(encoding="utf-8").count("\nJO  - ")==15,
        "author_and_title_metadata": (
            inspect_title_creator(manuscript)["title"] ==
-           re.search(r"^\\*\\*Title:\\*\\*\\s*(.+)$", MAIN_MD.read_text(encoding="utf-8"), re.M).group(1)
+           next((line.split("**Title:**", 1)[1].strip()
+                 for line in MAIN_MD.read_text(encoding="utf-8").splitlines()
+                 if line.startswith("**Title:**")), "")
            and inspect_title_creator(manuscript)["creator"] == "Alireza Vafaei Sadr"
            and inspect_title_creator(supplement) == {"title":"Supplementary Material","creator":"Alireza Vafaei Sadr"}
            and inspect_title_creator(letter)["creator"] == "Alireza Vafaei Sadr"
