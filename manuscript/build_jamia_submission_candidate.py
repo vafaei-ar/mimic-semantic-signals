@@ -314,12 +314,13 @@ def main():
         raise RuntimeError("DOCX conversion failed: " + (cp.stderr or cp.stdout)[-900:])
     layout_changes = orient_table3_landscape(TARGET)
     paragraph_spacing = enforce_double_spaced_paragraphs(TARGET)
-    title_match = re.search(r"^\\*\\*Title:\\*\\*\\s*(.+)$", source, re.M)
-    author_match = re.search(r"^\\*\\*Author:\\*\\*\\s*(.+)$", source, re.M)
-    if not title_match or not author_match:
+    title = next((line.split("**Title:**", 1)[1].strip()
+                  for line in source.splitlines() if line.startswith("**Title:**")), "")
+    author = next((line.split("**Author:**", 1)[1].strip()
+                   for line in source.splitlines() if line.startswith("**Author:**")), "")
+    if not title or not author:
         raise ValueError("Cannot verify author/title from manuscript title page")
-    metadata = set_title_creator(TARGET, title_match.group(1),
-                                 author_match.group(1).split(",")[0])
+    metadata = set_title_creator(TARGET, title, author.split(",")[0])
     word_tables, xml = extract_word_tables(TARGET)
     if len(word_tables) != 3:
         raise ValueError(f"Word native table count {len(word_tables)} != 3")
